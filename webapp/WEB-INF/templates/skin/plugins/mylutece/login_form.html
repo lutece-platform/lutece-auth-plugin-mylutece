@@ -1,0 +1,28 @@
+<div class="span-22 prepend-1 append-1 last">
+	<div class="portlet -lutece-border-radius append-bottom">
+		<h2>#i18n{mylutece.xpage.login_form.pageTitle}</h2>
+		
+		<form method="post" action="${url_dologin}">
+		<div class="hide">
+			<input type="hidden" name="page" value="mylutece" />
+			<input type="hidden" name="action" value="dologin" />
+		</div>
+		<br/>
+		<font color="red"><b>${error_message}</b><br/>${error_detail}</font>
+		<br/>
+		<br/>
+		<table width="50%">
+		 <tr>
+			<td align="right" ><b>#i18n{mylutece.xpage.login_form.labelAccessCode} : </b></td>
+			<td align="left" ><input type="text" name="username" class="-lutece-input -lutece-border-radius-mini" /></td>
+		 </tr>
+		 <tr>
+			<td align="right" ><b>#i18n{mylutece.xpage.login_form.labelPassword} </b></td>
+			<td align="left" ><input type="password" name="password" class="-lutece-input -lutece-border-radius-mini" /></td>
+		 </tr>
+		</table>
+		<br/><br/>
+		<input type="submit" name="Submit" value="#i18n{mylutece.xpage.login_form.labelButton}" class="-lutece-input -lutece-border-radius-mini" />
+		</form>
+	</div>
+</div>

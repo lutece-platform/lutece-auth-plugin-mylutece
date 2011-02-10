@@ -1,0 +1,31 @@
+<div id="mylutece_user_login_include">
+	<#if user?has_content>
+			#i18n{mylutece.user_login_include.labelWelcome} <br />
+			${user.getUserInfo('user.name.given')} ${user.getUserInfo('user.name.family')} <br />
+			<a href="${url_dologout}">#i18n{mylutece.user_login_include.labelLogout}</a>
+	<#else>
+		<#if list_authentications?exists>
+			<#list list_authentications as authentication>
+				<#if !authentication.externalAuthentication>
+					<#if authentication.delegatedAuthentication>
+						<a href="${authentication.doLoginUrl}?auth_provider=${authentication.name}">
+					<#else>
+						<a href="jsp/site/${authentication.loginPageUrl}&auth_provider=${authentication.name}">
+					</#if>
+					<img src="${authentication.iconUrl}" alt="${authentication.name}" title="${authentication.authServiceName}" /></a>
+				</#if>
+			</#list>
+			<#--
+			<input type="hidden" name="page" value="mylutece" />
+    	    <input type="hidden" name="action" value="dologin" />
+    	    
+    	    <div>
+				<label for="mylutece_user_login_include_username">#i18n{mylutece.user_login_include.labelAccessCode} : </label><input type="text" class="-lutece-input -lutece-border-radius-mini" id="mylutece_user_login_include_username" name="username" /><br />
+				<label for="mylutece_user_login_include_password">#i18n{mylutece.user_login_include.labelPassword} : </label><input type="password" class="-lutece-input -lutece-border-radius-mini" id="mylutece_user_login_include_password" name="password" />&nbsp;
+				<input type="submit" class="-lutece-input -lutece-border-radius-mini" name="Submit" value="#i18n{mylutece.user_login_include.labelButton}" />
+			</div>
+			</form>
+			-->
+		</#if>
+	</#if>
+</div>

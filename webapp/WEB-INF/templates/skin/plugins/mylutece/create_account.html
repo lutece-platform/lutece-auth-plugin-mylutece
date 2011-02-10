@@ -1,0 +1,33 @@
+<div class="span-22 prepend-1 append-1 last">
+	<div class="portlet -lutece-border-radius append-bottom">
+		<h2>#i18n{mylutece.xpage.create_account.pageTitle}</h2>
+		<br />
+		<br />
+		<br />
+		<#assign no_authentication = true />
+		<#if list_authentications?has_content>
+			#i18n{mylutece.xpage.create_account.contentMessage}
+			<ul>
+			<#list list_authentications as authentication >
+				<#if !authentication.externalAuthentication >
+				<#if no_authentication>
+					<#assign no_authentication = false />
+				</#if>
+				<li>
+					<a href="${authentication.newAccountPageUrl}">
+						<img src="${authentication.iconUrl!}" title="${authentication.authServiceName!}" alt="${authentication.authServiceName!}" />
+						&nbsp;${authentication.authServiceName!}
+					</a>
+				</li>
+				</#if>
+			</#list>
+			</ul>
+		</#if>
+		<#if no_authentication>
+			#i18n{mylutece.xpage.create_account.noAuthentication}
+		</#if>
+		<br />
+		<br />
+		<br />
+	</div>
+</div>
