@@ -18,16 +18,6 @@
     </core-version-dependency>
     <db-pool-required>1</db-pool-required>
 
-    <!-- Specific plugin CSS stylesheet -->
-    <css-stylesheets>
-        <css-stylesheets-scope>portal</css-stylesheets-scope>
-        <css-stylesheet>mylutece/mylutece.css</css-stylesheet>
-    </css-stylesheets>
-    <javascript-files>
-        <javascript-files-scope>portal</javascript-files-scope>
-        <javascript-file>mylutece/mylutece.js</javascript-file>
-    </javascript-files>
-
     <!-- Portlet parameters -->
     <portlets>
         <portlet>
@@ -80,12 +70,12 @@
         <rbac-resource-type>
             <rbac-resource-type-class>
                 fr.paris.lutece.plugins.mylutece.service.RoleResourceIdService
-			</rbac-resource-type-class>
+            </rbac-resource-type-class>
         </rbac-resource-type>
         <rbac-resource-type>
             <rbac-resource-type-class>
                 fr.paris.lutece.plugins.mylutece.service.MyLuteceResourceIdService
-			</rbac-resource-type-class>
+            </rbac-resource-type-class>
         </rbac-resource-type>
     </rbac-resource-types>
 
