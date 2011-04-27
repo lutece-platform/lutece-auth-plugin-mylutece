@@ -278,10 +278,6 @@ public class MyLuteceApp implements XPageApplication
             return strNextUrl;
         }
 
-        // FIXME : needed?
-        // Returns to the home page but reset cache it before to display changes
-        PortalService.resetCache(  );
-
         return getDefaultRedirectUrl(  );
     }
 
