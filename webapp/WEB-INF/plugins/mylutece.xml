@@ -1,20 +1,19 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<plug-in>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><plug-in>
     <name>mylutece</name>
     <class>fr.paris.lutece.portal.service.plugin.PluginDefaultImplementation</class>
     <version>3.0.1</version>
     <description>mylutece.plugin.description</description>
-    <documentation />
-    <installation />
-    <changes />
-    <user-guide />
+    <documentation/>
+    <installation/>
+    <changes/>
+    <user-guide/>
     <provider>mylutece.plugin.provider</provider>
     <provider-url>http://lutece.paris.fr</provider-url>
     <icon-url>images/admin/skin/plugins/mylutece/mylutece.png</icon-url>
     <copyright>Copyright 2001-2011 Mairie de Paris</copyright>
     <core-version-dependency>
         <min-core-version>2.4.1</min-core-version>
-        <max-core-version />
+        <max-core-version/>
     </core-version-dependency>
     <db-pool-required>1</db-pool-required>
 
@@ -31,10 +30,10 @@
             <!-- optional entries -->
             <portlet-create-script-template>/admin/portlet/script_create_portlet.html</portlet-create-script-template>
             <portlet-modify-script-template>/admin/portlet/script_modify_portlet.html</portlet-modify-script-template>
-            <portlet-create-specific-template />
-            <portlet-modify-specific-template />
-            <portlet-create-specific-form-template />
-            <portlet-modify-specific-form-template />
+            <portlet-create-specific-template/>
+            <portlet-modify-specific-template/>
+            <portlet-create-specific-form-template/>
+            <portlet-modify-specific-form-template/>
         </portlet>
     </portlets>
 
