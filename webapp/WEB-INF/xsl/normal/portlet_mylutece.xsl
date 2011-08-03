@@ -34,7 +34,7 @@
 		
 		<xsl:apply-templates select="lutece-user-authentication-service[@delegated='true']" />
 		<xsl:apply-templates select="lutece-user-authentication-service[@loginpassword-required='true']" />
-		<xsl:if test="count(lutece-user-authentication-service[@loginpassword-required='true']) &gt; 1">
+		<xsl:if test="count(lutece-user-authentication-service[@loginpassword-required='true']) &gt;= 1">
 		<center>
 			<p>
 				<label for="username">Code d'accès :</label>
