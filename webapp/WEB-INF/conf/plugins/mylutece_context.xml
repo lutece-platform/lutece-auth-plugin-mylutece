@@ -4,10 +4,12 @@
 <beans>
     <bean id="mylutece.myLutecePortletDAO"  class="fr.paris.lutece.plugins.mylutece.business.portlet.MyLutecePortletDAO" />
 	<!-- 					  User Attributes 						 -->
-	<bean id="myLuteceAttributeText" class="fr.paris.lutece.plugins.mylutece.business.attribute.AttributeText" />
-	<bean id="myLuteceAttributeComboBox" class="fr.paris.lutece.plugins.mylutece.business.attribute.AttributeComboBox" />
+	<bean id="mylutece.myLuteceAttributeText" class="fr.paris.lutece.plugins.mylutece.business.attribute.AttributeText" />
+	<bean id="mylutece.myLuteceAttributeComboBox" class="fr.paris.lutece.plugins.mylutece.business.attribute.AttributeComboBox" />
 	
-    <bean id="myLuteceAttributeDAO"  class="fr.paris.lutece.plugins.mylutece.business.attribute.AttributeDAO" />
-    <bean id="myLuteceAttributeFieldDAO"  class="fr.paris.lutece.plugins.mylutece.business.attribute.AttributeFieldDAO" />
-    <bean id="myLuteceUserFieldDAO"  class="fr.paris.lutece.plugins.mylutece.business.attribute.MyLuteceUserFieldDAO" />
+    <bean id="mylutece.myLuteceAttributeDAO"  class="fr.paris.lutece.plugins.mylutece.business.attribute.AttributeDAO" />
+    <bean id="mylutece.myLuteceAttributeFieldDAO"  class="fr.paris.lutece.plugins.mylutece.business.attribute.AttributeFieldDAO" />
+    <bean id="mylutece.myLuteceUserFieldDAO"  class="fr.paris.lutece.plugins.mylutece.business.attribute.MyLuteceUserFieldDAO" />
+
+    <bean id="mylutece.myLuteceUserAttributesService" class="fr.paris.lutece.plugins.mylutece.service.MyLuteceUserAttributesService" />
 </beans>
