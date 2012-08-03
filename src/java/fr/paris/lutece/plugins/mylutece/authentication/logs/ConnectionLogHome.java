@@ -31,83 +31,50 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.mylutece.business.attribute;
+package fr.paris.lutece.plugins.mylutece.authentication.logs;
 
-import fr.paris.lutece.portal.service.i18n.I18nService;
+import fr.paris.lutece.portal.service.plugin.Plugin;
+import fr.paris.lutece.portal.service.spring.SpringContextService;
 
-import java.util.Locale;
 
 /**
- * 
- * AttributeType
- *
+ * This class provides instances management methods (create, find, ...) for UserLog objects
  */
-public class AttributeType 
+public final class ConnectionLogHome
 {
-	private String _strLabelType;
-	private String _strClassName;
-	private Locale _locale;
-	
-	/**
-	 * Get label type
-	 * @return label type
-	 */
-	public String getLabelType(  )
-	{
-		return _strLabelType;
-	}
-	
-	/**
-	 * Set label type
-	 * @param strLabelType label type
-	 */
-	public void setLabelType( String strLabelType )
-	{
-		_strLabelType = strLabelType;
-	}
+    // Static variable pointed at the DAO instance
+    private static IConnectionLogDAO _dao = SpringContextService.getBean( "mylutece.connectionLogDAO" );
 
     /**
-     * Get the label type
-     * @return the label type
+     * Creates a new UserLogHome object.
      */
-	public String getName(  )
-	{
-		return I18nService.getLocalizedString( _strLabelType, _locale );
-	}
-	
-	/**
-	 * Get class name
-	 * @return class name
-	 */
-	public String getClassName(  )
-	{
-		return _strClassName;
-	}
-	
-	/**
-	 * Set class name
-	 * @param strClassName class name
-	 */
-	public void setClassName( String strClassName )
-	{
-		_strClassName = strClassName;
-	}
-	
-	/**
-	 * Set locale
-	 * @param locale Locale
-	 */
-	public void setLocale( Locale locale )
-	{
-		_locale = locale;
-	}
-	
-	/**
-	 * Get locale 
-	 * @return Locale
-	 */
-	public Locale getLocale(  )
-	{
-		return _locale;
-	}
+    private ConnectionLogHome(  )
+    {
+    }
+
+    /////////////////////////////////////////////////////////////////////////////
+    // Connections logs
+
+    /**
+     * Insert a new record in the table of connections
+     * @param connetionLog the ConnectionLog object
+     * @param plugin The plugin
+     */
+    public static void addUserLog( ConnectionLog connetionLog, Plugin plugin )
+    {
+        _dao.insertLog( connetionLog, plugin );
+    }
+
+    /**
+     * Calculate the number of connections with a given ip_address by a
+     * determinate time
+     * @param connetionLog the connetionLog object
+     * @param nIntervalMinutes The number of minutes of properties file
+     * @param plugin The plugin
+     * @return int the count of errors of login
+     */
+    public static int getLoginErrors( ConnectionLog connetionLog, int nIntervalMinutes, Plugin plugin )
+    {
+        return _dao.selectLoginErrors( connetionLog, nIntervalMinutes, plugin );
+    }
 }

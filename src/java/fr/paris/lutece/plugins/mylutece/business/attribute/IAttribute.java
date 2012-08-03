@@ -33,12 +33,12 @@
  */
 package fr.paris.lutece.plugins.mylutece.business.attribute;
 
+import fr.paris.lutece.portal.service.plugin.Plugin;
+
 import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
-
-import fr.paris.lutece.portal.service.plugin.Plugin;
 
 /**
  * IAttribute
@@ -62,11 +62,11 @@ public interface IAttribute
 	 * @return true if it's mandatory, false otherwise
 	 */
 	boolean isMandatory(  );
-	
-	/**
-	 * Set mandatory
-	 * @param mandatory true if it's mandatory, false otherwise
-	 */
+
+    /**
+     * Set mandatory
+     * @param bMandatory true if it's mandatory, false otherwise
+     */
 	void setMandatory( boolean bMandatory );
 	
 	/**
@@ -74,11 +74,11 @@ public interface IAttribute
 	 * @return list fields
 	 */
 	List<AttributeField> getListAttributeFields(  );
-	
-	/**
-	 * Set list fields
-	 * @param listAttributeField list fields
-	 */
+
+    /**
+     * Set list fields
+     * @param listAttributeFields list fields
+     */
 	void setListAttributeFields( List<AttributeField> listAttributeFields );
 	
 	/**
@@ -140,11 +140,24 @@ public interface IAttribute
 	 * @param plugin plugin
 	 */
 	void setPlugin( Plugin plugin );
-	
-	/**
-	 * Check if the attribute is shown in search
-	 * @return true if it is, false otherwise
-	 */
+
+    /**
+     * Get the anonymize status of the attribute
+     * @return True if the attribute should be anonymize, false otherwise.
+     */
+    boolean getAnonymize( );
+
+    /**
+     * Set the anonymize status of the attribute
+     * @param bAnonymize New anonymize status. True if the attribute should be
+     *            anonymize, false otherwise.
+     */
+    void setAnonymize( boolean bAnonymize );
+
+    /**
+     * Check if the attribute is shown in search
+     * @return true if it is, false otherwise
+     */
 	boolean isShownInSearch(  );
 	
 	/**
@@ -153,12 +166,12 @@ public interface IAttribute
 	 */
 	void setShownInSearch( boolean bIsShownInSearch );
 
-	/**
-	 * Get the data of the user fields
-	 * @param request HttpServletRequest
-	 * @param user user
-	 * @return user field data
-	 */
+    /**
+     * Get the data of the user fields
+     * @param request HttpServletRequest
+     * @param nIdUser Id of the user
+     * @return user field data
+     */
 	List<MyLuteceUserField> getUserFieldsData( HttpServletRequest request, int nIdUser );
 	
 	/**
@@ -209,4 +222,10 @@ public interface IAttribute
 	 * @return null if there are no errors
 	 */
 	String setAttributeData( HttpServletRequest request );
+
+    /**
+     * Get whether the attribute is anonymizable.
+     * @return True if the attribute can be anonymized, false otherwise.
+     */
+    boolean isAnonymizable( );
 }

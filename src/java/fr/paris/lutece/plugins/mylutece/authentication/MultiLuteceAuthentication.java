@@ -33,6 +33,16 @@
  */
 package fr.paris.lutece.plugins.mylutece.authentication;
 
+import fr.paris.lutece.plugins.mylutece.web.MyLuteceApp;
+import fr.paris.lutece.portal.service.i18n.I18nService;
+import fr.paris.lutece.portal.service.plugin.Plugin;
+import fr.paris.lutece.portal.service.plugin.PluginService;
+import fr.paris.lutece.portal.service.security.LoginRedirectException;
+import fr.paris.lutece.portal.service.security.LuteceAuthentication;
+import fr.paris.lutece.portal.service.security.LuteceUser;
+import fr.paris.lutece.portal.service.util.AppLogService;
+import fr.paris.lutece.portal.web.LocalVariables;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -43,16 +53,6 @@ import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-
-import fr.paris.lutece.plugins.mylutece.web.MyLuteceApp;
-import fr.paris.lutece.portal.service.i18n.I18nService;
-import fr.paris.lutece.portal.service.plugin.Plugin;
-import fr.paris.lutece.portal.service.plugin.PluginService;
-import fr.paris.lutece.portal.service.security.LoginRedirectException;
-import fr.paris.lutece.portal.service.security.LuteceAuthentication;
-import fr.paris.lutece.portal.service.security.LuteceUser;
-import fr.paris.lutece.portal.service.util.AppLogService;
-import fr.paris.lutece.portal.web.LocalVariables;
 
 /**
  * Manages serveral {@link MyLuteceAuthentication}. Call {@link #registerAuthentication(LuteceAuthentication)} to register your authentication and {@link #removeAuthentication(String)} to unregister
@@ -203,6 +203,46 @@ public class MultiLuteceAuthentication implements LuteceAuthentication
 		return strLostPasswordUrl;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean findResetPassword( HttpServletRequest request, String strLogin )
+    {
+        boolean bResetPasswordActive = false;
+        //HttpServletRequest request = LocalVariables.getRequest( );
+        if ( request != null )
+        {
+            String strAuthentication = request.getParameter( PARAMETER_AUTH_PROVIDER );
+            if ( StringUtils.isNotBlank( strAuthentication ) )
+            {
+                LuteceAuthentication authentication = _mapAuthentications.get( strAuthentication );
+                bResetPasswordActive = authentication.findResetPassword( request, strLogin );
+            }
+        }
+
+        return bResetPasswordActive;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String getResetPasswordPageUrl( HttpServletRequest request )
+    {
+        String strResetPasswordUrl = MyLuteceApp.getResetPasswordUrl( request );
+        if ( request != null )
+        {
+            String strAuthentication = request.getParameter( PARAMETER_AUTH_PROVIDER );
+            if ( StringUtils.isNotBlank( strAuthentication ) )
+            {
+                LuteceAuthentication authentication = _mapAuthentications.get( strAuthentication );
+                strResetPasswordUrl = authentication.getResetPasswordPageUrl( request );
+            }
+        }
+
+        return strResetPasswordUrl;
+    }
 	/**
 	 * Returns the disconnect URL of the Authentication Service. <br>
 	 * Tries to get authentication specific dologout page url form request (passed through {@link LocalVariables} ), default otherswise.
@@ -243,12 +283,16 @@ public class MultiLuteceAuthentication implements LuteceAuthentication
 		return MyLuteceApp.getAccessControledTemplate();
 	}
 
-	/**
-	 * 
-	 * {@inheritDoc}
-	 */
+    /**
+     * 
+     * {@inheritDoc}
+     */
 	public LuteceUser getAnonymousUser()
 	{
+        /**
+         * Anonymous user
+         * 
+         */
 		final class AnonymousUser extends LuteceUser
 		{
 			AnonymousUser(  )

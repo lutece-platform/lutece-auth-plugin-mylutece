@@ -33,14 +33,16 @@
  */
 package fr.paris.lutece.plugins.mylutece.business.attribute;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.util.sql.DAOUtil;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * 
@@ -58,8 +60,8 @@ public class AttributeDAO implements IAttributeDAO
     // SELECT
 	private static final String SQL_QUERY_SELECT = " SELECT type_class_name, id_attribute, title, help_message, is_mandatory, is_shown_in_search, attribute_position, plugin_name " +
     		" FROM mylutece_attribute WHERE id_attribute = ? ";
-	private static final String SQL_QUERY_SELECT_ALL = " SELECT id_attribute, type_class_name, title, help_message, is_mandatory, is_shown_in_search, attribute_position, plugin_name " +
-			" FROM mylutece_attribute ORDER BY attribute_position ";
+    private static final String SQL_QUERY_SELECT_ALL = " SELECT id_attribute, type_class_name, title, help_message, is_mandatory, is_shown_in_search, attribute_position, anonymize, plugin_name "
+            + " FROM mylutece_attribute ORDER BY attribute_position ";
     private static final String SQL_QUERY_SELECT_PLUGIN_ATTRIBUTES = " SELECT id_attribute, type_class_name, title, help_message, is_mandatory, is_shown_in_search, attribute_position " +
 		" FROM mylutece_attribute WHERE plugin_name = ? ORDER BY attribute_position ";
     private static final String SQL_QUERY_SELECT_CORE_ATTRIBUTES = " SELECT id_attribute, type_class_name, title, help_message, is_mandatory, is_shown_in_search, attribute_position " +
@@ -68,17 +70,27 @@ public class AttributeDAO implements IAttributeDAO
     // INSERT
 	private static final String SQL_QUERY_INSERT = " INSERT INTO mylutece_attribute (id_attribute, type_class_name, title, help_message, is_mandatory, is_shown_in_search, attribute_position)" +
     		" VALUES (?,?,?,?,?,?,?) ";
+	private static final String SQL_INSERT_ANONYMIZATION_STATUS_USER_FILED = " INSERT INTO mylutece_user_anonymize_field (field_name, anonymize) VALUES (?,?) ";
     
     // UPDATE
 	private static final String SQL_QUERY_UPDATE = " UPDATE mylutece_attribute SET title = ?, help_message = ?, is_mandatory = ?, is_shown_in_search = ?, attribute_position = ? " +
     		" WHERE id_attribute = ? ";
     
+    private static final String SQL_QUERY_UPDATE_ANONYMIZATION = " UPDATE mylutece_attribute SET anonymize = ? WHERE id_attribute = ? ";
+
     // DELETE
 	private static final String SQL_QUERY_DELETE = " DELETE FROM mylutece_attribute WHERE id_attribute = ?";
+    private static final String SQL_DELETE_ANONYMIZATION_STATUS_USER_FILED = " DELETE FROM mylutece_user_anonymize_field WHERE field_name = ? ";
 
     // NEW PK
+
+    // Anonymization static field
+    private static final String SQL_SELECT_ANONYMIZATION_STATUS_USER_FILED = "SELECT field_name, anonymize from mylutece_user_anonymize_field";
+    private static final String SQL_UPDATE_ANONYMIZATION_STATUS_USER_FILED = "UPDATE mylutece_user_anonymize_field SET anonymize = ? WHERE field_name = ? ";
+
     /**
-     * Generate a new PK 
+     * Generate a new PK
+     * @param plugin The plugin
      * @return The new ID
      */
 	private int newPrimaryKey( Plugin plugin )
@@ -98,9 +110,10 @@ public class AttributeDAO implements IAttributeDAO
 
         return nKey;
     }
-    
-	/**
+
+    /**
      * Generates a new field position
+     * @param plugin The plugin
      * @return the new entry position
      */
     private int newPosition( Plugin plugin )
@@ -122,12 +135,10 @@ public class AttributeDAO implements IAttributeDAO
         return nPos;
     }
     
-	/**
-	 * Load attribute
-	 * @param nIdAttribute ID
-	 * @param locale Locale
-	 * @return Attribute
-	 */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
 	public IAttribute load( int nIdAttribute, Locale locale, Plugin plugin )
 	{
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin );
@@ -175,10 +186,9 @@ public class AttributeDAO implements IAttributeDAO
 	}
 		
 	/**
-	 * Insert a new attribute
-	 * @param attribute the attribute
-	 * @return new PK
-	 */
+     * {@inheritDoc}
+     */
+    @Override
 	public int insert( IAttribute attribute, Plugin plugin )
 	{
 		int nNewPrimaryKey = newPrimaryKey( plugin );
@@ -198,9 +208,9 @@ public class AttributeDAO implements IAttributeDAO
 	}
 	
 	/**
-	 * Update an attribute 
-	 * @param attribute the attribute
-	 */
+     * {@inheritDoc}
+     */
+    @Override
 	public void store( IAttribute attribute, Plugin plugin )
 	{
 		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin );
@@ -216,9 +226,9 @@ public class AttributeDAO implements IAttributeDAO
 	}
 	
 	/**
-	 * Delete an attribute
-	 * @param nIdAttribute The Id of the attribute
-	 */
+     * {@inheritDoc}
+     */
+    @Override
 	public void delete( int nIdAttribute, Plugin plugin )
 	{
 		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin );
@@ -229,10 +239,9 @@ public class AttributeDAO implements IAttributeDAO
 	}
 	
 	/**
-	 * Load every attributes
-	 * @param locale locale
-	 * @return list of attributes
-	 */
+     * {@inheritDoc}
+     */
+    @Override
 	public List<IAttribute> selectAll( Locale locale, Plugin plugin )
 	{
 		List<IAttribute> listAttributes = new ArrayList<IAttribute>(  );
@@ -270,8 +279,9 @@ public class AttributeDAO implements IAttributeDAO
             attribute.setMandatory( daoUtil.getBoolean( 5 ) );
             attribute.setShownInSearch( daoUtil.getBoolean( 6 ) );
             attribute.setPosition( daoUtil.getInt( 7 ) );
+            attribute.setAnonymize( daoUtil.getBoolean( 8 ) );
             attribute.setAttributeType( locale );
-            Plugin pluginAttribute = PluginService.getPlugin( daoUtil.getString( 8 ) );
+            Plugin pluginAttribute = PluginService.getPlugin( daoUtil.getString( 9 ) );
             attribute.setPlugin( pluginAttribute );
             
             listAttributes.add( attribute );
@@ -283,11 +293,9 @@ public class AttributeDAO implements IAttributeDAO
 	}
 
 	/**
-	 * Load every attributes from plugin name
-	 * @param strPluginName plugin name
-	 * @param locale locale
-	 * @return list of attributes
-	 */
+     * {@inheritDoc}
+     */
+    @Override
 	public List<IAttribute> selectPluginAttributes(
 			String strPluginName, Locale locale, Plugin plugin )
 	{
@@ -340,10 +348,9 @@ public class AttributeDAO implements IAttributeDAO
 	}
 	
 	/**
-	 * Load every attributes that do not come from a plugin
-	 * @param locale locale
-	 * @return list of attributes
-	 */
+     * {@inheritDoc}
+     */
+	@Override
 	public List<IAttribute> selectMyLuteceAttributes( Locale locale, Plugin plugin )
 	{
 		List<IAttribute> listAttributes = new ArrayList<IAttribute>(  );
@@ -390,4 +397,76 @@ public class AttributeDAO implements IAttributeDAO
         
         return listAttributes;
 	}
+
+	/**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateAttributeAnonymization( int nIdAttribute, boolean bAnonymize, Plugin plugin )
+    {
+        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE_ANONYMIZATION, plugin );
+        daoUtil.setBoolean( 1, bAnonymize );
+        daoUtil.setInt( 2, nIdAttribute );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Map<String, Boolean> selectAnonymizationStatusUserStaticField( Plugin plugin )
+    {
+        DAOUtil daoUtil = new DAOUtil( SQL_SELECT_ANONYMIZATION_STATUS_USER_FILED, plugin );
+        daoUtil.executeQuery( );
+
+        Map<String, Boolean> resultMap = new HashMap<String, Boolean>( );
+
+        while ( daoUtil.next( ) )
+        {
+            resultMap.put( daoUtil.getString( 1 ), daoUtil.getBoolean( 2 ) );
+        }
+
+        daoUtil.free( );
+
+        return resultMap;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void addAnonymizationStatusUserField( String strFieldName, boolean bAnonymizeFiled, Plugin plugin )
+    {
+        DAOUtil daoUtil = new DAOUtil( SQL_INSERT_ANONYMIZATION_STATUS_USER_FILED, plugin );
+        daoUtil.setString( 1, strFieldName );
+        daoUtil.setBoolean( 2, bAnonymizeFiled );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void removeAnonymizationStatusUserField( String strFieldName, Plugin plugin )
+    {
+        DAOUtil daoUtil = new DAOUtil( SQL_DELETE_ANONYMIZATION_STATUS_USER_FILED, plugin );
+        daoUtil.setString( 1, strFieldName );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void updateAnonymizationStatusUserStaticField( String strFieldName, boolean bAnonymizeFiled, Plugin plugin )
+    {
+        DAOUtil daoUtil = new DAOUtil( SQL_UPDATE_ANONYMIZATION_STATUS_USER_FILED, plugin );
+        daoUtil.setBoolean( 1, bAnonymizeFiled );
+        daoUtil.setString( 2, strFieldName );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
+    }
 }

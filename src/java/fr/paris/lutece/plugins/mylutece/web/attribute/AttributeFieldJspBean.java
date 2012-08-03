@@ -33,13 +33,6 @@
  */
 package fr.paris.lutece.plugins.mylutece.web.attribute;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import fr.paris.lutece.plugins.mylutece.business.attribute.AttributeField;
 import fr.paris.lutece.plugins.mylutece.business.attribute.AttributeFieldHome;
 import fr.paris.lutece.plugins.mylutece.business.attribute.AttributeHome;
@@ -54,6 +47,13 @@ import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.web.admin.AdminFeaturesPageJspBean;
 import fr.paris.lutece.portal.web.constants.Messages;
 import fr.paris.lutece.util.html.HtmlTemplate;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 
@@ -113,12 +113,12 @@ public class AttributeFieldJspBean extends AdminFeaturesPageJspBean
 		
         return getAdminPage( template.getHtml(  ) );
 	}
-	
-	/**
-	 * 
-	 * @param request
-	 * @return
-	 */
+
+    /**
+     * 
+     * @param request The request
+     * @return the html form
+     */
 	public String doCreateAttributeField( HttpServletRequest request )
 	{
 		String strIdAttribute = request.getParameter( PARAMETER_ID_ATTRIBUTE );

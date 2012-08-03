@@ -33,10 +33,10 @@
  */
 package fr.paris.lutece.plugins.mylutece.business.attribute;
 
+import fr.paris.lutece.portal.service.plugin.Plugin;
+
 import java.util.List;
 import java.util.Locale;
-
-import fr.paris.lutece.portal.service.plugin.Plugin;
 
 /**
  * 
@@ -45,55 +45,64 @@ import fr.paris.lutece.portal.service.plugin.Plugin;
  */
 public interface IMyLuteceUserFieldDAO 
 {
-	/**
-	 * Load the user field
-	 * @param nIdUserField ID
-	 * @return MyLuteceField
-	 */
+    /**
+     * Load the user field
+     * @param nIdUserField Id of the user field
+     * @param locale the locale
+     * @param plugin The plugin
+     * @return MyLuteceField
+     */
 	MyLuteceUserField load( int nIdUserField, Locale locale, Plugin plugin );
-		
-	/**
-	 * Insert a new user field
-	 * @param userField the user field
-	 */
+
+    /**
+     * Insert a new user field
+     * @param userField the user field
+     * @param plugin The plugin
+     */
 	void insert( MyLuteceUserField userField, Plugin plugin );
-	
-	/**
-	 * Update an user field 
-	 * @param attribute the attribute
-	 */
+
+    /**
+     * Update an user field
+     * @param userField the user field
+     * @param plugin The plugin
+     */
 	void store( MyLuteceUserField userField, Plugin plugin );
-	
-	/**
-	 * Delete an attribute
-	 * @param nIdUserField the ID of the user field
-	 */
+
+    /**
+     * Delete an attribute
+     * @param nIdUserField the ID of the user field
+     * @param plugin The plugin
+     */
 	void delete( int nIdUserField, Plugin plugin );
-	
-	/**
-	 * Delete all user fields from given id field
-	 * @param nIdField id field
-	 */
+
+    /**
+     * Delete all user fields from given id field
+     * @param nIdField id field
+     * @param plugin The plugin
+     */
 	void deleteUserFieldsFromIdField( int nIdField, Plugin plugin );
-	
-	/**
-	 * Delete all user fields from given id user
-	 * @param nIdUser id user
-	 */
+
+    /**
+     * Delete all user fields from given id user
+     * @param nIdUser id user
+     * @param plugin The plugin
+     */
 	void deleteUserFieldsFromIdUser( int nIdUser, Plugin plugin );
-	
-	/**
-	 * Delete all user fields from given id attribute
-	 * @param nIdAttribute id attribute
-	 */
+
+    /**
+     * Delete all user fields from given id attribute
+     * @param nIdAttribute id attribute
+     * @param plugin The plugin
+     */
 	void deleteUserFieldsFromIdAttribute( int nIdAttribute, Plugin plugin );
 
-	/**
-	 * Load all the user field by a given ID user
-	 * @param nIdUser the ID user
-	 * @param nIdAttribute the ID attribute
-	 * @return a list of MyLuteceUserField
-	 */
+    /**
+     * Load all the user field by a given ID user
+     * @param nIdUser the ID user
+     * @param nIdAttribute the ID attribute
+     * @param plugin The plugin
+     * @return a list of MyLuteceUserField
+     */
 	List<MyLuteceUserField> selectUserFieldsByIdUserIdAttribute( int nIdUser, int nIdAttribute, Plugin plugin );
 	
 	/**

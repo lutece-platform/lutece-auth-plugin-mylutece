@@ -33,12 +33,13 @@
  */
 package fr.paris.lutece.plugins.mylutece.business.attribute;
 
-import java.util.List;
-import java.util.Locale;
-
 import fr.paris.lutece.plugins.mylutece.service.MyLutecePlugin;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
+
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * 
@@ -120,4 +121,62 @@ public class AttributeHome
 	{
 		return _dao.selectMyLuteceAttributes( locale, plugin );
 	}
+
+    /**
+     * Update the anonymization status of the attribute.
+     * @param nIdAttribute Id of the attribute
+     * @param bAnonymize New value of the anonymization status. True means the
+     *            attribute should be anonymize, false means it doesn't.
+     * @param plugin The plugin
+     */
+    public static void updateAttributeAnonymization( int nIdAttribute, boolean bAnonymize, Plugin plugin )
+    {
+        _dao.updateAttributeAnonymization( nIdAttribute, bAnonymize, plugin );
+    }
+
+    /**
+     * Get a map of anonymization status of a user field.
+     * @param plugin The plugin
+     * @return A map containing the associations of user field name and a
+     *         boolean describing whether the field should be anonymized.
+     */
+    public static Map<String, Boolean> getAnonymizationStatusUserStaticField( Plugin plugin )
+    {
+        return _dao.selectAnonymizationStatusUserStaticField( plugin );
+    }
+
+    /**
+     * Add an anonymization status to a user field.
+     * @param strFieldName Name of the field
+     * @param bAnonymizeFiled True if the field should be anonymize, false
+     *            otherwise
+     * @param plugin The plugin
+     */
+    public static void addAnonymizationStatusUserField( String strFieldName, boolean bAnonymizeFiled, Plugin plugin )
+    {
+        _dao.addAnonymizationStatusUserField( strFieldName, bAnonymizeFiled, plugin );
+    }
+
+    /**
+     * Remove an anonymization status of a user field.
+     * @param strFieldName Name of the field
+     * @param plugin The plugin
+     */
+    public static void removeAnonymizationStatusUserField( String strFieldName, Plugin plugin )
+    {
+        _dao.removeAnonymizationStatusUserField( strFieldName, plugin );
+    }
+
+    /**
+     * Update the anonymization status of a user field.
+     * @param strFieldName Name of the field to update
+     * @param bAnonymizeFiled True if the field should be anonymize, false
+     *            otherwise
+     * @param plugin The plugin
+     */
+    public static void updateAnonymizationStatusUserStaticField( String strFieldName, boolean bAnonymizeFiled,
+            Plugin plugin )
+    {
+        _dao.updateAnonymizationStatusUserStaticField( strFieldName, bAnonymizeFiled, plugin );
+    }
 }

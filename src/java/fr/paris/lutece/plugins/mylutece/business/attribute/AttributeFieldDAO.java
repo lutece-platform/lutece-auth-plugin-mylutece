@@ -33,12 +33,12 @@
  */
 package fr.paris.lutece.plugins.mylutece.business.attribute;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.util.sql.DAOUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -77,7 +77,8 @@ public class AttributeFieldDAO implements IAttributeFieldDAO
     
     // NEW PK
     /**
-     * Generate a new PK 
+     * Generate a new PK
+     * @param plugin The plugin
      * @return The new ID
      */
     private int newPrimaryKey( Plugin plugin )
@@ -96,9 +97,10 @@ public class AttributeFieldDAO implements IAttributeFieldDAO
 
         return nKey;
     }
-    
+
     /**
      * Generates a new field position
+     * @param plugin The plugin
      * @return the new entry position
      */
     private int newPosition( Plugin plugin )
@@ -119,12 +121,13 @@ public class AttributeFieldDAO implements IAttributeFieldDAO
 
         return nPos;
     }
-           
-	/**
-	 * Load attribute field
-	 * @param nIdField ID Field
-	 * @return Attribute Field
-	 */
+
+    /**
+     * Load attribute field
+     * @param nIdField ID Field
+     * @param plugin The plugin
+     * @return Attribute Field
+     */
 	public AttributeField load( int nIdField, Plugin plugin )
 	{
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin );
@@ -153,12 +156,13 @@ public class AttributeFieldDAO implements IAttributeFieldDAO
 
         return attributeField;
 	}
-	
-	/**
-	 * Select attribute by id field
-	 * @param nIdField id field
-	 * @return user attribute
-	 */
+
+    /**
+     * Select attribute by id field
+     * @param nIdField id field
+     * @param plugin The plugin
+     * @return user attribute
+     */
 	public IAttribute selectAttributeByIdField( int nIdField, Plugin plugin )
 	{
 		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_ATTRIBUTE_BY_ID_FIELD, plugin );
@@ -200,12 +204,13 @@ public class AttributeFieldDAO implements IAttributeFieldDAO
 		
 		return attribute;
 	}
-	
-	/**
-	 * Load the lists of attribute field associated to an attribute
-	 * @param nIdAttribute the ID attribute
-	 * @return the list of attribute fields
-	 */
+
+    /**
+     * Load the lists of attribute field associated to an attribute
+     * @param nIdAttribute the ID attribute
+     * @param plugin The plugin
+     * @return the list of attribute fields
+     */
 	public List<AttributeField> selectAttributeFieldsByIdAttribute( int nIdAttribute, Plugin plugin )
 	{
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_ATTRIBUTE_FIELDS_BY_ID_ATTRIBUTE, plugin );
@@ -235,12 +240,13 @@ public class AttributeFieldDAO implements IAttributeFieldDAO
 
         return listAttributeFields;
 	}
-	
-	/**
-	 * Insert a new attribute field
-	 * @param attributeField the attribute field
-	 * @return new PK
-	 */
+
+    /**
+     * Insert a new attribute field
+     * @param attributeField the attribute field
+     * @param plugin The plugin
+     * @return new PK
+     */
 	public int insert( AttributeField attributeField, Plugin plugin )
 	{
 		int nNewPrimaryKey = newPrimaryKey( plugin );
@@ -261,11 +267,12 @@ public class AttributeFieldDAO implements IAttributeFieldDAO
 		
         return nNewPrimaryKey;
 	}
-	
-	/**
-	 * Update an attribute field
-	 * @param attributeField the attribute field
-	 */
+
+    /**
+     * Update an attribute field
+     * @param attributeField the attribute field
+     * @param plugin The plugin
+     */
 	public void store( AttributeField attributeField, Plugin plugin )
 	{
 		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin );
@@ -282,11 +289,12 @@ public class AttributeFieldDAO implements IAttributeFieldDAO
 		daoUtil.executeUpdate(  );
 		daoUtil.free(  );
 	}
-	
-	/**
-	 * Delete an attribute field
-	 * @param nIdField The id field
-	 */
+
+    /**
+     * Delete an attribute field
+     * @param nIdField The id field
+     * @param plugin The plugin
+     */
 	public void delete( int nIdField, Plugin plugin )
 	{
 		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin );
@@ -295,11 +303,12 @@ public class AttributeFieldDAO implements IAttributeFieldDAO
 		daoUtil.executeUpdate(  );
 		daoUtil.free(  );
 	}
-	
-	/**
-	 * Delete all attribute field from an attribute id
-	 * @param nIdAttribute the ID attribute
-	 */
+
+    /**
+     * Delete all attribute field from an attribute id
+     * @param nIdAttribute the ID attribute
+     * @param plugin The plugin
+     */
 	public void deleteAttributeFieldsFromIdAttribute( int nIdAttribute, Plugin plugin )
 	{
 		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE_BY_ID_ATTRIBUTE, plugin );

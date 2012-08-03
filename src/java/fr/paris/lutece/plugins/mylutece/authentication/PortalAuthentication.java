@@ -70,8 +70,8 @@ public abstract class PortalAuthentication implements LuteceAuthentication
 	}
 
     /**
-     * Returns the Login page URL of the Authentication Service
-     * @return The URL
+     * 
+     * {@inheritDoc}
      */
     public String getLoginPageUrl(  )
     {
@@ -79,12 +79,29 @@ public abstract class PortalAuthentication implements LuteceAuthentication
     }
 
     /**
-     * Returns the DoLogin URL of the Authentication Service
-     * @return The URL
+     * 
+     * {@inheritDoc}
      */
     public String getDoLoginUrl(  )
     {
         return MyLuteceApp.getDoLoginUrl(  );
+    }
+
+    /**
+     * 
+     * {@inheritDoc}
+     */
+    public boolean findResetPassword( HttpServletRequest request, String strLogin )
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public String getResetPasswordPageUrl( HttpServletRequest request )
+    {
+        return MyLuteceApp.getResetPasswordUrl( request );
     }
 
     /**
@@ -196,11 +213,11 @@ public abstract class PortalAuthentication implements LuteceAuthentication
     {
         return null;
     }
-    
+
     /**
      * Return false
-     * @see LuteceAuthentication#isMultiAuthenticationSupported() 
-     *
+     * @see LuteceAuthentication#isMultiAuthenticationSupported()
+     * @return false
      */
     public boolean isMultiAuthenticationSupported()
     {

@@ -33,11 +33,11 @@
  */
 package fr.paris.lutece.plugins.mylutece.business.attribute;
 
-import java.util.List;
-
 import fr.paris.lutece.plugins.mylutece.service.MyLutecePlugin;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
+
+import java.util.List;
 
 /**
  * 
@@ -48,69 +48,76 @@ public class AttributeFieldHome
 {
 	private static IAttributeFieldDAO _dao = (IAttributeFieldDAO) SpringContextService.getPluginBean( 
 			MyLutecePlugin.PLUGIN_NAME, "mylutece.myLuteceAttributeFieldDAO" );
-	
-	/**
-	 * Load attribute field
-	 * @param nIdField ID Field
-	 * @return Attribute Field
-	 */
+
+    /**
+     * Load attribute field
+     * @param nIdField ID Field
+     * @param plugin The plugin
+     * @return Attribute Field
+     */
 	public static AttributeField findByPrimaryKey( int nIdField, Plugin plugin )
 	{
 		return _dao.load( nIdField, plugin );
 	}
-	
-	/**
-	 * Load the lists of attribute field associated to an attribute
-	 * @param nIdAttribute the ID attribute
-	 * @return the list of attribute fields
-	 */
+
+    /**
+     * Load the lists of attribute field associated to an attribute
+     * @param nIdAttribute the ID attribute
+     * @param plugin The plugin
+     * @return the list of attribute fields
+     */
 	public static List<AttributeField> selectAttributeFieldsByIdAttribute( int nIdAttribute, Plugin plugin )
 	{
 		return _dao.selectAttributeFieldsByIdAttribute( nIdAttribute, plugin );
 	}
-	
-	/**
-	 * Load the attribute associated to the id field
-	 * @param nIdField the id field
-	 * @return attribute
-	 */
+
+    /**
+     * Load the attribute associated to the id field
+     * @param nIdField the id field
+     * @param plugin The plugin
+     * @return attribute
+     */
 	public static IAttribute selectAttributeByIdField( int nIdField, Plugin plugin )
 	{
 		return _dao.selectAttributeByIdField( nIdField, plugin );
 	}
-	
-	/**
-	 * Insert an new attribute field
-	 * @param attributeField the attribute field
-	 * @return @return new PK
-	 */
+
+    /**
+     * Insert an new attribute field
+     * @param attributeField the attribute field
+     * @param plugin The plugin
+     * @return @return new PK
+     */
 	public static int create( AttributeField attributeField, Plugin plugin )
 	{
 		return _dao.insert( attributeField, plugin );
 	}
-	
-	/**
-	 * Update an attribute field
-	 * @param attributeField the attribute field
-	 */
+
+    /**
+     * Update an attribute field
+     * @param attributeField the attribute field
+     * @param plugin The plugin
+     */
 	public static void update( AttributeField attributeField, Plugin plugin )
 	{
 		_dao.store( attributeField, plugin );
 	}
-	
-	/**
-	 * Delete an attribute field
-	 * @param nIdField the attribute field id
-	 */
+
+    /**
+     * Delete an attribute field
+     * @param nIdField the attribute field id
+     * @param plugin The plugin
+     */
 	public static void remove( int nIdField, Plugin plugin )
 	{
 		_dao.delete( nIdField, plugin );
 	}
-	
-	/**
-	 * Delete all attribute field from an attribute id
-	 * @param nIdAttribute the ID attribute
-	 */
+
+    /**
+     * Delete all attribute field from an attribute id
+     * @param nIdAttribute the ID attribute
+     * @param plugin The plugin
+     */
 	public static void removeAttributeFieldsFromIdAttribute( int nIdAttribute, Plugin plugin )
 	{
 		_dao.deleteAttributeFieldsFromIdAttribute( nIdAttribute, plugin );

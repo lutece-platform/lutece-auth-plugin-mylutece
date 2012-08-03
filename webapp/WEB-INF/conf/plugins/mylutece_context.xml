@@ -10,6 +10,7 @@
     <bean id="mylutece.myLuteceAttributeDAO"  class="fr.paris.lutece.plugins.mylutece.business.attribute.AttributeDAO" />
     <bean id="mylutece.myLuteceAttributeFieldDAO"  class="fr.paris.lutece.plugins.mylutece.business.attribute.AttributeFieldDAO" />
     <bean id="mylutece.myLuteceUserFieldDAO"  class="fr.paris.lutece.plugins.mylutece.business.attribute.MyLuteceUserFieldDAO" />
+	<bean id="mylutece.connectionLogDAO"  class="fr.paris.lutece.plugins.mylutece.authentication.logs.ConnectionLogDAO" />
 
     <bean id="mylutece.myLuteceUserAttributesService" class="fr.paris.lutece.plugins.mylutece.service.MyLuteceUserAttributesService" />
 </beans>

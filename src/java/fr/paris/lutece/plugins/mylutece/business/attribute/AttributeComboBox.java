@@ -33,18 +33,18 @@
  */
 package fr.paris.lutece.plugins.mylutece.business.attribute;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-
 import fr.paris.lutece.plugins.mylutece.service.MyLutecePlugin;
 import fr.paris.lutece.portal.service.message.AdminMessage;
 import fr.paris.lutece.portal.service.message.AdminMessageService;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.web.constants.Messages;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 
@@ -78,7 +78,6 @@ public class AttributeComboBox extends AbstractAttribute
 	
 	/**
 	 * Constructor
-	 * @param locale locale
 	 */
 	public AttributeComboBox(  )
 	{
@@ -187,12 +186,12 @@ public class AttributeComboBox extends AbstractAttribute
 		setAttributeType( attributeType );
 	}
 
-	/**
-	 * Get the data of the user fields
-	 * @param request HttpServletRequest
-	 * @param user user
-	 * @return user field data
-	 */
+    /**
+     * Get the data of the user fields
+     * @param request HttpServletRequest
+     * @param nIdUser Id of the user
+     * @return user field data
+     */
 	public List<MyLuteceUserField> getUserFieldsData( HttpServletRequest request, int nIdUser )
 	{
 		String[] values = request.getParameterValues( PARAMETER_ATTRIBUTE + CONSTANT_UNDERSCORE + _nIdAttribute );
@@ -230,4 +229,13 @@ public class AttributeComboBox extends AbstractAttribute
 		
 		return listUserFields;
 	}
+
+    /**
+     * Get whether the attribute is anonymizable.
+     * @return True if the attribute can be anonymized, false otherwise.
+     */
+    public boolean isAnonymizable( )
+    {
+        return false;
+    }
 }

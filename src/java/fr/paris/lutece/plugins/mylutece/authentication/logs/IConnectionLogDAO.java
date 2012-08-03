@@ -31,83 +31,32 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.mylutece.business.attribute;
+package fr.paris.lutece.plugins.mylutece.authentication.logs;
 
-import fr.paris.lutece.portal.service.i18n.I18nService;
+import fr.paris.lutece.portal.service.plugin.Plugin;
 
-import java.util.Locale;
 
 /**
- * 
- * AttributeType
  *
+ * @author lenaini
  */
-public class AttributeType 
+public interface IConnectionLogDAO
 {
-	private String _strLabelType;
-	private String _strClassName;
-	private Locale _locale;
-	
-	/**
-	 * Get label type
-	 * @return label type
-	 */
-	public String getLabelType(  )
-	{
-		return _strLabelType;
-	}
-	
-	/**
-	 * Set label type
-	 * @param strLabelType label type
-	 */
-	public void setLabelType( String strLabelType )
-	{
-		_strLabelType = strLabelType;
-	}
+    /**
+     * Insert a new record in the table of connections
+     * @param connectionLog the ConnectionLog Object
+     * @param plugin The plugin
+     */
+    void insertLog( ConnectionLog connectionLog, Plugin plugin );
 
     /**
-     * Get the label type
-     * @return the label type
+     * Calculate the number of connections with a given ip_address by a
+     * determinate time
+     * @param connectionLog The Log of connection
+     * @param nIntervalMinutes The number of minutes since the last connection
+     * @param plugin The plugin
+     * @return int The number of loggin error during the last
+     *         <i>nIntervalMinutes</i> minutes
      */
-	public String getName(  )
-	{
-		return I18nService.getLocalizedString( _strLabelType, _locale );
-	}
-	
-	/**
-	 * Get class name
-	 * @return class name
-	 */
-	public String getClassName(  )
-	{
-		return _strClassName;
-	}
-	
-	/**
-	 * Set class name
-	 * @param strClassName class name
-	 */
-	public void setClassName( String strClassName )
-	{
-		_strClassName = strClassName;
-	}
-	
-	/**
-	 * Set locale
-	 * @param locale Locale
-	 */
-	public void setLocale( Locale locale )
-	{
-		_locale = locale;
-	}
-	
-	/**
-	 * Get locale 
-	 * @return Locale
-	 */
-	public Locale getLocale(  )
-	{
-		return _locale;
-	}
+    int selectLoginErrors( ConnectionLog connectionLog, int nIntervalMinutes, Plugin plugin );
 }

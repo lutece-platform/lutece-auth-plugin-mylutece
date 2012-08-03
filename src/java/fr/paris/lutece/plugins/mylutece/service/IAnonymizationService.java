@@ -31,83 +31,28 @@
  *
  * License 1.0
  */
-package fr.paris.lutece.plugins.mylutece.business.attribute;
+package fr.paris.lutece.plugins.mylutece.service;
 
-import fr.paris.lutece.portal.service.i18n.I18nService;
-
+import java.util.List;
 import java.util.Locale;
 
+
 /**
+ * User anonymization service interface
  * 
- * AttributeType
- *
  */
-public class AttributeType 
+public interface IAnonymizationService
 {
-	private String _strLabelType;
-	private String _strClassName;
-	private Locale _locale;
-	
-	/**
-	 * Get label type
-	 * @return label type
-	 */
-	public String getLabelType(  )
-	{
-		return _strLabelType;
-	}
-	
-	/**
-	 * Set label type
-	 * @param strLabelType label type
-	 */
-	public void setLabelType( String strLabelType )
-	{
-		_strLabelType = strLabelType;
-	}
+    /**
+     * Anonymize user data based on anonymize status of his fields.
+     * @param nUserId Id of the user to anonymize
+     * @param locale The locale
+     */
+    void anonymizeUser( Integer nUserId, Locale locale );
 
     /**
-     * Get the label type
-     * @return the label type
+     * Get the list of id of expired users
+     * @return the list of id of expired users
      */
-	public String getName(  )
-	{
-		return I18nService.getLocalizedString( _strLabelType, _locale );
-	}
-	
-	/**
-	 * Get class name
-	 * @return class name
-	 */
-	public String getClassName(  )
-	{
-		return _strClassName;
-	}
-	
-	/**
-	 * Set class name
-	 * @param strClassName class name
-	 */
-	public void setClassName( String strClassName )
-	{
-		_strClassName = strClassName;
-	}
-	
-	/**
-	 * Set locale
-	 * @param locale Locale
-	 */
-	public void setLocale( Locale locale )
-	{
-		_locale = locale;
-	}
-	
-	/**
-	 * Get locale 
-	 * @return Locale
-	 */
-	public Locale getLocale(  )
-	{
-		return _locale;
-	}
+    List<Integer> getExpiredUserIdList( );
 }

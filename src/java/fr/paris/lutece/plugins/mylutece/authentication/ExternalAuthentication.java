@@ -202,4 +202,13 @@ public abstract class ExternalAuthentication implements LuteceAuthentication
     {
     	return CONSTANT_PATH_ICON;
     }
+
+    /**
+     * 
+     * {@inheritDoc}
+     */
+    public boolean findResetPassword( String strLogin )
+    {
+        return false;
+    }
 }

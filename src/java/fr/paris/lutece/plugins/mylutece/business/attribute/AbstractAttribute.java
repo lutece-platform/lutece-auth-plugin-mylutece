@@ -33,16 +33,15 @@
  */
 package fr.paris.lutece.plugins.mylutece.business.attribute;
 
+import fr.paris.lutece.portal.service.plugin.Plugin;
+import fr.paris.lutece.portal.service.template.AppTemplateService;
+import fr.paris.lutece.util.html.HtmlTemplate;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import fr.paris.lutece.util.html.HtmlTemplate;
-
-import fr.paris.lutece.portal.service.plugin.Plugin;
-import fr.paris.lutece.portal.service.template.AppTemplateService;
 
 /**
  * 
@@ -55,7 +54,7 @@ public abstract class AbstractAttribute implements IAttribute
 	private static final String MARK_ATTRIBUTE = "attribute";
 	private static final String MARK_DEFAULT_VALUES_LIST = "default_values_list";
 	
-	protected int _nIdAttribute;
+    protected int _nIdAttribute;
 	protected boolean _bMandatory;
 	protected String _strTitle;
 	protected String _strHelpMessage;
@@ -64,6 +63,7 @@ public abstract class AbstractAttribute implements IAttribute
 	protected List<AttributeField> _listAttributeFields;
 	protected Plugin _plugin;
 	protected boolean _bIsShownInSearch;
+    protected boolean _bAnonymize;
 		
 	/**
 	 * Constructor
@@ -98,11 +98,11 @@ public abstract class AbstractAttribute implements IAttribute
 	{
 		return _bMandatory;
 	}
-	
-	/**
-	 * Set mandatory
-	 * @param mandatory true if it's mandatory, false otherwise
-	 */
+
+    /**
+     * Set mandatory
+     * @param bMandatory true if it's mandatory, false otherwise
+     */
 	public void setMandatory( boolean bMandatory ) 
 	{
 		_bMandatory = bMandatory;
@@ -116,11 +116,11 @@ public abstract class AbstractAttribute implements IAttribute
 	{
 		return _listAttributeFields;
 	}
-	
-	/**
-	 * Set list fields
-	 * @param listAttributeField list fields
-	 */
+
+    /**
+     * Set list fields
+     * @param listAttributeFields list fields
+     */
 	public void setListAttributeFields( List<AttributeField> listAttributeFields )
 	{
 		_listAttributeFields = listAttributeFields;
@@ -166,7 +166,8 @@ public abstract class AbstractAttribute implements IAttribute
 	 * Get position
 	 * @return position
 	 */
-	public int getPosition(  ) {
+    public int getPosition( )
+    {
 		return _nPosition;
 	}
 	
@@ -212,12 +213,13 @@ public abstract class AbstractAttribute implements IAttribute
 
         return template.getHtml(  );
 	}
-	
-	/**
-	 * Get Html form
-	 * @param locale locale
-	 * @return html form
-	 */
+
+    /**
+     * Get Html form
+     * @param locale locale
+     * @param listDefaultValues Default values
+     * @return html form
+     */
 	public String getHtmlFormAttribute( Locale locale, List<MyLuteceUserField> listDefaultValues )
 	{
 		Map<String, Object> model = new HashMap<String, Object>(  );
@@ -229,12 +231,13 @@ public abstract class AbstractAttribute implements IAttribute
 
         return template.getHtml(  );
 	}
-	
-	/**
-	 * Get Html form
-	 * @param locale locale
-	 * @return html form
-	 */
+
+    /**
+     * Get Html form
+     * @param auFieldFilter Search filter
+     * @param locale locale
+     * @return html form
+     */
 	public String getHtmlFormSearchAttribute( MyLuteceUserFieldFilter auFieldFilter, Locale locale )
 	{
 		Map<String, Object> model = new HashMap<String, Object>(  );
@@ -278,11 +281,30 @@ public abstract class AbstractAttribute implements IAttribute
 	{
 		_plugin = plugin;
 	}
-	
-	/**
-	 * Check if the attribute is shown in search
-	 * @return true if it is, false otherwise
-	 */
+
+    /**
+     * Get the anonymize status of the attribute
+     * @return True if the attribute should be anonymize, false otherwise.
+     */
+    public boolean getAnonymize( )
+    {
+        return _bAnonymize;
+    }
+
+    /**
+     * Set the anonymize status of the attribute
+     * @param bAnonymize New anonymize status. True if the attribute should be
+     *            anonymize, false otherwise.
+     */
+    public void setAnonymize( boolean bAnonymize )
+    {
+        _bAnonymize = bAnonymize;
+    }
+
+    /**
+     * Check if the attribute is shown in search
+     * @return true if it is, false otherwise
+     */
 	public boolean isShownInSearch(  )
 	{
 		return _bIsShownInSearch;

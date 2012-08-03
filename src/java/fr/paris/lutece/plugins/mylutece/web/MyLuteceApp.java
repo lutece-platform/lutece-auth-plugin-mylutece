@@ -34,13 +34,18 @@
 package fr.paris.lutece.plugins.mylutece.web;
 
 import fr.paris.lutece.plugins.mylutece.authentication.MultiLuteceAuthentication;
+import fr.paris.lutece.plugins.mylutece.authentication.logs.ConnectionLog;
+import fr.paris.lutece.plugins.mylutece.authentication.logs.ConnectionLogHome;
+import fr.paris.lutece.plugins.mylutece.service.MyLutecePlugin;
+import fr.paris.lutece.portal.business.user.log.UserLog;
 import fr.paris.lutece.portal.service.i18n.I18nService;
 import fr.paris.lutece.portal.service.plugin.Plugin;
-import fr.paris.lutece.portal.service.portal.PortalService;
+import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.security.LoginRedirectException;
 import fr.paris.lutece.portal.service.security.LuteceAuthentication;
 import fr.paris.lutece.portal.service.security.SecurityService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
+import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.portal.web.PortalJspBean;
 import fr.paris.lutece.portal.web.xpages.XPage;
@@ -53,7 +58,6 @@ import java.util.Map;
 
 import javax.security.auth.login.FailedLoginException;
 import javax.security.auth.login.LoginException;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
@@ -100,6 +104,7 @@ public class MyLuteceApp implements XPageApplication
     private static final String PROPERTY_MYLUTECE_CREATE_ACCOUNT_URL = "mylutece.url.createAccount.page";
     private static final String PROPERTY_MYLUTECE_VIEW_ACCOUNT_URL = "mylutece.url.viewAccount.page";
     private static final String PROPERTY_MYLUTECE_LOST_PASSWORD_URL = "mylutece.url.lostPassword.page";
+    private static final String PROPERTY_MYLUTECE_RESET_PASSWORD_URL = "mylutece.url.resetPassword.page";
     private static final String PROPERTY_MYLUTECE_DEFAULT_REDIRECT_URL = "mylutece.url.default.redirect";
     private static final String PROPERTY_MYLUTECE_TEMPLATE_ACCESS_DENIED = "mylutece.template.accessDenied";
     private static final String PROPERTY_MYLUTECE_TEMPLATE_ACCESS_CONTROLED = "mylutece.template.accessControled";
@@ -224,7 +229,7 @@ public class MyLuteceApp implements XPageApplication
         String strUsername = request.getParameter( PARAMETER_USERNAME );
         String strPassword = request.getParameter( PARAMETER_PASSWORD );
         String strAuthProvider = request.getParameter( PARAMETER_AUTH_PROVIDER );
-
+        Plugin plugin = PluginService.getPlugin( MyLutecePlugin.PLUGIN_NAME );
         try
         {
             SecurityService.getInstance(  ).loginUser( request, strUsername, strPassword );
@@ -235,6 +240,13 @@ public class MyLuteceApp implements XPageApplication
         }
         catch ( FailedLoginException ex )
         {
+            // Creating a record of connections log
+            ConnectionLog connectionLog = new ConnectionLog( );
+            connectionLog.setIpAddress( request.getRemoteAddr( ) );
+            connectionLog.setDateLogin( new java.sql.Timestamp( new java.util.Date( ).getTime( ) ) );
+            connectionLog.setLoginStatus( UserLog.LOGIN_DENIED ); // will be inserted only if access denied
+            ConnectionLogHome.addUserLog( connectionLog, plugin );
+
             String strReturn = "../../" + getLoginPageUrl(  ) + "&" + PARAMETER_ERROR + "=" +
                 PARAMETER_ERROR_VALUE_INVALID;
             
@@ -333,6 +345,17 @@ public class MyLuteceApp implements XPageApplication
     public static String getLostPasswordUrl(  )
     {
         return AppPropertiesService.getProperty( PROPERTY_MYLUTECE_LOST_PASSWORD_URL );
+    }
+
+    /**
+     * Returns the Reset Password URL of the Authentication Service
+     * @param request The request
+     * @return The URL
+     */
+    public static String getResetPasswordUrl( HttpServletRequest request )
+    {
+        return AppPathService.getBaseUrl( request )
+                + AppPropertiesService.getProperty( PROPERTY_MYLUTECE_RESET_PASSWORD_URL );
     }
 
     /**
