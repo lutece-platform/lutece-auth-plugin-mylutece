@@ -39,6 +39,9 @@ import fr.paris.lutece.portal.service.security.LuteceUser;
 
 import java.util.Collection;
 
+import javax.servlet.http.HttpServletRequest;
+
+
 /**
  * 
  * ExternalAuthentication.
@@ -207,8 +210,19 @@ public abstract class ExternalAuthentication implements LuteceAuthentication
      * 
      * {@inheritDoc}
      */
-    public boolean findResetPassword( String strLogin )
+    @Override
+    public boolean findResetPassword( HttpServletRequest request, String strLogin )
     {
         return false;
+    }
+
+    /**
+     * 
+     * {@inheritDoc}
+     */
+    @Override
+    public String getResetPasswordPageUrl( HttpServletRequest request )
+    {
+        return null;
     }
 }
