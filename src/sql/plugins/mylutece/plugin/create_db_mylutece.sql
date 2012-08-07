@@ -49,7 +49,7 @@ CREATE TABLE mylutece_user_field (
 DROP TABLE IF EXISTS mylutece_user_anonymize_field;
 CREATE  TABLE mylutece_user_anonymize_field (
   field_name VARCHAR(100) NOT NULL ,
-  anonymize BIT NOT NULL ,
+  anonymize SMALLINT NOT NULL ,
   PRIMARY KEY (field_name)
   );
 
