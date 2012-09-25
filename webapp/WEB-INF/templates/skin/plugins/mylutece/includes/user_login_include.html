@@ -1,7 +1,21 @@
  <ul class="nav pull-right">
     <li class="divider-vertical"></li>
 	<#if user?has_content>
-		<li>#i18n{mylutece.user_login_include.labelWelcome}	${user.getUserInfo('user.name.given')} ${user.getUserInfo('user.name.family')} </li>
+		<#assign userNameGiven = user.getUserInfo('user.name.given') >
+		<#assign userNameFamily = user.getUserInfo('user.name.family') >
+		<#if userNameGiven?has_content || userNameFamily>
+			<#assign labelUserName = userNameGiven + ' ' + userNameFamily >
+		<#else>  
+			<#assign userBusinessMail = user.getUserInfo('user.business-info.online.email') >
+			<#assign userHomeMail = user.getUserInfo('user.home-info.online.email') >
+			<#if userBusinessMail?has_content>
+				<#assign labelUserName = userBusinessMail >
+			<#else>
+				<#assign labelUserName = userHomeMail >
+			</#if>
+		</#if>
+		<li>#i18n{mylutece.user_login_include.labelWelcome}	${labelUserName} </li>
+		<li>#i18n{mylutece.user_login_include.labelLastLogin} : <#if (user.getUserInfo('user.lastLogin'))?has_content>${user.getUserInfo('user.lastLogin')}<#else>#i18n{mylutece.user_login_include.labelNever}</#if></li>
 		<li><a href="${url_dologout}">#i18n{mylutece.user_login_include.labelLogout}</a></li>
 	<#else>
 		<li class="dropdown">

@@ -1,74 +1,75 @@
 <div class="row">
 	<div class="span8 offset3">
-		<fieldset>
-		<legend>#i18n{mylutece.xpage.login_form.pageTitle}</legend>
 		<#if list_authentications?exists>
 			<form class="form-horizontal span5" method="post" action="${url_dologin}" >
-			<input type="hidden" name="page" value="mylutece" />
-			<input type="hidden" name="action" value="dologin" />
-			<#if error_message!="">
-			<div class="control-group">
-				<label class="control-label"  for=""></label>
-					<div class="controls">
-					<div class="label label-important">
-						<i class="icon-info-sign icon-white"></i>&nbsp;
-						${error_message}
-						<br/>
-						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${error_detail}
-					</div>
-				</div>
-			</div>
-			</#if>
-			<#-- first display delegated authentications [oauth etc...]-->
-			<#list list_authentications as authentication>
-				<#if authentication.delegatedAuthentication>
-				<div class="control-group">
-				<label class="control-label"  for=""></label>
-					<div class="controls">
-					<a href="${url_dologin}?page=mylutece&action=dologin&auth_provider=${authentication.name}">
-						<img src="${authentication.iconUrl}" title="${authentication.authServiceName} " alt="${authentication.authServiceName} " />
-					</a>
-					</div>
-				</div>
-				</#if>
-			</#list>
-			<#-- display internal authentications [such as database]-->
-			<#assign bHasInternalAuth = false />
-			<#list list_authentications as authentication>
-				<#if !authentication.externalAuthentication && !authentication.delegatedAuthentication>
-					<#if !bHasInternalAuth>
-						<#assign bHasInternalAuth = true />
-					</#if>
+				<fieldset>
+					<legend>#i18n{mylutece.xpage.login_form.pageTitle}</legend>
+					<input type="hidden" name="page" value="mylutece" />
+					<input type="hidden" name="action" value="dologin" />
+					<#if error_message!="">
 					<div class="control-group">
 						<label class="control-label"  for=""></label>
-						<div class="controls">
-							<#if auth_provider?has_content && auth_provider = authentication.name>
-								<input type="radio" name="auth_provider" value="${authentication.name}" checked="checked"/>${authentication.authServiceName}
-							<#else>
-								<input type="radio" name="auth_provider" value="${authentication.name}" />${authentication.authServiceName}
-							</#if>
+							<div class="controls">
+							<div class="label label-important">
+								<i class="icon-info-sign icon-white"></i>&nbsp;
+								${error_message}
+								<br/>
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${error_detail}
+							</div>
 						</div>
 					</div>
-				</#if>
-			</#list>
-			<#if bHasInternalAuth>
-				<div class="control-group">
-				<label class="control-label"  for="username">#i18n{mylutece.xpage.login_form.labelAccessCode}</label>
-					<div class="controls">
-					<input type="text" name="username" id="username" class="input-large" maxlength="100" value=""  />
-					</div>
-				</div>
-				<div class="control-group">
-				<label class="control-label"  for="password">#i18n{mylutece.xpage.login_form.labelPassword}</label>
-					<div class="controls">
-						<input type="text" name="password" id="password" class="input-large" maxlength="100" /> 
-					</div>
-				</div>
-				<div class="form-actions">
-					<button class="btn btn-primary" type="submit" name="Submit"><i class="icon-off icon-white"></i>&nbsp;#i18n{mylutece.xpage.login_form.labelButton}</button>
-				</div>
-				</form>
-			</#if>
+					</#if>
+					<#-- first display delegated authentications [oauth etc...]-->
+					<#list list_authentications as authentication>
+						<#if authentication.delegatedAuthentication>
+						<div class="control-group">
+						<label class="control-label"  for=""></label>
+							<div class="controls">
+							<a href="${url_dologin}?page=mylutece&action=dologin&auth_provider=${authentication.name}">
+								<img src="${authentication.iconUrl}" title="${authentication.authServiceName} " alt="${authentication.authServiceName} " />
+							</a>
+							</div>
+						</div>
+						</#if>
+					</#list>
+					<#-- display internal authentications [such as database]-->
+					<#assign bHasInternalAuth = false />
+					<#list list_authentications as authentication>
+						<#if !authentication.externalAuthentication && !authentication.delegatedAuthentication>
+							<#if !bHasInternalAuth>
+								<#assign bHasInternalAuth = true />
+							</#if>
+							<div class="control-group">
+								<label class="control-label"  for=""></label>
+								<div class="controls">
+									<#if auth_provider?has_content && auth_provider = authentication.name>
+										<input type="radio" name="auth_provider" value="${authentication.name}" checked="checked"/>${authentication.authServiceName}
+									<#else>
+										<input type="radio" name="auth_provider" value="${authentication.name}" />${authentication.authServiceName}
+									</#if>
+								</div>
+							</div>
+						</#if>
+					</#list>
+					<#if bHasInternalAuth>
+						<div class="control-group">
+						<label class="control-label"  for="username">#i18n{mylutece.xpage.login_form.labelAccessCode}</label>
+							<div class="controls">
+							<input type="text" name="username" id="username" class="input-large" maxlength="100" value=""  />
+							</div>
+						</div>
+						<div class="control-group">
+						<label class="control-label"  for="password">#i18n{mylutece.xpage.login_form.labelPassword}</label>
+							<div class="controls">
+								<input type="text" name="password" id="password" class="input-large" maxlength="100" /> 
+							</div>
+						</div>
+						<div class="form-actions">
+							<button class="btn btn-primary" type="submit" name="Submit"><i class="icon-off icon-white"></i>&nbsp;#i18n{mylutece.xpage.login_form.labelButton}</button>
+						</div>
+					</#if>
+				</fieldset>
+			</form>
 		</#if>
 	</div>
 </div>

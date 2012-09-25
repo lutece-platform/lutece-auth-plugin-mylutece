@@ -1,1 +1,17 @@
-${user.getUserInfo('user.name.given')} ${user.getUserInfo('user.name.family')} <a href="${url_dologout}" title="#i18n{mylutece.user_login_include.labelLogout}">#i18n{mylutece.user_login_include.labelLogout}</a>
+<#if user?has_content>
+	<#assign userNameGiven = user.getUserInfo('user.name.given') >
+	<#assign userNameFamily = user.getUserInfo('user.name.family') >
+	<#if userNameGiven?has_content || userNameFamily>
+		${userNameGiven} ${userNameFamily}
+	<#else>  
+		<#assign userBusinessMail = user.getUserInfo('user.business-info.online.email') >
+		<#assign userHomeMail = user.getUserInfo('user.home-info.online.email') >
+		<#if userBusinessMail?has_content>
+			${userBusinessMail}
+		<#else>
+			${userHomeMail}
+		</#if>
+	</#if>
+	#i18n{mylutece.user_login_include.labelLastLogin} : <#if (user.getUserInfo('user.lastLogin'))?has_content>${user.getUserInfo('user.lastLogin')}<#else>#i18n{mylutece.user_login_include.labelNever}</#if>
+</#if>
+<a href="${url_dologout}" title="#i18n{mylutece.user_login_include.labelLogout}">#i18n{mylutece.user_login_include.labelLogout}</a>

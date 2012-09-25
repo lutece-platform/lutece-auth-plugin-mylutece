@@ -3,6 +3,9 @@
 <title>#i18n{mylutece.email_reinit.object}</title>
 </head>
 <body>
+	<#if site_link?has_content>
+		<h2>${site_link}</h2>
+	</#if>
 	<p>
 		#i18n{mylutece.email_reinit.content.text}<br />
 		----------------------------------------------------------
@@ -12,7 +15,7 @@
 		----------------------------------------------------------
 	</p>
 	<p>
-		#i18n{mylutece.email_reinit.content.reinitPassword} : 
+		#i18n{mylutece.email_reinit.content.reinitPassword}
 		<a href="${reinit_url}">#i18n{mylutece.email_reinit.content.labelLink}</a>
 	</p>
 </body>
