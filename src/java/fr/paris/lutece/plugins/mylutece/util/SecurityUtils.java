@@ -45,6 +45,7 @@ public class SecurityUtils
     private static final String MARK_TIME_BETWEEN_ALERTS_ACCOUNT = "time_between_alerts_account";
     private static final String MARK_ACCES_FAILURES_MAX = "access_failures_max";
     private static final String MARK_ACCES_FAILURES_INTERVAL = "access_failures_interval";
+	private static final String MARK_BANNED_DOMAIN_NAMES = "banned_domain_names";
 
     // MESSAGES
     private static final String MESSAGE_MINIMUM_PASSWORD_LENGTH = "mylutece.message.password.minimumPasswordLength";
@@ -65,6 +66,7 @@ public class SecurityUtils
     private static final String PROPERTY_DEFAULT_ENCRYPTION_ALGORITHM = "security.defaultValues.algorithm";
 
     private static final String CONSTANT_DEFAULT_ENCRYPTION_ALGORITHM = "SHA-256";
+	private static final String SEMICOLON = ";";
 
     /**
      * Loads a model with base security parameters
@@ -109,6 +111,7 @@ public class SecurityUtils
                 getIntegerSecurityParameter( parameterService, plugin, MARK_ACCES_FAILURES_MAX ) );
         model.put( MARK_ACCES_FAILURES_INTERVAL,
                 getIntegerSecurityParameter( parameterService, plugin, MARK_ACCES_FAILURES_INTERVAL ) );
+		model.put( MARK_BANNED_DOMAIN_NAMES, getSecurityParameter( parameterService, plugin, MARK_BANNED_DOMAIN_NAMES ) );
 
         return model;
     }
@@ -160,6 +163,8 @@ public class SecurityUtils
 
         updateParameterValue( parameterService, plugin, MARK_ACCES_FAILURES_INTERVAL,
                 request.getParameter( MARK_ACCES_FAILURES_INTERVAL ) );
+
+		updateParameterValue( parameterService, plugin, MARK_BANNED_DOMAIN_NAMES, request.getParameter( MARK_BANNED_DOMAIN_NAMES ) );
     }
 
     /**
@@ -336,6 +341,19 @@ public class SecurityUtils
         ReferenceItem refItem = parameterService.findByKey( strParameterkey, plugin );
         return refItem == null ? false : refItem.isChecked( );
     }
+
+	/**
+	 * Get the value of a security parameter
+	 * @param parameterService Parameter service to use
+	 * @param plugin The plugin
+	 * @param strParameterkey Key of the security parameter to get
+	 * @return The value of the security parameter
+	 */
+	public static String getSecurityParameter( IUserParameterService parameterService, Plugin plugin, String strParameterkey )
+	{
+		ReferenceItem refItem = parameterService.findByKey( strParameterkey, plugin );
+		return refItem == null ? null : refItem.getName( );
+	}
 
     /**
      * Check the format of the password from the entered parameters. The
@@ -585,4 +603,20 @@ public class SecurityUtils
 
         return strPassword;
     }
+
+	/**
+	 * Get an array containing banned domain names for email adresses
+	 * @param parameterService Parameter service
+	 * @param plugin The plugin
+	 * @return An array containing banned domain names for email adresses
+	 */
+	public static String[] getBannedDomainNames( IUserParameterService parameterService, Plugin plugin )
+	{
+		String strDomainNames = SecurityUtils.getSecurityParameter( parameterService, plugin, MARK_BANNED_DOMAIN_NAMES );
+		if ( StringUtils.isNotBlank( strDomainNames ) )
+		{
+			return strDomainNames.split( SEMICOLON );
+		}
+		return null;
+	}
 }
