@@ -124,6 +124,15 @@ public abstract class ExternalAuthentication implements LuteceAuthentication
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getLostLoginPageUrl( )
+	{
+		return null;
+	}
+
+	/**
 	 * Returns the access denied template
 	 * @return The template
 	 */

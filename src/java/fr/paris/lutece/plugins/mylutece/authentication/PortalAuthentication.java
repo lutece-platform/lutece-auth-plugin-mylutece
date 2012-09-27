@@ -122,12 +122,21 @@ public abstract class PortalAuthentication implements LuteceAuthentication
 	}
 
 	/**
-	 * Returns the lost password URL of the Authentication Service
-	 * @return The URL
+	 * {@inheritDoc}
 	 */
+	@Override
 	public String getLostPasswordPageUrl( )
 	{
 		return MyLuteceApp.getLostPasswordUrl( );
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public String getLostLoginPageUrl( )
+	{
+		return MyLuteceApp.getLostLoginUrl( );
 	}
 
 	/**

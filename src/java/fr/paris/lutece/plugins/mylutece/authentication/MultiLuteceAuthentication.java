@@ -205,6 +205,29 @@ public class MultiLuteceAuthentication implements LuteceAuthentication
 	}
 
 	/**
+	 * Returns the lost login URL of the Authentication Service. <br>
+	 * Tries to get authentication specific lost login page url from request (passed through {@link LocalVariables} ), default otherwise.
+	 * @return The URL
+	 */
+	@Override
+	public String getLostLoginPageUrl( )
+	{
+		String strLostLoginUrl = MyLuteceApp.getLostPasswordUrl( );
+		HttpServletRequest request = LocalVariables.getRequest( );
+		if ( request != null )
+		{
+			String strAuthentication = request.getParameter( PARAMETER_AUTH_PROVIDER );
+			if ( StringUtils.isNotBlank( strAuthentication ) )
+			{
+				LuteceAuthentication authentication = _mapAuthentications.get( strAuthentication );
+				strLostLoginUrl = authentication.getLostLoginPageUrl( );
+			}
+		}
+
+		return strLostLoginUrl;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override

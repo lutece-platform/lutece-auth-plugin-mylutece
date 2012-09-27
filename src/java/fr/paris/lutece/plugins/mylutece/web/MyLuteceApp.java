@@ -93,6 +93,7 @@ public class MyLuteceApp implements XPageApplication
     private static final String ACTION_CREATE_ACCOUNT = "createAccount";
     private static final String ACTION_VIEW_ACCOUNT = "viewAccount";
     private static final String ACTION_LOST_PASSWORD = "lostPassword";
+	private static final String ACTION_LOST_LOGIN = "lostLogin";
 
     // Properties
     private static final String PROPERTY_MYLUTECE_PAGETITLE_LOGIN = "mylutece.pageTitle.login";
@@ -104,6 +105,7 @@ public class MyLuteceApp implements XPageApplication
     private static final String PROPERTY_MYLUTECE_CREATE_ACCOUNT_URL = "mylutece.url.createAccount.page";
     private static final String PROPERTY_MYLUTECE_VIEW_ACCOUNT_URL = "mylutece.url.viewAccount.page";
     private static final String PROPERTY_MYLUTECE_LOST_PASSWORD_URL = "mylutece.url.lostPassword.page";
+	private static final String PROPERTY_MYLUTECE_LOST_LOGIN_URL = "mylutece.url.lostLogin.page";
     private static final String PROPERTY_MYLUTECE_RESET_PASSWORD_URL = "mylutece.url.resetPassword.page";
     private static final String PROPERTY_MYLUTECE_DEFAULT_REDIRECT_URL = "mylutece.url.default.redirect";
     private static final String PROPERTY_MYLUTECE_TEMPLATE_ACCESS_DENIED = "mylutece.template.accessDenied";
@@ -116,12 +118,15 @@ public class MyLuteceApp implements XPageApplication
     private static final String PROPERTY_VIEW_ACCOUNT_TITLE = "mylutece.xpage.viewAccountTitle";
     private static final String PROPERTY_LOST_PASSWORD_LABEL = "mylutece.xpage.lostPasswordLabel";
     private static final String PROPERTY_LOST_PASSWORD_TITLE = "mylutece.xpage.lostPasswordTitle";
+	private static final String PROPERTY_LOST_LOGIN_LABEL = "mylutece.xpage.lostLoginLabel";
+	private static final String PROPERTY_LOST_LOGIN_TITLE = "mylutece.xpage.lostLoginTitle";
 
     // Templates
     private static final String TEMPLATE_LOGIN_PAGE = "skin/plugins/mylutece/login_form.html";
     private static final String TEMPLATE_LOGIN_MULTI_PAGE = "skin/plugins/mylutece/login_form_multi.html";
     
     private static final String TEMPLATE_LOST_PASSWORD_PAGE = "skin/plugins/mylutece/lost_password.html";
+	private static final String TEMPLATE_LOST_LOGIN_PAGE = "skin/plugins/mylutece/lost_login.html";
     private static final String TEMPLATE_CREATE_ACCOUNT_PAGE = "skin/plugins/mylutece/create_account.html";
     private static final String TEMPLATE_VIEW_ACCOUNT_PAGE = "skin/plugins/mylutece/view_account.html";
     private Locale _locale;
@@ -163,6 +168,10 @@ public class MyLuteceApp implements XPageApplication
         {
             return getLostPasswordPage( page );
         }
+		else if ( strAction.equals( ACTION_LOST_LOGIN ) )
+		{
+			return getLostLoginPage( page );
+		}
 
         return page;
     }
@@ -347,6 +356,15 @@ public class MyLuteceApp implements XPageApplication
         return AppPropertiesService.getProperty( PROPERTY_MYLUTECE_LOST_PASSWORD_URL );
     }
 
+	/**
+	 * Returns the Lost login URL of the Authentication Service
+	 * @return The URL
+	 */
+	public static String getLostLoginUrl( )
+	{
+		return AppPropertiesService.getProperty( PROPERTY_MYLUTECE_LOST_LOGIN_URL );
+	}
+
     /**
      * Returns the Reset Password URL of the Authentication Service
      * @param request The request
@@ -437,6 +455,21 @@ public class MyLuteceApp implements XPageApplication
 
         return page;
     }
+
+	/**
+	 * Build the default Lost password page
+	 * @param page The XPage object to fill
+	 * @return The XPage object containing the page content
+	 */
+	private XPage getLostLoginPage( XPage page )
+	{
+		HtmlTemplate t = AppTemplateService.getTemplate( TEMPLATE_LOST_LOGIN_PAGE, _locale );
+		page.setContent( t.getHtml( ) );
+		page.setPathLabel( I18nService.getLocalizedString( PROPERTY_LOST_LOGIN_LABEL, _locale ) );
+		page.setTitle( I18nService.getLocalizedString( PROPERTY_LOST_LOGIN_TITLE, _locale ) );
+
+		return page;
+	}
 
     /**
      * Returns the template for access denied
