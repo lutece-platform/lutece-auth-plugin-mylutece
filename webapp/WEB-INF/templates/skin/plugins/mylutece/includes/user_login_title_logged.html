@@ -1,7 +1,7 @@
 <#if user?has_content>
 	<#assign userNameGiven = user.getUserInfo('user.name.given') >
 	<#assign userNameFamily = user.getUserInfo('user.name.family') >
-	<#if userNameGiven?has_content || userNameFamily>
+	<#if userNameGiven?has_content || userNameFamily?has_content>
 		${userNameGiven} ${userNameFamily}
 	<#else>  
 		<#assign userBusinessMail = user.getUserInfo('user.business-info.online.email') >

@@ -1,6 +1,7 @@
 package fr.paris.lutece.plugins.mylutece.util;
 
 import fr.paris.lutece.plugins.mylutece.service.IUserParameterService;
+import fr.paris.lutece.portal.service.datastore.DatastoreService;
 import fr.paris.lutece.portal.service.message.AdminMessage;
 import fr.paris.lutece.portal.service.message.AdminMessageService;
 import fr.paris.lutece.portal.service.plugin.Plugin;
@@ -67,6 +68,7 @@ public class SecurityUtils
 
     private static final String CONSTANT_DEFAULT_ENCRYPTION_ALGORITHM = "SHA-256";
 	private static final String SEMICOLON = ";";
+	private static final String CONSTANT_UNDERSCORE = "_";
 
     /**
      * Loads a model with base security parameters
@@ -111,7 +113,6 @@ public class SecurityUtils
                 getIntegerSecurityParameter( parameterService, plugin, MARK_ACCES_FAILURES_MAX ) );
         model.put( MARK_ACCES_FAILURES_INTERVAL,
                 getIntegerSecurityParameter( parameterService, plugin, MARK_ACCES_FAILURES_INTERVAL ) );
-		model.put( MARK_BANNED_DOMAIN_NAMES, getSecurityParameter( parameterService, plugin, MARK_BANNED_DOMAIN_NAMES ) );
 
         return model;
     }
@@ -164,8 +165,7 @@ public class SecurityUtils
         updateParameterValue( parameterService, plugin, MARK_ACCES_FAILURES_INTERVAL,
                 request.getParameter( MARK_ACCES_FAILURES_INTERVAL ) );
 
-		updateParameterValue( parameterService, plugin, MARK_BANNED_DOMAIN_NAMES, request.getParameter( MARK_BANNED_DOMAIN_NAMES ) );
-    }
+	}
 
     /**
      * Check whether a user must change his new password after a password
@@ -355,6 +355,18 @@ public class SecurityUtils
 		return refItem == null ? null : refItem.getName( );
 	}
 
+	/**
+	 * Get the large value of a security parameter.
+	 * @param parameterService Parameter service to use
+	 * @param plugin The plugin
+	 * @param strParameterkey Key of the security parameter to get
+	 * @return The value of the security parameter
+	 */
+	public static String getLargeSecurityParameter( IUserParameterService parameterService, Plugin plugin, String strParameterkey )
+	{
+		return DatastoreService.getDataValue( plugin.getName( ) + CONSTANT_UNDERSCORE + strParameterkey, StringUtils.EMPTY );
+	}
+
     /**
      * Check the format of the password from the entered parameters. The
      * password may have to contain upper and lower case letters, numbers and
@@ -401,6 +413,18 @@ public class SecurityUtils
         userParam.setName( strValue );
         parameterService.update( userParam, plugin );
     }
+
+	/**
+	 * Updates a parameter from its key with a new value. The value should be a large value, from exemple a String from a text area.
+	 * @param parameterService Parameter service to use
+	 * @param plugin The plugin
+	 * @param strKey The key of the parameter to update
+	 * @param strValue The new value of the parameter
+	 */
+	public static void updateLargeParameterValue( IUserParameterService parameterService, Plugin plugin, String strKey, String strValue )
+	{
+		DatastoreService.setDataValue( plugin.getName( ) + CONSTANT_UNDERSCORE + strKey, strValue );
+	}
 
     /**
      * Enable advanced security parameters
@@ -612,7 +636,7 @@ public class SecurityUtils
 	 */
 	public static String[] getBannedDomainNames( IUserParameterService parameterService, Plugin plugin )
 	{
-		String strDomainNames = SecurityUtils.getSecurityParameter( parameterService, plugin, MARK_BANNED_DOMAIN_NAMES );
+		String strDomainNames = SecurityUtils.getLargeSecurityParameter( parameterService, plugin, MARK_BANNED_DOMAIN_NAMES );
 		if ( StringUtils.isNotBlank( strDomainNames ) )
 		{
 			return strDomainNames.split( SEMICOLON );
