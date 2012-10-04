@@ -35,6 +35,8 @@ package fr.paris.lutece.plugins.mylutece.authentication.logs;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
 
+import java.sql.Timestamp;
+
 
 /**
  *
@@ -59,4 +61,14 @@ public interface IConnectionLogDAO
      *         <i>nIntervalMinutes</i> minutes
      */
     int selectLoginErrors( ConnectionLog connectionLog, int nIntervalMinutes, Plugin plugin );
+    
+    /**
+	 * Update connection logs of an IP to allow the user to login.
+	 * @param strIp Ip to clean
+	 * @param dateLogin Date of the last login. Anly logs between this date plus or minus the minute interval will be cleared.
+	 * @param nIntervalMinutes Minutes interval
+	 * @param plugin The plugin
+	 */
+	void resetConnectionLogs( String strIp, Timestamp dateLogin, int nIntervalMinutes, Plugin plugin );
+	
 }

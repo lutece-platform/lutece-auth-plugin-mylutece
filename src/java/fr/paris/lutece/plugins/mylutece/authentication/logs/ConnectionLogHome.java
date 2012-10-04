@@ -36,6 +36,8 @@ package fr.paris.lutece.plugins.mylutece.authentication.logs;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 
+import java.sql.Timestamp;
+
 
 /**
  * This class provides instances management methods (create, find, ...) for UserLog objects
@@ -77,4 +79,16 @@ public final class ConnectionLogHome
     {
         return _dao.selectLoginErrors( connetionLog, nIntervalMinutes, plugin );
     }
+
+	/**
+	 * Update connection logs of an IP to allow the user to login.
+	 * @param strIp Ip to clean
+	 * @param dateLogin Date of the last login. Anly logs between this date plus or minus the minute interval will be cleared.
+	 * @param nIntervalMinutes Minutes interval
+	 * @param plugin The plugin
+	 */
+	public static void resetConnectionLogs( String strIp, Timestamp dateLogin, int nIntervalMinutes, Plugin plugin )
+	{
+		_dao.resetConnectionLogs( strIp, dateLogin, nIntervalMinutes, plugin );
+	}
 }

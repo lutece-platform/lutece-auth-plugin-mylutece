@@ -37,7 +37,6 @@ import fr.paris.lutece.plugins.mylutece.authentication.MultiLuteceAuthentication
 import fr.paris.lutece.plugins.mylutece.authentication.logs.ConnectionLog;
 import fr.paris.lutece.plugins.mylutece.authentication.logs.ConnectionLogHome;
 import fr.paris.lutece.plugins.mylutece.service.MyLutecePlugin;
-import fr.paris.lutece.portal.business.user.log.UserLog;
 import fr.paris.lutece.portal.service.captcha.CaptchaSecurityService;
 import fr.paris.lutece.portal.service.i18n.I18nService;
 import fr.paris.lutece.portal.service.plugin.Plugin;
@@ -49,11 +48,13 @@ import fr.paris.lutece.portal.service.security.SecurityService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
+import fr.paris.lutece.portal.service.util.CryptoService;
 import fr.paris.lutece.portal.web.PortalJspBean;
 import fr.paris.lutece.portal.web.xpages.XPage;
 import fr.paris.lutece.portal.web.xpages.XPageApplication;
 import fr.paris.lutece.util.html.HtmlTemplate;
 
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -94,6 +95,10 @@ public class MyLuteceApp implements XPageApplication
     private static final String PARAMETER_AUTH_PROVIDER = "auth_provider";
 	private static final String PARAMETER_IS_ACTIVE_CAPTCHA = "mylutece_is_active_captcha";
 	private static final String PARAMETER_ERROR_CAPTCHA = "error_captcha";
+	private static final String PARAMETER_DATE_LOGIN = "date_login";
+	private static final String PARAMETER_INTERVAL = "interval";
+	private static final String PARAMETER_IP = "ip";
+	private static final String PARAMETER_KEY = "key";
 
     // Actions
     private static final String ACTION_LOGIN = "login";
@@ -118,6 +123,8 @@ public class MyLuteceApp implements XPageApplication
     private static final String PROPERTY_MYLUTECE_DEFAULT_REDIRECT_URL = "mylutece.url.default.redirect";
     private static final String PROPERTY_MYLUTECE_TEMPLATE_ACCESS_DENIED = "mylutece.template.accessDenied";
     private static final String PROPERTY_MYLUTECE_TEMPLATE_ACCESS_CONTROLED = "mylutece.template.accessControled";
+	private static final String PROPERTY_DEFAULT_ENCRYPTION_ALGORITHM = "security.defaultValues.algorithm";
+	private static final String PROPERTY_CRYPTO_KEY = "crypto.key";
 
     // i18n Properties
     private static final String PROPERTY_CREATE_ACCOUNT_LABEL = "mylutece.xpage.createAccountLabel";
@@ -137,6 +144,9 @@ public class MyLuteceApp implements XPageApplication
 	private static final String TEMPLATE_LOST_LOGIN_PAGE = "skin/plugins/mylutece/lost_login.html";
     private static final String TEMPLATE_CREATE_ACCOUNT_PAGE = "skin/plugins/mylutece/create_account.html";
     private static final String TEMPLATE_VIEW_ACCOUNT_PAGE = "skin/plugins/mylutece/view_account.html";
+
+	private static final String CONSTANT_DEFAULT_ENCRYPTION_ALGORITHM = "SHA-256";
+
     private Locale _locale;
 
     /**
@@ -291,6 +301,11 @@ public class MyLuteceApp implements XPageApplication
         }
         catch ( LoginRedirectException ex )
         {
+			HttpSession session = request.getSession( false );
+			if ( session != null )
+			{
+				session.removeAttribute( PARAMETER_IS_ACTIVE_CAPTCHA );
+			}
             return ex.getRedirectUrl(  );
         }
         catch ( FailedLoginException ex )
@@ -299,7 +314,7 @@ public class MyLuteceApp implements XPageApplication
             ConnectionLog connectionLog = new ConnectionLog( );
             connectionLog.setIpAddress( request.getRemoteAddr( ) );
             connectionLog.setDateLogin( new java.sql.Timestamp( new java.util.Date( ).getTime( ) ) );
-            connectionLog.setLoginStatus( UserLog.LOGIN_DENIED ); // will be inserted only if access denied
+			connectionLog.setLoginStatus( ConnectionLog.LOGIN_DENIED ); // will be inserted only if access denied
             ConnectionLogHome.addUserLog( connectionLog, plugin );
 
 			strReturn += "&" + PARAMETER_ERROR + "=" +
@@ -545,4 +560,25 @@ public class MyLuteceApp implements XPageApplication
     {
         return AppPropertiesService.getProperty( PROPERTY_MYLUTECE_TEMPLATE_ACCESS_CONTROLED );
     }
+
+	public String doResetConnectionLog( HttpServletRequest request )
+	{
+		String strIp = request.getParameter( PARAMETER_IP );
+		String strDateLogin = request.getParameter( PARAMETER_DATE_LOGIN );
+		String strInterval = request.getParameter( PARAMETER_INTERVAL );
+		String strKey = request.getParameter( PARAMETER_KEY );
+
+		if ( StringUtils.isNotBlank( strIp ) && StringUtils.isNotBlank( strDateLogin ) && StringUtils.isNotBlank( strKey ) && StringUtils.isNotBlank( strInterval ) )
+		{
+			String strCryptoKey = AppPropertiesService.getProperty( PROPERTY_CRYPTO_KEY );
+			String strComputedKey = CryptoService.encrypt( strIp + strDateLogin + strInterval + strCryptoKey, AppPropertiesService.getProperty( PROPERTY_DEFAULT_ENCRYPTION_ALGORITHM,
+					CONSTANT_DEFAULT_ENCRYPTION_ALGORITHM ) );
+			if ( StringUtils.equals( strKey, strComputedKey ) )
+			{
+				Plugin plugin = PluginService.getPlugin( MyLutecePlugin.PLUGIN_NAME );
+				ConnectionLogHome.resetConnectionLogs( strIp, new Timestamp( Long.parseLong( strDateLogin ) ), Integer.parseInt( strInterval ), plugin );
+			}
+		}
+		return "../../" + getLoginPageUrl( );
+	}
 }

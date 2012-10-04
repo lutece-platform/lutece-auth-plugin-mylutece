@@ -5,14 +5,17 @@ import fr.paris.lutece.portal.service.datastore.DatastoreService;
 import fr.paris.lutece.portal.service.message.AdminMessage;
 import fr.paris.lutece.portal.service.message.AdminMessageService;
 import fr.paris.lutece.portal.service.plugin.Plugin;
+import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.portal.service.util.CryptoService;
 import fr.paris.lutece.util.ReferenceItem;
 import fr.paris.lutece.util.date.DateUtil;
 import fr.paris.lutece.util.password.PasswordUtil;
+import fr.paris.lutece.util.url.UrlItem;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
@@ -49,6 +52,12 @@ public class SecurityUtils
 	private static final String MARK_BANNED_DOMAIN_NAMES = "banned_domain_names";
 	private static final String MARK_ACCESS_FAILURES_CAPTCHA = "access_failures_captcha";
 
+	// PARAMETERS
+	private static final String PARAMETER_DATE_LOGIN = "date_login";
+	private static final String PARAMETER_IP = "ip";
+	private static final String PARAMETER_INTERVAL = "interval";
+	private static final String PARAMETER_KEY = "key";
+
     // MESSAGES
     private static final String MESSAGE_MINIMUM_PASSWORD_LENGTH = "mylutece.message.password.minimumPasswordLength";
     private static final String MESSAGE_PASSWORD_FORMAT = "mylutece.message.password.format";
@@ -66,6 +75,9 @@ public class SecurityUtils
     private static final String PROPERTY_DEFAULT_HISTORY_SIZE = "security.defaultValues.passwordHistorySize";
     private static final String PROPERTY_DEFAULT_PASSWORD_DURATION = "security.defaultValues.passwordDuration";
     private static final String PROPERTY_DEFAULT_ENCRYPTION_ALGORITHM = "security.defaultValues.algorithm";
+	private static final String PROPERTY_CRYPTO_KEY = "crypto.key";
+
+	private static final String JSP_URL_RESET_CONNECTION_LOG = "jsp/site/plugins/mylutece/DoResetConnectionLog.jsp";
 
     private static final String CONSTANT_DEFAULT_ENCRYPTION_ALGORITHM = "SHA-256";
 	private static final String SEMICOLON = ";";
@@ -647,5 +659,20 @@ public class SecurityUtils
 			return strDomainNames.split( SEMICOLON );
 		}
 		return null;
+	}
+
+	public static String buildResetConnectionLogUrl( int nInterval, HttpServletRequest request )
+	{
+		UrlItem url = new UrlItem( AppPathService.getBaseUrl( request ) + JSP_URL_RESET_CONNECTION_LOG );
+		String strIp = request.getRemoteAddr( );
+		String strDate = Long.toString( new Date( ).getTime( ) );
+		String strInterval = Integer.toString( nInterval );
+		url.addParameter( PARAMETER_IP, strIp );
+		url.addParameter( PARAMETER_DATE_LOGIN, strDate );
+		url.addParameter( PARAMETER_INTERVAL, strInterval );
+		String strCryptoKey = AppPropertiesService.getProperty( PROPERTY_CRYPTO_KEY );
+		url.addParameter( PARAMETER_KEY, CryptoService.encrypt( strIp + strDate + strInterval + strCryptoKey, AppPropertiesService.getProperty( PROPERTY_DEFAULT_ENCRYPTION_ALGORITHM,
+				CONSTANT_DEFAULT_ENCRYPTION_ALGORITHM ) ) );
+		return url.getUrl( );
 	}
 }

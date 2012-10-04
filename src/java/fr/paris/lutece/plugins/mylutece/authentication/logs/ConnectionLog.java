@@ -41,8 +41,9 @@ public class ConnectionLog
 {
     /////////////////////////////////////////////////////////////////////////////////
     // Constants
-    public static final int LOGIN_OK = 1;
+	public static final int LOGIN_OK = 10;
     public static final int LOGIN_DENIED = 0;
+	public static final int LOGIN_DENIED_CANCELED = 5;
     private String _strIpAddress;
     private java.sql.Timestamp _dateLogin;
     private int _nLoginStatus;
