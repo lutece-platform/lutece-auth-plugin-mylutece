@@ -1,28 +1,35 @@
-<div class="span-22 prepend-1 append-1 last">
-	<div class="portlet -lutece-border-radius append-bottom">
-		<h2>#i18n{mylutece.xpage.login_form.pageTitle}</h2>
-		
-		<form method="post" action="${url_dologin}">
-		<div class="hide">
-			<input type="hidden" name="page" value="mylutece" />
-			<input type="hidden" name="action" value="dologin" />
-		</div>
-		<br/>
-		<font color="red"><b>${error_message}</b><br/>${error_detail}</font>
-		<br/>
-		<br/>
-		<table width="50%">
-		 <tr>
-			<td align="right" ><b>#i18n{mylutece.xpage.login_form.labelAccessCode} : </b></td>
-			<td align="left" ><input type="text" name="username" class="-lutece-input -lutece-border-radius-mini" /></td>
-		 </tr>
-		 <tr>
-			<td align="right" ><b>#i18n{mylutece.xpage.login_form.labelPassword} </b></td>
-			<td align="left" ><input type="password" name="password" class="-lutece-input -lutece-border-radius-mini" /></td>
-		 </tr>
-		</table>
-		<br/><br/>
-		<input type="submit" name="Submit" value="#i18n{mylutece.xpage.login_form.labelButton}" class="-lutece-input -lutece-border-radius-mini" />
+<div class="row">
+	<div class="container">
+		<form class="form-horizontal span5" method="post" action="${url_dologin}">
+			<fieldset>
+				<legend>#i18n{mylutece.xpage.login_form.pageTitle}</legend>
+				<br/>
+				<font color="red"><b>${error_message}</b><br/>${error_detail}</font>
+				<br/>
+				<div class="control-group">
+					<label class="control-label">#i18n{mylutece.xpage.login_form.labelAccessCode} :</label>
+					<div class="controls">
+						<input type="text" name="username" class="-lutece-input -lutece-border-radius-mini" />
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label">#i18n{mylutece.xpage.login_form.labelPassword} :</label>
+					<div class="controls">
+						<input type="password" name="password" class="-lutece-input -lutece-border-radius-mini" /></td>
+					</div>
+				</div>
+				<#if is_active_captcha>
+					<div class="control-group">
+						${captcha}
+					</div>
+				</#if>
+				<br/><br/>
+				<div class="form-actions">
+					<input type="hidden" name="page" value="mylutece" />
+					<input type="hidden" name="action" value="dologin" />
+					<input type="submit" class="btn btn-primary" name="Submit" value="#i18n{mylutece.xpage.login_form.labelButton}" />
+				</div>
+			</fieldset>
 		</form>
 	</div>
 </div>

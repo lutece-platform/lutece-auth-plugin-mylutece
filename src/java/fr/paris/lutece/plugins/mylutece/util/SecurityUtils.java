@@ -44,9 +44,10 @@ public class SecurityUtils
     private static final String MARK_TIME_BEFORE_ALERT_ACCOUNT = "time_before_alert_account";
     private static final String MARK_NB_ALERT_ACCOUNT = "nb_alert_account";
     private static final String MARK_TIME_BETWEEN_ALERTS_ACCOUNT = "time_between_alerts_account";
-    private static final String MARK_ACCES_FAILURES_MAX = "access_failures_max";
-    private static final String MARK_ACCES_FAILURES_INTERVAL = "access_failures_interval";
+    private static final String MARK_ACCESS_FAILURES_MAX = "access_failures_max";
+    private static final String MARK_ACCESS_FAILURES_INTERVAL = "access_failures_interval";
 	private static final String MARK_BANNED_DOMAIN_NAMES = "banned_domain_names";
+	private static final String MARK_ACCESS_FAILURES_CAPTCHA = "access_failures_captcha";
 
     // MESSAGES
     private static final String MESSAGE_MINIMUM_PASSWORD_LENGTH = "mylutece.message.password.minimumPasswordLength";
@@ -109,10 +110,12 @@ public class SecurityUtils
         model.put( MARK_TIME_BETWEEN_ALERTS_ACCOUNT,
                 getIntegerSecurityParameter( parameterService, plugin, MARK_TIME_BETWEEN_ALERTS_ACCOUNT ) );
 
-        model.put( MARK_ACCES_FAILURES_MAX,
-                getIntegerSecurityParameter( parameterService, plugin, MARK_ACCES_FAILURES_MAX ) );
-        model.put( MARK_ACCES_FAILURES_INTERVAL,
-                getIntegerSecurityParameter( parameterService, plugin, MARK_ACCES_FAILURES_INTERVAL ) );
+        model.put( MARK_ACCESS_FAILURES_MAX,
+                getIntegerSecurityParameter( parameterService, plugin, MARK_ACCESS_FAILURES_MAX ) );
+        model.put( MARK_ACCESS_FAILURES_INTERVAL,
+                getIntegerSecurityParameter( parameterService, plugin, MARK_ACCESS_FAILURES_INTERVAL ) );
+        model.put( MARK_ACCESS_FAILURES_CAPTCHA,
+        		getIntegerSecurityParameter( parameterService, plugin, MARK_ACCESS_FAILURES_CAPTCHA ) );
 
         return model;
     }
@@ -159,11 +162,13 @@ public class SecurityUtils
         updateParameterValue( parameterService, plugin, MARK_TIME_BETWEEN_ALERTS_ACCOUNT,
                 request.getParameter( MARK_TIME_BETWEEN_ALERTS_ACCOUNT ) );
 
-        updateParameterValue( parameterService, plugin, MARK_ACCES_FAILURES_MAX,
-                request.getParameter( MARK_ACCES_FAILURES_MAX ) );
+        updateParameterValue( parameterService, plugin, MARK_ACCESS_FAILURES_MAX,
+                request.getParameter( MARK_ACCESS_FAILURES_MAX ) );
 
-        updateParameterValue( parameterService, plugin, MARK_ACCES_FAILURES_INTERVAL,
-                request.getParameter( MARK_ACCES_FAILURES_INTERVAL ) );
+        updateParameterValue( parameterService, plugin, MARK_ACCESS_FAILURES_INTERVAL,
+                request.getParameter( MARK_ACCESS_FAILURES_INTERVAL ) );
+        updateParameterValue ( parameterService, plugin, MARK_ACCESS_FAILURES_CAPTCHA,
+        		request.getParameter( MARK_ACCESS_FAILURES_CAPTCHA ) );
 
 	}
 

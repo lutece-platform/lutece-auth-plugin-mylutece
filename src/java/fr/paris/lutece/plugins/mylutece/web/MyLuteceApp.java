@@ -38,9 +38,11 @@ import fr.paris.lutece.plugins.mylutece.authentication.logs.ConnectionLog;
 import fr.paris.lutece.plugins.mylutece.authentication.logs.ConnectionLogHome;
 import fr.paris.lutece.plugins.mylutece.service.MyLutecePlugin;
 import fr.paris.lutece.portal.business.user.log.UserLog;
+import fr.paris.lutece.portal.service.captcha.CaptchaSecurityService;
 import fr.paris.lutece.portal.service.i18n.I18nService;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
+import fr.paris.lutece.portal.service.security.FailedLoginCaptchaException;
 import fr.paris.lutece.portal.service.security.LoginRedirectException;
 import fr.paris.lutece.portal.service.security.LuteceAuthentication;
 import fr.paris.lutece.portal.service.security.SecurityService;
@@ -59,6 +61,7 @@ import java.util.Map;
 import javax.security.auth.login.FailedLoginException;
 import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -78,6 +81,8 @@ public class MyLuteceApp implements XPageApplication
     private static final String MARK_URL_DOLOGIN = "url_dologin";
     private static final String MARK_LIST_AUTHENTICATIONS = "list_authentications";
     private static final String MARK_AUTH_PROVIDER = "auth_provider";
+	private static final String MARK_IS_ACTIVE_CAPTCHA = "is_active_captcha";
+	private static final String MARK_CAPTCHA = "captcha";
 
     // Parameters
     private static final String PARAMETER_ACTION = "action";
@@ -87,6 +92,8 @@ public class MyLuteceApp implements XPageApplication
     private static final String PARAMETER_ERROR_VALUE_INVALID = "invalid";
     private static final String PARAMETER_ERROR_MSG = "error_msg";
     private static final String PARAMETER_AUTH_PROVIDER = "auth_provider";
+	private static final String PARAMETER_IS_ACTIVE_CAPTCHA = "mylutece_is_active_captcha";
+	private static final String PARAMETER_ERROR_CAPTCHA = "error_captcha";
 
     // Actions
     private static final String ACTION_LOGIN = "login";
@@ -99,6 +106,7 @@ public class MyLuteceApp implements XPageApplication
     private static final String PROPERTY_MYLUTECE_PAGETITLE_LOGIN = "mylutece.pageTitle.login";
     private static final String PROPERTY_MYLUTECE_PATHLABEL_LOGIN = "mylutece.pagePathLabel.login";
     private static final String PROPERTY_MYLUTECE_MESSAGE_INVALID_LOGIN = "mylutece.message.error.invalid.login";
+	private static final String PROPERTY_MYLUTECE_MESSAGE_INVALID_CAPTCHA = "mylutece.message.error.invalid.captcha";
     private static final String PROPERTY_MYLUTECE_LOGIN_PAGE_URL = "mylutece.url.login.page";
     private static final String PROPERTY_MYLUTECE_DOLOGIN_URL = "mylutece.url.doLogin";
     private static final String PROPERTY_MYLUTECE_DOLOGOUT_URL = "mylutece.url.doLogout";
@@ -190,20 +198,45 @@ public class MyLuteceApp implements XPageApplication
         String strErrorMessage = "";
         String strErrorDetail = "";
 
-        if ( ( strError != null ) && ( strError.equals( PARAMETER_ERROR_VALUE_INVALID ) ) )
+		if ( strError != null )
         {
-            strErrorMessage = AppPropertiesService.getProperty( PROPERTY_MYLUTECE_MESSAGE_INVALID_LOGIN );
+			if ( strError.equals( PARAMETER_ERROR_VALUE_INVALID ) )
+			{
+				strErrorMessage = AppPropertiesService.getProperty( PROPERTY_MYLUTECE_MESSAGE_INVALID_LOGIN );
 
-            if ( request.getParameter( PARAMETER_ERROR_MSG ) != null )
-            {
-                strErrorDetail = request.getParameter( PARAMETER_ERROR_MSG );
-            }
+				if ( request.getParameter( PARAMETER_ERROR_MSG ) != null )
+				{
+					strErrorDetail = request.getParameter( PARAMETER_ERROR_MSG );
+				}
+			}
+			else if ( strError.equals( PARAMETER_ERROR_CAPTCHA ) )
+			{
+				strErrorMessage = I18nService.getLocalizedString( PROPERTY_MYLUTECE_MESSAGE_INVALID_CAPTCHA, request.getLocale( ) );
+			}
         }
+
+		HttpSession session = request.getSession( false );
+		Boolean bEnableCaptcha = Boolean.FALSE;
+		if ( session != null )
+		{
+			bEnableCaptcha = ( Boolean ) session.getAttribute( PARAMETER_IS_ACTIVE_CAPTCHA );
+			if ( bEnableCaptcha == null )
+			{
+				bEnableCaptcha = Boolean.FALSE;
+			}
+		}
 
         model.put( MARK_ERROR_MESSAGE, strErrorMessage );
         model.put( MARK_ERROR_DETAIL, strErrorDetail );
         model.put( MARK_URL_DOLOGIN, getDoLoginUrl(  ) );
         model.put( MARK_AUTH_PROVIDER, request.getParameter( PARAMETER_AUTH_PROVIDER ) );
+		model.put( MARK_IS_ACTIVE_CAPTCHA, bEnableCaptcha );
+		if ( bEnableCaptcha )
+		{
+			CaptchaSecurityService captchaService = new CaptchaSecurityService( );
+			model.put( MARK_CAPTCHA, captchaService.getHtmlCode( ) );
+		}
+
 
         HtmlTemplate template;
         
@@ -238,6 +271,19 @@ public class MyLuteceApp implements XPageApplication
         String strUsername = request.getParameter( PARAMETER_USERNAME );
         String strPassword = request.getParameter( PARAMETER_PASSWORD );
         String strAuthProvider = request.getParameter( PARAMETER_AUTH_PROVIDER );
+
+		String strReturn = "../../" + getLoginPageUrl( );
+
+		Boolean bIsCaptchaEnabled = ( Boolean ) request.getSession( true ).getAttribute( PARAMETER_IS_ACTIVE_CAPTCHA );
+		if ( bIsCaptchaEnabled != null && bIsCaptchaEnabled )
+		{
+			CaptchaSecurityService captchaService = new CaptchaSecurityService( );
+			if ( !captchaService.validate( request ) )
+			{
+				strReturn += "&" + PARAMETER_ERROR + "=" + PARAMETER_ERROR_CAPTCHA;
+			}
+		}
+
         Plugin plugin = PluginService.getPlugin( MyLutecePlugin.PLUGIN_NAME );
         try
         {
@@ -256,7 +302,7 @@ public class MyLuteceApp implements XPageApplication
             connectionLog.setLoginStatus( UserLog.LOGIN_DENIED ); // will be inserted only if access denied
             ConnectionLogHome.addUserLog( connectionLog, plugin );
 
-            String strReturn = "../../" + getLoginPageUrl(  ) + "&" + PARAMETER_ERROR + "=" +
+			strReturn += "&" + PARAMETER_ERROR + "=" +
                 PARAMETER_ERROR_VALUE_INVALID;
             
             if ( StringUtils.isNotBlank( strAuthProvider ) )
@@ -269,12 +315,17 @@ public class MyLuteceApp implements XPageApplication
                 String strMessage = "&" + PARAMETER_ERROR_MSG + "=" + ex.getMessage(  );
                 strReturn += strMessage;
             }
+			if ( ex instanceof FailedLoginCaptchaException )
+			{
+				Boolean bEnableCaptcha = ( ( FailedLoginCaptchaException ) ex ).isCaptchaEnabled( );
+				request.getSession( true ).setAttribute( PARAMETER_IS_ACTIVE_CAPTCHA, bEnableCaptcha );
+			}
 
             return strReturn;
         }
         catch ( LoginException ex )
         {
-            String strReturn = "../../" + getLoginPageUrl(  ) + "&" + PARAMETER_ERROR + "=" +
+			strReturn += "&" + PARAMETER_ERROR + "=" +
                 PARAMETER_ERROR_VALUE_INVALID;
             
             if ( StringUtils.isNotBlank( strAuthProvider ) )
@@ -291,6 +342,12 @@ public class MyLuteceApp implements XPageApplication
 
             return strReturn;
         }
+
+		HttpSession session = request.getSession( false );
+		if ( session != null )
+		{
+			session.removeAttribute( PARAMETER_IS_ACTIVE_CAPTCHA );
+		}
 
         String strNextUrl = PortalJspBean.getLoginNextUrl( request );
 
