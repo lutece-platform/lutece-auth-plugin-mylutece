@@ -51,7 +51,9 @@ public class SecurityUtils
     private static final String MARK_ACCESS_FAILURES_INTERVAL = "access_failures_interval";
 	private static final String MARK_BANNED_DOMAIN_NAMES = "banned_domain_names";
 	private static final String MARK_ACCESS_FAILURES_CAPTCHA = "access_failures_captcha";
-
+	private static final String MARK_ENABLE_UNBLOCK_IP = "enable_unblock_ip";
+	private static final String MARK_NOTIFY_USER_PASSWORD_EXPIRED = "notify_user_password_expired";
+	
 	// PARAMETERS
 	private static final String PARAMETER_DATE_LOGIN = "date_login";
 	private static final String PARAMETER_IP = "ip";
@@ -110,6 +112,8 @@ public class SecurityUtils
             model.put( MARK_PASSWORD_HISTORY_SIZE, getPasswordHistorySize( parameterService, plugin ) );
             model.put( MARK_MAXIMUM_NUMBER_PASSWORD_CHANGE, getMaximumNumberPasswordChange( parameterService, plugin ) );
             model.put( MARK_TSW_SIZE_PASSWORD_CHANGE, getTSWSizePasswordChange( parameterService, plugin ) );
+            model.put( MARK_NOTIFY_USER_PASSWORD_EXPIRED,
+            		getBooleanSecurityParameter( parameterService, plugin, MARK_NOTIFY_USER_PASSWORD_EXPIRED ) );
         }
         model.put( MARK_ACCOUNT_LIFE_TIME,
                 getIntegerSecurityParameter( parameterService, plugin, MARK_ACCOUNT_LIFE_TIME ) );
@@ -128,7 +132,9 @@ public class SecurityUtils
                 getIntegerSecurityParameter( parameterService, plugin, MARK_ACCESS_FAILURES_INTERVAL ) );
         model.put( MARK_ACCESS_FAILURES_CAPTCHA,
         		getIntegerSecurityParameter( parameterService, plugin, MARK_ACCESS_FAILURES_CAPTCHA ) );
-
+        model.put( MARK_ENABLE_UNBLOCK_IP,
+        		getBooleanSecurityParameter( parameterService, plugin, MARK_ENABLE_UNBLOCK_IP ) );
+        
         return model;
     }
 
@@ -157,6 +163,8 @@ public class SecurityUtils
                     request.getParameter( MARK_MAXIMUM_NUMBER_PASSWORD_CHANGE ) );
             updateParameterValue( parameterService, plugin, MARK_TSW_SIZE_PASSWORD_CHANGE,
                     request.getParameter( MARK_TSW_SIZE_PASSWORD_CHANGE ) );
+            updateParameterValue( parameterService, plugin, MARK_NOTIFY_USER_PASSWORD_EXPIRED,
+            		request.getParameter( MARK_NOTIFY_USER_PASSWORD_EXPIRED ) );
         }
         // Time of life of accounts 
         updateParameterValue( parameterService, plugin, MARK_ACCOUNT_LIFE_TIME,
@@ -181,7 +189,9 @@ public class SecurityUtils
                 request.getParameter( MARK_ACCESS_FAILURES_INTERVAL ) );
         updateParameterValue ( parameterService, plugin, MARK_ACCESS_FAILURES_CAPTCHA,
         		request.getParameter( MARK_ACCESS_FAILURES_CAPTCHA ) );
-
+        updateParameterValue( parameterService, plugin, MARK_ENABLE_UNBLOCK_IP,
+        		request.getParameter( MARK_ENABLE_UNBLOCK_IP ) );
+        
 	}
 
     /**
@@ -472,6 +482,7 @@ public class SecurityUtils
         updateParameterValue( parameterService, plugin, MARK_ENABLE_PASSWORD_ENCRYPTION, Boolean.TRUE.toString( ) );
         updateParameterValue( parameterService, plugin, MARK_ENCRYPTION_ALGORITHM, AppPropertiesService.getProperty(
                 PROPERTY_DEFAULT_ENCRYPTION_ALGORITHM, CONSTANT_DEFAULT_ENCRYPTION_ALGORITHM ) );
+		updateParameterValue( parameterService, plugin, MARK_NOTIFY_USER_PASSWORD_EXPIRED, Boolean.TRUE.toString( ) );
 
     }
 
@@ -488,6 +499,7 @@ public class SecurityUtils
         updateParameterValue( parameterService, plugin, MARK_PASSWORD_FORMAT, StringUtils.EMPTY );
         updateParameterValue( parameterService, plugin, MARK_PASSWORD_HISTORY_SIZE, StringUtils.EMPTY );
         updateParameterValue( parameterService, plugin, MARK_TSW_SIZE_PASSWORD_CHANGE, StringUtils.EMPTY );
+		updateParameterValue( parameterService, plugin, MARK_NOTIFY_USER_PASSWORD_EXPIRED, StringUtils.EMPTY );
     }
 
     /**
@@ -661,6 +673,12 @@ public class SecurityUtils
 		return null;
 	}
 
+	/**
+	 * Build an url to reset connection logs for an IP and a given user. Data are red from the request.
+	 * @param nInterval Interval of time to reset
+	 * @param request The request
+	 * @return The url to reset connection logs.
+	 */
 	public static String buildResetConnectionLogUrl( int nInterval, HttpServletRequest request )
 	{
 		UrlItem url = new UrlItem( AppPathService.getBaseUrl( request ) + JSP_URL_RESET_CONNECTION_LOG );

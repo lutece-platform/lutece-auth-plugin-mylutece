@@ -73,17 +73,29 @@ public interface IAccountLifeTimeService
     List<Integer> getIdUsersToSendOtherAlert( Timestamp alertMaxDate, Timestamp timeBetweenAlerts,
             int maxNumberAlerts );
 
-    /**
-     * Increment the number of alert send to users by 1
-     * @param listIdUser The list of users to update
-     */
+	/**
+	 * Get the list of id of users that have an expired password but not the change password flag
+	 * @param currentTimestamp Timestamp describing the current time.
+	 * @return the list of id of users with expired passwords
+	 */
+	List<Integer> getIdUsersWithExpiredPasswordsList( Timestamp currentTimestamp );
+
+	/**
+	 * Increment the number of alert send to users by 1
+	 * @param listIdUser The list of users to update
+	 */
     void updateNbAlert( List<Integer> listIdUser );
 
-    /**
-     * Set a user account status as expired. Expired user will be anonymized by
-     * an anonymization daemon
-     * @param listIdUser User accounts list to set as expired
-     */
+	/**
+	 * Set the "change password" flag of users to true
+	 * @param listIdUser List of user's id to update
+	 */
+	void updateChangePassword( List<Integer> listIdUser );
+
+	/**
+	 * Set a user account status as expired. Expired user will be anonymized by an anonymization daemon
+	 * @param listIdUser User accounts list to set as expired
+	 */
     void setUserStatusExpired( List<Integer> listIdUser );
 
     /**
@@ -106,11 +118,17 @@ public interface IAccountLifeTimeService
      */
     String getOtherAlertMailBody( );
 
-    /**
-     * Add specifiques parameters to a given model
-     * @param model The model
-     * @param nIdUser The id of the user to add the parameters
-     */
+	/**
+	 * Get the body of the mail to send when a password expired
+	 * @return The body of the mail to send
+	 */
+	String getPasswordExpiredMailBody( );
+
+	/**
+	 * Add specifiques parameters to a given model
+	 * @param model The model
+	 * @param nIdUser The id of the user to add the parameters
+	 */
     void addParametersToModel( Map<String, String> model, Integer nIdUser );
 
     /**
