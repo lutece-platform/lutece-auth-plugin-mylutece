@@ -13,6 +13,8 @@ import fr.paris.lutece.util.date.DateUtil;
 import fr.paris.lutece.util.password.PasswordUtil;
 import fr.paris.lutece.util.url.UrlItem;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
@@ -23,12 +25,10 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
-
 
 /**
  * Util for security parameters
- * 
+ *
  */
 public class SecurityUtils
 {
@@ -53,7 +53,7 @@ public class SecurityUtils
 	private static final String MARK_ACCESS_FAILURES_CAPTCHA = "access_failures_captcha";
 	private static final String MARK_ENABLE_UNBLOCK_IP = "enable_unblock_ip";
 	private static final String MARK_NOTIFY_USER_PASSWORD_EXPIRED = "notify_user_password_expired";
-	
+
 	// PARAMETERS
 	private static final String PARAMETER_DATE_LOGIN = "date_login";
 	private static final String PARAMETER_IP = "ip";
@@ -134,7 +134,7 @@ public class SecurityUtils
         		getIntegerSecurityParameter( parameterService, plugin, MARK_ACCESS_FAILURES_CAPTCHA ) );
         model.put( MARK_ENABLE_UNBLOCK_IP,
         		getBooleanSecurityParameter( parameterService, plugin, MARK_ENABLE_UNBLOCK_IP ) );
-        
+
         return model;
     }
 
@@ -166,7 +166,7 @@ public class SecurityUtils
             updateParameterValue( parameterService, plugin, MARK_NOTIFY_USER_PASSWORD_EXPIRED,
             		request.getParameter( MARK_NOTIFY_USER_PASSWORD_EXPIRED ) );
         }
-        // Time of life of accounts 
+        // Time of life of accounts
         updateParameterValue( parameterService, plugin, MARK_ACCOUNT_LIFE_TIME,
                 request.getParameter( MARK_ACCOUNT_LIFE_TIME ) );
 
@@ -191,7 +191,7 @@ public class SecurityUtils
         		request.getParameter( MARK_ACCESS_FAILURES_CAPTCHA ) );
         updateParameterValue( parameterService, plugin, MARK_ENABLE_UNBLOCK_IP,
         		request.getParameter( MARK_ENABLE_UNBLOCK_IP ) );
-        
+
 	}
 
     /**
@@ -528,13 +528,13 @@ public class SecurityUtils
      */
     public static Timestamp getAccountMaxValidDate( IUserParameterService parameterService, Plugin plugin )
     {
-        int nbMonthsPasswordValid = getIntegerSecurityParameter( parameterService, plugin, MARK_ACCOUNT_LIFE_TIME );
-        if ( nbMonthsPasswordValid <= 0 )
+        int nbDaysPasswordValid = getIntegerSecurityParameter( parameterService, plugin, MARK_ACCOUNT_LIFE_TIME );
+        if ( nbDaysPasswordValid <= 0 )
         {
             return null;
         }
         Calendar calendare = new GregorianCalendar( Locale.getDefault( ) );
-        calendare.add( Calendar.MONTH, nbMonthsPasswordValid );
+        calendare.add( Calendar.DAY_OF_MONTH, nbDaysPasswordValid );
         return new Timestamp( calendare.getTimeInMillis( ) );
     }
 
