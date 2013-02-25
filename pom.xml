@@ -40,7 +40,7 @@
 	<properties>
 		<componentName>mylutece</componentName>
 		<jiraProjectName>MYLUTECE</jiraProjectName>
-		<jiraComponentId>10050</jiraComponentId>
+		<jiraComponentId>10165</jiraComponentId>
 	</properties>
 
     <scm>
