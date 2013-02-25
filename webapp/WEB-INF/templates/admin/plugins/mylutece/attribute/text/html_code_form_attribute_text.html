@@ -1,11 +1,12 @@
-<p>
-	<label for="attribute_${attribute.idAttribute}">	
+<div class="control-group">
+	<label class="control-label" for="attribute_${attribute.idAttribute}">	
 			${attribute.title}
 			<#if attribute.mandatory>
 				*
 			</#if>
 			 : 
 	</label>
+	<div class="controls">
 	<#list attribute.listAttributeFields as attributeField>
 		<input type="text" name="attribute_${attribute.idAttribute}" id="attribute_${attribute.idAttribute}" size="${attributeField.width}" 
 			<#if attributeField.value?exists && !default_values_list?has_content>
@@ -23,8 +24,7 @@
 			/>
 	</#list>
 	<#if attribute.helpMessage?exists&&attribute.helpMessage!=''>
-		<br />
-		<label>&nbsp;</label>
-		${attribute.helpMessage}
+		<span class="help-block">${attribute.helpMessage}</span>
 	</#if>
-</p>
+	</div>
+</div>
