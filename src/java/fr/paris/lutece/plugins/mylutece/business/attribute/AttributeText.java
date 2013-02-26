@@ -234,11 +234,15 @@ public class AttributeText extends AbstractAttribute
 		MyLuteceUserField userField = new MyLuteceUserField(  );
 		Plugin plugin = PluginService.getPlugin( MyLutecePlugin.PLUGIN_NAME );
 		List<AttributeField> listAttributeFields = AttributeFieldHome.selectAttributeFieldsByIdAttribute( _nIdAttribute, plugin );
-        String strValue = values[0];
-		if ( strValue == null )
+        String strValue;
+        if ( values == null || values[0] == null )
 		{
 			strValue = EMPTY_STRING;
 		}
+        else
+        {
+            strValue = values[0];
+        }
 		
 		userField.setUserId( nIdUser );
 		userField.setAttribute( this );
