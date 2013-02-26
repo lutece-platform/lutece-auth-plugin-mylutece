@@ -51,8 +51,6 @@ import java.util.Locale;
  */
 public class RoleResourceIdService extends ResourceIdService
 {
-    public static final String PLUGIN_NAME = "mylutece";
-
     /** Permission assign role */
     public static final String PERMISSION_ASSIGN_ROLE = "ASSIGN_ROLE";
     private static final String PROPERTY_LABEL_RESOURCE_TYPE = "mylutece.resourceType.role.label";
@@ -61,7 +59,7 @@ public class RoleResourceIdService extends ResourceIdService
     /** Creates a new instance of RoleResourceIdService */
     public RoleResourceIdService(  )
     {
-        setPluginName( PLUGIN_NAME );
+        setPluginName( MyLutecePlugin.PLUGIN_NAME );
     }
 
     /**
@@ -71,7 +69,7 @@ public class RoleResourceIdService extends ResourceIdService
     {
         ResourceType rt = new ResourceType(  );
         rt.setResourceIdServiceClass( RoleResourceIdService.class.getName(  ) );
-        rt.setPluginName( PLUGIN_NAME );
+        rt.setPluginName( MyLutecePlugin.PLUGIN_NAME );
         rt.setResourceTypeKey( Role.RESOURCE_TYPE );
         rt.setResourceTypeLabelKey( PROPERTY_LABEL_RESOURCE_TYPE );
 

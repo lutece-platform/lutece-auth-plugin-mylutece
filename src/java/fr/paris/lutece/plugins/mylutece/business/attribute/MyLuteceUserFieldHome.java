@@ -48,76 +48,85 @@ public class MyLuteceUserFieldHome
 {
     private static IMyLuteceUserFieldDAO _dao = SpringContextService.getBean( "mylutece.myLuteceUserFieldDAO" );
 
-	/**
-	 * Load the user field
-	 * @param nIdUserField ID
-	 * @return MyLuteceUserField
-	 */
+    /**
+     * Load the user field
+     * @param nIdUserField ID
+     * @param locale the locale
+     * @param plugin The plugin
+     * @return MyLuteceUserField
+     */
 	public static MyLuteceUserField findByPrimaryKey( int nIdUserField, Locale locale, Plugin plugin )
 	{
 		return _dao.load( nIdUserField, locale, plugin );
 	}
-		
-	/**
-	 * Insert a new user field
-	 * @param userField the user field
-	 */
+
+    /**
+     * Insert a new user field
+     * @param userField the user field
+     * @param plugin The plugin
+     */
 	public static void create( MyLuteceUserField userField, Plugin plugin )
 	{
 		_dao.insert( userField, plugin );
 	}
-	
-	/**
-	 * Update an user field 
-	 * @param attribute the attribute
-	 */
+
+    /**
+     * Update an user field
+     * @param userField the user field
+     * @param plugin The plugin
+     */
 	public static void update( MyLuteceUserField userField, Plugin plugin )
 	{
 		_dao.store( userField, plugin );
 	}
-	
-	/**
-	 * Delete an attribute
-	 * @param nIdUserField the ID of the user field
-	 */
+
+    /**
+     * Delete an attribute
+     * @param nIdUserField the ID of the user field
+     * @param plugin The plugin
+     */
 	public static void remove( int nIdUserField, Plugin plugin )
 	{
 		_dao.delete( nIdUserField, plugin );
 	}
-	
-	/**
-	 * Delete all user fields from given id field
-	 * @param nIdField id field
-	 */
+
+    /**
+     * Delete all user fields from given id field
+     * @param nIdField id field
+     * @param plugin The plugin
+     */
 	public static void removeUserFieldsFromIdField( int nIdField, Plugin plugin )
 	{
 		_dao.deleteUserFieldsFromIdField( nIdField, plugin );
 	}
-	
-	/**
-	 * Delete all user fields from given id user
-	 * @param nIdUser id user
-	 */
+
+    /**
+     * Delete all user fields from given id user
+     * @param nIdUser id user
+     * @param plugin The plugin
+     */
 	public static void removeUserFieldsFromIdUser( int nIdUser, Plugin plugin )
 	{
 		_dao.deleteUserFieldsFromIdUser( nIdUser, plugin );
 	}
-	
-	/**
-	 * Delete all user fields from given id attribute
-	 * @param nIdAttribute id attribute
-	 */
+
+    /**
+     * Delete all user fields from given id attribute
+     * @param nIdAttribute id attribute
+     * @param plugin The plugin
+     */
 	public static void removeUserFieldsFromIdAttribute( int nIdAttribute, Plugin plugin )
 	{
 		_dao.deleteUserFieldsFromIdAttribute( nIdAttribute, plugin );
 	}
 
-	/**
-	 * Load all the user field by a given ID user and a given ID attribute
-	 * @param nIdUser the ID user
-	 * @param nIdAttribute
-	 * @return a list of adminuserfield
-	 */
+    /**
+     * Load all the user field by a given ID user and a given ID attribute
+     * @param nIdUser the ID user
+     * @param nIdAttribute The id of the attribute
+     * @param plugin The plugin
+     * @return a list of adminuserfield
+     */
 	public static List<MyLuteceUserField> selectUserFieldsByIdUserIdAttribute( int nIdUser, int nIdAttribute, Plugin plugin )
 	{
 		return _dao.selectUserFieldsByIdUserIdAttribute( nIdUser, nIdAttribute, plugin );

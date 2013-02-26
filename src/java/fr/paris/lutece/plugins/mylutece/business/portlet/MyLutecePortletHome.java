@@ -39,6 +39,9 @@ import fr.paris.lutece.portal.business.portlet.PortletTypeHome;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 
 
+/**
+ * Home for MyLutece portlet
+ */
 public class MyLutecePortletHome extends PortletHome
 {
     // Static variable pointed at the DAO instance

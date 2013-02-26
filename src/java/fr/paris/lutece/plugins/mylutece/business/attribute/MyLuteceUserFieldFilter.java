@@ -1,5 +1,11 @@
 package fr.paris.lutece.plugins.mylutece.business.attribute;
 
+import fr.paris.lutece.plugins.mylutece.service.MyLutecePlugin;
+import fr.paris.lutece.portal.service.plugin.Plugin;
+import fr.paris.lutece.portal.service.plugin.PluginService;
+import fr.paris.lutece.portal.service.util.AppPropertiesService;
+import fr.paris.lutece.util.url.UrlItem;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -7,12 +13,6 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
-
-import fr.paris.lutece.plugins.mylutece.service.MyLutecePlugin;
-import fr.paris.lutece.portal.service.plugin.Plugin;
-import fr.paris.lutece.portal.service.plugin.PluginService;
-import fr.paris.lutece.portal.service.util.AppPropertiesService;
-import fr.paris.lutece.util.url.UrlItem;
 
 /**
  * 
@@ -82,9 +82,9 @@ public class MyLuteceUserFieldFilter
 		}
 	}
 
-	/**
+    /**
      * Build url attributes
-     * @param the url
+     * @param url the url
      */
     public void setUrlAttributes( UrlItem url )
     {

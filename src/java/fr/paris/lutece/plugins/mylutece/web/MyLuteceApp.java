@@ -101,7 +101,6 @@ public class MyLuteceApp implements XPageApplication
 	private static final String PARAMETER_KEY = "key";
 
     // Actions
-    private static final String ACTION_LOGIN = "login";
     private static final String ACTION_CREATE_ACCOUNT = "createAccount";
     private static final String ACTION_VIEW_ACCOUNT = "viewAccount";
     private static final String ACTION_LOST_PASSWORD = "lostPassword";
@@ -556,6 +555,11 @@ public class MyLuteceApp implements XPageApplication
         return AppPropertiesService.getProperty( PROPERTY_MYLUTECE_TEMPLATE_ACCESS_CONTROLED );
     }
 
+    /**
+     * Reset the connection log of an IP.
+     * @param request The request
+     * @return The URL of the next page to display
+     */
 	public String doResetConnectionLog( HttpServletRequest request )
 	{
 		String strIp = request.getParameter( PARAMETER_IP );

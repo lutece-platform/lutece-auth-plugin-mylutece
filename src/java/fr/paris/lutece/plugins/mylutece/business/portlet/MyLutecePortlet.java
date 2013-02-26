@@ -33,9 +33,6 @@
  */
 package fr.paris.lutece.plugins.mylutece.business.portlet;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import fr.paris.lutece.plugins.mylutece.authentication.MultiLuteceAuthentication;
 import fr.paris.lutece.portal.business.portlet.Portlet;
 import fr.paris.lutece.portal.service.security.LuteceAuthentication;
@@ -43,11 +40,17 @@ import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.security.SecurityService;
 import fr.paris.lutece.util.xml.XmlUtil;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.ObjectUtils;
 
 
+/**
+ * MyLutecePortlet
+ */
 public class MyLutecePortlet extends Portlet
 {
     private static final String TAG_MY_LUTECE_PORTLET = "mylutece-portlet";

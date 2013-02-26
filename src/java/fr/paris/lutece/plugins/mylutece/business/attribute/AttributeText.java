@@ -224,7 +224,7 @@ public class AttributeText extends AbstractAttribute
 
     /**
      * Get the data of the user fields
-     * @param request HttpServletRequest
+     * @param values The values of user fields
      * @param nIdUser Id of the user
      * @return user field data
      */

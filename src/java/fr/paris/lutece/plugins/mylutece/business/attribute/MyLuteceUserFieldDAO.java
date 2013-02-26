@@ -84,9 +84,10 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
 	private static final String SQL_QUERY_DELETE_FROM_ID_FIELD = " DELETE FROM mylutece_user_field WHERE id_field = ? ";
 	private static final String SQL_QUERY_DELETE_FROM_ID_USER = " DELETE FROM mylutece_user_field WHERE id_user = ? ";
 	private static final String SQL_QUERY_DELETE_FROM_ID_ATTRIBUTE = " DELETE FROM mylutece_user_field WHERE id_attribute = ? ";
-	
-	/**
-     * Generate a new PK 
+
+    /**
+     * Generate a new PK
+     * @param plugin The plugin
      * @return The new ID
      */
 	private int newPrimaryKey( Plugin plugin )
@@ -106,12 +107,11 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
 
         return nKey;
     }
-	
-	/**
-	 * Load the user field
-	 * @param nIdUserField ID
-	 * @return MyLuteceUserField
-	 */
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
 	public MyLuteceUserField load( int nIdUserField, Locale locale, Plugin plugin )
 	{
 		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin );
@@ -172,12 +172,11 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
         
         return userField;
 	}
-		
-	/**
-	 * Insert a new user field
-	 * @param userField the user field
-	 * @return new PK
-	 */
+
+    /**
+     * {@inheritDoc}
+     */
+	@Override
 	public void insert( MyLuteceUserField userField, Plugin plugin )
 	{
 		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, plugin );
@@ -190,11 +189,11 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
 		daoUtil.executeUpdate(  );
 		daoUtil.free(  );
 	}
-	
-	/**
-	 * Update an user field 
-	 * @param attribute the attribute
-	 */
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
 	public void store( MyLuteceUserField userField, Plugin plugin )
 	{
 		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin );
@@ -205,10 +204,10 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
 		daoUtil.free(  );
 	}
 	
-	/**
-	 * Delete an attribute
-	 * @param nIdUserField the ID of the user field
-	 */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
 	public void delete( int nIdUserField, Plugin plugin )
 	{
 		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin );
@@ -218,10 +217,10 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
 		daoUtil.free(  );
 	}
 	
-	/**
-	 * Delete all user fields from given id field
-	 * @param nIdField id field
-	 */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
 	public void deleteUserFieldsFromIdField( int nIdField, Plugin plugin )
 	{
 		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE_FROM_ID_FIELD, plugin );
@@ -231,10 +230,10 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
 		daoUtil.free(  );
 	}
 	
-	/**
-	 * Delete all user fields from given id user
-	 * @param nIdUser id user
-	 */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
 	public void deleteUserFieldsFromIdUser( int nIdUser, Plugin plugin )
 	{
 		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE_FROM_ID_USER, plugin );
@@ -244,10 +243,10 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
 		daoUtil.free(  );
 	}
 	
-	/**
-	 * Delete all user fields from given id attribute
-	 * @param nIdUser id user
-	 */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
 	public void deleteUserFieldsFromIdAttribute( int nIdAttribute, Plugin plugin )
 	{
 		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE_FROM_ID_ATTRIBUTE, plugin );
@@ -257,12 +256,10 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
 		daoUtil.free(  );
 	}
 
-	/**
-	 * Load all the user field by a given ID user
-	 * @param nIdUser the ID user
-	 * @param nIdAttribute the ID attribute
-	 * @return a list of adminuserfield
-	 */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
 	public List<MyLuteceUserField> selectUserFieldsByIdUserIdAttribute( int nIdUser, int nIdAttribute, Plugin plugin )
 	{
 		DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_USER_FIELDS_BY_ID_USER_ID_ATTRIBUTE, plugin );
@@ -322,16 +319,14 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
         return listUserFields;
 	}
 
-	/**
-	 * Load users by a given filter
-	 * @param mlFieldFilter the filter
-	 * @param plugin Plugin
-	 * @return a list of users
-	 */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
 	public List<Integer> selectUsersByFilter( MyLuteceUserFieldFilter mlFieldFilter, Plugin plugin )
 	{
 		List<MyLuteceUserField> listUserFields = mlFieldFilter.getListUserFields(  );
-		if ( listUserFields == null || ( listUserFields != null && listUserFields.size(  ) == 0 ) ) 
+        if ( listUserFields == null || listUserFields.size( ) == 0 )
 		{
 			return null;
 		}

@@ -55,11 +55,11 @@ public class MyLuteceUserField
 	{
 		return _nUserId;
 	}
-	
-	/**
-	 * Set user
-	 * @param user user
-	 */
+
+    /**
+     * Set user
+     * @param nUserId The id of the user
+     */
 	public void setUserId( int nUserId )
 	{
 		_nUserId = nUserId;

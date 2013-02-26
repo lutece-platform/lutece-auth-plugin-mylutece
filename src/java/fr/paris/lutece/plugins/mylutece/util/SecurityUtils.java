@@ -13,8 +13,6 @@ import fr.paris.lutece.util.date.DateUtil;
 import fr.paris.lutece.util.password.PasswordUtil;
 import fr.paris.lutece.util.url.UrlItem;
 
-import org.apache.commons.lang.StringUtils;
-
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
@@ -24,6 +22,8 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
 
 
 /**
@@ -341,17 +341,14 @@ public class SecurityUtils
         {
             return 0;
         }
-        else
+        try
         {
-            try
-            {
-                int nValue = Integer.parseInt( refItem.getName( ) );
-                return nValue;
-            }
-            catch ( NumberFormatException e )
-            {
-                return 0;
-            }
+            int nValue = Integer.parseInt( refItem.getName( ) );
+            return nValue;
+        }
+        catch ( NumberFormatException e )
+        {
+            return 0;
         }
     }
 

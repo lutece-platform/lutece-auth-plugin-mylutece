@@ -91,13 +91,13 @@ public class MyLuteceUserFieldService
         
         return null;
 	}
-	
-	/**
-	 * Create the user fields
-	 * @param user Adminuser
-	 * @param request HttpServletRequest
-	 * @param locale locale
-	 */
+
+    /**
+     * Create the user fields
+     * @param nIdUser The id of the user
+     * @param request HttpServletRequest
+     * @param locale locale
+     */
 	public static void doCreateUserFields( int nIdUser, HttpServletRequest request, Locale locale )
     {
 		// Attributes created in the Back-Office
@@ -121,13 +121,13 @@ public class MyLuteceUserFieldService
         }
     }
 
-	/**
-	 * Modify the user fields
-	 * @param user AdminUser
-	 * @param request HttpServletRequest
-	 * @param locale locale
-	 * @param currentUser current user
-	 */
+    /**
+     * Modify the user fields
+     * @param nIdUser The id of the user
+     * @param request HttpServletRequest
+     * @param locale locale
+     * @param currentUser current user
+     */
 	public static void doModifyUserFields( int nIdUser, HttpServletRequest request, Locale locale, AdminUser currentUser )
 	{
 		// Remove all user fields
@@ -154,12 +154,12 @@ public class MyLuteceUserFieldService
         }
 	}
 
-	/**
-	 * Remove the user fields
-	 * @param user Adminuser
-	 * @param request HttpServletRequest
-	 * @param locale locale
-	 */
+    /**
+     * Remove the user fields
+     * @param nIdUser The id of the user
+     * @param request HttpServletRequest
+     * @param locale locale
+     */
 	public static void doRemoveUserFields( int nIdUser, HttpServletRequest request, Locale locale )
 	{
 		MyLuteceUserFieldHome.removeUserFieldsFromIdUser( nIdUser, getMyLutecePlugin(  ) );
@@ -173,7 +173,7 @@ public class MyLuteceUserFieldService
 
     /**
      * Remove the user fields
-     * @param user Adminuser
+     * @param nIdUser The id of the user
      * @param locale locale
      */
     public static void doRemoveUserFields( int nIdUser, Locale locale )

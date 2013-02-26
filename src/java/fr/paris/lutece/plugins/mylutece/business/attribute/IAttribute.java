@@ -229,5 +229,12 @@ public interface IAttribute
      */
     boolean isAnonymizable( );
 
+    /**
+     * Get user fields objects from values
+     * @param values The values of user fields. May contain either the value of
+     *            the user field or its title
+     * @param nIdUser The id of the user
+     * @return The user fields
+     */
     List<MyLuteceUserField> getUserFieldsData( String[] values, int nIdUser );
 }
