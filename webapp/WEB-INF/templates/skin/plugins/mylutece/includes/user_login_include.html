@@ -22,15 +22,17 @@
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b></a>
 			<ul class="dropdown-menu">
                 <li>
-					<form method="post" action="${url_dologin}">
-					<input type="hidden" name="page" value="mylutece" />
-					<input type="hidden" name="action" value="dologin" />
-					<label for="mylutece_user_login_include_username">#i18n{mylutece.user_login_include.labelAccessCode} : </label>
-					<input type="text" class="span2" id="mylutece_user_login_include_username" name="username" />
-					<label for="mylutece_user_login_include_password">#i18n{mylutece.user_login_include.labelPassword} : </label>
-					<input type="password" class="span2" id="mylutece_user_login_include_password" name="password" />
-					<button type="submit" class="btn btn-small" name="Submit" >#i18n{mylutece.user_login_include.labelButton}</button>
-					</div>
+					<form class="form-in-dropdown" method="post" action="${url_dologin}">
+						<input type="hidden" name="page" value="mylutece" />
+						<input type="hidden" name="action" value="dologin" />
+						
+						<label for="mylutece_user_login_include_username">#i18n{mylutece.user_login_include.labelAccessCode} : </label>
+						<input type="text" class="span2" id="mylutece_user_login_include_username" name="username" placeholder="#i18n{mylutece.user_login_include.labelAccessCode}" />
+						
+						<label for="mylutece_user_login_include_password">#i18n{mylutece.user_login_include.labelPassword} : </label>
+						<input type="password" class="span2" id="mylutece_user_login_include_password" name="password" placeholder="#i18n{mylutece.user_login_include.labelPassword}" />
+						
+						<button type="submit" class="btn btn-primary btn-small" name="Submit" >#i18n{mylutece.user_login_include.labelButton}</button>
 					</form>
 				</li>
 			</ul>
