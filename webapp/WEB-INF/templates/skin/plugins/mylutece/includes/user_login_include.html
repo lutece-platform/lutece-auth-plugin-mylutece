@@ -14,9 +14,13 @@
 				<#assign labelUserName = userHomeMail >
 			</#if>
 		</#if>
-		<li>#i18n{mylutece.user_login_include.labelWelcome}	${labelUserName} </li>
-		<li>#i18n{mylutece.user_login_include.labelLastLogin} : <#if (user.getUserInfo('user.lastLogin'))?has_content>${user.getUserInfo('user.lastLogin')}<#else>#i18n{mylutece.user_login_include.labelNever}</#if></li>
-		<li><a href="${url_dologout}">#i18n{mylutece.user_login_include.labelLogout}</a></li>
+		<li>
+			#i18n{mylutece.user_login_include.labelWelcome}	${labelUserName} <br />
+			#i18n{mylutece.user_login_include.labelLastLogin} : <#if (user.getUserInfo('user.lastLogin'))?has_content>${user.getUserInfo('user.lastLogin')}<#else>#i18n{mylutece.user_login_include.labelNever}</#if>
+		</li>
+		<li>
+			<a href="${url_dologout}">#i18n{mylutece.user_login_include.labelLogout}</a>
+		</li>
 	<#else>
 		<li class="dropdown">
 			<a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b></a>
