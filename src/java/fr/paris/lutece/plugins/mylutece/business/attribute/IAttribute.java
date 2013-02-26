@@ -228,4 +228,6 @@ public interface IAttribute
      * @return True if the attribute can be anonymized, false otherwise.
      */
     boolean isAnonymizable( );
+
+    List<MyLuteceUserField> getUserFieldsData( String[] values, int nIdUser );
 }

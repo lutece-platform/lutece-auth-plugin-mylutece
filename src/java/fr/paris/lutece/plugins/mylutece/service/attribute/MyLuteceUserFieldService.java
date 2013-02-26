@@ -33,11 +33,6 @@
  */
 package fr.paris.lutece.plugins.mylutece.service.attribute;
 
-import java.util.List;
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
-
 import fr.paris.lutece.plugins.mylutece.business.attribute.AttributeHome;
 import fr.paris.lutece.plugins.mylutece.business.attribute.IAttribute;
 import fr.paris.lutece.plugins.mylutece.business.attribute.MyLuteceUserField;
@@ -50,6 +45,11 @@ import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.web.constants.Messages;
+
+import java.util.List;
+import java.util.Locale;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 
@@ -170,4 +170,21 @@ public class MyLuteceUserFieldService
         	myLuteceUserFieldListenerService.doRemoveUserFields( nIdUser, request, locale );
         }
 	}
+
+    /**
+     * Remove the user fields
+     * @param user Adminuser
+     * @param locale locale
+     */
+    public static void doRemoveUserFields( int nIdUser, Locale locale )
+    {
+        MyLuteceUserFieldHome.removeUserFieldsFromIdUser( nIdUser, getMyLutecePlugin( ) );
+
+        // Attributes associated to the plugins
+        for ( MyLuteceUserFieldListenerService myLuteceUserFieldListenerService : SpringContextService
+                .getBeansOfType( MyLuteceUserFieldListenerService.class ) )
+        {
+            myLuteceUserFieldListenerService.doRemoveUserFields( nIdUser, locale );
+        }
+    }
 }

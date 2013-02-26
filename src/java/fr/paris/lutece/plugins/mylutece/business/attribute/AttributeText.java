@@ -57,7 +57,6 @@ public class AttributeText extends AbstractAttribute
 {
 	// CONSTANTS
 	private static final String EMPTY_STRING = "";
-	private static final String CONSTANT_UNDERSCORE = "_";
 	
 	// PARAMETERS 
 	private static final String PARAMETER_TITLE = "title";
@@ -67,7 +66,6 @@ public class AttributeText extends AbstractAttribute
 	private static final String PARAMETER_MAX_SIZE_ENTER = "max_size_enter";
 	private static final String PARAMETER_VALUE = "value";
 	private static final String PARAMETER_IS_SHOWN_IN_SEARCH = "is_shown_in_search";
-	private static final String PARAMETER_ATTRIBUTE = "attribute";
 	
 	// PROPERTY
 	private static final String PROPERTY_TYPE_TEXT = "mylutece.attribute.type.text";
@@ -80,8 +78,6 @@ public class AttributeText extends AbstractAttribute
 	private static final String TEMPLATE_MODIFY_ATTRIBUTE = "admin/plugins/mylutece/attribute/text/modify_attribute_text.html";
 	private static final String TEMPLATE_HTML_FORM_ATTRIBUTE = "admin/plugins/mylutece/attribute/text/html_code_form_attribute_text.html";
 	private static final String TEMPLATE_HTML_FORM_SEARCH_ATTRIBUTE = "admin/plugins/mylutece/attribute/text/html_code_form_search_attribute_text.html";
-	
-	private static final String REGEX_ID = "-?[0-9]+";
 	
 	/**
 	 * Constructor
@@ -232,13 +228,13 @@ public class AttributeText extends AbstractAttribute
      * @param nIdUser Id of the user
      * @return user field data
      */
-	public List<MyLuteceUserField> getUserFieldsData( HttpServletRequest request, int nIdUser )
+    public List<MyLuteceUserField> getUserFieldsData( String[] values, int nIdUser )
 	{
 		List<MyLuteceUserField> listUserFields = new ArrayList<MyLuteceUserField>(  );
 		MyLuteceUserField userField = new MyLuteceUserField(  );
 		Plugin plugin = PluginService.getPlugin( MyLutecePlugin.PLUGIN_NAME );
 		List<AttributeField> listAttributeFields = AttributeFieldHome.selectAttributeFieldsByIdAttribute( _nIdAttribute, plugin );
-		String strValue = request.getParameter( PARAMETER_ATTRIBUTE + CONSTANT_UNDERSCORE + _nIdAttribute );
+        String strValue = values[0];
 		if ( strValue == null )
 		{
 			strValue = EMPTY_STRING;

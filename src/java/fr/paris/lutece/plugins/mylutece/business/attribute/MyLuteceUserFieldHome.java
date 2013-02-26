@@ -33,12 +33,11 @@
  */
 package fr.paris.lutece.plugins.mylutece.business.attribute;
 
-import java.util.List;
-import java.util.Locale;
-
-import fr.paris.lutece.plugins.mylutece.service.MyLutecePlugin;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
+
+import java.util.List;
+import java.util.Locale;
 
 /**
  * 
@@ -47,8 +46,7 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
  */
 public class MyLuteceUserFieldHome 
 {
-	private static IMyLuteceUserFieldDAO _dao = (IMyLuteceUserFieldDAO) SpringContextService.getPluginBean( 
-			MyLutecePlugin.PLUGIN_NAME, "mylutece.myLuteceUserFieldDAO" );
+    private static IMyLuteceUserFieldDAO _dao = SpringContextService.getBean( "mylutece.myLuteceUserFieldDAO" );
 
 	/**
 	 * Load the user field

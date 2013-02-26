@@ -33,11 +33,12 @@
  */
 package fr.paris.lutece.plugins.mylutece.business.attribute;
 
+import fr.paris.lutece.portal.business.user.AdminUser;
+
+import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
-
-import fr.paris.lutece.portal.business.user.AdminUser;
 
 /**
  * 
@@ -46,28 +47,53 @@ import fr.paris.lutece.portal.business.user.AdminUser;
  */
 public interface MyLuteceUserFieldListener 
 {
-	/**
-	 * Create user fields
-	 * @param user Adminuser
-	 * @param request HttpServletRequest
-	 * @param locale locale
-	 */
+    /**
+     * Create user fields
+     * @param nIdUser The Id of the user
+     * @param request HttpServletRequest
+     * @param locale locale
+     */
 	void doCreateUserFields( int nIdUser, HttpServletRequest request, Locale locale );
-	
-	/**
-	 * Modify user fields
-	 * @param user Adminuser
-	 * @param request HttpServletRequest
-	 * @param locale locale
-	 * @param currentUser current user
-	 */
+
+    /**
+     * Create user fields. This method may do nothing if user fields can not be
+     * created just from a String value.
+     * @param nIdUser The Id of the user
+     * @param listUserFields The list of user fields to create
+     * @param locale locale
+     */
+    void doCreateUserFields( int nIdUser, List<MyLuteceUserField> listUserFields, Locale locale );
+
+    /**
+     * Modify user fields
+     * @param nIdUser The Id of the user
+     * @param request HttpServletRequest
+     * @param locale locale
+     * @param currentUser current user. The current user may be null.
+     */
 	void doModifyUserFields( int nIdUser, HttpServletRequest request, Locale locale, AdminUser currentUser );
-	
-	/**
-	 * Remove user fields
-	 * @param user Adminuser
-	 * @param request HttpServletRequest
-	 * @param locale locale
-	 */
+
+    /**
+     * Modify user fields
+     * @param nIdUser The Id of the user
+     * @param listUserFields The list of user fields to update
+     * @param locale locale
+     * @param currentUser current user. The current user may be null.
+     */
+    void doModifyUserFields( int nIdUser, List<MyLuteceUserField> listUserFields, Locale locale, AdminUser currentUser );
+
+    /**
+     * Remove user fields
+     * @param nIdUser The Id of the user
+     * @param request HttpServletRequest
+     * @param locale locale
+     */
 	void doRemoveUserFields( int nIdUser, HttpServletRequest request, Locale locale );
+
+    /**
+     * Remove user fields
+     * @param nIdUser The Id of the user
+     * @param locale locale
+     */
+    void doRemoveUserFields( int nIdUser, Locale locale );
 }

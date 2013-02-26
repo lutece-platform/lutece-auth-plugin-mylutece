@@ -170,28 +170,23 @@ public class MyLuteceApp implements XPageApplication
         String strAction = request.getParameter( PARAMETER_ACTION );
         _locale = request.getLocale(  );
 
-        if ( strAction.equals( ACTION_LOGIN ) )
-        {
-            return getLoginPage( page, request );
-        }
-        else if ( strAction.equals( ACTION_CREATE_ACCOUNT ) )
+        if ( StringUtils.equals( strAction, ACTION_CREATE_ACCOUNT ) )
         {
             return getCreateAccountPage( page, request );
         }
-        else if ( strAction.equals( ACTION_VIEW_ACCOUNT ) )
+        else if ( StringUtils.equals( strAction, ACTION_VIEW_ACCOUNT ) )
         {
             return getViewAccountPage( page );
         }
-        else if ( strAction.equals( ACTION_LOST_PASSWORD ) )
+        else if ( StringUtils.equals( strAction, ACTION_LOST_PASSWORD ) )
         {
             return getLostPasswordPage( page );
         }
-		else if ( strAction.equals( ACTION_LOST_LOGIN ) )
+        else if ( StringUtils.equals( strAction, ACTION_LOST_LOGIN ) )
 		{
 			return getLostLoginPage( page );
 		}
-
-        return page;
+        return getLoginPage( page, request );
     }
 
     /**

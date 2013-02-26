@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.mylutece.business.attribute;
 
-import fr.paris.lutece.plugins.mylutece.service.MyLutecePlugin;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 
@@ -46,8 +45,7 @@ import java.util.List;
  */
 public class AttributeFieldHome 
 {
-	private static IAttributeFieldDAO _dao = (IAttributeFieldDAO) SpringContextService.getPluginBean( 
-			MyLutecePlugin.PLUGIN_NAME, "mylutece.myLuteceAttributeFieldDAO" );
+    private static IAttributeFieldDAO _dao = SpringContextService.getBean( "mylutece.myLuteceAttributeFieldDAO" );
 
     /**
      * Load attribute field

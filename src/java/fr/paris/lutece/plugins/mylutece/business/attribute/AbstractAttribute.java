@@ -43,6 +43,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+
 /**
  * 
  * Attribute
@@ -54,6 +57,12 @@ public abstract class AbstractAttribute implements IAttribute
 	private static final String MARK_ATTRIBUTE = "attribute";
 	private static final String MARK_DEFAULT_VALUES_LIST = "default_values_list";
 	
+    // PARAMETERS
+    private static final String PARAMETER_ATTRIBUTE = "attribute";
+
+    // COINSTANTS
+    private static final String CONSTANT_UNDERSCORE = "_";
+
     protected int _nIdAttribute;
 	protected boolean _bMandatory;
 	protected String _strTitle;
@@ -318,4 +327,17 @@ public abstract class AbstractAttribute implements IAttribute
 	{
 		_bIsShownInSearch = bIsShownInSearch; 
 	}
+
+    /**
+     * Get the data of the user fields
+     * @param request HttpServletRequest
+     * @param nIdUser Id of the user
+     * @return user field data
+     */
+    public List<MyLuteceUserField> getUserFieldsData( HttpServletRequest request, int nIdUser )
+    {
+        String[] values = request.getParameterValues( PARAMETER_ATTRIBUTE + CONSTANT_UNDERSCORE + _nIdAttribute );
+        return getUserFieldsData( values, nIdUser );
+    }
+
 }

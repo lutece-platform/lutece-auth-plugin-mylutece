@@ -46,6 +46,9 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
+
+
 /**
  * 
  * AttributeComboBox
@@ -55,7 +58,6 @@ public class AttributeComboBox extends AbstractAttribute
 {
 	// CONSTANTS
 	private static final String EMPTY_STRING = "";
-	private static final String CONSTANT_UNDERSCORE = "_";
 	
 	// PARAMETERS 
 	private static final String PARAMETER_TITLE = "title";
@@ -63,7 +65,6 @@ public class AttributeComboBox extends AbstractAttribute
 	private static final String PARAMETER_MANDATORY = "mandatory";
 	private static final String PARAMETER_MULTIPLE = "multiple";
 	private static final String PARAMETER_IS_SHOWN_IN_SEARCH = "is_shown_in_search";
-	private static final String PARAMETER_ATTRIBUTE = "attribute"; 
 	
 	// PROPERTY
 	private static final String PROPERTY_TYPE_COMBOBOX = "mylutece.attribute.type.comboBox";
@@ -187,46 +188,49 @@ public class AttributeComboBox extends AbstractAttribute
 	}
 
     /**
-     * Get the data of the user fields
-     * @param request HttpServletRequest
-     * @param nIdUser Id of the user
-     * @return user field data
+     * {@inheritDoc}
      */
-	public List<MyLuteceUserField> getUserFieldsData( HttpServletRequest request, int nIdUser )
+	@Override
+    public List<MyLuteceUserField> getUserFieldsData( String[] values, int nIdUser )
 	{
-		String[] values = request.getParameterValues( PARAMETER_ATTRIBUTE + CONSTANT_UNDERSCORE + _nIdAttribute );
-		List<MyLuteceUserField> listUserFields = new ArrayList<MyLuteceUserField>(  );
-		if ( values != null )
-		{
-			for ( String strValue : values )
-			{
-				MyLuteceUserField userField = new MyLuteceUserField(  );
-				AttributeField attributeField;
-				
-				if ( strValue == null || strValue.equals( EMPTY_STRING ) )
-				{
-					strValue = EMPTY_STRING;
-					attributeField = new AttributeField(  );
-					attributeField.setAttribute( this );
-					attributeField.setTitle( EMPTY_STRING );
-					attributeField.setValue( EMPTY_STRING );
-				}
-				else
-				{
-					int nIdField = Integer.parseInt( strValue );
-					Plugin plugin = PluginService.getPlugin( MyLutecePlugin.PLUGIN_NAME );
-					attributeField = AttributeFieldHome.findByPrimaryKey( nIdField, plugin );
-				}
-				
-				userField.setUserId( nIdUser );
-				userField.setAttribute( this );
-				userField.setAttributeField( attributeField );
-				userField.setValue( attributeField.getTitle(  ) );
-				
-				listUserFields.add( userField );
-			}
-		}
-		
+        List<MyLuteceUserField> listUserFields = new ArrayList<MyLuteceUserField>( );
+        if ( values != null )
+        {
+            for ( String strValue : values )
+            {
+                MyLuteceUserField userField = new MyLuteceUserField( );
+                AttributeField attributeField;
+
+                if ( strValue == null || strValue.equals( EMPTY_STRING ) )
+                {
+                    strValue = EMPTY_STRING;
+                    attributeField = new AttributeField( );
+                    attributeField.setAttribute( this );
+                    attributeField.setTitle( EMPTY_STRING );
+                    attributeField.setValue( EMPTY_STRING );
+                }
+                else if ( StringUtils.isNumeric( strValue ) )
+                {
+                    int nIdField = Integer.parseInt( strValue );
+                    Plugin plugin = PluginService.getPlugin( MyLutecePlugin.PLUGIN_NAME );
+                    attributeField = AttributeFieldHome.findByPrimaryKey( nIdField, plugin );
+                }
+                else
+                {
+                    attributeField = new AttributeField( );
+                    attributeField.setAttribute( this );
+                    attributeField.setTitle( strValue );
+                    attributeField.setValue( strValue );
+                }
+
+                userField.setUserId( nIdUser );
+                userField.setAttribute( this );
+                userField.setAttributeField( attributeField );
+                userField.setValue( attributeField.getTitle( ) );
+
+                listUserFields.add( userField );
+            }
+        }
 		return listUserFields;
 	}
 

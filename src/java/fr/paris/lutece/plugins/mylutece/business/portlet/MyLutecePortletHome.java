@@ -42,8 +42,7 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
 public class MyLutecePortletHome extends PortletHome
 {
     // Static variable pointed at the DAO instance
-    private static IMyLutecePortletDAO _dao = (IMyLutecePortletDAO) SpringContextService.getPluginBean( "mylutece",
-            "mylutece.myLutecePortletDAO" );
+    private static IMyLutecePortletDAO _dao = SpringContextService.getBean( "mylutece.myLutecePortletDAO" );
 
     /* This class implements the Singleton design pattern. */
     private static MyLutecePortletHome _singleton = null;

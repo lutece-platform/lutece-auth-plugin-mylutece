@@ -33,13 +33,13 @@
  */
 package fr.paris.lutece.plugins.mylutece.business.attribute;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.util.sql.DAOUtil;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * 
@@ -70,7 +70,6 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
 			" INNER JOIN mylutece_attribute a ON a.id_attribute = auf.id_attribute " +
 			" WHERE auf.id_user = ? AND auf.id_attribute = ? ";
 	private static final String SQL_QUERY_SELECT_ID_USER = " SELECT id_user FROM mylutece_user_field WHERE id_attribute = ? AND id_field = ? AND user_field_value LIKE ? ";
-	private static final String SQL_ID_ATTRIBUTE_AND_USER_FIELD_VALUE = " WHERE id_attribute = ? AND id_field = ? AND user_field_value LIKE ? ";
 	private static final String SQL_AND_ID_USER_IN = " AND id_user IN ";
 	
 	// INSERT
