@@ -53,6 +53,7 @@ import fr.paris.lutece.portal.web.PortalJspBean;
 import fr.paris.lutece.portal.web.xpages.XPage;
 import fr.paris.lutece.portal.web.xpages.XPageApplication;
 import fr.paris.lutece.util.html.HtmlTemplate;
+import fr.paris.lutece.util.http.SecurityUtil;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -306,7 +307,7 @@ public class MyLuteceApp implements XPageApplication
         {
             // Creating a record of connections log
             ConnectionLog connectionLog = new ConnectionLog( );
-            connectionLog.setIpAddress( request.getRemoteAddr( ) );
+            connectionLog.setIpAddress( SecurityUtil.getRealIp( request ) );
             connectionLog.setDateLogin( new java.sql.Timestamp( new java.util.Date( ).getTime( ) ) );
 			connectionLog.setLoginStatus( ConnectionLog.LOGIN_DENIED ); // will be inserted only if access denied
             ConnectionLogHome.addUserLog( connectionLog, plugin );
