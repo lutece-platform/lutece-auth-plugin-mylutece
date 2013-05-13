@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2013, Mairie de Paris
+ * Copyright (c) 2002-2012, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -54,10 +54,12 @@ public class MyLuteceResourceIdService extends ResourceIdService
     public static final String PERMISSION_CREATE_ATTRIBUTE = "CREATE_ATTRIBUTE";
     public static final String PERMISSION_MODIFY_ATTRIBUTE = "MODIFY_ATTRIBUTE";
     public static final String PERMISSION_DELETE_ATTRIBUTE = "DELETE_ATTRIBUTE";
+    public static final String PERMISSION_MANAGE_AUTHENTICATION_FILTER = "MANAGE_AUTHENTICATION_FILTER";
     private static final String PROPERTY_LABEL_RESOURCE_TYPE = "mylutece.resourceType.mylutece_users.label";
     private static final String PROPERTY_LABEL_PERMISSION_CREATE_ATTRIBUTE = "mylutece.permission.mylutece_users.create_attribute.label";
     private static final String PROPERTY_LABEL_PERMISSION_MODIFY_ATTRIBUTE = "mylutece.permission.mylutece_users.modify_attribute.label";
     private static final String PROPERTY_LABEL_PERMISSION_DELETE_ATTRIBUTE = "mylutece.permission.mylutece_users.delete_attribute.label";
+    private static final String PROPERTY_LABEL_MANAGE_AUTHENTICATION_FILTER= "mylutece.permission.authentication_filter.manage.label";
 
     private static final String PLUGIN_NAME = "mylutece";
     
@@ -92,6 +94,12 @@ public class MyLuteceResourceIdService extends ResourceIdService
         p.setPermissionKey( PERMISSION_DELETE_ATTRIBUTE );
         p.setPermissionTitleKey( PROPERTY_LABEL_PERMISSION_DELETE_ATTRIBUTE );
         rt.registerPermission( p );
+        
+        p = new Permission(  );
+        p.setPermissionKey( PERMISSION_MANAGE_AUTHENTICATION_FILTER );
+        p.setPermissionTitleKey( PROPERTY_LABEL_MANAGE_AUTHENTICATION_FILTER );
+        rt.registerPermission( p );
+
 
         ResourceTypeManager.registerResourceType( rt );
     }

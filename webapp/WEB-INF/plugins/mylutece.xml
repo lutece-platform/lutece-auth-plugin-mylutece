@@ -54,6 +54,13 @@
             <feature-level>3</feature-level>
             <feature-url>jsp/admin/plugins/mylutece/ManageExternalApplicationUser.jsp</feature-url>
         </admin-feature>
+         <admin-feature>
+            <feature-id>MYLUTECE_MANAGE_AUTHENTICATION_FILTER</feature-id>
+            <feature-title>mylutece.adminFeature.mylutece_management_authentication_filter.name</feature-title>
+            <feature-description>mylutece.adminFeature.mylutece_management_authentication_filter.description</feature-description>
+            <feature-level>3</feature-level>
+            <feature-url>jsp/admin/plugins/mylutece/security/ManageAuthenticationFilter.jsp</feature-url>
+        </admin-feature>
     </admin-features>
 
     <!-- Page Include Service -->
@@ -77,5 +84,22 @@
             </rbac-resource-type-class>
         </rbac-resource-type>
     </rbac-resource-types>
+    
+	<!-- Filters -->
+	<filters>
+		<filter>
+			<filter-name>Mylutece Authentication Filter</filter-name>
+			<filter-class>fr.paris.lutece.plugins.mylutece.web.security.MyluteceAuthFilter</filter-class>
+			<url-pattern>/jsp/site/*</url-pattern>
+			<filter-order>-3000</filter-order>
+		</filter>
+	</filters>
+	  <!-- Admin Dashboard  components -->
+    <admindashboard-components>
+    	<admindashboard-component>
+            <dashboard-component-name>myluteceAuthenticationFilterAdminDashboardComponent</dashboard-component-name>
+            <dashboard-component-class>fr.paris.lutece.plugins.mylutece.web.security.AuthenticationFilterAdminDashboardComponent</dashboard-component-class>
+        </admindashboard-component>
+    </admindashboard-components>
 
 </plug-in>

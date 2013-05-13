@@ -24,6 +24,7 @@ INSERT INTO core_stylesheet (id_stylesheet, description, file_name, source) VALU
 --
 INSERT INTO core_admin_role (role_key,role_description) VALUES ('assign_roles','Assigner des roles aux utilisateurs');
 INSERT INTO core_admin_role (role_key,role_description) VALUES ('assign_groups','Assigner des groupes aux utilisateurs');
+INSERT INTO core_admin_role (role_key,role_description) VALUES ('mylutece_manager','Gérer les patramètres avancés Mylutece');
 
 
 --
@@ -46,13 +47,21 @@ INSERT INTO core_user_role (role_key,id_user) VALUES ('assign_roles',3);
 INSERT INTO core_user_role (role_key,id_user) VALUES ('assign_groups',1);
 INSERT INTO core_user_role (role_key,id_user) VALUES ('assign_groups',2);
 INSERT INTO core_user_role (role_key,id_user) VALUES ('assign_groups',3);
-
+INSERT INTO core_user_role (role_key,id_user) VALUES ('mylutece_manager',1);
 --
 -- Dumping data for table core_admin_right
 --
 INSERT INTO core_admin_right VALUES ('MYLUTECE_MANAGEMENT', 'mylutece.adminFeature.mylutece_management.name', 2, 'jsp/admin/plugins/mylutece/attribute/ManageAttributes.jsp', 'mylutece.adminFeature.mylutece_management.description', 0, 'mylutece', 'USERS', NULL, NULL, NULL);
+INSERT INTO core_admin_right VALUES ('MYLUTECE_MANAGE_AUTHENTICATION_FILTER', 'mylutece.adminFeature.mylutece_management_authentication_filter.name', 2, 'jsp/admin/plugins/mylutece/security/ManageAuthenticationFilter.jsp', 'mylutece.adminFeature.mylutece_management_authentication_filter.description', 0, 'mylutece', 'USERS', NULL, NULL, NULL);
 
 --
 -- Dumping data for table core_user_right
 --
 INSERT INTO core_user_right (id_right,id_user) VALUES ('MYLUTECE_MANAGEMENT',1);
+INSERT INTO core_user_right (id_right,id_user) VALUES ('MYLUTECE_MANAGE_AUTHENTICATION_FILTER',1);
+
+
+--
+-- Init Dashboard
+--
+INSERT INTO core_admin_dashboard(dashboard_name, dashboard_column, dashboard_order) VALUES('myluteceAuthenticationFilterAdminDashboardComponent', 1, 3);
