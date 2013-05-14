@@ -21,7 +21,7 @@
 				<#if authentication.delegatedAuthentication>
 					<a href="${authentication.doLoginUrl}?auth_provider=${authentication.name}">
 				<#else>
-					<a href="jsp/site/${authentication.loginPageUrl}&auth_provider=${authentication.name}">
+					<a href="${authentication.loginPageUrl}&auth_provider=${authentication.name}">
 				</#if>
 						<i class="icon-off icon-white"></i>#i18n{mylutece.user_login_include.labelButton}
 					</a>

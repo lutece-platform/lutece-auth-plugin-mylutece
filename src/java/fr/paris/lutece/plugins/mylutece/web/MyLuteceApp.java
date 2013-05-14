@@ -277,7 +277,7 @@ public class MyLuteceApp implements XPageApplication
         String strPassword = request.getParameter( PARAMETER_PASSWORD );
         String strAuthProvider = request.getParameter( PARAMETER_AUTH_PROVIDER );
 
-		String strReturn = "../../" + getLoginPageUrl( );
+		String strReturn = "../../../../" + getLoginPageUrl( );
 
 		Boolean bIsCaptchaEnabled = ( Boolean ) request.getSession( true ).getAttribute( PARAMETER_IS_ACTIVE_CAPTCHA );
 		if ( bIsCaptchaEnabled != null && bIsCaptchaEnabled )
@@ -579,6 +579,6 @@ public class MyLuteceApp implements XPageApplication
 				ConnectionLogHome.resetConnectionLogs( strIp, new Timestamp( Long.parseLong( strDateLogin ) ), Integer.parseInt( strInterval ), plugin );
 			}
 		}
-		return "../../" + getLoginPageUrl( );
+		return "../../../../" + getLoginPageUrl( );
 	}
 }
