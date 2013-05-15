@@ -81,6 +81,7 @@ public class MyLuteceApp implements XPageApplication
     private static final String MARK_ERROR_MESSAGE = "error_message";
     private static final String MARK_ERROR_DETAIL = "error_detail";
     private static final String MARK_URL_DOLOGIN = "url_dologin";
+    private static final String MARK_URL_NEWACCOUNT = "url_new_account";
     private static final String MARK_LIST_AUTHENTICATIONS = "list_authentications";
     private static final String MARK_AUTH_PROVIDER = "auth_provider";
 	private static final String MARK_IS_ACTIVE_CAPTCHA = "is_active_captcha";
@@ -244,7 +245,7 @@ public class MyLuteceApp implements XPageApplication
 
 
         HtmlTemplate template;
-        
+        model.put( MARK_URL_NEWACCOUNT,SecurityService.getInstance().getAuthenticationService(  ).getNewAccountPageUrl());
         if ( SecurityService.getInstance().isMultiAuthenticationSupported(  ) )
         {
         	LuteceAuthentication luteceAuthentication = SecurityService.getInstance().getAuthenticationService(  );

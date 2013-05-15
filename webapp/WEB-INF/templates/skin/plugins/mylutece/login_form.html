@@ -1,4 +1,5 @@
 <div class="row-fluid">
+
 	<div class="container">
 		<form class="form-horizontal span5" method="post" action="${url_dologin}">
 			<fieldset>
@@ -27,7 +28,12 @@
 				<div class="form-actions">
 					<input type="hidden" name="page" value="mylutece" />
 					<input type="hidden" name="action" value="dologin" />
-					<input type="submit" class="btn btn-primary btn-small" name="Submit" value="#i18n{mylutece.xpage.login_form.labelButton}" />
+					<button type="submit" class="btn btn-primary  btn-small" name="Submit"><i class="icon-lock icon-white"></i>&nbsp;#i18n{mylutece.xpage.login_form.labelButton} </button>
+					<#if url_new_account?has_content>
+						<a class="btn btn-primary btn-small" style="color:#fff;" title="#i18n{mylutece.xpage.login_form.labelButtonCreateAccount}" href="${url_new_account}">
+							<i class="icon-plus icon-white"></i>&nbsp;#i18n{mylutece.xpage.login_form.labelButtonCreateAccount}
+						</a>
+					</#if>
 				</div>
 			</fieldset>
 		</form>

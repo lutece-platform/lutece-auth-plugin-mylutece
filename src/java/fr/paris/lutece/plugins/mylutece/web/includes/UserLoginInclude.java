@@ -59,6 +59,7 @@ public class UserLoginInclude implements PageInclude
     private static final String MARK_USERLOGIN = "pageinclude_userlogin";
     private static final String MARK_USERLOGIN_TITLE = "pageinclude_userlogin_title";
     private static final String MARK_LIST_AUTHENTICATIONS = "list_authentications";
+    private static final String MARK_URL_NEWACCOUNT = "url_new_account";
     private static final String TEMPLATE_USER_LOGIN_TITLE = "/skin/plugins/mylutece/includes/user_login_title.html";
     private static final String TEMPLATE_USER_LOGIN_TITLE_LOGGED = "/skin/plugins/mylutece/includes/user_login_title_logged.html";
     private static final String TEMPLATE_USER_LOGIN_FORM = "/skin/plugins/mylutece/includes/user_login_include.html";
@@ -113,6 +114,7 @@ public class UserLoginInclude implements PageInclude
                 }
 
                 HtmlTemplate t;
+                model.put( MARK_URL_NEWACCOUNT,SecurityService.getInstance().getAuthenticationService(  ).getNewAccountPageUrl());
                 if ( SecurityService.getInstance().isMultiAuthenticationSupported(  ) )
                 {
             		LuteceAuthentication luteceAuthentication = SecurityService.getInstance().getAuthenticationService(  );

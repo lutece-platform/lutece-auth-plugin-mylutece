@@ -35,10 +35,15 @@
 						
 						<label for="mylutece_user_login_include_password">#i18n{mylutece.user_login_include.labelPassword} : </label>
 						<input type="password" class="span2" id="mylutece_user_login_include_password" name="password" placeholder="#i18n{mylutece.user_login_include.labelPassword}" />
-						
-						<button type="submit" class="btn btn-primary btn-small" name="Submit" >#i18n{mylutece.user_login_include.labelButton}</button>
+						<button type="submit" class="btn btn-primary btn-small" name="Submit" ><i class="icon-lock icon-white"></i>&nbsp;#i18n{mylutece.user_login_include.labelButton}</button>
+						<#if url_new_account?has_content>
+							<a class="btn btn-primary btn-small" style="color:#fff;" title="#i18n{mylutece.user_login_include.labelButtonCreateAccount}" href="${url_new_account}">
+								<i class="icon-plus icon-white"></i>&nbsp;#i18n{mylutece.user_login_include.labelButtonCreateAccount}
+							</a>
+						</#if>
 					</form>
 				</li>
+		
 			</ul>
 		</li>
 	</#if>

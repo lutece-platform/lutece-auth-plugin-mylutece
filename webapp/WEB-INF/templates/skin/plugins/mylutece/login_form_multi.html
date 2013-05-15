@@ -1,5 +1,5 @@
 <div class="row-fluid">
-	<div class="span8 offset3">
+	<div class="span12">
 		<#if list_authentications?exists>
 			<form class="form-horizontal span5" method="post" action="${url_dologin}" >
 				<fieldset>
@@ -10,7 +10,7 @@
 					<div class="control-group">
 						<label class="control-label"  for=""></label>
 							<div class="controls">
-							<div class="label label-important">
+							<div class="alert alert-error">
 								<i class="icon-info-sign icon-white"></i>&nbsp;
 								${error_message}
 								<br/>
@@ -34,23 +34,40 @@
 					</#list>
 					<#-- display internal authentications [such as database]-->
 					<#assign bHasInternalAuth = false />
-					<#list list_authentications as authentication>
-						<#if !authentication.externalAuthentication && !authentication.delegatedAuthentication>
-							<#if !bHasInternalAuth>
-								<#assign bHasInternalAuth = true />
-							</#if>
-							<div class="control-group">
-								<label class="control-label"  for=""></label>
-								<div class="controls">
-									<#if auth_provider?has_content && auth_provider = authentication.name>
-										<input type="radio" name="auth_provider" value="${authentication.name}" checked="checked"/>${authentication.authServiceName}
-									<#else>
-										<input type="radio" name="auth_provider" value="${authentication.name}" />${authentication.authServiceName}
-									</#if>
+					
+					<#if list_authentications?size != 1>
+						<#list list_authentications as authentication>
+							<#if !authentication.externalAuthentication && !authentication.delegatedAuthentication>
+								<#if !bHasInternalAuth>
+									<#assign bHasInternalAuth = true />
+								</#if>
+								<div class="control-group">
+									<label class="control-label"  for=""></label>
+									<div class="controls">
+										<#if auth_provider?has_content && auth_provider = authentication.name>
+											<input type="radio" name="auth_provider" value="${authentication.name}" checked="checked"/>${authentication.authServiceName}
+										<#else>
+											<input type="radio" name="auth_provider" value="${authentication.name}" />${authentication.authServiceName}
+										</#if>
+									</div>
 								</div>
-							</div>
-						</#if>
-					</#list>
+							</#if>
+						</#list>
+					<#else>
+						<#list list_authentications as authentication>
+							<#if !authentication.externalAuthentication && !authentication.delegatedAuthentication>
+								<#if !bHasInternalAuth>
+									<#assign bHasInternalAuth = true />
+								</#if>
+								<div class="control-group">
+									<label class="control-label"  for=""></label>
+									<div class="controls">
+										<input type="hidden" name="auth_provider" value="${authentication.name}" />
+									</div>
+								</div>
+							</#if>
+						</#list>
+					</#if>	
 					<#if bHasInternalAuth>
 						<div class="control-group">
 						<label class="control-label"  for="username">#i18n{mylutece.xpage.login_form.labelAccessCode}</label>
@@ -70,8 +87,14 @@
 							</div>
 						</#if>
 						<div class="form-actions">
-							<button class="btn btn-primary btn-small" type="submit" name="Submit"><i class="icon-off icon-white"></i>&nbsp;#i18n{mylutece.xpage.login_form.labelButton}</button>
+							<button type="submit" class="btn btn-primary btn-small" name="Submit"><i class="icon-lock icon-white"></i>&nbsp;#i18n{mylutece.xpage.login_form.labelButton} </button>
+						<#if url_new_account?has_content>
+							<a class="btn btn-primary btn-small" style="color:#fff;" title="#i18n{mylutece.xpage.login_form.labelButtonCreateAccount}" href="${url_new_account}">
+								<i class="icon-plus icon-white"></i>&nbsp;#i18n{mylutece.xpage.login_form.labelButtonCreateAccount}
+							</a>
+						</#if>
 						</div>
+						
 					</#if>
 				</fieldset>
 			</form>
