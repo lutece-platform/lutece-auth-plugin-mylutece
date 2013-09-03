@@ -58,9 +58,15 @@
 			</div>
 			<div class="form-actions">
 				<input type="hidden" name="id_attribute" value="${attribute.idAttribute}" />
-		  		<input type="submit" name="validate" value="#i18n{mylutece.modify_attribute.buttonValidate}" class="btn btn-primary btn-small"/>
-		  		<input type="submit" name="apply" value="#i18n{mylutece.modify_attribute.buttonApply}" class="btn btn-primary btn-small" />
-		  		<input type="submit" name="cancel" value="#i18n{portal.admin.message.buttonCancel}" class="btn btn-small"/>
+		  		<button type="submit" name="validate" value="#i18n{mylutece.modify_attribute.buttonValidate}" class="btn btn-primary btn-small">
+		  			<i class="icon-ok icon-white">&nbsp;</i>&nbsp;#i18n{mylutece.modify_attribute.buttonValidate}
+		  		</button>
+		  		<button type="submit" name="apply" value="#i18n{mylutece.modify_attribute.buttonApply}" class="btn btn-primary btn-small" >
+		  			<i class="icon-ok icon-white">&nbsp;</i>&nbsp;#i18n{mylutece.modify_attribute.buttonApply}
+		  		</button>
+		  		<button type="submit" name="cancel" value="#i18n{portal.admin.message.buttonCancel}" class="btn btn-small">
+		  			<i class="icon-remove-circle">&nbsp;</i>&nbsp;#i18n{portal.admin.message.buttonCancel}
+		  		</button>
 			</div>
 		</fieldset>
 	</form>
