@@ -14,4 +14,4 @@
 	</#if>
 	#i18n{mylutece.user_login_include.labelLastLogin} : <#if (user.getUserInfo('user.lastLogin'))?has_content>${user.getUserInfo('user.lastLogin')}<#else>#i18n{mylutece.user_login_include.labelNever}</#if>
 </#if>
-<a href="${url_dologout}" title="#i18n{mylutece.user_login_include.labelLogout}">#i18n{mylutece.user_login_include.labelLogout}</a>
+<a href="${url_dologout!}" title="#i18n{mylutece.user_login_include.labelLogout}">#i18n{mylutece.user_login_include.labelLogout}</a>
