@@ -33,7 +33,13 @@
  */
 package fr.paris.lutece.plugins.mylutece.web.includes;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 import fr.paris.lutece.plugins.mylutece.authentication.MultiLuteceAuthentication;
+import fr.paris.lutece.plugins.mylutece.web.MyLuteceApp;
 import fr.paris.lutece.portal.service.content.PageData;
 import fr.paris.lutece.portal.service.content.XPageAppService;
 import fr.paris.lutece.portal.service.includes.PageInclude;
@@ -41,13 +47,7 @@ import fr.paris.lutece.portal.service.security.LuteceAuthentication;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.security.SecurityService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
-import fr.paris.lutece.portal.web.PortalJspBean;
 import fr.paris.lutece.util.html.HtmlTemplate;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -105,7 +105,7 @@ public class UserLoginInclude implements PageInclude
 
                     if ( ( strPage == null ) || !strPage.equals( PARAMETER_XPAGE_MYLUTECE ) )
                     {
-                        PortalJspBean.redirectLogin( request );
+                        MyLuteceApp.setCurrentUrl(request);
                     }
 
                     HtmlTemplate tTitle = AppTemplateService.getTemplate( TEMPLATE_USER_LOGIN_TITLE,

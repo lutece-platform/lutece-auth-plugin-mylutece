@@ -54,8 +54,10 @@ import fr.paris.lutece.portal.web.xpages.XPage;
 import fr.paris.lutece.portal.web.xpages.XPageApplication;
 import fr.paris.lutece.util.html.HtmlTemplate;
 import fr.paris.lutece.util.http.SecurityUtil;
+import fr.paris.lutece.util.url.UrlItem;
 
 import java.sql.Timestamp;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -76,7 +78,7 @@ public class MyLuteceApp implements XPageApplication
 {
     //////////////////////////////////////////////////////////////////////////////////
     // Constants
-
+	private static final String ATTRIBUTE_CURRENT_URL = "luteceCurrentUrl";
     // Markers
     private static final String MARK_ERROR_MESSAGE = "error_message";
     private static final String MARK_ERROR_DETAIL = "error_detail";
@@ -361,10 +363,14 @@ public class MyLuteceApp implements XPageApplication
 		}
 
         String strNextUrl = PortalJspBean.getLoginNextUrl( request );
-
+        String strCurrentUrl=getCurrentUrl(request);
         if ( strNextUrl != null )
         {
             return strNextUrl;
+        }
+        else if( strCurrentUrl != null)
+        {
+        	return strCurrentUrl;
         }
 
         return getDefaultRedirectUrl(  );
@@ -582,4 +588,43 @@ public class MyLuteceApp implements XPageApplication
 		}
 		return "../../../../" + getLoginPageUrl( );
 	}
+	
+	
+	 /**
+     * Returns the current url
+     * @param request The Http request
+     * @return The current url
+     * 
+     */
+    public static String getCurrentUrl( HttpServletRequest request )
+    {
+        HttpSession session = request.getSession(  );
+        String strNextUrl = (String) session.getAttribute( ATTRIBUTE_CURRENT_URL );
+
+        return strNextUrl;
+    }
+    
+    /**
+     * Set the current url
+     * @param request The Http request
+     *  
+     */
+    public static void setCurrentUrl( HttpServletRequest request )
+    {
+        String strCurrentUrl = request.getRequestURI(  );
+        UrlItem url = new UrlItem( strCurrentUrl );
+        Enumeration enumParams = request.getParameterNames(  );
+
+        while ( enumParams.hasMoreElements(  ) )
+        {
+            String strParamName = (String) enumParams.nextElement(  );
+            url.addParameter( strParamName, request.getParameter( strParamName ) );
+        }
+
+        HttpSession session = request.getSession( true );
+        session.setAttribute( ATTRIBUTE_CURRENT_URL, url.getUrl(  ) );
+
+        
+    }
+
 }
