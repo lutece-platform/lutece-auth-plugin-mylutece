@@ -9,7 +9,7 @@
 	<groupId>fr.paris.lutece.plugins</groupId>
 	<artifactId>plugin-mylutece</artifactId>
 	<packaging>lutece-plugin</packaging>
-	<version>3.0.7</version>
+	<version>3.0.8-SNAPSHOT</version>
 	<name>Lutece mylutece plugin</name>
 
 	<repositories>
@@ -44,8 +44,8 @@
 	</properties>
 
     <scm>
-        <connection>scm:svn:http://dev.lutece.paris.fr/svn/lutece/portal/tags/plugin-mylutece-3.0.7</connection>
-        <developerConnection>scm:svn:https://dev.lutece.paris.fr/svn/lutece/portal/tags/plugin-mylutece-3.0.7</developerConnection>
-        <url>http://dev.lutece.paris.fr/viewvc/lutece/portal/tags/plugin-mylutece-3.0.7</url>
+        <connection>scm:svn:http://dev.lutece.paris.fr/svn/lutece/portal/trunk/plugins/authentication/plugin-mylutece</connection>
+        <developerConnection>scm:svn:https://dev.lutece.paris.fr/svn/lutece/portal/trunk/plugins/authentication/plugin-mylutece</developerConnection>
+        <url>http://dev.lutece.paris.fr/viewvc/lutece/portal/trunk/plugins/authentication/plugin-mylutece</url>
     </scm>
 </project>
