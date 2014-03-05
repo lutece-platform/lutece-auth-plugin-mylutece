@@ -1,18 +1,5 @@
 package fr.paris.lutece.plugins.mylutece.util;
 
-import fr.paris.lutece.plugins.mylutece.service.IUserParameterService;
-import fr.paris.lutece.portal.service.datastore.DatastoreService;
-import fr.paris.lutece.portal.service.message.AdminMessage;
-import fr.paris.lutece.portal.service.message.AdminMessageService;
-import fr.paris.lutece.portal.service.plugin.Plugin;
-import fr.paris.lutece.portal.service.util.AppPathService;
-import fr.paris.lutece.portal.service.util.AppPropertiesService;
-import fr.paris.lutece.portal.service.util.CryptoService;
-import fr.paris.lutece.util.ReferenceItem;
-import fr.paris.lutece.util.date.DateUtil;
-import fr.paris.lutece.util.password.PasswordUtil;
-import fr.paris.lutece.util.url.UrlItem;
-
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,6 +12,20 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 
+import fr.paris.lutece.plugins.mylutece.service.IUserParameterService;
+import fr.paris.lutece.portal.service.datastore.DatastoreService;
+import fr.paris.lutece.portal.service.i18n.I18nService;
+import fr.paris.lutece.portal.service.message.AdminMessage;
+import fr.paris.lutece.portal.service.message.AdminMessageService;
+import fr.paris.lutece.portal.service.plugin.Plugin;
+import fr.paris.lutece.portal.service.util.AppPathService;
+import fr.paris.lutece.portal.service.util.AppPropertiesService;
+import fr.paris.lutece.portal.service.util.CryptoService;
+import fr.paris.lutece.util.ReferenceItem;
+import fr.paris.lutece.util.date.DateUtil;
+import fr.paris.lutece.util.password.PasswordUtil;
+import fr.paris.lutece.util.url.UrlItem;
+
 
 /**
  * Util for security parameters
@@ -35,7 +36,9 @@ public class SecurityUtils
     // MARKS
     private static final String MARK_FORCE_CHANGE_PASSWORD_REINIT = "force_change_password_reinit";
     private static final String MARK_PASSWORD_MINIMUM_LENGTH = "password_minimum_length";
-    private static final String MARK_PASSWORD_FORMAT = "password_format";
+    private static final String MARK_PASSWORD_FORMAT_UPPER_LOWER_CASE = "password_format_upper_lower_case";
+    private static final String MARK_PASSWORD_FORMAT_NUMERO = "password_format_numero";
+    private static final String MARK_PASSWORD_FORMAT_SPECIAL_CHARACTERS = "password_format_special_characters";
     private static final String MARK_PASSWORD_DURATION = "password_duration";
     private static final String MARK_PASSWORD_HISTORY_SIZE = "password_history_size";
     private static final String MARK_MAXIMUM_NUMBER_PASSWORD_CHANGE = "maximum_number_password_change";
@@ -63,6 +66,10 @@ public class SecurityUtils
     // MESSAGES
     private static final String MESSAGE_MINIMUM_PASSWORD_LENGTH = "mylutece.message.password.minimumPasswordLength";
     private static final String MESSAGE_PASSWORD_FORMAT = "mylutece.message.password.format";
+    private static final String MESSAGE_PASSWORD_FORMAT_UPPER_LOWER_CASE = "mylutece.message.password.formatUpperLowerCase";
+    private static final String MESSAGE_PASSWORD_FORMAT_NUMERO = "mylutece.message.password.formatNumero";
+    private static final String MESSAGE_PASSWORD_FORMAT_SPECIAL_CHARACTERS = "mylutece.message.password.formatSpecialCharacters";
+  
 
     // ERROR
     private static final String ERROR_PASSWORD_MINIMUM_LENGTH = "password_minimum_length";
@@ -107,7 +114,10 @@ public class SecurityUtils
 
         if ( bUseAdvancedParameters )
         {
-            model.put( MARK_PASSWORD_FORMAT, isPasswordFormatUsed( parameterService, plugin ) );
+            
+        	model.put( MARK_PASSWORD_FORMAT_UPPER_LOWER_CASE, isPasswordFormatUpperLowerCaseUsed( parameterService, plugin) );
+            model.put( MARK_PASSWORD_FORMAT_NUMERO, isPasswordFormatNumeroUsed(parameterService, plugin) );
+            model.put( MARK_PASSWORD_FORMAT_SPECIAL_CHARACTERS, isPasswordFormatSpecialCharactersUsed(parameterService, plugin) );
             model.put( MARK_PASSWORD_DURATION, getPasswordDuration( parameterService, plugin ) );
             model.put( MARK_PASSWORD_HISTORY_SIZE, getPasswordHistorySize( parameterService, plugin ) );
             model.put( MARK_MAXIMUM_NUMBER_PASSWORD_CHANGE, getMaximumNumberPasswordChange( parameterService, plugin ) );
@@ -153,8 +163,12 @@ public class SecurityUtils
                 request.getParameter( MARK_PASSWORD_MINIMUM_LENGTH ) );
         if ( getBooleanSecurityParameter( parameterService, plugin, MARK_USE_ADVANCED_SECURITY_PARAMETERS ) )
         {
-            updateParameterValue( parameterService, plugin, MARK_PASSWORD_FORMAT,
-                    request.getParameter( MARK_PASSWORD_FORMAT ) );
+            updateParameterValue( parameterService, plugin, MARK_PASSWORD_FORMAT_UPPER_LOWER_CASE,
+                    request.getParameter( MARK_PASSWORD_FORMAT_UPPER_LOWER_CASE ) );
+            updateParameterValue( parameterService, plugin, MARK_PASSWORD_FORMAT_NUMERO,
+                    request.getParameter( MARK_PASSWORD_FORMAT_NUMERO ) );
+            updateParameterValue( parameterService, plugin, MARK_PASSWORD_FORMAT_SPECIAL_CHARACTERS,
+                    request.getParameter( MARK_PASSWORD_FORMAT_SPECIAL_CHARACTERS ) );
             updateParameterValue( parameterService, plugin, MARK_PASSWORD_DURATION,
                     request.getParameter( MARK_PASSWORD_DURATION ) );
             updateParameterValue( parameterService, plugin, MARK_PASSWORD_HISTORY_SIZE,
@@ -255,14 +269,38 @@ public class SecurityUtils
     }
 
     /**
-     * Get the parameter indicating that a password must contain numbers.
+     * Get the parameter indicating that a password must contain upper and lower case.
      * @param parameterService Parameter service to get parameters from.
      * @param plugin The plugin
-     * @return True if passwords must contain numbers, false otherwise
+     * @return True if passwords must contain must contain upper and lower case.
      */
-    protected static boolean isPasswordFormatUsed( IUserParameterService parameterService, Plugin plugin )
+    protected static boolean isPasswordFormatUpperLowerCaseUsed( IUserParameterService parameterService, Plugin plugin )
     {
-        return getBooleanSecurityParameter( parameterService, plugin, MARK_PASSWORD_FORMAT );
+        return getBooleanSecurityParameter( parameterService, plugin, MARK_PASSWORD_FORMAT_UPPER_LOWER_CASE );
+    }
+    
+    
+    /**
+     * Get the parameter indicating that a password must contain a numero
+     * @param parameterService Parameter service to get parameters from.
+     * @param plugin The plugin
+     * @return True if passwords must contain must contain a numero
+     */
+    protected static boolean isPasswordFormatNumeroUsed( IUserParameterService parameterService, Plugin plugin )
+    {
+        return getBooleanSecurityParameter( parameterService, plugin, MARK_PASSWORD_FORMAT_NUMERO );
+    }
+    
+    
+    /**
+     * Get the parameter indicating that a password must contain a numero
+     * @param parameterService Parameter service to get parameters from.
+     * @param plugin The plugin
+     * @return True if passwords must contain must contain a numero
+     */
+    protected static boolean isPasswordFormatSpecialCharactersUsed( IUserParameterService parameterService, Plugin plugin )
+    {
+        return getBooleanSecurityParameter( parameterService, plugin, MARK_PASSWORD_FORMAT_SPECIAL_CHARACTERS);
     }
 
     /**
@@ -391,35 +429,84 @@ public class SecurityUtils
 		return DatastoreService.getDataValue( plugin.getName( ) + CONSTANT_UNDERSCORE + strParameterkey, StringUtils.EMPTY );
 	}
 
-    /**
-     * Check the format of the password from the entered parameters. The
-     * password may have to contain upper and lower case letters, numbers and
-     * special characters.
-     * @param strPassword The password to check
-     * @param parameterService Parameter service to get parameters from.
-     * @param plugin The plugin
-     * @return True if the giver parameter respect the parametered format, false
-     *         if he violate one or more rules.
-     */
-    protected static boolean checkPasswordFormat( String strPassword, IUserParameterService parameterService,
-            Plugin plugin )
-    {
-        boolean bPasswordFormat = isPasswordFormatUsed( parameterService, plugin );
-        return bPasswordFormat ? PasswordUtil.checkPasswordFormat( strPassword ) : !bPasswordFormat;
-    }
 
     /**
      * Gets the admin message saying that the password does not match the
      * required format
      * @param request The request
+     * @param parameterService Parameter service to use
      * @param plugin The plugin
      * @return the url of the admin message saying that the password does not
      *         match the required format
      */
-    protected static String getMessagePasswordFormat( HttpServletRequest request, Plugin plugin )
+    protected static String getMessageBackPasswordFormat( HttpServletRequest request,IUserParameterService parameterService, Plugin plugin )
     {
-        return AdminMessageService.getMessageUrl( request, MESSAGE_PASSWORD_FORMAT, AdminMessage.TYPE_STOP );
+    	Object[] param = { getMessagePasswordFormat(parameterService, request.getLocale(), plugin) };
+    	return AdminMessageService.getMessageUrl( request, MESSAGE_PASSWORD_FORMAT, param,AdminMessage.TYPE_STOP );
     }
+    
+    /**
+     * Gets the password  message format
+     * required format
+     * @param locale the locale
+     * @param parameterService Parameter service to use
+     * @param plugin The plugin
+     * @return the url of the admin message saying that the password does not
+     *         match the required format
+     */
+    public static String getMessageFrontPasswordFormat(Locale locale,IUserParameterService parameterService, Plugin plugin )
+    {
+        Object[] param = { getMessagePasswordFormat(parameterService, locale, plugin) };
+    	
+    	return I18nService.getLocalizedString(MESSAGE_PASSWORD_FORMAT, param, locale);
+        
+        
+        
+    }
+    
+    /**
+     * The password format message
+      * @param parameterService Parameter service to use
+     * @param plugin The plugin
+      * @param locale  the locale
+     * @return
+     */
+    private static String getMessagePasswordFormat(IUserParameterService parameterService,Locale locale, Plugin plugin )
+    {
+    	
+    	
+    	StringBuffer strParam=new StringBuffer();
+        boolean bUserPasswordFormatUpperLowerCase=	isPasswordFormatUpperLowerCaseUsed(parameterService, plugin);
+        boolean bUserPasswordFormatNumero=	isPasswordFormatNumeroUsed(parameterService, plugin);
+        boolean bUserPasswordFormatSpecialCaracters= isPasswordFormatSpecialCharactersUsed(parameterService, plugin);
+        
+    	//Add Message Upper Lower Case
+    	if( bUserPasswordFormatUpperLowerCase )
+    	{
+    		strParam.append(I18nService.getLocalizedString(MESSAGE_PASSWORD_FORMAT_UPPER_LOWER_CASE, locale));
+    	}
+    	//Add Message Numero
+    	if(bUserPasswordFormatNumero)
+    	{
+    		if(bUserPasswordFormatUpperLowerCase)
+    		{
+    			strParam.append(", ");
+    		}
+    		strParam.append(I18nService.getLocalizedString(MESSAGE_PASSWORD_FORMAT_NUMERO, locale));
+    		
+    	}
+    	//Add Message Special Characters
+    	if( bUserPasswordFormatSpecialCaracters )
+    	{
+    		if(bUserPasswordFormatUpperLowerCase||bUserPasswordFormatNumero)
+    		{
+    			strParam.append(", ");
+    		}
+    		strParam.append(I18nService.getLocalizedString(MESSAGE_PASSWORD_FORMAT_SPECIAL_CHARACTERS, locale));
+    	}
+    	
+    	return strParam.toString();
+   }
 
     /**
      * Updates a parameter from its key with a new value.
@@ -463,7 +550,9 @@ public class SecurityUtils
                 AppPropertiesService.getProperty( PROPERTY_DEFAULT_MAXIMUM_NUMBER_PASSWORD_CHANGE ) );
         updateParameterValue( parameterService, plugin, MARK_PASSWORD_DURATION,
                 AppPropertiesService.getProperty( PROPERTY_DEFAULT_PASSWORD_DURATION ) );
-        updateParameterValue( parameterService, plugin, MARK_PASSWORD_FORMAT, Boolean.TRUE.toString( ) );
+        updateParameterValue( parameterService, plugin, MARK_PASSWORD_FORMAT_UPPER_LOWER_CASE, Boolean.TRUE.toString( ) );
+        updateParameterValue( parameterService, plugin, MARK_PASSWORD_FORMAT_NUMERO, Boolean.TRUE.toString( ) );
+        updateParameterValue( parameterService, plugin, MARK_PASSWORD_FORMAT_SPECIAL_CHARACTERS, Boolean.TRUE.toString( ) );
         updateParameterValue( parameterService, plugin, MARK_PASSWORD_HISTORY_SIZE,
                 AppPropertiesService.getProperty( PROPERTY_DEFAULT_HISTORY_SIZE ) );
         updateParameterValue( parameterService, plugin, MARK_TSW_SIZE_PASSWORD_CHANGE,
@@ -493,7 +582,9 @@ public class SecurityUtils
         updateParameterValue( parameterService, plugin, MARK_USE_ADVANCED_SECURITY_PARAMETERS, StringUtils.EMPTY );
         updateParameterValue( parameterService, plugin, MARK_MAXIMUM_NUMBER_PASSWORD_CHANGE, StringUtils.EMPTY );
         updateParameterValue( parameterService, plugin, MARK_PASSWORD_DURATION, StringUtils.EMPTY );
-        updateParameterValue( parameterService, plugin, MARK_PASSWORD_FORMAT, StringUtils.EMPTY );
+        updateParameterValue( parameterService, plugin, MARK_PASSWORD_FORMAT_UPPER_LOWER_CASE, StringUtils.EMPTY );
+        updateParameterValue( parameterService, plugin, MARK_PASSWORD_FORMAT_NUMERO, StringUtils.EMPTY );
+        updateParameterValue( parameterService, plugin, MARK_PASSWORD_FORMAT_SPECIAL_CHARACTERS, StringUtils.EMPTY );
         updateParameterValue( parameterService, plugin, MARK_PASSWORD_HISTORY_SIZE, StringUtils.EMPTY );
         updateParameterValue( parameterService, plugin, MARK_TSW_SIZE_PASSWORD_CHANGE, StringUtils.EMPTY );
 		updateParameterValue( parameterService, plugin, MARK_NOTIFY_USER_PASSWORD_EXPIRED, StringUtils.EMPTY );
@@ -626,11 +717,11 @@ public class SecurityUtils
 
         if ( !SecurityUtils.checkPasswordFormat( strPassword, parameterService, plugin ) )
         {
-            return SecurityUtils.getMessagePasswordFormat( request, plugin );
+            return SecurityUtils.getMessageBackPasswordFormat( request, parameterService,plugin );
         }
         return null;
     }
-
+   
     /**
      * Build the password depending of the encryption.
      * If the encryption is enable, then it returns the password encrypted,
@@ -652,6 +743,18 @@ public class SecurityUtils
         }
 
         return strPassword;
+    }
+    
+    
+    /**
+     * Generate a new random password
+     * @param parameterService The parameter service to use
+     * @return the new password
+     */
+    public static String makePassword( IUserParameterService parameterService, Plugin plugin )
+    {
+    	 int nMinimumLength = getIntegerSecurityParameter( parameterService, plugin, MARK_PASSWORD_MINIMUM_LENGTH );
+    	 return PasswordUtil.makePassword(nMinimumLength, isPasswordFormatUpperLowerCaseUsed(parameterService, plugin), isPasswordFormatNumeroUsed(parameterService, plugin),isPasswordFormatSpecialCharactersUsed(parameterService, plugin));
     }
 
 	/**
@@ -690,4 +793,23 @@ public class SecurityUtils
 				CONSTANT_DEFAULT_ENCRYPTION_ALGORITHM ) ) );
 		return url.getUrl( );
 	}
+	
+	 
+    /**
+     * Check the format of the password from the entered parameters. The
+     * password may have to contain upper and lower case letters, numbers and
+     * special characters.
+     * @param strPassword The password to check
+     * @param parameterService Parameter service to get parameters from.
+     * @param plugin The plugin
+     * @return True if the giver parameter respect the parametered format, false
+     *         if he violate one or more rules.
+     */
+    protected static boolean checkPasswordFormat( String strPassword, IUserParameterService parameterService,
+            Plugin plugin )
+    {
+        boolean bPasswordFormat = isPasswordFormatNumeroUsed(parameterService, plugin)||isPasswordFormatSpecialCharactersUsed(parameterService, plugin)||isPasswordFormatUpperLowerCaseUsed(parameterService, plugin);
+        return bPasswordFormat ? PasswordUtil.checkPasswordFormat(strPassword, isPasswordFormatUpperLowerCaseUsed(parameterService, plugin), isPasswordFormatNumeroUsed(parameterService, plugin), isPasswordFormatSpecialCharactersUsed(parameterService, plugin)): true;
+    }
+
 }
