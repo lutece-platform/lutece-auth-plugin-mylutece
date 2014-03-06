@@ -33,13 +33,13 @@
  */
 package fr.paris.lutece.plugins.mylutece.service;
 
-import java.util.Locale;
-
 import fr.paris.lutece.portal.service.rbac.Permission;
 import fr.paris.lutece.portal.service.rbac.ResourceIdService;
 import fr.paris.lutece.portal.service.rbac.ResourceType;
 import fr.paris.lutece.portal.service.rbac.ResourceTypeManager;
 import fr.paris.lutece.util.ReferenceList;
+
+import java.util.Locale;
 
 
 /**
@@ -50,7 +50,7 @@ import fr.paris.lutece.util.ReferenceList;
 public class MyLuteceResourceIdService extends ResourceIdService
 {
     /** Permission assign role */
-	public static final String RESOURCE_TYPE = "MYLUTECE";
+    public static final String RESOURCE_TYPE = "MYLUTECE";
     public static final String PERMISSION_CREATE_ATTRIBUTE = "CREATE_ATTRIBUTE";
     public static final String PERMISSION_MODIFY_ATTRIBUTE = "MODIFY_ATTRIBUTE";
     public static final String PERMISSION_DELETE_ATTRIBUTE = "DELETE_ATTRIBUTE";
@@ -59,10 +59,9 @@ public class MyLuteceResourceIdService extends ResourceIdService
     private static final String PROPERTY_LABEL_PERMISSION_CREATE_ATTRIBUTE = "mylutece.permission.mylutece_users.create_attribute.label";
     private static final String PROPERTY_LABEL_PERMISSION_MODIFY_ATTRIBUTE = "mylutece.permission.mylutece_users.modify_attribute.label";
     private static final String PROPERTY_LABEL_PERMISSION_DELETE_ATTRIBUTE = "mylutece.permission.mylutece_users.delete_attribute.label";
-    private static final String PROPERTY_LABEL_MANAGE_AUTHENTICATION_FILTER= "mylutece.permission.authentication_filter.manage.label";
-
+    private static final String PROPERTY_LABEL_MANAGE_AUTHENTICATION_FILTER = "mylutece.permission.authentication_filter.manage.label";
     private static final String PLUGIN_NAME = "mylutece";
-    
+
     /** Creates a new instance of RoleResourceIdService */
     public MyLuteceResourceIdService(  )
     {
@@ -73,7 +72,7 @@ public class MyLuteceResourceIdService extends ResourceIdService
      * Initializes the service
      */
     public void register(  )
-    {    	
+    {
         ResourceType rt = new ResourceType(  );
         rt.setResourceIdServiceClass( MyLuteceResourceIdService.class.getName(  ) );
         rt.setPluginName( PLUGIN_NAME );
@@ -84,22 +83,21 @@ public class MyLuteceResourceIdService extends ResourceIdService
         p.setPermissionKey( PERMISSION_CREATE_ATTRIBUTE );
         p.setPermissionTitleKey( PROPERTY_LABEL_PERMISSION_CREATE_ATTRIBUTE );
         rt.registerPermission( p );
-        
+
         p = new Permission(  );
         p.setPermissionKey( PERMISSION_MODIFY_ATTRIBUTE );
         p.setPermissionTitleKey( PROPERTY_LABEL_PERMISSION_MODIFY_ATTRIBUTE );
         rt.registerPermission( p );
-        
+
         p = new Permission(  );
         p.setPermissionKey( PERMISSION_DELETE_ATTRIBUTE );
         p.setPermissionTitleKey( PROPERTY_LABEL_PERMISSION_DELETE_ATTRIBUTE );
         rt.registerPermission( p );
-        
+
         p = new Permission(  );
         p.setPermissionKey( PERMISSION_MANAGE_AUTHENTICATION_FILTER );
         p.setPermissionTitleKey( PROPERTY_LABEL_MANAGE_AUTHENTICATION_FILTER );
         rt.registerPermission( p );
-
 
         ResourceTypeManager.registerResourceType( rt );
     }

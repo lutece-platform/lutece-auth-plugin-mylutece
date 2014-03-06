@@ -33,12 +33,6 @@
  */
 package fr.paris.lutece.plugins.mylutece.web.security;
 
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringUtils;
-
 import fr.paris.lutece.plugins.mylutece.service.MyLuteceResourceIdService;
 import fr.paris.lutece.plugins.mylutece.service.security.AuthenticationFilterService;
 import fr.paris.lutece.portal.business.rbac.RBAC;
@@ -55,6 +49,12 @@ import fr.paris.lutece.util.ReferenceItem;
 import fr.paris.lutece.util.html.HtmlTemplate;
 import fr.paris.lutece.util.url.UrlItem;
 
+import org.apache.commons.lang.StringUtils;
+
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 
 /**
  *
@@ -68,7 +68,7 @@ public class AuthenticationFilterJspBean extends AdminFeaturesPageJspBean
     */
     public static final String RIGHT_MANAGE_AUTHENTICATION_FILTER = "MYLUTECE_MANAGE_AUTHENTICATION_FILTER";
     private static final long serialVersionUID = -669562727518395523L;
-   
+
     // Parameters
     private static final String PARAMETER_CANCEL = "cancel";
     private static final String PARAMETER_PUBLIC_URL_CODE = "public_url_code";
@@ -78,7 +78,6 @@ public class AuthenticationFilterJspBean extends AdminFeaturesPageJspBean
     private static final String JSP_MANAGE_AUTHENTICATION_FILTER = "ManageAuthenticationFilter.jsp";
     private static final String JSP_DO_REMOVE_PUBLIC_URL = "jsp/admin/plugins/mylutece/security/DoRemovePublicUrl.jsp";
     private static final String JSP_DO_CHANGE_USER_AUTHENTICATION_REQUIRED = "jsp/admin/plugins/mylutece/security/DoChangeUseAuthenticationRequired.jsp";
-    
 
     // Properties
     private static final String PROPERTY_MANAGE_AUTHENTICATION_FILTER = "mylutece.manage_authentication_filter.pageTitle";
@@ -91,29 +90,30 @@ public class AuthenticationFilterJspBean extends AdminFeaturesPageJspBean
     private static final String MESSAGE_PUBLIC_URL_CONFIRM_REMOVE = "mylutece.messagePublicUrlConfirmRemove";
     private static final String MESSAGE_CONFIRM_ENABLE_AUTHENTICATION_REQUIRED = "mylutece.messageConfirmEnableAuthenticationRequired";
     private static final String MESSAGE_CONFIRM_DISABLE_AUTHENTICATION_REQUIRED = "mylutece.messageConfirmDisableAuthenticationRequired";
-    
     private static final String CONSTANTE_PORTAL_AUTHENTICATION_REQUIRED = "mylutece.portal.authentication.required";
-    
 
     /**
      * Builds the advanced parameters management page
      * @param request the HTTP request
      * @return the built page
      */
-    public String getManageAdvancedParameters( HttpServletRequest request )throws AccessDeniedException
+    public String getManageAdvancedParameters( HttpServletRequest request )
+        throws AccessDeniedException
     {
-    	if (!RBACService.isAuthorized( MyLuteceResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
-                MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, getUser(  ) ))
+        if ( !RBACService.isAuthorized( MyLuteceResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
+                    MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, getUser(  ) ) )
         {
             throw new AccessDeniedException( "User " + getUser(  ) + " is not authorized to permission " +
-            		MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER );
+                MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER );
         }
 
         setPageTitleProperty( PROPERTY_MANAGE_AUTHENTICATION_FILTER );
 
-        Map<String, Object> model = AuthenticationFilterService.getInstance(  ).getManageAdvancedParameters( getUser(  ), request );
+        Map<String, Object> model = AuthenticationFilterService.getInstance(  )
+                                                               .getManageAdvancedParameters( getUser(  ), request );
 
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MANAGE_AUTHENTICATION_FILTER, getLocale(  ), model );
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MANAGE_AUTHENTICATION_FILTER, getLocale(  ),
+                model );
 
         return getAdminPage( template.getHtml(  ) );
     }
@@ -128,11 +128,11 @@ public class AuthenticationFilterJspBean extends AdminFeaturesPageJspBean
     public String doCreatePublicUrl( HttpServletRequest request )
         throws AccessDeniedException
     {
-        if (!RBACService.isAuthorized( MyLuteceResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
-                MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, getUser(  ) ))
+        if ( !RBACService.isAuthorized( MyLuteceResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
+                    MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, getUser(  ) ) )
         {
             throw new AccessDeniedException( "User " + getUser(  ) + " is not authorized to permission " +
-            		MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER );
+                MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER );
         }
 
         if ( request.getParameter( PARAMETER_CANCEL ) == null )
@@ -174,11 +174,11 @@ public class AuthenticationFilterJspBean extends AdminFeaturesPageJspBean
     public String doModifyPublicUrl( HttpServletRequest request )
         throws AccessDeniedException
     {
-    	 if (!RBACService.isAuthorized( MyLuteceResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
-                 MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, getUser(  ) ))
+        if ( !RBACService.isAuthorized( MyLuteceResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
+                    MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, getUser(  ) ) )
         {
             throw new AccessDeniedException( "User " + getUser(  ) + " is not authorized to permission " +
-            		MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER );
+                MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER );
         }
 
         if ( request.getParameter( PARAMETER_CANCEL ) == null )
@@ -205,9 +205,7 @@ public class AuthenticationFilterJspBean extends AdminFeaturesPageJspBean
 
         return JSP_MANAGE_AUTHENTICATION_FILTER;
     }
-    
-    
-    
+
     /**
      * Do change use authentication required
      * @param request the HTTP request
@@ -218,22 +216,21 @@ public class AuthenticationFilterJspBean extends AdminFeaturesPageJspBean
     public String getConfirmChangeUseAuthenticationRequired( HttpServletRequest request )
         throws AccessDeniedException
     {
-    	 if (!RBACService.isAuthorized( MyLuteceResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
-                 MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, getUser(  ) ))
+        if ( !RBACService.isAuthorized( MyLuteceResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
+                    MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, getUser(  ) ) )
         {
             throw new AccessDeniedException( "User " + getUser(  ) + " is not authorized to permission " +
-            		MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER );
+                MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER );
         }
-    	  	String strMessage=SecurityService.getInstance().isPortalAuthenticationRequired()?MESSAGE_CONFIRM_DISABLE_AUTHENTICATION_REQUIRED:MESSAGE_CONFIRM_ENABLE_AUTHENTICATION_REQUIRED;
-    	  	UrlItem url = new UrlItem( JSP_DO_CHANGE_USER_AUTHENTICATION_REQUIRED );
-            url.addParameter( PARAMETER_PUBLIC_URL_CODE, request.getParameter( PARAMETER_PUBLIC_URL_CODE ) );
 
-            return AdminMessageService.getMessageUrl( request, strMessage, url.getUrl(  ),
-                AdminMessage.TYPE_CONFIRMATION );
+        String strMessage = SecurityService.getInstance(  ).isPortalAuthenticationRequired(  )
+            ? MESSAGE_CONFIRM_DISABLE_AUTHENTICATION_REQUIRED : MESSAGE_CONFIRM_ENABLE_AUTHENTICATION_REQUIRED;
+        UrlItem url = new UrlItem( JSP_DO_CHANGE_USER_AUTHENTICATION_REQUIRED );
+        url.addParameter( PARAMETER_PUBLIC_URL_CODE, request.getParameter( PARAMETER_PUBLIC_URL_CODE ) );
+
+        return AdminMessageService.getMessageUrl( request, strMessage, url.getUrl(  ), AdminMessage.TYPE_CONFIRMATION );
     }
-    
-       
-    
+
     /**
      * Do change use authentication required
      * @param request the HTTP request
@@ -244,20 +241,18 @@ public class AuthenticationFilterJspBean extends AdminFeaturesPageJspBean
     public String doChangeUseAuthenticationRequired( HttpServletRequest request )
         throws AccessDeniedException
     {
-    	 if (!RBACService.isAuthorized( MyLuteceResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
-                 MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, getUser(  ) ))
+        if ( !RBACService.isAuthorized( MyLuteceResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
+                    MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, getUser(  ) ) )
         {
             throw new AccessDeniedException( "User " + getUser(  ) + " is not authorized to permission " +
-            		MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER );
+                MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER );
         }
 
         if ( request.getParameter( PARAMETER_CANCEL ) == null )
         {
-        	
-
             //updateParameter
-        	
-        	DatastoreService.setDataValue( CONSTANTE_PORTAL_AUTHENTICATION_REQUIRED, new Boolean(!SecurityService.getInstance().isPortalAuthenticationRequired()).toString());
+            DatastoreService.setDataValue( CONSTANTE_PORTAL_AUTHENTICATION_REQUIRED,
+                new Boolean( !SecurityService.getInstance(  ).isPortalAuthenticationRequired(  ) ).toString(  ) );
         }
 
         return JSP_MANAGE_AUTHENTICATION_FILTER;
@@ -273,11 +268,11 @@ public class AuthenticationFilterJspBean extends AdminFeaturesPageJspBean
     public String doRemovePublicUrl( HttpServletRequest request )
         throws AccessDeniedException
     {
-    	 if (!RBACService.isAuthorized( MyLuteceResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
-                 MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, getUser(  ) ))
+        if ( !RBACService.isAuthorized( MyLuteceResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
+                    MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, getUser(  ) ) )
         {
             throw new AccessDeniedException( "User " + getUser(  ) + " is not authorized to permission " +
-            		MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER);
+                MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER );
         }
 
         ReferenceItem publicUrlData = getPublicUrlData( request );
@@ -318,11 +313,11 @@ public class AuthenticationFilterJspBean extends AdminFeaturesPageJspBean
     public String getConfirmRemovePublicUrl( HttpServletRequest request )
         throws AccessDeniedException
     {
-    	 if (!RBACService.isAuthorized( MyLuteceResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
-                 MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, getUser(  ) ))
+        if ( !RBACService.isAuthorized( MyLuteceResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
+                    MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, getUser(  ) ) )
         {
             throw new AccessDeniedException( "User " + getUser(  ) + " is not authorized to permission " +
-            		MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER );
+                MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER );
         }
 
         UrlItem url = new UrlItem( JSP_DO_REMOVE_PUBLIC_URL );

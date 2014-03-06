@@ -38,12 +38,13 @@ import fr.paris.lutece.util.ReferenceItem;
 import fr.paris.lutece.util.ReferenceList;
 
 import java.sql.Timestamp;
+
 import java.util.List;
 
 
 /**
  * User parameter service interface
- * 
+ *
  */
 public interface IUserParameterService
 {
@@ -100,5 +101,4 @@ public interface IUserParameterService
      * @return The collection of recent passwords used by the user.
      */
     List<String> selectUserPasswordHistory( int nUserId, Plugin plugin );
-
 }

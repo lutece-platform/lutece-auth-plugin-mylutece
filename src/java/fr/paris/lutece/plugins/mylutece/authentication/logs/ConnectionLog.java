@@ -41,16 +41,16 @@ public class ConnectionLog
 {
     /////////////////////////////////////////////////////////////////////////////////
     // Constants
-	public static final int LOGIN_OK = 10;
+    public static final int LOGIN_OK = 10;
     public static final int LOGIN_DENIED = 0;
-	public static final int LOGIN_DENIED_CANCELED = 5;
+    public static final int LOGIN_DENIED_CANCELED = 5;
     private String _strIpAddress;
     private java.sql.Timestamp _dateLogin;
     private int _nLoginStatus;
 
     /**
      * Returns the ip address of this connection log.
-     * 
+     *
      * @return the user ip address
      */
     public String getIpAddress(  )
@@ -60,7 +60,7 @@ public class ConnectionLog
 
     /**
      * Sets the ip address of the connection log to the specified string.
-     * 
+     *
      * @param strIpAddress the new ip address
      */
     public void setIpAddress( String strIpAddress )
@@ -80,7 +80,7 @@ public class ConnectionLog
 
     /**
      * Sets the login date of the connection log to the specified timestamp.
-     * 
+     *
      * @param dateLogin the new date of login
      */
     public void setDateLogin( java.sql.Timestamp dateLogin )
@@ -90,7 +90,7 @@ public class ConnectionLog
 
     /**
      * Returns the login status of this connection log.
-     * 
+     *
      * @return the user status of login
      */
     public int getLoginStatus(  )
@@ -100,7 +100,7 @@ public class ConnectionLog
 
     /**
      * Sets the login status of the connection log to the specified integer.
-     * 
+     *
      * @param nLoginStatus the new status of login
      */
     public void setLoginStatus( int nLoginStatus )

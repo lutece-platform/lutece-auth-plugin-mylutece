@@ -43,15 +43,16 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
+
 /**
- * 
+ *
  * MyLuteceUserFieldListenerService
  *
  */
-public class MyLuteceUserFieldListenerService 
+public class MyLuteceUserFieldListenerService
 {
-	private List<MyLuteceUserFieldListener> _listRegisteredListeners = new ArrayList<MyLuteceUserFieldListener>(  );
-	
+    private List<MyLuteceUserFieldListener> _listRegisteredListeners = new ArrayList<MyLuteceUserFieldListener>(  );
+
     /**
      * Register a new Removal listener
      * @param listener The listener to register
@@ -69,10 +70,10 @@ public class MyLuteceUserFieldListenerService
      */
     public void doCreateUserFields( int nIdUser, HttpServletRequest request, Locale locale )
     {
-    	for ( MyLuteceUserFieldListener listener : _listRegisteredListeners )
-    	{
-    		listener.doCreateUserFields( nIdUser, request, locale );
-    	}
+        for ( MyLuteceUserFieldListener listener : _listRegisteredListeners )
+        {
+            listener.doCreateUserFields( nIdUser, request, locale );
+        }
     }
 
     /**
@@ -98,10 +99,10 @@ public class MyLuteceUserFieldListenerService
      */
     public void doModifyUserFields( int nIdUser, HttpServletRequest request, Locale locale, AdminUser currentUser )
     {
-    	for ( MyLuteceUserFieldListener listener : _listRegisteredListeners )
-    	{
-    		listener.doModifyUserFields( nIdUser, request, locale, currentUser );
-    	}
+        for ( MyLuteceUserFieldListener listener : _listRegisteredListeners )
+        {
+            listener.doModifyUserFields( nIdUser, request, locale, currentUser );
+        }
     }
 
     /**
@@ -112,7 +113,7 @@ public class MyLuteceUserFieldListenerService
      * @param currentUser current user
      */
     public void doModifyUserFields( int nIdUser, List<MyLuteceUserField> listUserFields, Locale locale,
-            AdminUser currentUser )
+        AdminUser currentUser )
     {
         for ( MyLuteceUserFieldListener listener : _listRegisteredListeners )
         {
@@ -128,10 +129,10 @@ public class MyLuteceUserFieldListenerService
      */
     public void doRemoveUserFields( int nIdUser, HttpServletRequest request, Locale locale )
     {
-    	for ( MyLuteceUserFieldListener listener : _listRegisteredListeners )
-    	{
-    		listener.doRemoveUserFields( nIdUser, request, locale );
-    	}
+        for ( MyLuteceUserFieldListener listener : _listRegisteredListeners )
+        {
+            listener.doRemoveUserFields( nIdUser, request, locale );
+        }
     }
 
     /**

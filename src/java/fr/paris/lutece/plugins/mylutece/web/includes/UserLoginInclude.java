@@ -33,11 +33,6 @@
  */
 package fr.paris.lutece.plugins.mylutece.web.includes;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import fr.paris.lutece.plugins.mylutece.authentication.MultiLuteceAuthentication;
 import fr.paris.lutece.plugins.mylutece.web.MyLuteceApp;
 import fr.paris.lutece.portal.service.content.PageData;
@@ -48,6 +43,11 @@ import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.security.SecurityService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.util.html.HtmlTemplate;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -68,7 +68,7 @@ public class UserLoginInclude implements PageInclude
     private static final String MARK_DO_LOGIN = "url_dologin";
     private static final String MARK_DO_LOGOUT = "url_dologout";
     private static final String PARAMETER_XPAGE_MYLUTECE = "mylutece";
-    
+
     /**
      * Substitue specific Freemarker markers in the page template.
      * @param rootModel the HashMap containing markers to substitute
@@ -105,7 +105,7 @@ public class UserLoginInclude implements PageInclude
 
                     if ( ( strPage == null ) || !strPage.equals( PARAMETER_XPAGE_MYLUTECE ) )
                     {
-                        MyLuteceApp.setCurrentUrl(request);
+                        MyLuteceApp.setCurrentUrl( request );
                     }
 
                     HtmlTemplate tTitle = AppTemplateService.getTemplate( TEMPLATE_USER_LOGIN_TITLE,
@@ -114,20 +114,27 @@ public class UserLoginInclude implements PageInclude
                 }
 
                 HtmlTemplate t;
-                model.put( MARK_URL_NEWACCOUNT,SecurityService.getInstance().getAuthenticationService(  ).getNewAccountPageUrl());
-                if ( SecurityService.getInstance().isMultiAuthenticationSupported(  ) )
+                model.put( MARK_URL_NEWACCOUNT,
+                    SecurityService.getInstance(  ).getAuthenticationService(  ).getNewAccountPageUrl(  ) );
+
+                if ( SecurityService.getInstance(  ).isMultiAuthenticationSupported(  ) )
                 {
-            		LuteceAuthentication luteceAuthentication = SecurityService.getInstance().getAuthenticationService(  );
-            		if ( luteceAuthentication instanceof MultiLuteceAuthentication )
-            		{
-            			model.put(  MARK_LIST_AUTHENTICATIONS, ( (MultiLuteceAuthentication) luteceAuthentication ).getListLuteceAuthentication(  ) );
-            		}
-                	t = AppTemplateService.getTemplate( TEMPLATE_USER_LOGIN_MULTI_FORM, request.getLocale(  ), model );
+                    LuteceAuthentication luteceAuthentication = SecurityService.getInstance(  )
+                                                                               .getAuthenticationService(  );
+
+                    if ( luteceAuthentication instanceof MultiLuteceAuthentication )
+                    {
+                        model.put( MARK_LIST_AUTHENTICATIONS,
+                            ( (MultiLuteceAuthentication) luteceAuthentication ).getListLuteceAuthentication(  ) );
+                    }
+
+                    t = AppTemplateService.getTemplate( TEMPLATE_USER_LOGIN_MULTI_FORM, request.getLocale(  ), model );
                 }
                 else
                 {
-                	t = AppTemplateService.getTemplate( TEMPLATE_USER_LOGIN_FORM, request.getLocale(  ), model );
+                    t = AppTemplateService.getTemplate( TEMPLATE_USER_LOGIN_FORM, request.getLocale(  ), model );
                 }
+
                 strUserLoginForm = t.getHtml(  );
             }
         }

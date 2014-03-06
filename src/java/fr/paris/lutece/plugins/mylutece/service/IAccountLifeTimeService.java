@@ -36,17 +36,17 @@ package fr.paris.lutece.plugins.mylutece.service;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 
 import java.sql.Timestamp;
+
 import java.util.List;
 import java.util.Map;
 
 
 /**
  * Account life time service interface
- * 
+ *
  */
 public interface IAccountLifeTimeService
 {
-
     /**
      * Get the list of id of users that have an expired time life but not the
      * expired status
@@ -70,65 +70,64 @@ public interface IAccountLifeTimeService
      * @param maxNumberAlerts Maximum number of alerts to send to a user
      * @return the list of id of users that need to receive their first alert
      */
-    List<Integer> getIdUsersToSendOtherAlert( Timestamp alertMaxDate, Timestamp timeBetweenAlerts,
-            int maxNumberAlerts );
+    List<Integer> getIdUsersToSendOtherAlert( Timestamp alertMaxDate, Timestamp timeBetweenAlerts, int maxNumberAlerts );
 
-	/**
-	 * Get the list of id of users that have an expired password but not the change password flag
-	 * @param currentTimestamp Timestamp describing the current time.
-	 * @return the list of id of users with expired passwords
-	 */
-	List<Integer> getIdUsersWithExpiredPasswordsList( Timestamp currentTimestamp );
+    /**
+     * Get the list of id of users that have an expired password but not the change password flag
+     * @param currentTimestamp Timestamp describing the current time.
+     * @return the list of id of users with expired passwords
+     */
+    List<Integer> getIdUsersWithExpiredPasswordsList( Timestamp currentTimestamp );
 
-	/**
-	 * Increment the number of alert send to users by 1
-	 * @param listIdUser The list of users to update
-	 */
+    /**
+     * Increment the number of alert send to users by 1
+     * @param listIdUser The list of users to update
+     */
     void updateNbAlert( List<Integer> listIdUser );
 
-	/**
-	 * Set the "change password" flag of users to true
-	 * @param listIdUser List of user's id to update
-	 */
-	void updateChangePassword( List<Integer> listIdUser );
+    /**
+     * Set the "change password" flag of users to true
+     * @param listIdUser List of user's id to update
+     */
+    void updateChangePassword( List<Integer> listIdUser );
 
-	/**
-	 * Set a user account status as expired. Expired user will be anonymized by an anonymization daemon
-	 * @param listIdUser User accounts list to set as expired
-	 */
+    /**
+     * Set a user account status as expired. Expired user will be anonymized by an anonymization daemon
+     * @param listIdUser User accounts list to set as expired
+     */
     void setUserStatusExpired( List<Integer> listIdUser );
 
     /**
      * Get the body of the mail to send when a user account expire
      * @return The body of the mail to send
      */
-    String getExpirationtMailBody( );
+    String getExpirationtMailBody(  );
 
     /**
      * Get the body of the mail to send for a first notification of a user
      * before his account expire
      * @return The body of the mail to send
      */
-    String getFirstAlertMailBody( );
+    String getFirstAlertMailBody(  );
 
     /**
      * Get the body of the mail to send for a new notification of a user
      * before his account expire
      * @return The body of the mail to send
      */
-    String getOtherAlertMailBody( );
+    String getOtherAlertMailBody(  );
 
-	/**
-	 * Get the body of the mail to send when a password expired
-	 * @return The body of the mail to send
-	 */
-	String getPasswordExpiredMailBody( );
+    /**
+     * Get the body of the mail to send when a password expired
+     * @return The body of the mail to send
+     */
+    String getPasswordExpiredMailBody(  );
 
-	/**
-	 * Add specifiques parameters to a given model
-	 * @param model The model
-	 * @param nIdUser The id of the user to add the parameters
-	 */
+    /**
+     * Add specifiques parameters to a given model
+     * @param model The model
+     * @param nIdUser The id of the user to add the parameters
+     */
     void addParametersToModel( Map<String, String> model, Integer nIdUser );
 
     /**
@@ -142,5 +141,5 @@ public interface IAccountLifeTimeService
      * Get the current plugin
      * @return The plugin
      */
-    Plugin getPlugin( );
+    Plugin getPlugin(  );
 }

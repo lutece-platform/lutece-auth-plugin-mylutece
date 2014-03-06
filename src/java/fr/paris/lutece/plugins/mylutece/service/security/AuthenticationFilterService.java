@@ -56,10 +56,9 @@ public final class AuthenticationFilterService
     /**
      * Session attribute that stores the LuteceUser object attached to the session
      */
-	
-	public static final String MARK_PUBLIC_LIST_URL = "public_list_url";
+    public static final String MARK_PUBLIC_LIST_URL = "public_list_url";
     public static final String PUBLIC_URL_PREFIX = "mylutece.security.public_url.";
-    public static final String MARK_PORTAL_AUTHENTICATION_REQUIRED  = "portal_authentication_required";
+    public static final String MARK_PORTAL_AUTHENTICATION_REQUIRED = "portal_authentication_required";
     private static final String MARK_LOCALE = "locale";
     private static final String MARK_WEBAPP_URL = "webapp_url";
     private static AuthenticationFilterService _singleton = new AuthenticationFilterService(  );
@@ -97,7 +96,8 @@ public final class AuthenticationFilterService
             refUrl.setCode( refUrl.getCode(  ).replace( PUBLIC_URL_PREFIX, "" ) );
         }
 
-        model.put(MARK_PORTAL_AUTHENTICATION_REQUIRED,SecurityService.getInstance().isPortalAuthenticationRequired());
+        model.put( MARK_PORTAL_AUTHENTICATION_REQUIRED,
+            SecurityService.getInstance(  ).isPortalAuthenticationRequired(  ) );
         model.put( MARK_PUBLIC_LIST_URL, refListUrlPublic );
         model.put( MARK_LOCALE, user.getLocale(  ) );
         model.put( MARK_WEBAPP_URL, AppPathService.getBaseUrl( request ) );

@@ -56,7 +56,10 @@ import fr.paris.lutece.util.html.HtmlTemplate;
 import fr.paris.lutece.util.http.SecurityUtil;
 import fr.paris.lutece.util.url.UrlItem;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.sql.Timestamp;
+
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Locale;
@@ -64,10 +67,9 @@ import java.util.Map;
 
 import javax.security.auth.login.FailedLoginException;
 import javax.security.auth.login.LoginException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
-import org.apache.commons.lang.StringUtils;
 
 
 /**
@@ -78,7 +80,8 @@ public class MyLuteceApp implements XPageApplication
 {
     //////////////////////////////////////////////////////////////////////////////////
     // Constants
-	private static final String ATTRIBUTE_CURRENT_URL = "luteceCurrentUrl";
+    private static final String ATTRIBUTE_CURRENT_URL = "luteceCurrentUrl";
+
     // Markers
     private static final String MARK_ERROR_MESSAGE = "error_message";
     private static final String MARK_ERROR_DETAIL = "error_detail";
@@ -86,8 +89,8 @@ public class MyLuteceApp implements XPageApplication
     private static final String MARK_URL_NEWACCOUNT = "url_new_account";
     private static final String MARK_LIST_AUTHENTICATIONS = "list_authentications";
     private static final String MARK_AUTH_PROVIDER = "auth_provider";
-	private static final String MARK_IS_ACTIVE_CAPTCHA = "is_active_captcha";
-	private static final String MARK_CAPTCHA = "captcha";
+    private static final String MARK_IS_ACTIVE_CAPTCHA = "is_active_captcha";
+    private static final String MARK_CAPTCHA = "captcha";
 
     // Parameters
     private static final String PARAMETER_ACTION = "action";
@@ -97,37 +100,37 @@ public class MyLuteceApp implements XPageApplication
     private static final String PARAMETER_ERROR_VALUE_INVALID = "invalid";
     private static final String PARAMETER_ERROR_MSG = "error_msg";
     private static final String PARAMETER_AUTH_PROVIDER = "auth_provider";
-	private static final String PARAMETER_IS_ACTIVE_CAPTCHA = "mylutece_is_active_captcha";
-	private static final String PARAMETER_ERROR_CAPTCHA = "error_captcha";
-	private static final String PARAMETER_DATE_LOGIN = "date_login";
-	private static final String PARAMETER_INTERVAL = "interval";
-	private static final String PARAMETER_IP = "ip";
-	private static final String PARAMETER_KEY = "key";
+    private static final String PARAMETER_IS_ACTIVE_CAPTCHA = "mylutece_is_active_captcha";
+    private static final String PARAMETER_ERROR_CAPTCHA = "error_captcha";
+    private static final String PARAMETER_DATE_LOGIN = "date_login";
+    private static final String PARAMETER_INTERVAL = "interval";
+    private static final String PARAMETER_IP = "ip";
+    private static final String PARAMETER_KEY = "key";
 
     // Actions
     private static final String ACTION_CREATE_ACCOUNT = "createAccount";
     private static final String ACTION_VIEW_ACCOUNT = "viewAccount";
     private static final String ACTION_LOST_PASSWORD = "lostPassword";
-	private static final String ACTION_LOST_LOGIN = "lostLogin";
+    private static final String ACTION_LOST_LOGIN = "lostLogin";
 
     // Properties
     private static final String PROPERTY_MYLUTECE_PAGETITLE_LOGIN = "mylutece.pageTitle.login";
     private static final String PROPERTY_MYLUTECE_PATHLABEL_LOGIN = "mylutece.pagePathLabel.login";
     private static final String PROPERTY_MYLUTECE_MESSAGE_INVALID_LOGIN = "mylutece.message.error.invalid.login";
-	private static final String PROPERTY_MYLUTECE_MESSAGE_INVALID_CAPTCHA = "mylutece.message.error.invalid.captcha";
+    private static final String PROPERTY_MYLUTECE_MESSAGE_INVALID_CAPTCHA = "mylutece.message.error.invalid.captcha";
     private static final String PROPERTY_MYLUTECE_LOGIN_PAGE_URL = "mylutece.url.login.page";
     private static final String PROPERTY_MYLUTECE_DOLOGIN_URL = "mylutece.url.doLogin";
     private static final String PROPERTY_MYLUTECE_DOLOGOUT_URL = "mylutece.url.doLogout";
     private static final String PROPERTY_MYLUTECE_CREATE_ACCOUNT_URL = "mylutece.url.createAccount.page";
     private static final String PROPERTY_MYLUTECE_VIEW_ACCOUNT_URL = "mylutece.url.viewAccount.page";
     private static final String PROPERTY_MYLUTECE_LOST_PASSWORD_URL = "mylutece.url.lostPassword.page";
-	private static final String PROPERTY_MYLUTECE_LOST_LOGIN_URL = "mylutece.url.lostLogin.page";
+    private static final String PROPERTY_MYLUTECE_LOST_LOGIN_URL = "mylutece.url.lostLogin.page";
     private static final String PROPERTY_MYLUTECE_RESET_PASSWORD_URL = "mylutece.url.resetPassword.page";
     private static final String PROPERTY_MYLUTECE_DEFAULT_REDIRECT_URL = "mylutece.url.default.redirect";
     private static final String PROPERTY_MYLUTECE_TEMPLATE_ACCESS_DENIED = "mylutece.template.accessDenied";
     private static final String PROPERTY_MYLUTECE_TEMPLATE_ACCESS_CONTROLED = "mylutece.template.accessControled";
-	private static final String PROPERTY_DEFAULT_ENCRYPTION_ALGORITHM = "security.defaultValues.algorithm";
-	private static final String PROPERTY_CRYPTO_KEY = "crypto.key";
+    private static final String PROPERTY_DEFAULT_ENCRYPTION_ALGORITHM = "security.defaultValues.algorithm";
+    private static final String PROPERTY_CRYPTO_KEY = "crypto.key";
 
     // i18n Properties
     private static final String PROPERTY_CREATE_ACCOUNT_LABEL = "mylutece.xpage.createAccountLabel";
@@ -136,20 +139,17 @@ public class MyLuteceApp implements XPageApplication
     private static final String PROPERTY_VIEW_ACCOUNT_TITLE = "mylutece.xpage.viewAccountTitle";
     private static final String PROPERTY_LOST_PASSWORD_LABEL = "mylutece.xpage.lostPasswordLabel";
     private static final String PROPERTY_LOST_PASSWORD_TITLE = "mylutece.xpage.lostPasswordTitle";
-	private static final String PROPERTY_LOST_LOGIN_LABEL = "mylutece.xpage.lostLoginLabel";
-	private static final String PROPERTY_LOST_LOGIN_TITLE = "mylutece.xpage.lostLoginTitle";
+    private static final String PROPERTY_LOST_LOGIN_LABEL = "mylutece.xpage.lostLoginLabel";
+    private static final String PROPERTY_LOST_LOGIN_TITLE = "mylutece.xpage.lostLoginTitle";
 
     // Templates
     private static final String TEMPLATE_LOGIN_PAGE = "skin/plugins/mylutece/login_form.html";
     private static final String TEMPLATE_LOGIN_MULTI_PAGE = "skin/plugins/mylutece/login_form_multi.html";
-    
     private static final String TEMPLATE_LOST_PASSWORD_PAGE = "skin/plugins/mylutece/lost_password.html";
-	private static final String TEMPLATE_LOST_LOGIN_PAGE = "skin/plugins/mylutece/lost_login.html";
+    private static final String TEMPLATE_LOST_LOGIN_PAGE = "skin/plugins/mylutece/lost_login.html";
     private static final String TEMPLATE_CREATE_ACCOUNT_PAGE = "skin/plugins/mylutece/create_account.html";
     private static final String TEMPLATE_VIEW_ACCOUNT_PAGE = "skin/plugins/mylutece/view_account.html";
-
-	private static final String CONSTANT_DEFAULT_ENCRYPTION_ALGORITHM = "SHA-256";
-
+    private static final String CONSTANT_DEFAULT_ENCRYPTION_ALGORITHM = "SHA-256";
     private Locale _locale;
 
     /**
@@ -186,9 +186,10 @@ public class MyLuteceApp implements XPageApplication
             return getLostPasswordPage( page );
         }
         else if ( StringUtils.equals( strAction, ACTION_LOST_LOGIN ) )
-		{
-			return getLostLoginPage( page );
-		}
+        {
+            return getLostLoginPage( page );
+        }
+
         return getLoginPage( page, request );
     }
 
@@ -206,60 +207,68 @@ public class MyLuteceApp implements XPageApplication
         String strErrorMessage = "";
         String strErrorDetail = "";
 
-		if ( strError != null )
+        if ( strError != null )
         {
-			if ( strError.equals( PARAMETER_ERROR_VALUE_INVALID ) )
-			{
-				strErrorMessage = AppPropertiesService.getProperty( PROPERTY_MYLUTECE_MESSAGE_INVALID_LOGIN );
+            if ( strError.equals( PARAMETER_ERROR_VALUE_INVALID ) )
+            {
+                strErrorMessage = AppPropertiesService.getProperty( PROPERTY_MYLUTECE_MESSAGE_INVALID_LOGIN );
 
-				if ( request.getParameter( PARAMETER_ERROR_MSG ) != null )
-				{
-					strErrorDetail = request.getParameter( PARAMETER_ERROR_MSG );
-				}
-			}
-			else if ( strError.equals( PARAMETER_ERROR_CAPTCHA ) )
-			{
-				strErrorMessage = I18nService.getLocalizedString( PROPERTY_MYLUTECE_MESSAGE_INVALID_CAPTCHA, request.getLocale( ) );
-			}
+                if ( request.getParameter( PARAMETER_ERROR_MSG ) != null )
+                {
+                    strErrorDetail = request.getParameter( PARAMETER_ERROR_MSG );
+                }
+            }
+            else if ( strError.equals( PARAMETER_ERROR_CAPTCHA ) )
+            {
+                strErrorMessage = I18nService.getLocalizedString( PROPERTY_MYLUTECE_MESSAGE_INVALID_CAPTCHA,
+                        request.getLocale(  ) );
+            }
         }
 
-		HttpSession session = request.getSession( false );
-		Boolean bEnableCaptcha = Boolean.FALSE;
-		if ( session != null )
-		{
-			bEnableCaptcha = ( Boolean ) session.getAttribute( PARAMETER_IS_ACTIVE_CAPTCHA );
-			if ( bEnableCaptcha == null )
-			{
-				bEnableCaptcha = Boolean.FALSE;
-			}
-		}
+        HttpSession session = request.getSession( false );
+        Boolean bEnableCaptcha = Boolean.FALSE;
+
+        if ( session != null )
+        {
+            bEnableCaptcha = (Boolean) session.getAttribute( PARAMETER_IS_ACTIVE_CAPTCHA );
+
+            if ( bEnableCaptcha == null )
+            {
+                bEnableCaptcha = Boolean.FALSE;
+            }
+        }
 
         model.put( MARK_ERROR_MESSAGE, strErrorMessage );
         model.put( MARK_ERROR_DETAIL, strErrorDetail );
         model.put( MARK_URL_DOLOGIN, getDoLoginUrl(  ) );
         model.put( MARK_AUTH_PROVIDER, request.getParameter( PARAMETER_AUTH_PROVIDER ) );
-		model.put( MARK_IS_ACTIVE_CAPTCHA, bEnableCaptcha );
-		if ( bEnableCaptcha )
-		{
-			CaptchaSecurityService captchaService = new CaptchaSecurityService( );
-			model.put( MARK_CAPTCHA, captchaService.getHtmlCode( ) );
-		}
+        model.put( MARK_IS_ACTIVE_CAPTCHA, bEnableCaptcha );
 
+        if ( bEnableCaptcha )
+        {
+            CaptchaSecurityService captchaService = new CaptchaSecurityService(  );
+            model.put( MARK_CAPTCHA, captchaService.getHtmlCode(  ) );
+        }
 
         HtmlTemplate template;
-        model.put( MARK_URL_NEWACCOUNT,SecurityService.getInstance().getAuthenticationService(  ).getNewAccountPageUrl());
-        if ( SecurityService.getInstance().isMultiAuthenticationSupported(  ) )
+        model.put( MARK_URL_NEWACCOUNT,
+            SecurityService.getInstance(  ).getAuthenticationService(  ).getNewAccountPageUrl(  ) );
+
+        if ( SecurityService.getInstance(  ).isMultiAuthenticationSupported(  ) )
         {
-        	LuteceAuthentication luteceAuthentication = SecurityService.getInstance().getAuthenticationService(  );
-    		if ( luteceAuthentication instanceof MultiLuteceAuthentication )
-    		{
-    			model.put(  MARK_LIST_AUTHENTICATIONS, ( ( MultiLuteceAuthentication ) luteceAuthentication ).getListLuteceAuthentication(  ) );
-    		}
-        	template = AppTemplateService.getTemplate( TEMPLATE_LOGIN_MULTI_PAGE, _locale, model );
+            LuteceAuthentication luteceAuthentication = SecurityService.getInstance(  ).getAuthenticationService(  );
+
+            if ( luteceAuthentication instanceof MultiLuteceAuthentication )
+            {
+                model.put( MARK_LIST_AUTHENTICATIONS,
+                    ( (MultiLuteceAuthentication) luteceAuthentication ).getListLuteceAuthentication(  ) );
+            }
+
+            template = AppTemplateService.getTemplate( TEMPLATE_LOGIN_MULTI_PAGE, _locale, model );
         }
         else
         {
-        	template = AppTemplateService.getTemplate( TEMPLATE_LOGIN_PAGE, _locale, model );
+            template = AppTemplateService.getTemplate( TEMPLATE_LOGIN_PAGE, _locale, model );
         }
 
         page.setContent( template.getHtml(  ) );
@@ -280,72 +289,75 @@ public class MyLuteceApp implements XPageApplication
         String strPassword = request.getParameter( PARAMETER_PASSWORD );
         String strAuthProvider = request.getParameter( PARAMETER_AUTH_PROVIDER );
 
-		String strReturn = "../../../../" + getLoginPageUrl( );
+        String strReturn = "../../../../" + getLoginPageUrl(  );
 
-		Boolean bIsCaptchaEnabled = ( Boolean ) request.getSession( true ).getAttribute( PARAMETER_IS_ACTIVE_CAPTCHA );
-		if ( bIsCaptchaEnabled != null && bIsCaptchaEnabled )
-		{
-			CaptchaSecurityService captchaService = new CaptchaSecurityService( );
-			if ( !captchaService.validate( request ) )
-			{
-				strReturn += "&" + PARAMETER_ERROR + "=" + PARAMETER_ERROR_CAPTCHA;
-			}
-		}
+        Boolean bIsCaptchaEnabled = (Boolean) request.getSession( true ).getAttribute( PARAMETER_IS_ACTIVE_CAPTCHA );
+
+        if ( ( bIsCaptchaEnabled != null ) && bIsCaptchaEnabled )
+        {
+            CaptchaSecurityService captchaService = new CaptchaSecurityService(  );
+
+            if ( !captchaService.validate( request ) )
+            {
+                strReturn += ( "&" + PARAMETER_ERROR + "=" + PARAMETER_ERROR_CAPTCHA );
+            }
+        }
 
         Plugin plugin = PluginService.getPlugin( MyLutecePlugin.PLUGIN_NAME );
+
         try
         {
             SecurityService.getInstance(  ).loginUser( request, strUsername, strPassword );
         }
         catch ( LoginRedirectException ex )
         {
-			HttpSession session = request.getSession( false );
-			if ( session != null )
-			{
-				session.removeAttribute( PARAMETER_IS_ACTIVE_CAPTCHA );
-			}
+            HttpSession session = request.getSession( false );
+
+            if ( session != null )
+            {
+                session.removeAttribute( PARAMETER_IS_ACTIVE_CAPTCHA );
+            }
+
             return ex.getRedirectUrl(  );
         }
         catch ( FailedLoginException ex )
         {
             // Creating a record of connections log
-            ConnectionLog connectionLog = new ConnectionLog( );
+            ConnectionLog connectionLog = new ConnectionLog(  );
             connectionLog.setIpAddress( SecurityUtil.getRealIp( request ) );
-            connectionLog.setDateLogin( new java.sql.Timestamp( new java.util.Date( ).getTime( ) ) );
-			connectionLog.setLoginStatus( ConnectionLog.LOGIN_DENIED ); // will be inserted only if access denied
+            connectionLog.setDateLogin( new java.sql.Timestamp( new java.util.Date(  ).getTime(  ) ) );
+            connectionLog.setLoginStatus( ConnectionLog.LOGIN_DENIED ); // will be inserted only if access denied
             ConnectionLogHome.addUserLog( connectionLog, plugin );
 
-			strReturn += "&" + PARAMETER_ERROR + "=" +
-                PARAMETER_ERROR_VALUE_INVALID;
-            
+            strReturn += ( "&" + PARAMETER_ERROR + "=" + PARAMETER_ERROR_VALUE_INVALID );
+
             if ( StringUtils.isNotBlank( strAuthProvider ) )
-        	{
-        		strReturn += "&" + PARAMETER_AUTH_PROVIDER + "=" + strAuthProvider;
-        	}
+            {
+                strReturn += ( "&" + PARAMETER_AUTH_PROVIDER + "=" + strAuthProvider );
+            }
 
             if ( ex.getMessage(  ) != null )
             {
                 String strMessage = "&" + PARAMETER_ERROR_MSG + "=" + ex.getMessage(  );
                 strReturn += strMessage;
             }
-			if ( ex instanceof FailedLoginCaptchaException )
-			{
-				Boolean bEnableCaptcha = ( ( FailedLoginCaptchaException ) ex ).isCaptchaEnabled( );
-				request.getSession( true ).setAttribute( PARAMETER_IS_ACTIVE_CAPTCHA, bEnableCaptcha );
-			}
+
+            if ( ex instanceof FailedLoginCaptchaException )
+            {
+                Boolean bEnableCaptcha = ( (FailedLoginCaptchaException) ex ).isCaptchaEnabled(  );
+                request.getSession( true ).setAttribute( PARAMETER_IS_ACTIVE_CAPTCHA, bEnableCaptcha );
+            }
 
             return strReturn;
         }
         catch ( LoginException ex )
         {
-			strReturn += "&" + PARAMETER_ERROR + "=" +
-                PARAMETER_ERROR_VALUE_INVALID;
-            
+            strReturn += ( "&" + PARAMETER_ERROR + "=" + PARAMETER_ERROR_VALUE_INVALID );
+
             if ( StringUtils.isNotBlank( strAuthProvider ) )
-        	{
-        		strReturn += "&" + PARAMETER_AUTH_PROVIDER + "=" +
-        		strAuthProvider;
-        	}
+            {
+                strReturn += ( "&" + PARAMETER_AUTH_PROVIDER + "=" + strAuthProvider );
+            }
 
             if ( ex.getMessage(  ) != null )
             {
@@ -356,21 +368,23 @@ public class MyLuteceApp implements XPageApplication
             return strReturn;
         }
 
-		HttpSession session = request.getSession( false );
-		if ( session != null )
-		{
-			session.removeAttribute( PARAMETER_IS_ACTIVE_CAPTCHA );
-		}
+        HttpSession session = request.getSession( false );
+
+        if ( session != null )
+        {
+            session.removeAttribute( PARAMETER_IS_ACTIVE_CAPTCHA );
+        }
 
         String strNextUrl = PortalJspBean.getLoginNextUrl( request );
-        String strCurrentUrl=getCurrentUrl(request);
+        String strCurrentUrl = getCurrentUrl( request );
+
         if ( strNextUrl != null )
         {
             return strNextUrl;
         }
-        else if( strCurrentUrl != null)
+        else if ( strCurrentUrl != null )
         {
-        	return strCurrentUrl;
+            return strCurrentUrl;
         }
 
         return getDefaultRedirectUrl(  );
@@ -430,14 +444,14 @@ public class MyLuteceApp implements XPageApplication
         return AppPropertiesService.getProperty( PROPERTY_MYLUTECE_LOST_PASSWORD_URL );
     }
 
-	/**
-	 * Returns the Lost login URL of the Authentication Service
-	 * @return The URL
-	 */
-	public static String getLostLoginUrl( )
-	{
-		return AppPropertiesService.getProperty( PROPERTY_MYLUTECE_LOST_LOGIN_URL );
-	}
+    /**
+     * Returns the Lost login URL of the Authentication Service
+     * @return The URL
+     */
+    public static String getLostLoginUrl(  )
+    {
+        return AppPropertiesService.getProperty( PROPERTY_MYLUTECE_LOST_LOGIN_URL );
+    }
 
     /**
      * Returns the Reset Password URL of the Authentication Service
@@ -446,8 +460,8 @@ public class MyLuteceApp implements XPageApplication
      */
     public static String getResetPasswordUrl( HttpServletRequest request )
     {
-        return AppPathService.getBaseUrl( request )
-                + AppPropertiesService.getProperty( PROPERTY_MYLUTECE_RESET_PASSWORD_URL );
+        return AppPathService.getBaseUrl( request ) +
+        AppPropertiesService.getProperty( PROPERTY_MYLUTECE_RESET_PASSWORD_URL );
     }
 
     /**
@@ -479,13 +493,14 @@ public class MyLuteceApp implements XPageApplication
      */
     private XPage getCreateAccountPage( XPage page, HttpServletRequest request )
     {
-    	Map<String, Object> model = new HashMap<String, Object>(  );
-    	if ( SecurityService.getInstance().isMultiAuthenticationSupported(  ) ) 
-    	{
-    		model.put( MARK_LIST_AUTHENTICATIONS , 
-    				( (MultiLuteceAuthentication) SecurityService.getInstance().getAuthenticationService(  ) ).getListLuteceAuthentication(  ) );
-    	}
-    	
+        Map<String, Object> model = new HashMap<String, Object>(  );
+
+        if ( SecurityService.getInstance(  ).isMultiAuthenticationSupported(  ) )
+        {
+            model.put( MARK_LIST_AUTHENTICATIONS,
+                ( (MultiLuteceAuthentication) SecurityService.getInstance(  ).getAuthenticationService(  ) ).getListLuteceAuthentication(  ) );
+        }
+
         HtmlTemplate t = AppTemplateService.getTemplate( TEMPLATE_CREATE_ACCOUNT_PAGE, _locale, model );
         page.setContent( t.getHtml(  ) );
         //	page.setPathLabel( "Create Account" );
@@ -530,20 +545,20 @@ public class MyLuteceApp implements XPageApplication
         return page;
     }
 
-	/**
-	 * Build the default Lost password page
-	 * @param page The XPage object to fill
-	 * @return The XPage object containing the page content
-	 */
-	private XPage getLostLoginPage( XPage page )
-	{
-		HtmlTemplate t = AppTemplateService.getTemplate( TEMPLATE_LOST_LOGIN_PAGE, _locale );
-		page.setContent( t.getHtml( ) );
-		page.setPathLabel( I18nService.getLocalizedString( PROPERTY_LOST_LOGIN_LABEL, _locale ) );
-		page.setTitle( I18nService.getLocalizedString( PROPERTY_LOST_LOGIN_TITLE, _locale ) );
+    /**
+     * Build the default Lost password page
+     * @param page The XPage object to fill
+     * @return The XPage object containing the page content
+     */
+    private XPage getLostLoginPage( XPage page )
+    {
+        HtmlTemplate t = AppTemplateService.getTemplate( TEMPLATE_LOST_LOGIN_PAGE, _locale );
+        page.setContent( t.getHtml(  ) );
+        page.setPathLabel( I18nService.getLocalizedString( PROPERTY_LOST_LOGIN_LABEL, _locale ) );
+        page.setTitle( I18nService.getLocalizedString( PROPERTY_LOST_LOGIN_TITLE, _locale ) );
 
-		return page;
-	}
+        return page;
+    }
 
     /**
      * Returns the template for access denied
@@ -568,34 +583,38 @@ public class MyLuteceApp implements XPageApplication
      * @param request The request
      * @return The URL of the next page to display
      */
-	public String doResetConnectionLog( HttpServletRequest request )
-	{
-		String strIp = request.getParameter( PARAMETER_IP );
-		String strDateLogin = request.getParameter( PARAMETER_DATE_LOGIN );
-		String strInterval = request.getParameter( PARAMETER_INTERVAL );
-		String strKey = request.getParameter( PARAMETER_KEY );
+    public String doResetConnectionLog( HttpServletRequest request )
+    {
+        String strIp = request.getParameter( PARAMETER_IP );
+        String strDateLogin = request.getParameter( PARAMETER_DATE_LOGIN );
+        String strInterval = request.getParameter( PARAMETER_INTERVAL );
+        String strKey = request.getParameter( PARAMETER_KEY );
 
-		if ( StringUtils.isNotBlank( strIp ) && StringUtils.isNotBlank( strDateLogin ) && StringUtils.isNotBlank( strKey ) && StringUtils.isNotBlank( strInterval ) )
-		{
-			String strCryptoKey = AppPropertiesService.getProperty( PROPERTY_CRYPTO_KEY );
-			String strComputedKey = CryptoService.encrypt( strIp + strDateLogin + strInterval + strCryptoKey, AppPropertiesService.getProperty( PROPERTY_DEFAULT_ENCRYPTION_ALGORITHM,
-					CONSTANT_DEFAULT_ENCRYPTION_ALGORITHM ) );
-			if ( StringUtils.equals( strKey, strComputedKey ) )
-			{
-				Plugin plugin = PluginService.getPlugin( MyLutecePlugin.PLUGIN_NAME );
-				ConnectionLogHome.resetConnectionLogs( strIp, new Timestamp( Long.parseLong( strDateLogin ) ), Integer.parseInt( strInterval ), plugin );
-			}
-		}
-		return "../../../../" + getLoginPageUrl( );
-	}
-	
-	
-	 /**
-     * Returns the current url
-     * @param request The Http request
-     * @return The current url
-     * 
-     */
+        if ( StringUtils.isNotBlank( strIp ) && StringUtils.isNotBlank( strDateLogin ) &&
+                StringUtils.isNotBlank( strKey ) && StringUtils.isNotBlank( strInterval ) )
+        {
+            String strCryptoKey = AppPropertiesService.getProperty( PROPERTY_CRYPTO_KEY );
+            String strComputedKey = CryptoService.encrypt( strIp + strDateLogin + strInterval + strCryptoKey,
+                    AppPropertiesService.getProperty( PROPERTY_DEFAULT_ENCRYPTION_ALGORITHM,
+                        CONSTANT_DEFAULT_ENCRYPTION_ALGORITHM ) );
+
+            if ( StringUtils.equals( strKey, strComputedKey ) )
+            {
+                Plugin plugin = PluginService.getPlugin( MyLutecePlugin.PLUGIN_NAME );
+                ConnectionLogHome.resetConnectionLogs( strIp, new Timestamp( Long.parseLong( strDateLogin ) ),
+                    Integer.parseInt( strInterval ), plugin );
+            }
+        }
+
+        return "../../../../" + getLoginPageUrl(  );
+    }
+
+    /**
+    * Returns the current url
+    * @param request The Http request
+    * @return The current url
+    *
+    */
     public static String getCurrentUrl( HttpServletRequest request )
     {
         HttpSession session = request.getSession(  );
@@ -603,11 +622,11 @@ public class MyLuteceApp implements XPageApplication
 
         return strNextUrl;
     }
-    
+
     /**
      * Set the current url
      * @param request The Http request
-     *  
+     *
      */
     public static void setCurrentUrl( HttpServletRequest request )
     {
@@ -623,8 +642,5 @@ public class MyLuteceApp implements XPageApplication
 
         HttpSession session = request.getSession( true );
         session.setAttribute( ATTRIBUTE_CURRENT_URL, url.getUrl(  ) );
-
-        
     }
-
 }

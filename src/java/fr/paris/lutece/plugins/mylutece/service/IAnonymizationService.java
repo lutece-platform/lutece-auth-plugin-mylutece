@@ -39,7 +39,7 @@ import java.util.Locale;
 
 /**
  * User anonymization service interface
- * 
+ *
  */
 public interface IAnonymizationService
 {
@@ -54,5 +54,5 @@ public interface IAnonymizationService
      * Get the list of id of expired users
      * @return the list of id of expired users
      */
-    List<Integer> getExpiredUserIdList( );
+    List<Integer> getExpiredUserIdList(  );
 }

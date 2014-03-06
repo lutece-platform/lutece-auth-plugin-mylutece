@@ -39,12 +39,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+
 /**
- * 
+ *
  * IAttributeDAO
  *
  */
-public interface IAttributeDAO 
+public interface IAttributeDAO
 {
     /**
      * Load attribute
@@ -53,7 +54,7 @@ public interface IAttributeDAO
      * @param plugin The plugin
      * @return Attribute
      */
-	IAttribute load( int nIdAttribute, Locale locale, Plugin plugin );
+    IAttribute load( int nIdAttribute, Locale locale, Plugin plugin );
 
     /**
      * Insert a new attribute
@@ -61,21 +62,21 @@ public interface IAttributeDAO
      * @param plugin The plugin
      * @return new PK
      */
-	int insert( IAttribute attribute, Plugin plugin );
+    int insert( IAttribute attribute, Plugin plugin );
 
     /**
      * Update an attribute
      * @param attribute the attribute
      * @param plugin The plugin
      */
-	void store( IAttribute attribute, Plugin plugin );
+    void store( IAttribute attribute, Plugin plugin );
 
     /**
      * Delete an attribute
      * @param nIdAttribute the ID of the attribute
      * @param plugin The plugin
      */
-	void delete( int nIdAttribute, Plugin plugin );
+    void delete( int nIdAttribute, Plugin plugin );
 
     /**
      * Load every attributes
@@ -83,7 +84,7 @@ public interface IAttributeDAO
      * @param plugin The plugin
      * @return list of attributes
      */
-	List<IAttribute> selectAll( Locale locale, Plugin plugin );
+    List<IAttribute> selectAll( Locale locale, Plugin plugin );
 
     /**
      * Load every attributes from plugin name
@@ -92,8 +93,7 @@ public interface IAttributeDAO
      * @param plugin The plugin
      * @return list of attributes
      */
-	List<IAttribute> selectPluginAttributes(
-			String strPluginName, Locale locale, Plugin plugin );
+    List<IAttribute> selectPluginAttributes( String strPluginName, Locale locale, Plugin plugin );
 
     /**
      * Load every attributes that do not come from a plugin
@@ -101,7 +101,7 @@ public interface IAttributeDAO
      * @param plugin The plugin
      * @return list of attributes
      */
-	List<IAttribute> selectMyLuteceAttributes( Locale locale, Plugin plugin );
+    List<IAttribute> selectMyLuteceAttributes( Locale locale, Plugin plugin );
 
     /**
      * Update the anonymization status of the attribute.

@@ -40,12 +40,13 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
+
 /**
- * 
+ *
  * MyLuteceUserFieldListener
  *
  */
-public interface MyLuteceUserFieldListener 
+public interface MyLuteceUserFieldListener
 {
     /**
      * Create user fields
@@ -53,7 +54,7 @@ public interface MyLuteceUserFieldListener
      * @param request HttpServletRequest
      * @param locale locale
      */
-	void doCreateUserFields( int nIdUser, HttpServletRequest request, Locale locale );
+    void doCreateUserFields( int nIdUser, HttpServletRequest request, Locale locale );
 
     /**
      * Create user fields. This method may do nothing if user fields can not be
@@ -71,7 +72,7 @@ public interface MyLuteceUserFieldListener
      * @param locale locale
      * @param currentUser current user. The current user may be null.
      */
-	void doModifyUserFields( int nIdUser, HttpServletRequest request, Locale locale, AdminUser currentUser );
+    void doModifyUserFields( int nIdUser, HttpServletRequest request, Locale locale, AdminUser currentUser );
 
     /**
      * Modify user fields
@@ -88,7 +89,7 @@ public interface MyLuteceUserFieldListener
      * @param request HttpServletRequest
      * @param locale locale
      */
-	void doRemoveUserFields( int nIdUser, HttpServletRequest request, Locale locale );
+    void doRemoveUserFields( int nIdUser, HttpServletRequest request, Locale locale );
 
     /**
      * Remove user fields

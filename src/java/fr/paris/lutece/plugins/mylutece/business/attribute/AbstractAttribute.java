@@ -47,181 +47,179 @@ import javax.servlet.http.HttpServletRequest;
 
 
 /**
- * 
+ *
  * Attribute
  *
  */
 public abstract class AbstractAttribute implements IAttribute
 {
-	// MARKS
-	private static final String MARK_ATTRIBUTE = "attribute";
-	private static final String MARK_DEFAULT_VALUES_LIST = "default_values_list";
-	
+    // MARKS
+    private static final String MARK_ATTRIBUTE = "attribute";
+    private static final String MARK_DEFAULT_VALUES_LIST = "default_values_list";
+
     // PARAMETERS
     private static final String PARAMETER_ATTRIBUTE = "attribute";
 
     // COINSTANTS
     private static final String CONSTANT_UNDERSCORE = "_";
-
     protected int _nIdAttribute;
-	protected boolean _bMandatory;
-	protected String _strTitle;
-	protected String _strHelpMessage;
-	protected int _nPosition;
-	protected AttributeType _attributeType;
-	protected List<AttributeField> _listAttributeFields;
-	protected Plugin _plugin;
-	protected boolean _bIsShownInSearch;
+    protected boolean _bMandatory;
+    protected String _strTitle;
+    protected String _strHelpMessage;
+    protected int _nPosition;
+    protected AttributeType _attributeType;
+    protected List<AttributeField> _listAttributeFields;
+    protected Plugin _plugin;
+    protected boolean _bIsShownInSearch;
     protected boolean _bAnonymize;
-		
-	/**
-	 * Constructor
-	 */
-	public AbstractAttribute(  )
-	{
-	}
-	
-	/**
-	 * Get ID Attribute
-	 * @return ID attribute
-	 */
-	public int getIdAttribute(  ) 
-	{
-		return _nIdAttribute;
-	}
-	
-	/**
-	 * Set ID Attribute
-	 * @param nIdAttribute ID Attribute
-	 */
-	public void setIdAttribute( int nIdAttribute ) 
-	{
-		_nIdAttribute = nIdAttribute;
-	}
-	
-	/**
-	 * Get Mandatory
-	 * @return true if it's mandatory, false otherwise
-	 */
-	public boolean isMandatory(  ) 
-	{
-		return _bMandatory;
-	}
+
+    /**
+     * Constructor
+     */
+    public AbstractAttribute(  )
+    {
+    }
+
+    /**
+     * Get ID Attribute
+     * @return ID attribute
+     */
+    public int getIdAttribute(  )
+    {
+        return _nIdAttribute;
+    }
+
+    /**
+     * Set ID Attribute
+     * @param nIdAttribute ID Attribute
+     */
+    public void setIdAttribute( int nIdAttribute )
+    {
+        _nIdAttribute = nIdAttribute;
+    }
+
+    /**
+     * Get Mandatory
+     * @return true if it's mandatory, false otherwise
+     */
+    public boolean isMandatory(  )
+    {
+        return _bMandatory;
+    }
 
     /**
      * Set mandatory
      * @param bMandatory true if it's mandatory, false otherwise
      */
-	public void setMandatory( boolean bMandatory ) 
-	{
-		_bMandatory = bMandatory;
-	}
-	
-	/**
-	 * Get list fields
-	 * @return list fields
-	 */
-	public List<AttributeField> getListAttributeFields(  ) 
-	{
-		return _listAttributeFields;
-	}
+    public void setMandatory( boolean bMandatory )
+    {
+        _bMandatory = bMandatory;
+    }
+
+    /**
+     * Get list fields
+     * @return list fields
+     */
+    public List<AttributeField> getListAttributeFields(  )
+    {
+        return _listAttributeFields;
+    }
 
     /**
      * Set list fields
      * @param listAttributeFields list fields
      */
-	public void setListAttributeFields( List<AttributeField> listAttributeFields )
-	{
-		_listAttributeFields = listAttributeFields;
-	}
-	
-	/**
-	 * Get title
-	 * @return title
-	 */
-	public String getTitle(  ) 
-	{
-		return _strTitle;
-	}
-	
-	/**
-	 * Set title
-	 * @param strTitle title
-	 */
-	public void setTitle( String strTitle ) 
-	{
-		_strTitle = strTitle;
-	}
-	
-	/**
-	 * Get help Message
-	 * @return help message
-	 */
-	public String getHelpMessage(  ) 
-	{
-		return _strHelpMessage;
-	}
-	
-	/**
-	 * Set help message
-	 * @param strHelpMessage help message
-	 */
-	public void setHelpMessage( String strHelpMessage ) 
-	{
-		_strHelpMessage = strHelpMessage;
-	}
-	
-	/**
-	 * Get position
-	 * @return position
-	 */
-    public int getPosition( )
+    public void setListAttributeFields( List<AttributeField> listAttributeFields )
     {
-		return _nPosition;
-	}
-	
-	/**
-	 * Set position
-	 * @param nPosition position
-	 */
-	public void setPosition( int nPosition )
-	{
-		_nPosition = nPosition;
-	}
-	
-	/**
-	 * Get attribute type
-	 * @return attribute type
-	 */
-	public AttributeType getAttributeType(  )
-	{
-		return _attributeType;
-	}
-	
-	/**
-	 * Set attribute Type
-	 * @param attributeType attribute type
-	 */
-	public void setAttributeType( AttributeType attributeType )
-	{
-		_attributeType = attributeType;
-	}
+        _listAttributeFields = listAttributeFields;
+    }
 
-	/**
-	 * Get Html form
-	 * @param locale locale
-	 * @return html form
-	 */
-	public String getHtmlFormAttribute( Locale locale )
-	{
-		Map<String, Object> model = new HashMap<String, Object>(  );
+    /**
+     * Get title
+     * @return title
+     */
+    public String getTitle(  )
+    {
+        return _strTitle;
+    }
+
+    /**
+     * Set title
+     * @param strTitle title
+     */
+    public void setTitle( String strTitle )
+    {
+        _strTitle = strTitle;
+    }
+
+    /**
+     * Get help Message
+     * @return help message
+     */
+    public String getHelpMessage(  )
+    {
+        return _strHelpMessage;
+    }
+
+    /**
+     * Set help message
+     * @param strHelpMessage help message
+     */
+    public void setHelpMessage( String strHelpMessage )
+    {
+        _strHelpMessage = strHelpMessage;
+    }
+
+    /**
+     * Get position
+     * @return position
+     */
+    public int getPosition(  )
+    {
+        return _nPosition;
+    }
+
+    /**
+     * Set position
+     * @param nPosition position
+     */
+    public void setPosition( int nPosition )
+    {
+        _nPosition = nPosition;
+    }
+
+    /**
+     * Get attribute type
+     * @return attribute type
+     */
+    public AttributeType getAttributeType(  )
+    {
+        return _attributeType;
+    }
+
+    /**
+     * Set attribute Type
+     * @param attributeType attribute type
+     */
+    public void setAttributeType( AttributeType attributeType )
+    {
+        _attributeType = attributeType;
+    }
+
+    /**
+     * Get Html form
+     * @param locale locale
+     * @return html form
+     */
+    public String getHtmlFormAttribute( Locale locale )
+    {
+        Map<String, Object> model = new HashMap<String, Object>(  );
         model.put( MARK_ATTRIBUTE, this );
 
-        HtmlTemplate template = AppTemplateService.getTemplate( getTemplateHtmlFormAttribute(  ), locale,
-                model );
+        HtmlTemplate template = AppTemplateService.getTemplate( getTemplateHtmlFormAttribute(  ), locale, model );
 
         return template.getHtml(  );
-	}
+    }
 
     /**
      * Get Html form
@@ -229,17 +227,16 @@ public abstract class AbstractAttribute implements IAttribute
      * @param listDefaultValues Default values
      * @return html form
      */
-	public String getHtmlFormAttribute( Locale locale, List<MyLuteceUserField> listDefaultValues )
-	{
-		Map<String, Object> model = new HashMap<String, Object>(  );
+    public String getHtmlFormAttribute( Locale locale, List<MyLuteceUserField> listDefaultValues )
+    {
+        Map<String, Object> model = new HashMap<String, Object>(  );
         model.put( MARK_ATTRIBUTE, this );
         model.put( MARK_DEFAULT_VALUES_LIST, listDefaultValues );
 
-        HtmlTemplate template = AppTemplateService.getTemplate( getTemplateHtmlFormAttribute(  ), locale,
-                model );
+        HtmlTemplate template = AppTemplateService.getTemplate( getTemplateHtmlFormAttribute(  ), locale, model );
 
         return template.getHtml(  );
-	}
+    }
 
     /**
      * Get Html form
@@ -247,55 +244,56 @@ public abstract class AbstractAttribute implements IAttribute
      * @param locale locale
      * @return html form
      */
-	public String getHtmlFormSearchAttribute( MyLuteceUserFieldFilter auFieldFilter, Locale locale )
-	{
-		Map<String, Object> model = new HashMap<String, Object>(  );
-		List<MyLuteceUserField> listUserFields = auFieldFilter.getListUserFields(  );
-		List<MyLuteceUserField> selectedUserFields = null;
-		if ( listUserFields != null && listUserFields.size(  ) != 0 )
-		{
-			selectedUserFields = new ArrayList<MyLuteceUserField>(  );
-			for ( MyLuteceUserField userField : listUserFields )
-			{
-				if ( userField.getAttribute(  ).getIdAttribute(  ) == _nIdAttribute )
-				{
-					selectedUserFields.add( userField );
-				}
-			}
-		}
-		
-		model.put( MARK_DEFAULT_VALUES_LIST, selectedUserFields );
+    public String getHtmlFormSearchAttribute( MyLuteceUserFieldFilter auFieldFilter, Locale locale )
+    {
+        Map<String, Object> model = new HashMap<String, Object>(  );
+        List<MyLuteceUserField> listUserFields = auFieldFilter.getListUserFields(  );
+        List<MyLuteceUserField> selectedUserFields = null;
+
+        if ( ( listUserFields != null ) && ( listUserFields.size(  ) != 0 ) )
+        {
+            selectedUserFields = new ArrayList<MyLuteceUserField>(  );
+
+            for ( MyLuteceUserField userField : listUserFields )
+            {
+                if ( userField.getAttribute(  ).getIdAttribute(  ) == _nIdAttribute )
+                {
+                    selectedUserFields.add( userField );
+                }
+            }
+        }
+
+        model.put( MARK_DEFAULT_VALUES_LIST, selectedUserFields );
         model.put( MARK_ATTRIBUTE, this );
 
-        HtmlTemplate template = AppTemplateService.getTemplate( getTemplateHtmlFormSearchAttribute(  ), locale,
-                model );
+        HtmlTemplate template = AppTemplateService.getTemplate( getTemplateHtmlFormSearchAttribute(  ), locale, model );
 
         return template.getHtml(  );
-	}
-	
-	/**
-	 * Get plugin
-	 * @return plugin
-	 */
-	public Plugin getPlugin(  )
-	{
-		return _plugin;
-	}
-	
-	/**
-	 * Set plugin
-	 * @param plugin plugin
-	 */
-	public void setPlugin( Plugin plugin )
-	{
-		_plugin = plugin;
-	}
+    }
+
+    /**
+     * Get plugin
+     * @return plugin
+     */
+    public Plugin getPlugin(  )
+    {
+        return _plugin;
+    }
+
+    /**
+     * Set plugin
+     * @param plugin plugin
+     */
+    public void setPlugin( Plugin plugin )
+    {
+        _plugin = plugin;
+    }
 
     /**
      * Get the anonymize status of the attribute
      * @return True if the attribute should be anonymize, false otherwise.
      */
-    public boolean getAnonymize( )
+    public boolean getAnonymize(  )
     {
         return _bAnonymize;
     }
@@ -314,19 +312,19 @@ public abstract class AbstractAttribute implements IAttribute
      * Check if the attribute is shown in search
      * @return true if it is, false otherwise
      */
-	public boolean isShownInSearch(  )
-	{
-		return _bIsShownInSearch;
-	}
-	
-	/**
-	 * Set isShownInSearch
-	 * @param bIsShownInSearch shown in search
-	 */
-	public void setShownInSearch( boolean bIsShownInSearch )
-	{
-		_bIsShownInSearch = bIsShownInSearch; 
-	}
+    public boolean isShownInSearch(  )
+    {
+        return _bIsShownInSearch;
+    }
+
+    /**
+     * Set isShownInSearch
+     * @param bIsShownInSearch shown in search
+     */
+    public void setShownInSearch( boolean bIsShownInSearch )
+    {
+        _bIsShownInSearch = bIsShownInSearch;
+    }
 
     /**
      * Get the data of the user fields
@@ -337,7 +335,7 @@ public abstract class AbstractAttribute implements IAttribute
     public List<MyLuteceUserField> getUserFieldsData( HttpServletRequest request, int nIdUser )
     {
         String[] values = request.getParameterValues( PARAMETER_ATTRIBUTE + CONSTANT_UNDERSCORE + _nIdAttribute );
+
         return getUserFieldsData( values, nIdUser );
     }
-
 }

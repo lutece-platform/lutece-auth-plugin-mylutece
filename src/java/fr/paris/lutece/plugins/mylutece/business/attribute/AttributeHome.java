@@ -40,8 +40,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+
 /**
- * 
+ *
  * AttributeHome
  *
  */
@@ -56,10 +57,10 @@ public class AttributeHome
      * @param plugin The plugin
      * @return Attribute
      */
-	public static IAttribute findByPrimaryKey( int nIdAttribute, Locale locale, Plugin plugin )
-	{
-		return _dao.load( nIdAttribute, locale, plugin );
-	}
+    public static IAttribute findByPrimaryKey( int nIdAttribute, Locale locale, Plugin plugin )
+    {
+        return _dao.load( nIdAttribute, locale, plugin );
+    }
 
     /**
      * Insert an new attribute
@@ -67,30 +68,30 @@ public class AttributeHome
      * @param plugin The plugin
      * @return new PK
      */
-	public static int create( IAttribute attribute, Plugin plugin )
-	{
-		return _dao.insert( attribute, plugin );
-	}
+    public static int create( IAttribute attribute, Plugin plugin )
+    {
+        return _dao.insert( attribute, plugin );
+    }
 
     /**
      * Update an attribute
      * @param attribute the attribute
      * @param plugin The plugin
      */
-	public static void update( IAttribute attribute, Plugin plugin )
-	{
-		_dao.store( attribute, plugin );
-	}
+    public static void update( IAttribute attribute, Plugin plugin )
+    {
+        _dao.store( attribute, plugin );
+    }
 
     /**
      * Delete an attribute
      * @param nIdAttribute The id of the attribute
      * @param plugin The plugin
      */
-	public static void remove( int nIdAttribute, Plugin plugin )
-	{
-		_dao.delete( nIdAttribute, plugin );
-	}
+    public static void remove( int nIdAttribute, Plugin plugin )
+    {
+        _dao.delete( nIdAttribute, plugin );
+    }
 
     /**
      * Load every attributes
@@ -98,10 +99,10 @@ public class AttributeHome
      * @param plugin The plugin
      * @return list of attributes
      */
-	public static List<IAttribute> findAll( Locale locale, Plugin plugin )
-	{
-		return _dao.selectAll( locale, plugin );
-	}
+    public static List<IAttribute> findAll( Locale locale, Plugin plugin )
+    {
+        return _dao.selectAll( locale, plugin );
+    }
 
     /**
      * Load every attributes associated to a plugin
@@ -110,11 +111,10 @@ public class AttributeHome
      * @param plugin The plugin
      * @return list of attributes
      */
-	public static List<IAttribute> findPluginAttributes(
-			String strPluginName, Locale locale, Plugin plugin ) 
-	{
-		return _dao.selectPluginAttributes( strPluginName, locale, plugin );
-	}
+    public static List<IAttribute> findPluginAttributes( String strPluginName, Locale locale, Plugin plugin )
+    {
+        return _dao.selectPluginAttributes( strPluginName, locale, plugin );
+    }
 
     /**
      * Load every attributes that do not come from a plugin
@@ -122,10 +122,10 @@ public class AttributeHome
      * @param plugin The plugin
      * @return list of attributes
      */
-	public static List<IAttribute> findMyLuteceAttributes( Locale locale, Plugin plugin ) 
-	{
-		return _dao.selectMyLuteceAttributes( locale, plugin );
-	}
+    public static List<IAttribute> findMyLuteceAttributes( Locale locale, Plugin plugin )
+    {
+        return _dao.selectMyLuteceAttributes( locale, plugin );
+    }
 
     /**
      * Update the anonymization status of the attribute.
@@ -180,7 +180,7 @@ public class AttributeHome
      * @param plugin The plugin
      */
     public static void updateAnonymizationStatusUserStaticField( String strFieldName, boolean bAnonymizeFiled,
-            Plugin plugin )
+        Plugin plugin )
     {
         _dao.updateAnonymizationStatusUserStaticField( strFieldName, bAnonymizeFiled, plugin );
     }

@@ -33,10 +33,6 @@
  */
 package fr.paris.lutece.plugins.mylutece.web.security;
 
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
 import fr.paris.lutece.plugins.mylutece.service.MyLuteceResourceIdService;
 import fr.paris.lutece.plugins.mylutece.service.security.AuthenticationFilterService;
 import fr.paris.lutece.portal.business.rbac.RBAC;
@@ -45,6 +41,10 @@ import fr.paris.lutece.portal.service.dashboard.admin.AdminDashboardComponent;
 import fr.paris.lutece.portal.service.rbac.RBACService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.util.html.HtmlTemplate;
+
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -64,12 +64,13 @@ public class AuthenticationFilterAdminDashboardComponent extends AdminDashboardC
     public String getDashboardData( AdminUser user, HttpServletRequest request )
     {
         if ( !RBACService.isAuthorized( MyLuteceResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
-        		 MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, user ) )
+                    MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, user ) )
         {
             return EMPTY_STRING;
         }
 
-        Map<String, Object> model = AuthenticationFilterService.getInstance().getManageAdvancedParameters( user, request );
+        Map<String, Object> model = AuthenticationFilterService.getInstance(  )
+                                                               .getManageAdvancedParameters( user, request );
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_ADMIN_DASHBOARD, user.getLocale(  ), model );
 
         return template.getHtml(  );

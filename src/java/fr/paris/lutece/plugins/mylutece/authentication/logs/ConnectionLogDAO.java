@@ -45,11 +45,11 @@ import java.sql.Timestamp;
 public final class ConnectionLogDAO implements IConnectionLogDAO
 {
     // Constants
-	private static final String SQL_QUERY_SELECT_LOGIN_ERRORS = " SELECT COUNT(*) FROM mylutece_connections_log  WHERE ip_address = ? AND login_status = ? "
-            + " AND date_login > ? AND date_login < ? ";
-    private static final String SQL_QUERY_INSERT_LOGS = " INSERT INTO mylutece_connections_log ( ip_address, date_login, login_status ) "
-            + " VALUES ( ?, ?, ? )";
-	private static final String SQL_UPDATE_CLEAR_LOGS = " UPDATE mylutece_connections_log SET login_status = ? WHERE ip_address = ? AND date_login > ? AND date_login < ? ";
+    private static final String SQL_QUERY_SELECT_LOGIN_ERRORS = " SELECT COUNT(*) FROM mylutece_connections_log  WHERE ip_address = ? AND login_status = ? " +
+        " AND date_login > ? AND date_login < ? ";
+    private static final String SQL_QUERY_INSERT_LOGS = " INSERT INTO mylutece_connections_log ( ip_address, date_login, login_status ) " +
+        " VALUES ( ?, ?, ? )";
+    private static final String SQL_UPDATE_CLEAR_LOGS = " UPDATE mylutece_connections_log SET login_status = ? WHERE ip_address = ? AND date_login > ? AND date_login < ? ";
 
     /**
      * {@inheritDoc}
@@ -63,10 +63,10 @@ public final class ConnectionLogDAO implements IConnectionLogDAO
 
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_LOGIN_ERRORS, plugin );
 
-        daoUtil.setString( 1, connectionLog.getIpAddress( ) );
-		daoUtil.setInt( 2, ConnectionLog.LOGIN_DENIED );
-		daoUtil.setTimestamp( 3, dateBegin );
-		daoUtil.setTimestamp( 4, dateEnd );
+        daoUtil.setString( 1, connectionLog.getIpAddress(  ) );
+        daoUtil.setInt( 2, ConnectionLog.LOGIN_DENIED );
+        daoUtil.setTimestamp( 3, dateBegin );
+        daoUtil.setTimestamp( 4, dateEnd );
 
         daoUtil.executeQuery(  );
 
@@ -87,32 +87,31 @@ public final class ConnectionLogDAO implements IConnectionLogDAO
     public void insertLog( ConnectionLog connectionLog, Plugin plugin )
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT_LOGS, plugin );
-        daoUtil.setString( 1, connectionLog.getIpAddress( ) );
-        daoUtil.setTimestamp( 2, connectionLog.getDateLogin( ) );
-        daoUtil.setInt( 3, connectionLog.getLoginStatus( ) );
+        daoUtil.setString( 1, connectionLog.getIpAddress(  ) );
+        daoUtil.setTimestamp( 2, connectionLog.getDateLogin(  ) );
+        daoUtil.setInt( 3, connectionLog.getLoginStatus(  ) );
 
         daoUtil.executeUpdate(  );
         daoUtil.free(  );
     }
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void resetConnectionLogs( String strIp, Timestamp dateLogin, int nIntervalMinutes, Plugin plugin )
-	{
-		DAOUtil daoUtil = new DAOUtil( SQL_UPDATE_CLEAR_LOGS, plugin );
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void resetConnectionLogs( String strIp, Timestamp dateLogin, int nIntervalMinutes, Plugin plugin )
+    {
+        DAOUtil daoUtil = new DAOUtil( SQL_UPDATE_CLEAR_LOGS, plugin );
 
-		Timestamp dateMin = new Timestamp( dateLogin.getTime( ) - nIntervalMinutes * 1000 * 60 );
-		Timestamp dateMax = new Timestamp( dateLogin.getTime( ) + nIntervalMinutes * 1000 * 60 );
+        Timestamp dateMin = new Timestamp( dateLogin.getTime(  ) - ( nIntervalMinutes * 1000 * 60 ) );
+        Timestamp dateMax = new Timestamp( dateLogin.getTime(  ) + ( nIntervalMinutes * 1000 * 60 ) );
 
-		daoUtil.setInt( 1, ConnectionLog.LOGIN_DENIED_CANCELED );
-		daoUtil.setString( 2, strIp );
-		daoUtil.setTimestamp( 3, dateMin );
-		daoUtil.setTimestamp( 4, dateMax );
+        daoUtil.setInt( 1, ConnectionLog.LOGIN_DENIED_CANCELED );
+        daoUtil.setString( 2, strIp );
+        daoUtil.setTimestamp( 3, dateMin );
+        daoUtil.setTimestamp( 4, dateMax );
 
-		daoUtil.executeUpdate( );
-		daoUtil.free( );
-	}
-
+        daoUtil.executeUpdate(  );
+        daoUtil.free(  );
+    }
 }

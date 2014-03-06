@@ -37,21 +37,21 @@ import fr.paris.lutece.portal.service.plugin.Plugin;
 
 import java.util.List;
 
+
 /**
- * 
+ *
  * IAttributeFieldDAO
  *
  */
-public interface IAttributeFieldDAO 
+public interface IAttributeFieldDAO
 {
-
     /**
      * Load attribute field
      * @param nIdField ID Field
      * @param plugin The plugin
      * @return Attribute Field
      */
-	AttributeField load( int nIdField, Plugin plugin );
+    AttributeField load( int nIdField, Plugin plugin );
 
     /**
      * Select attribute by id field
@@ -59,7 +59,7 @@ public interface IAttributeFieldDAO
      * @param plugin The plugin
      * @return user attribute
      */
-	IAttribute selectAttributeByIdField( int nIdField, Plugin plugin );
+    IAttribute selectAttributeByIdField( int nIdField, Plugin plugin );
 
     /**
      * Load the lists of attribute field associated to an attribute
@@ -67,7 +67,7 @@ public interface IAttributeFieldDAO
      * @param plugin The plugin
      * @return the list of attribute fields
      */
-	List<AttributeField> selectAttributeFieldsByIdAttribute( int nIdAttribute, Plugin plugin );
+    List<AttributeField> selectAttributeFieldsByIdAttribute( int nIdAttribute, Plugin plugin );
 
     /**
      * Insert a new attribute field
@@ -75,26 +75,26 @@ public interface IAttributeFieldDAO
      * @param plugin The plugin
      * @return new PK
      */
-	int insert( AttributeField attributeField, Plugin plugin );
+    int insert( AttributeField attributeField, Plugin plugin );
 
     /**
      * Update an attribute field
      * @param attributeField the attribute field
      * @param plugin The plugin
      */
-	void store( AttributeField attributeField, Plugin plugin );
+    void store( AttributeField attributeField, Plugin plugin );
 
     /**
      * Delete an attribute field
      * @param nIdField the attribute field id
      * @param plugin The plugin
      */
-	void delete( int nIdField, Plugin plugin );
+    void delete( int nIdField, Plugin plugin );
 
     /**
      * Delete all attribute field from an attribute id
      * @param nIdAttribute the ID attribute
      * @param plugin The plugin
      */
-	void deleteAttributeFieldsFromIdAttribute( int nIdAttribute, Plugin plugin );
+    void deleteAttributeFieldsFromIdAttribute( int nIdAttribute, Plugin plugin );
 }

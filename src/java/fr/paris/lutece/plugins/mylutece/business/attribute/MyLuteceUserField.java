@@ -35,105 +35,105 @@ package fr.paris.lutece.plugins.mylutece.business.attribute;
 
 
 /**
- * 
+ *
  * MyLuteceUserField
  *
  */
-public class MyLuteceUserField 
+public class MyLuteceUserField
 {
-	private int _nUserId;
-	private AttributeField _attributeField;
-	private IAttribute _attribute;
-	private String _value;
-	private int _nIdUserField;
-	
-	/**
-	 * Get user
-	 * @return user
-	 */
-	public int getUserId(  )
-	{
-		return _nUserId;
-	}
+    private int _nUserId;
+    private AttributeField _attributeField;
+    private IAttribute _attribute;
+    private String _value;
+    private int _nIdUserField;
+
+    /**
+     * Get user
+     * @return user
+     */
+    public int getUserId(  )
+    {
+        return _nUserId;
+    }
 
     /**
      * Set user
      * @param nUserId The id of the user
      */
-	public void setUserId( int nUserId )
-	{
-		_nUserId = nUserId;
-	}
-	
-	/**
-	 * Get attribute field
-	 * @return attribute field
-	 */
-	public AttributeField getAttributeField(  )
-	{
-		return _attributeField;
-	}
-	
-	/**
-	 * Set attribute field
-	 * @param attributeField attribute field
-	 */
-	public void setAttributeField( AttributeField attributeField )
-	{
-		_attributeField = attributeField;
-	}
+    public void setUserId( int nUserId )
+    {
+        _nUserId = nUserId;
+    }
 
-	/**
-	 * Get attribute
-	 * @return attribute
-	 */
-	public IAttribute getAttribute(  )
-	{
-		return _attribute;
-	}
-	
-	/**
-	 * Set attribute
-	 * @param attribute attribute
-	 */
-	public void setAttribute( IAttribute attribute )
-	{
-		_attribute = attribute;
-	}
+    /**
+     * Get attribute field
+     * @return attribute field
+     */
+    public AttributeField getAttributeField(  )
+    {
+        return _attributeField;
+    }
 
-	/**
-	 * Get value
-	 * @return value
-	 */
-	public String getValue(  )
-	{
-		return _value;
-	}
-	
-	/**
-	 * Set value
-	 * @param value value
-	 */
-	public void setValue( String value )
-	{
-		_value = value;
-	}
+    /**
+     * Set attribute field
+     * @param attributeField attribute field
+     */
+    public void setAttributeField( AttributeField attributeField )
+    {
+        _attributeField = attributeField;
+    }
 
-	/**
-	 * Get Id user field
-	 * @return id user field
-	 */
-	public int getIdUserField(  )
-	{
-		return _nIdUserField;
-	}
-	
-	/**
-	 * Set id user field
-	 * @param nIdUserField id user field
-	 */
-	public void setIdUserField( int nIdUserField )
-	{
-		_nIdUserField = nIdUserField;
-	}
+    /**
+     * Get attribute
+     * @return attribute
+     */
+    public IAttribute getAttribute(  )
+    {
+        return _attribute;
+    }
+
+    /**
+     * Set attribute
+     * @param attribute attribute
+     */
+    public void setAttribute( IAttribute attribute )
+    {
+        _attribute = attribute;
+    }
+
+    /**
+     * Get value
+     * @return value
+     */
+    public String getValue(  )
+    {
+        return _value;
+    }
+
+    /**
+     * Set value
+     * @param value value
+     */
+    public void setValue( String value )
+    {
+        _value = value;
+    }
+
+    /**
+     * Get Id user field
+     * @return id user field
+     */
+    public int getIdUserField(  )
+    {
+        return _nIdUserField;
+    }
+
+    /**
+     * Set id user field
+     * @param nIdUserField id user field
+     */
+    public void setIdUserField( int nIdUserField )
+    {
+        _nIdUserField = nIdUserField;
+    }
 }
