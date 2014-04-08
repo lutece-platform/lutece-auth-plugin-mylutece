@@ -114,8 +114,8 @@ public abstract class AbstractAccountLifeTimeDaemon extends Daemon
             String strBody = accountLifeTimeService.getExpirationtMailBody(  );
 
             ReferenceItem referenceItem = parameterService.findByKey( PARAMETER_EXPIRED_ALERT_MAIL_SENDER, plugin );
-            String strSender = ( referenceItem == null ) ? StringUtils.EMPTY : referenceItem.getName(  );
-
+            String strSenderName = ( referenceItem == null ) ? StringUtils.EMPTY : referenceItem.getName(  );
+            String strSenderEmail = MailService.getNoReplyEmail(  );
             referenceItem = parameterService.findByKey( PARAMETER_EXPIRED_ALERT_MAIL_SUBJECT, plugin );
 
             String strSubject = ( referenceItem == null ) ? StringUtils.EMPTY : referenceItem.getName(  );
@@ -125,7 +125,7 @@ public abstract class AbstractAccountLifeTimeDaemon extends Daemon
                 try
                 {
                     String strUserMail = accountLifeTimeService.getUserMainEmail( nIdUser );
-
+                    	
                     if ( ( strUserMail != null ) && StringUtils.isNotBlank( strUserMail ) )
                     {
                         Map<String, String> model = new HashMap<String, String>(  );
@@ -133,7 +133,7 @@ public abstract class AbstractAccountLifeTimeDaemon extends Daemon
 
                         HtmlTemplate template = AppTemplateService.getTemplateFromStringFtl( strBody,
                                 Locale.getDefault(  ), model );
-                        MailService.sendMailHtml( strUserMail, strSender, strSender, strSubject, template.getHtml(  ) );
+                        MailService.sendMailHtml( strUserMail, strSenderName, strSenderEmail, strSubject, template.getHtml(  ) );
                     }
                 }
                 catch ( Exception e )
@@ -182,8 +182,8 @@ public abstract class AbstractAccountLifeTimeDaemon extends Daemon
                 String strBody = accountLifeTimeService.getFirstAlertMailBody(  );
 
                 ReferenceItem referenceItem = parameterService.findByKey( PARAMETER_FIRST_ALERT_MAIL_SENDER, plugin );
-                String strSender = ( referenceItem == null ) ? StringUtils.EMPTY : referenceItem.getName(  );
-
+                String strSenderName = ( referenceItem == null ) ? StringUtils.EMPTY : referenceItem.getName(  );
+                String strSenderEmail = MailService.getNoReplyEmail(  );
                 referenceItem = parameterService.findByKey( PARAMETER_FIRST_ALERT_MAIL_SUBJECT, plugin );
 
                 String strSubject = ( referenceItem == null ) ? StringUtils.EMPTY : referenceItem.getName(  );
@@ -201,7 +201,7 @@ public abstract class AbstractAccountLifeTimeDaemon extends Daemon
 
                             HtmlTemplate template = AppTemplateService.getTemplateFromStringFtl( strBody,
                                     Locale.getDefault(  ), model );
-                            MailService.sendMailHtml( strUserMail, strSender, strSender, strSubject,
+                            MailService.sendMailHtml( strUserMail, strSenderName, strSenderEmail, strSubject,
                                 template.getHtml(  ) );
                         }
                     }
@@ -252,12 +252,13 @@ public abstract class AbstractAccountLifeTimeDaemon extends Daemon
                 String strBody = accountLifeTimeService.getOtherAlertMailBody(  );
 
                 ReferenceItem referenceItem = parameterService.findByKey( PARAMETER_OTHER_ALERT_MAIL_SENDER, plugin );
-                String strSender = ( referenceItem == null ) ? StringUtils.EMPTY : referenceItem.getName(  );
+                String strSenderName = ( referenceItem == null ) ? StringUtils.EMPTY : referenceItem.getName(  );
 
                 referenceItem = parameterService.findByKey( PARAMETER_OTHER_ALERT_MAIL_SUBJECT, plugin );
-
+                
                 String strSubject = ( referenceItem == null ) ? StringUtils.EMPTY : referenceItem.getName(  );
-
+                String strSenderEmail = MailService.getNoReplyEmail(  );
+                
                 for ( Integer nIdUser : listIdUserToSendNextAlert )
                 {
                     try
@@ -271,7 +272,7 @@ public abstract class AbstractAccountLifeTimeDaemon extends Daemon
 
                             HtmlTemplate template = AppTemplateService.getTemplateFromStringFtl( strBody,
                                     Locale.getDefault(  ), model );
-                            MailService.sendMailHtml( strUserMail, strSender, strSender, strSubject,
+                            MailService.sendMailHtml( strUserMail, strSenderName, strSenderEmail, strSubject,
                                 template.getHtml(  ) );
                         }
                     }
@@ -312,12 +313,13 @@ public abstract class AbstractAccountLifeTimeDaemon extends Daemon
             {
                 referenceItem = parameterService.findByKey( PARAMETER_PASSWORD_EXPIRED_MAIL_SENDER, plugin );
 
-                String strSender = ( referenceItem == null ) ? StringUtils.EMPTY : referenceItem.getName(  );
+                String strSenderName = ( referenceItem == null ) ? StringUtils.EMPTY : referenceItem.getName(  );
 
                 referenceItem = parameterService.findByKey( PARAMETER_PASSWORD_EXPIRED_MAIL_SUBJECT, plugin );
 
                 String strSubject = ( referenceItem == null ) ? StringUtils.EMPTY : referenceItem.getName(  );
-
+                String strSenderEmail = MailService.getNoReplyEmail(  );
+                
                 String strTemplate = accountLifeTimeService.getPasswordExpiredMailBody(  );
 
                 if ( StringUtils.isNotBlank( strTemplate ) )
@@ -334,7 +336,7 @@ public abstract class AbstractAccountLifeTimeDaemon extends Daemon
                             HtmlTemplate template = AppTemplateService.getTemplateFromStringFtl( strTemplate,
                                     Locale.getDefault(  ), model );
 
-                            MailService.sendMailHtml( strUserMail, strSender, strSender, strSubject,
+                            MailService.sendMailHtml( strUserMail, strSenderName, strSenderEmail, strSubject,
                                 template.getHtml(  ) );
                         }
                     }
