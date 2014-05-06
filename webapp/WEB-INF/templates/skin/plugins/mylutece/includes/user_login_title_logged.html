@@ -2,14 +2,14 @@
 	<#assign userNameGiven = user.getUserInfo('user.name.given') >
 	<#assign userNameFamily = user.getUserInfo('user.name.family') >
 	<#if userNameGiven?has_content || userNameFamily?has_content>
-		${userNameGiven} ${userNameFamily}
+            <a href="${url_account}">${userNameGiven} ${userNameFamily}</a>
 	<#else>  
 		<#assign userBusinessMail = user.getUserInfo('user.business-info.online.email') >
 		<#assign userHomeMail = user.getUserInfo('user.home-info.online.email') >
 		<#if userBusinessMail?has_content>
-			${userBusinessMail}
+                    <a href="${url_account}">${userBusinessMail}</a>
 		<#else>
-			${userHomeMail}
+                    <a href="${url_account}">${userHomeMail}</a>
 		</#if>
 	</#if>
 	#i18n{mylutece.user_login_include.labelLastLogin} : <#if (user.getUserInfo('user.lastLogin'))?has_content>${user.getUserInfo('user.lastLogin')}<#else>#i18n{mylutece.user_login_include.labelNever}</#if>

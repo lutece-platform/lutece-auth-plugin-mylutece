@@ -67,6 +67,7 @@ public class UserLoginInclude implements PageInclude
     private static final String MARK_USER = "user";
     private static final String MARK_DO_LOGIN = "url_dologin";
     private static final String MARK_DO_LOGOUT = "url_dologout";
+    private static final String MARK_URL_ACCOUNT = "url_account";
     private static final String PARAMETER_XPAGE_MYLUTECE = "mylutece";
 
     /**
@@ -90,6 +91,7 @@ public class UserLoginInclude implements PageInclude
                 LuteceUser user = SecurityService.getInstance(  ).getRegisteredUser( request );
                 model.put( MARK_DO_LOGIN, SecurityService.getInstance(  ).getDoLoginUrl(  ) );
                 model.put( MARK_DO_LOGOUT, SecurityService.getInstance(  ).getDoLogoutUrl(  ) );
+                model.put( MARK_URL_ACCOUNT, SecurityService.getInstance(  ).getViewAccountPageUrl() );
 
                 if ( user != null )
                 {

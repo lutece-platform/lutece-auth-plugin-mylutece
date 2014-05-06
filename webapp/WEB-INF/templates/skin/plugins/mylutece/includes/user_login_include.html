@@ -15,7 +15,7 @@
 			</#if>
 		</#if>
 		<li>
-			#i18n{mylutece.user_login_include.labelWelcome}	${labelUserName} <br />
+                    <a href="${url_account}">#i18n{mylutece.user_login_include.labelWelcome}	${labelUserName} </a><br />
 			#i18n{mylutece.user_login_include.labelLastLogin} : <#if (user.getUserInfo('user.lastLogin'))?has_content>${user.getUserInfo('user.lastLogin')}<#else>#i18n{mylutece.user_login_include.labelNever}</#if>
 		</li>
 		<li>
