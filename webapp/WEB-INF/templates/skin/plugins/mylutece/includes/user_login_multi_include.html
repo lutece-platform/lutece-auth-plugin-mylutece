@@ -16,6 +16,8 @@
                 <a href="${url_account}">
 		#i18n{mylutece.user_login_include.labelWelcome} ${labelUserName!}&nbsp; 
                 </a>
+        </li>
+        <li>
 		<a href="${url_dologout}" title="#i18n{mylutece.user_login_include.labelLastLogin} : <#if (user.getUserInfo('user.lastLogin'))?has_content>${user.getUserInfo('user.lastLogin')}<#else>#i18n{mylutece.user_login_include.labelNever}</#if>">
 			<i class="icon-off icon-white"></i>&nbsp;#i18n{mylutece.user_login_include.labelLogout}
 		</a>
