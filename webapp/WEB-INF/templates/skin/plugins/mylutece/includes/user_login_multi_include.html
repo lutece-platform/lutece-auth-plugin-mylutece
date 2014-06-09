@@ -1,42 +1,45 @@
 <#if user?has_content>
-	<#assign userNameGiven = user.getUserInfo('user.name.given') >
-	<#assign userNameFamily = user.getUserInfo('user.name.family') >
-	<#if userNameGiven?has_content || userNameFamily?has_content>
-		<#assign labelUserName = userNameGiven + ' ' + userNameFamily >
-	<#else>  
-		<#assign userBusinessMail = user.getUserInfo('user.business-info.online.email') >
-		<#assign userHomeMail = user.getUserInfo('user.home-info.online.email') >
-		<#if userBusinessMail?has_content>
-			<#assign labelUserName = userBusinessMail >
-		<#else>
-			<#assign labelUserName = userHomeMail >
-		</#if>
-	</#if>
-	<li>
-                <a href="${url_account}">
-		#i18n{mylutece.user_login_include.labelWelcome} ${labelUserName!}&nbsp; 
-                </a>
-        </li>
-        <li>
-		<a href="${url_dologout}" title="#i18n{mylutece.user_login_include.labelLastLogin} : <#if (user.getUserInfo('user.lastLogin'))?has_content>${user.getUserInfo('user.lastLogin')}<#else>#i18n{mylutece.user_login_include.labelNever}</#if>">
-			<i class="icon-off icon-white"></i>&nbsp;#i18n{mylutece.user_login_include.labelLogout}
-		</a>
-	</li>
+    <#assign userNameGiven = user.getUserInfo('user.name.given') >
+    <#assign userNameFamily = user.getUserInfo('user.name.family') >
+    <#if userNameGiven?has_content || userNameFamily?has_content>
+            <#assign labelUserName = userNameGiven + ' ' + userNameFamily >
+    <#else>  
+        <#assign userBusinessMail = user.getUserInfo('user.business-info.online.email') >
+        <#assign userHomeMail = user.getUserInfo('user.home-info.online.email') >
+        <#if userBusinessMail?has_content>
+                <#assign labelUserName = userBusinessMail >
+        <#else>
+                <#assign labelUserName = userHomeMail >
+        </#if>
+    </#if>
+    <li>
+        <a href="${url_account}">
+            <span class="glyphicon glyphicon-user"></span>&nbsp;
+            #i18n{mylutece.user_login_include.labelWelcome} ${labelUserName!}&nbsp; 
+        </a>
+    </li>
+    <li>
+        <a href="${url_dologout}" title="#i18n{mylutece.user_login_include.labelLastLogin} : <#if (user.getUserInfo('user.lastLogin'))?has_content>${user.getUserInfo('user.lastLogin')}<#else>#i18n{mylutece.user_login_include.labelNever}</#if>">
+            <span class="glyphicon glyphicon-off"></span>&nbsp;
+            #i18n{mylutece.user_login_include.labelLogout}
+        </a>
+    </li>
 <#else>
-	<li>
-	<#if list_authentications?exists>
-		<#list list_authentications as authentication>
-			<#if !authentication.externalAuthentication>
-				<#if authentication.delegatedAuthentication>
-					<a href="${authentication.doLoginUrl}?auth_provider=${authentication.name}">
-				<#else>
-					<a href="${authentication.loginPageUrl}&auth_provider=${authentication.name}">
-				</#if>
-						<i class="icon-off icon-white"></i>#i18n{mylutece.user_login_include.labelButton}
-					</a>
-			</#if>
-		</#list>
-		</#if>
-	</li>
+    <li>
+        <#if list_authentications?exists>
+            <#list list_authentications as authentication>
+                <#if !authentication.externalAuthentication>
+                    <#if authentication.delegatedAuthentication>
+                        <a href="${authentication.doLoginUrl}?auth_provider=${authentication.name}">
+                    <#else>
+                        <a href="${authentication.loginPageUrl}&auth_provider=${authentication.name}">
+                    </#if>
+                            <span class="glyphicon glyphicon-off"></span>&nbsp;
+                            #i18n{mylutece.user_login_include.labelButton}
+                        </a>
+                </#if>
+            </#list>
+        </#if>
+    </li>
 </#if>
 

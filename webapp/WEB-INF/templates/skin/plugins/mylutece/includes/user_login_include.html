@@ -15,10 +15,12 @@
 			</#if>
 		</#if>
 		<li>
+                    <span class="glyphicon glyphicon-user"></span>&nbsp;
                     <a href="${url_account}">#i18n{mylutece.user_login_include.labelWelcome}	${labelUserName} </a><br />
 			#i18n{mylutece.user_login_include.labelLastLogin} : <#if (user.getUserInfo('user.lastLogin'))?has_content>${user.getUserInfo('user.lastLogin')}<#else>#i18n{mylutece.user_login_include.labelNever}</#if>
 		</li>
 		<li>
+                    <span class="glyphicon glyphicon-off"></span>&nbsp;
                     <a href="${url_dologout}">#i18n{mylutece.user_login_include.labelLogout}</a>
 		</li>
 	<#else>
@@ -35,10 +37,14 @@
 
                             <label for="mylutece_user_login_include_password">#i18n{mylutece.user_login_include.labelPassword} : </label>
                             <input type="password" class="span2" id="mylutece_user_login_include_password" name="password" placeholder="#i18n{mylutece.user_login_include.labelPassword}" />
-                            <button type="submit" class="btn btn-primary btn-small" name="Submit" ><i class="icon-lock icon-white"></i>&nbsp;#i18n{mylutece.user_login_include.labelButton}</button>
+                            <button type="submit" class="btn btn-primary btn-small" name="Submit" >
+                                <span class="glyphicon glyphicon-lock"></span>&nbsp;
+                                #i18n{mylutece.user_login_include.labelButton}
+                            </button>
                             <#if url_new_account?has_content>
                                 <a class="btn btn-primary btn-small" style="color:#fff;" title="#i18n{mylutece.user_login_include.labelButtonCreateAccount}" href="${url_new_account}">
-                                    <i class="icon-plus icon-white"></i>&nbsp;#i18n{mylutece.user_login_include.labelButtonCreateAccount}
+                                    <span class="glyphicon glyphicon-plus"></span>&nbsp;
+                                    #i18n{mylutece.user_login_include.labelButtonCreateAccount}
                                 </a>
                             </#if>
                         </form>

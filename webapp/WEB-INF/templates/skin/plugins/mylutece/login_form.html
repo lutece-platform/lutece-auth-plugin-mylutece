@@ -1,41 +1,34 @@
-<div class="row-fluid">
+<div class="row">
 
-	<div class="container">
-		<form class="form-horizontal span5" method="post" action="${url_dologin}">
-			<fieldset>
-				<legend>#i18n{mylutece.xpage.login_form.pageTitle}</legend>
-				<br/>
-				<font color="red"><b>${error_message}</b><br/>${error_detail}</font>
-				<br/>
-				<div class="control-group">
-					<label class="control-label">#i18n{mylutece.xpage.login_form.labelAccessCode} :</label>
-					<div class="controls">
-						<input type="text" name="username" class="-lutece-input -lutece-border-radius-mini" />
-					</div>
-				</div>
-				<div class="control-group">
-					<label class="control-label">#i18n{mylutece.xpage.login_form.labelPassword} :</label>
-					<div class="controls">
-						<input type="password" name="password" class="-lutece-input -lutece-border-radius-mini" /></td>
-					</div>
-				</div>
-				<#if is_active_captcha>
-					<div class="control-group">
-						${captcha}
-					</div>
-				</#if>
-				<br/><br/>
-				<div class="form-actions">
-					<input type="hidden" name="page" value="mylutece" />
-					<input type="hidden" name="action" value="dologin" />
-					<button type="submit" class="btn btn-primary  btn-small" name="Submit"><i class="icon-lock icon-white"></i>&nbsp;#i18n{mylutece.xpage.login_form.labelButton} </button>
-					<#if url_new_account?has_content>
-						<a class="btn btn-primary btn-small" style="color:#fff;" title="#i18n{mylutece.xpage.login_form.labelButtonCreateAccount}" href="${url_new_account}">
-							<i class="icon-plus icon-white"></i>&nbsp;#i18n{mylutece.xpage.login_form.labelButtonCreateAccount}
-						</a>
-					</#if>
-				</div>
-			</fieldset>
-		</form>
-	</div>
+    <form class="form-horizontal" method="post" action="${url_dologin}">
+        <fieldset>
+            <legend>#i18n{mylutece.xpage.login_form.pageTitle}</legend>
+            <br/>
+            <font color="red"><b>${error_message}</b><br/>${error_detail}</font>
+            <br/>
+            <div class="form-group">
+                <label class="control-label">#i18n{mylutece.xpage.login_form.labelAccessCode} :</label>
+                <input type="text" name="username" class="-lutece-input -lutece-border-radius-mini" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">#i18n{mylutece.xpage.login_form.labelPassword} :</label>
+                <input type="password" name="password" class="-lutece-input -lutece-border-radius-mini" /></td>
+            </div>
+            <#if is_active_captcha>
+            <div class="form-group">
+                ${captcha}
+            </div>
+            </#if>
+            <br/><br/>
+            <input type="hidden" name="page" value="mylutece" />
+            <input type="hidden" name="action" value="dologin" />
+            <button type="submit" class="btn btn-primary  btn-sm" name="Submit">
+                <span class="glyphicon glyphicon-lock"></span>&nbsp;#i18n{mylutece.xpage.login_form.labelButton} </button>
+            <#if url_new_account?has_content>
+            <a class="btn btn-primary btn-sm" style="color:#fff;" title="#i18n{mylutece.xpage.login_form.labelButtonCreateAccount}" href="${url_new_account}">
+                <span class="glyphicon glyphicon-plus"></span>&nbsp;#i18n{mylutece.xpage.login_form.labelButtonCreateAccount}
+            </a>
+            </#if>
+        </fieldset>
+    </form>
 </div>
