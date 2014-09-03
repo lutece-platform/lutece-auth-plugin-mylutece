@@ -31,6 +31,7 @@
                         <form class="form-in-dropdown" method="post" action="${url_dologin}">
                             <input type="hidden" name="page" value="mylutece" />
                             <input type="hidden" name="action" value="dologin" />
+                            <input type="hidden" name="token" value="${token}" id="token"/>
 
                             <label for="mylutece_user_login_include_username">#i18n{mylutece.user_login_include.labelAccessCode} : </label>
                             <input type="text" class="span2" id="mylutece_user_login_include_username" name="username" placeholder="#i18n{mylutece.user_login_include.labelAccessCode}" />

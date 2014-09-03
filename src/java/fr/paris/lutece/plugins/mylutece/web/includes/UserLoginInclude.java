@@ -41,6 +41,7 @@ import fr.paris.lutece.portal.service.includes.PageInclude;
 import fr.paris.lutece.portal.service.security.LuteceAuthentication;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.security.SecurityService;
+import fr.paris.lutece.portal.service.security.SecurityTokenService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.util.html.HtmlTemplate;
 
@@ -51,12 +52,13 @@ import javax.servlet.http.HttpServletRequest;
 
 
 /**
- * This class provide user login form in a PageInclude
+ * This class provide user login form in a UserLoginInclude
  *
  */
 public class UserLoginInclude implements PageInclude
 {
-    private static final String MARK_USERLOGIN = "pageinclude_userlogin";
+	private static final String TOKEN_ACTION_LOGIN = "dologin";
+	private static final String MARK_USERLOGIN = "pageinclude_userlogin";
     private static final String MARK_USERLOGIN_TITLE = "pageinclude_userlogin_title";
     private static final String MARK_LIST_AUTHENTICATIONS = "list_authentications";
     private static final String MARK_URL_NEWACCOUNT = "url_new_account";
@@ -69,6 +71,7 @@ public class UserLoginInclude implements PageInclude
     private static final String MARK_DO_LOGOUT = "url_dologout";
     private static final String MARK_URL_ACCOUNT = "url_account";
     private static final String PARAMETER_XPAGE_MYLUTECE = "mylutece";
+  
 
     /**
      * Substitue specific Freemarker markers in the page template.
@@ -92,7 +95,9 @@ public class UserLoginInclude implements PageInclude
                 model.put( MARK_DO_LOGIN, SecurityService.getInstance(  ).getDoLoginUrl(  ) );
                 model.put( MARK_DO_LOGOUT, SecurityService.getInstance(  ).getDoLogoutUrl(  ) );
                 model.put( MARK_URL_ACCOUNT, SecurityService.getInstance(  ).getViewAccountPageUrl() );
-
+                //Add Token
+                model.put(SecurityTokenService.MARK_TOKEN,SecurityTokenService.getInstance().getToken(request, TOKEN_ACTION_LOGIN));
+             
                 if ( user != null )
                 {
                     model.put( MARK_USER, user );
@@ -118,7 +123,7 @@ public class UserLoginInclude implements PageInclude
                 HtmlTemplate t;
                 model.put( MARK_URL_NEWACCOUNT,
                     SecurityService.getInstance(  ).getAuthenticationService(  ).getNewAccountPageUrl(  ) );
-
+                  
                 if ( SecurityService.getInstance(  ).isMultiAuthenticationSupported(  ) )
                 {
                     LuteceAuthentication luteceAuthentication = SecurityService.getInstance(  )

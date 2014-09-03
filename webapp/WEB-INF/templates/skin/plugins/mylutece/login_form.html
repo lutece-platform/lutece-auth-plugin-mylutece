@@ -1,7 +1,7 @@
 <div class="row">
 
     <form class="form-horizontal" method="post" action="${url_dologin}">
-        <fieldset>
+       <fieldset>
             <legend>#i18n{mylutece.xpage.login_form.pageTitle}</legend>
             <br/>
             <font color="red"><b>${error_message}</b><br/>${error_detail}</font>
@@ -22,6 +22,7 @@
             <br/><br/>
             <input type="hidden" name="page" value="mylutece" />
             <input type="hidden" name="action" value="dologin" />
+            <input type="hidden" name="token" value="${token}" />
             <button type="submit" class="btn btn-primary  btn-sm" name="Submit">
                 <span class="glyphicon glyphicon-lock"></span>&nbsp;#i18n{mylutece.xpage.login_form.labelButton} </button>
             <#if url_new_account?has_content>

@@ -45,6 +45,7 @@ import fr.paris.lutece.portal.service.security.FailedLoginCaptchaException;
 import fr.paris.lutece.portal.service.security.LoginRedirectException;
 import fr.paris.lutece.portal.service.security.LuteceAuthentication;
 import fr.paris.lutece.portal.service.security.SecurityService;
+import fr.paris.lutece.portal.service.security.SecurityTokenService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
@@ -82,7 +83,7 @@ public class MyLuteceApp implements XPageApplication
     //////////////////////////////////////////////////////////////////////////////////
     // Constants
     private static final String ATTRIBUTE_CURRENT_URL = "luteceCurrentUrl";
-
+    private static final String TOKEN_ACTION_LOGIN = "dologin";
     // Markers
     private static final String MARK_ERROR_MESSAGE = "error_message";
     private static final String MARK_ERROR_DETAIL = "error_detail";
@@ -92,6 +93,8 @@ public class MyLuteceApp implements XPageApplication
     private static final String MARK_AUTH_PROVIDER = "auth_provider";
     private static final String MARK_IS_ACTIVE_CAPTCHA = "is_active_captcha";
     private static final String MARK_CAPTCHA = "captcha";
+   
+    
 
     // Parameters
     private static final String PARAMETER_ACTION = "action";
@@ -250,6 +253,8 @@ public class MyLuteceApp implements XPageApplication
             CaptchaSecurityService captchaService = new CaptchaSecurityService( );
             model.put( MARK_CAPTCHA, captchaService.getHtmlCode( ) );
         }
+        
+        model.put(SecurityTokenService.MARK_TOKEN,SecurityTokenService.getInstance().getToken(request, TOKEN_ACTION_LOGIN));
 
         HtmlTemplate template;
         model.put( MARK_URL_NEWACCOUNT, SecurityService.getInstance( ).getAuthenticationService( )

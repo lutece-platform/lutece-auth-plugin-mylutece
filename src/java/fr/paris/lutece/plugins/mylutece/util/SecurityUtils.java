@@ -89,6 +89,7 @@ public class SecurityUtils
     private static final String MARK_BANNED_DOMAIN_NAMES = "banned_domain_names";
     private static final String MARK_ACCESS_FAILURES_CAPTCHA = "access_failures_captcha";
     private static final String MARK_ENABLE_UNBLOCK_IP = "enable_unblock_ip";
+    private static final String MARK_ENABLE_TOKEN_LOGIN = "enable_token_login";
     private static final String MARK_NOTIFY_USER_PASSWORD_EXPIRED = "notify_user_password_expired";
 
     // PARAMETERS
@@ -177,6 +178,9 @@ public class SecurityUtils
             getIntegerSecurityParameter( parameterService, plugin, MARK_ACCESS_FAILURES_CAPTCHA ) );
         model.put( MARK_ENABLE_UNBLOCK_IP,
             getBooleanSecurityParameter( parameterService, plugin, MARK_ENABLE_UNBLOCK_IP ) );
+        model.put( MARK_ENABLE_TOKEN_LOGIN,
+                getBooleanSecurityParameter( parameterService, plugin, MARK_ENABLE_TOKEN_LOGIN ) );
+        
 
         return model;
     }
@@ -240,6 +244,10 @@ public class SecurityUtils
             request.getParameter( MARK_ACCESS_FAILURES_CAPTCHA ) );
         updateParameterValue( parameterService, plugin, MARK_ENABLE_UNBLOCK_IP,
             request.getParameter( MARK_ENABLE_UNBLOCK_IP ) );
+        updateParameterValue( parameterService, plugin, MARK_ENABLE_TOKEN_LOGIN,
+                request.getParameter( MARK_ENABLE_TOKEN_LOGIN ) );
+            
+        
     }
 
     /**
