@@ -441,7 +441,11 @@ public class MultiLuteceAuthentication implements LuteceAuthentication
 
         for ( LuteceAuthentication luteceAuthentication : getListLuteceAuthentication(  ) )
         {
-            listUsers.addAll( luteceAuthentication.getUsers(  ) );
+        	if( luteceAuthentication.getUsers(  )!= null ){
+        			
+        		listUsers.addAll( luteceAuthentication.getUsers(  ) );
+        	
+        	}
         }
 
         return listUsers;
