@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document>
-	<properties>
-		<title>Plugin</title>
-	</properties>
-	<body>
-		<section name="Plugin">
-			<subsection name="Introduction">
-			</subsection>
-		</section>
-	</body>
+    <properties>
+        <title>Plugin MyLutece</title>
+    </properties>
+    <body>
+        <section name="Plugin MyLutece">
+            <subsection name="Introduction">
+                <p>
+                    This plugin allows to manage authentication on the Lutece site. 
+                    It must be associated with a specific authentication module 
+                    corresponding to the chosen system: Database, LDAP, OAuth, CAS ...    
+X                </p>
+            </subsection>
+        </section>
+    </body>
 </document>
