@@ -7,12 +7,16 @@
             <font color="red"><b>${error_message}</b><br/>${error_detail}</font>
             <br/>
             <div class="form-group">
-                <label class="control-label">#i18n{mylutece.xpage.login_form.labelAccessCode} :</label>
-                <input type="text" name="username" class="-lutece-input -lutece-border-radius-mini" />
+                <label class="control-label col-xs-12 col-sm-12 col-md-3 col-lg-3">#i18n{mylutece.xpage.login_form.labelAccessCode} :</label>
+				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+					<input type="text" name="username" class="form-control input-sm" />
+				</div>
             </div>
             <div class="form-group">
-                <label class="control-label">#i18n{mylutece.xpage.login_form.labelPassword} :</label>
-                <input type="password" name="password" class="-lutece-input -lutece-border-radius-mini" /></td>
+                <label class="control-label col-xs-12 col-sm-12 col-md-3 col-lg-3">#i18n{mylutece.xpage.login_form.labelPassword} :</label>
+				<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+					<input type="password" name="password" class="form-control input-sm" />
+				</div>
             </div>
             <#if is_active_captcha>
             <div class="form-group">
