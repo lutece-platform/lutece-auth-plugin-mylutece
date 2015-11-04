@@ -33,8 +33,6 @@ INSERT INTO core_admin_role (role_key,role_description) VALUES ('mylutece_manage
 INSERT INTO core_admin_role_resource (rbac_id,role_key,resource_type,resource_id,permission) VALUES 
  (205,'assign_roles','ROLE_TYPE','*','ASSIGN_ROLE');
 INSERT INTO core_admin_role_resource (rbac_id,role_key,resource_type,resource_id,permission) VALUES 
- (206,'assign_groups','GROUP_TYPE','*','ASSIGN_GROUP');
-INSERT INTO core_admin_role_resource (rbac_id,role_key,resource_type,resource_id,permission) VALUES 
  (207,'mylutece_manager','MYLUTECE','*','*');
 
 
