@@ -6,7 +6,7 @@
 LocalVariables.setLocal( config, request, response );
 try
 {
-	response.sendRedirect( myluteceApp.doLogin( request ) );
+	response.sendRedirect( response.encodeRedirectURL( myluteceApp.doLogin( request ) ) );
 }
 finally
 {
