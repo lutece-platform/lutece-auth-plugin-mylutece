@@ -2,5 +2,5 @@
 <%@ page import="fr.paris.lutece.portal.web.LocalVariables" %>
 <%
 LocalVariables.setLocal( config, request, response );
-response.sendRedirect( myluteceApp.doResetConnectionLog( request ) );
+response.sendRedirect( response.encodeRedirectURL( myluteceApp.doResetConnectionLog( request ) ) );
 %>

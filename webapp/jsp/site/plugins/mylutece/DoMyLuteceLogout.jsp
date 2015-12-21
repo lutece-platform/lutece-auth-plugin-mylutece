@@ -2,5 +2,5 @@
 <jsp:include page="../../PortalHeader.jsp" />
 
 <%
-	response.sendRedirect( myluteceApp.doLogout( request ) );
+	response.sendRedirect( response.encodeRedirectURL( myluteceApp.doLogout( request ) ) );
 %>
