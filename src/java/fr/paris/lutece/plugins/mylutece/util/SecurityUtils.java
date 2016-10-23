@@ -118,7 +118,6 @@ public class SecurityUtils
     private static final String PROPERTY_DEFAULT_HISTORY_SIZE = "security.defaultValues.passwordHistorySize";
     private static final String PROPERTY_DEFAULT_PASSWORD_DURATION = "security.defaultValues.passwordDuration";
     private static final String PROPERTY_DEFAULT_ENCRYPTION_ALGORITHM = "security.defaultValues.algorithm";
-    private static final String PROPERTY_CRYPTO_KEY = "crypto.key";
     private static final String JSP_URL_RESET_CONNECTION_LOG = "jsp/site/plugins/mylutece/DoResetConnectionLog.jsp";
     private static final String CONSTANT_DEFAULT_ENCRYPTION_ALGORITHM = "SHA-256";
     private static final String SEMICOLON = ";";
@@ -843,7 +842,7 @@ public class SecurityUtils
     }
 
     /**
-     * Build an url to reset connection logs for an IP and a given user. Data are red from the request.
+     * Build an url to reset connection logs for an IP and a given user. Data is read from the request.
      * @param nInterval Interval of time to reset
      * @param request The request
      * @return The url to reset connection logs.
@@ -858,7 +857,7 @@ public class SecurityUtils
         url.addParameter( PARAMETER_DATE_LOGIN, strDate );
         url.addParameter( PARAMETER_INTERVAL, strInterval );
 
-        String strCryptoKey = AppPropertiesService.getProperty( PROPERTY_CRYPTO_KEY );
+        String strCryptoKey = CryptoService.getCryptoKey( );
         url.addParameter( PARAMETER_KEY,
             CryptoService.encrypt( strIp + strDate + strInterval + strCryptoKey,
                 AppPropertiesService.getProperty( PROPERTY_DEFAULT_ENCRYPTION_ALGORITHM,

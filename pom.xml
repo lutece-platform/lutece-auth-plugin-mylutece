@@ -29,12 +29,19 @@
             <version>[4.4.0,)</version>
             <type>lutece-core</type>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${springVersion}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <properties>
         <componentName>mylutece</componentName>
         <jiraProjectName>MYLUTECE</jiraProjectName>
         <jiraComponentId>10165</jiraComponentId>
+        <springVersion>3.1.0.RELEASE</springVersion>
     </properties>
 
     <scm>
