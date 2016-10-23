@@ -134,7 +134,6 @@ public class MyLuteceApp implements XPageApplication
     private static final String PROPERTY_MYLUTECE_TEMPLATE_ACCESS_DENIED = "mylutece.template.accessDenied";
     private static final String PROPERTY_MYLUTECE_TEMPLATE_ACCESS_CONTROLED = "mylutece.template.accessControled";
     private static final String PROPERTY_DEFAULT_ENCRYPTION_ALGORITHM = "security.defaultValues.algorithm";
-    private static final String PROPERTY_CRYPTO_KEY = "crypto.key";
 
     // i18n Properties
     private static final String PROPERTY_CREATE_ACCOUNT_LABEL = "mylutece.xpage.createAccountLabel";
@@ -600,7 +599,7 @@ public class MyLuteceApp implements XPageApplication
         if ( StringUtils.isNotBlank( strIp ) && StringUtils.isNotBlank( strDateLogin )
                 && StringUtils.isNotBlank( strKey ) && StringUtils.isNotBlank( strInterval ) )
         {
-            String strCryptoKey = AppPropertiesService.getProperty( PROPERTY_CRYPTO_KEY );
+            String strCryptoKey = CryptoService.getCryptoKey( );
             String strComputedKey = CryptoService.encrypt( strIp + strDateLogin + strInterval + strCryptoKey,
                     AppPropertiesService.getProperty( PROPERTY_DEFAULT_ENCRYPTION_ALGORITHM,
                             CONSTANT_DEFAULT_ENCRYPTION_ALGORITHM ) );
