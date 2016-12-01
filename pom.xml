@@ -10,7 +10,7 @@
     <groupId>fr.paris.lutece.plugins</groupId>
     <artifactId>plugin-mylutece</artifactId>
     <packaging>lutece-plugin</packaging>
-    <version>3.3.3-SNAPSHOT</version>
+    <version>3.3.3</version>
     <name>Lutece mylutece plugin</name>
 
     <repositories>
@@ -41,7 +41,7 @@
         <connection>scm:git:https://github.com/lutece-platform/lutece-auth-plugin-mylutece.git</connection>
         <developerConnection>scm:git:https://github.com/lutece-platform/lutece-auth-plugin-mylutece.git</developerConnection>
         <url>https://github.com/lutece-platform/lutece-auth-plugin-mylutece.git</url>
-      <tag>HEAD</tag>
+      <tag>lutece-auth-plugin-mylutece-3.3.3</tag>
   </scm>
     
 </project>
