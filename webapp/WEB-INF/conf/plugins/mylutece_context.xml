@@ -13,4 +13,6 @@
 	<bean id="mylutece.connectionLogDAO"  class="fr.paris.lutece.plugins.mylutece.authentication.logs.ConnectionLogDAO" />
 
     <bean id="mylutece.myLuteceUserAttributesService" class="fr.paris.lutece.plugins.mylutece.service.MyLuteceUserAttributesService" />
+    <bean id="mylutece.myLuteceIdentityService" class="fr.paris.lutece.plugins.mylutece.service.MyLuteceIdentityService" />
+    
 </beans>

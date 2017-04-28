@@ -143,10 +143,12 @@ public class UserLoginInclude implements PageInclude
                 }
 
                 strUserLoginForm = t.getHtml(  );
+                rootModel.put("LUTECE_USER", user );
             }
         }
 
         rootModel.put( MARK_USERLOGIN_TITLE, strUserLoginTitle );
         rootModel.put( MARK_USERLOGIN, strUserLoginForm );
+
     }
 }
