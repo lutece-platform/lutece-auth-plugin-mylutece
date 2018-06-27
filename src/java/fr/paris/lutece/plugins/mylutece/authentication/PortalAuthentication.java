@@ -46,7 +46,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * PortalAuthentication : default authentication
  */
-public abstract class PortalAuthentication implements LuteceAuthentication
+public abstract class PortalAuthentication extends AbstractAuthentication
 {
     private static final String CONSTANT_PATH_ICON = "images/local/skin/plugins/mylutece/mylutece.png";
 

@@ -46,7 +46,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * ExternalAuthentication.
  */
-public abstract class ExternalAuthentication implements LuteceAuthentication
+public abstract class ExternalAuthentication extends AbstractAuthentication
 {
     private static final String CONSTANT_PATH_ICON = "images/local/skin/plugins/mylutece/mylutece.png";
 

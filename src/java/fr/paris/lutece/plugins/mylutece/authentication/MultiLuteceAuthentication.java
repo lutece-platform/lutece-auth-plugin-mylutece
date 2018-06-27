@@ -60,7 +60,7 @@ import javax.servlet.http.HttpServletRequest;
  * Manages serveral {@link MyLuteceAuthentication}. Call {@link #registerAuthentication(LuteceAuthentication)} to register your authentication and {@link #removeAuthentication(String)} to unregister
  * it.
  */
-public class MultiLuteceAuthentication implements LuteceAuthentication
+public class MultiLuteceAuthentication extends AbstractAuthentication
 {
     private static final String PROPERTY_MESSAGE_NO_AUTHENTICATION_SELECTED = "mylutece.message.noAuthenticationSelected";
     private static final String PARAMETER_AUTH_PROVIDER = "auth_provider";
