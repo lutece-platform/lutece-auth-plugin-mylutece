@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2016, Mairie de Paris
+ * Copyright (c) 2002-2018, Mairie de Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,6 +35,7 @@ package fr.paris.lutece.plugins.mylutece.web;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -50,91 +51,94 @@ import fr.paris.lutece.test.LuteceTestCase;
 
 public class MyLuteceAppTest extends LuteceTestCase
 {
+    private static final String STR_IP_ADDRESS = "127.0.0.1";
+    private Plugin _plugin;
+    private ConnectionLog _connetionLog;
+
+    @Override
+    public void setUp( ) throws Exception
+    {
+        super.setUp( );
+        _plugin = PluginService.getPlugin( MyLutecePlugin.PLUGIN_NAME );
+        _connetionLog = new ConnectionLog( );
+        _connetionLog.setDateLogin( new Timestamp( new Date( ).getTime( ) ) );
+        _connetionLog.setIpAddress( STR_IP_ADDRESS );
+        _connetionLog.setLoginStatus( ConnectionLog.LOGIN_DENIED );
+        ConnectionLogHome.addUserLog( _connetionLog, _plugin );
+
+        TimeUnit.SECONDS.sleep( 1 ); // wait till next second
+        assertEquals( 1, ConnectionLogHome.getLoginErrors( _connetionLog, 1, _plugin ) );
+    }
+
+    @Override
+    public void tearDown( ) throws Exception
+    {
+        ConnectionLogHome.resetConnectionLogs( STR_IP_ADDRESS, new Timestamp( new Date( ).getTime( ) ), 1, _plugin );
+        super.tearDown( );
+    }
+
     public void testDoResetConnectionLog( )
     {
-        Plugin plugin = PluginService.getPlugin( MyLutecePlugin.PLUGIN_NAME );
-        ConnectionLog connetionLog = new ConnectionLog( );
-        connetionLog.setDateLogin( new Timestamp( new Date( ).getTime( ) ) );
-        String strIpAddress = "127.0.0.1";
-        connetionLog.setIpAddress( strIpAddress );
-        connetionLog.setLoginStatus( ConnectionLog.LOGIN_DENIED );
-        ConnectionLogHome.addUserLog( connetionLog, plugin );
-        try
+        MockHttpServletRequest request = new MockHttpServletRequest( );
+        request.setRemoteAddr( STR_IP_ADDRESS );
+        String strUrl = SecurityUtils.buildResetConnectionLogUrl( 1, request );
+        Pattern pattern = Pattern.compile( "[\\?&]([^=]+)=([^&]+)" );
+        Matcher matcher = pattern.matcher( strUrl );
+        request = new MockHttpServletRequest( );
+        while ( matcher.find( ) )
         {
-            MockHttpServletRequest request = new MockHttpServletRequest( );
-            request.setRemoteAddr( "127.0.0.1" );
-            String strUrl = SecurityUtils.buildResetConnectionLogUrl( 1, request );
-            Pattern pattern = Pattern.compile( "[\\?&]([^=]+)=([^&]+)" );
-            Matcher matcher = pattern.matcher( strUrl );
-            request = new MockHttpServletRequest( );
-            while ( matcher.find( ) )
+            if ( "date_login".equals( matcher.group( 1 ) ) )
             {
-                if ( "date_login".equals( matcher.group( 1 ) ) )
-                {
-                    request.setParameter( "date_login", matcher.group( 2 ) );
-                } else if ( "key".equals( matcher.group( 1 ) ) )
-                {
-                    request.setParameter( "key", matcher.group( 2 ) );
-                }
+                request.setParameter( "date_login", matcher.group( 2 ) );
             }
-            MyLuteceApp app = new MyLuteceApp( );
-            request.setParameter( "ip", strIpAddress );
-            request.setParameter( "interval", "1" );
-            strUrl = app.doResetConnectionLog( request );
-
-            assertEquals( "../../../../" + MyLuteceApp.getLoginPageUrl( ), strUrl );
-            assertEquals( 0, ConnectionLogHome.getLoginErrors( connetionLog, 1, plugin ) );
-        } finally
-        {
-            ConnectionLogHome.resetConnectionLogs( strIpAddress, new Timestamp( new Date( ).getTime( ) ), 1, plugin );
+            else if ( "key".equals( matcher.group( 1 ) ) )
+            {
+                request.setParameter( "key", matcher.group( 2 ) );
+            }
         }
+        MyLuteceApp app = new MyLuteceApp( );
+        request.setParameter( "ip", STR_IP_ADDRESS );
+        request.setParameter( "interval", "1" );
+        strUrl = app.doResetConnectionLog( request );
+
+        assertEquals( "../../../../" + MyLuteceApp.getLoginPageUrl( ), strUrl );
+        assertEquals( 0, ConnectionLogHome.getLoginErrors( _connetionLog, 1, _plugin ) );
     }
 
     public void testDoResetConnectionLogBadKey( )
     {
-        Plugin plugin = PluginService.getPlugin( MyLutecePlugin.PLUGIN_NAME );
-        ConnectionLog connetionLog = new ConnectionLog( );
-        connetionLog.setDateLogin( new Timestamp( new Date( ).getTime( ) ) );
-        String strIpAddress = "127.0.0.1";
-        connetionLog.setIpAddress( strIpAddress );
-        connetionLog.setLoginStatus( ConnectionLog.LOGIN_DENIED );
-        ConnectionLogHome.addUserLog( connetionLog, plugin );
-        try
+        MockHttpServletRequest request = new MockHttpServletRequest( );
+        request.setRemoteAddr( STR_IP_ADDRESS );
+        String strUrl = SecurityUtils.buildResetConnectionLogUrl( 1, request );
+        Pattern pattern = Pattern.compile( "[\\?&]([^=]+)=([^&]+)" );
+        Matcher matcher = pattern.matcher( strUrl );
+        request = new MockHttpServletRequest( );
+        while ( matcher.find( ) )
         {
-            MockHttpServletRequest request = new MockHttpServletRequest( );
-            request.setRemoteAddr( "127.0.0.1" );
-            String strUrl = SecurityUtils.buildResetConnectionLogUrl( 1, request );
-            Pattern pattern = Pattern.compile( "[\\?&]([^=]+)=([^&]+)" );
-            Matcher matcher = pattern.matcher( strUrl );
-            request = new MockHttpServletRequest( );
-            while ( matcher.find( ) )
+            if ( "date_login".equals( matcher.group( 1 ) ) )
             {
-                if ( "date_login".equals( matcher.group( 1 ) ) )
-                {
-                    request.setParameter( "date_login", matcher.group( 2 ) );
-                } else if ( "key".equals( matcher.group( 1 ) ) )
-                {
-                    String strKey = matcher.group( 2 );
-                    if ( strKey.startsWith( "0" ) )
-                    {
-                        strKey = "1" + strKey.substring( 1 );
-                    } else
-                    {
-                        strKey = "0" + strKey.substring( 1 );
-                    }
-                    request.setParameter( "key", strKey );
-                }
+                request.setParameter( "date_login", matcher.group( 2 ) );
             }
-            MyLuteceApp app = new MyLuteceApp( );
-            request.setParameter( "ip", strIpAddress );
-            request.setParameter( "interval", "1" );
-            strUrl = app.doResetConnectionLog( request );
-
-            assertEquals( "../../../../" + MyLuteceApp.getLoginPageUrl( ), strUrl );
-            assertEquals( 1, ConnectionLogHome.getLoginErrors( connetionLog, 1, plugin ) );
-        } finally
-        {
-            ConnectionLogHome.resetConnectionLogs( strIpAddress, new Timestamp( new Date( ).getTime( ) ), 1, plugin );
+            else if ( "key".equals( matcher.group( 1 ) ) )
+            {
+                String strKey = matcher.group( 2 );
+                if ( strKey.startsWith( "0" ) )
+                {
+                    strKey = "1" + strKey.substring( 1 );
+                }
+                else
+                {
+                    strKey = "0" + strKey.substring( 1 );
+                }
+                request.setParameter( "key", strKey );
+            }
         }
+        MyLuteceApp app = new MyLuteceApp( );
+        request.setParameter( "ip", STR_IP_ADDRESS );
+        request.setParameter( "interval", "1" );
+        strUrl = app.doResetConnectionLog( request );
+
+        assertEquals( "../../../../" + MyLuteceApp.getLoginPageUrl( ), strUrl );
+        assertEquals( 1, ConnectionLogHome.getLoginErrors( _connetionLog, 1, _plugin ) );
     }
 }
