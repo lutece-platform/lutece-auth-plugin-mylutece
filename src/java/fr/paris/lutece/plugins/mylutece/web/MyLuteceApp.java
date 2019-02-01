@@ -34,15 +34,13 @@
 package fr.paris.lutece.plugins.mylutece.web;
 
 import fr.paris.lutece.plugins.mylutece.authentication.MultiLuteceAuthentication;
-import fr.paris.lutece.plugins.mylutece.authentication.logs.ConnectionLog;
 import fr.paris.lutece.plugins.mylutece.authentication.logs.ConnectionLogHome;
+import fr.paris.lutece.plugins.mylutece.service.MyLuteceAuthenticationService;
 import fr.paris.lutece.plugins.mylutece.service.MyLutecePlugin;
 import fr.paris.lutece.portal.service.captcha.CaptchaSecurityService;
 import fr.paris.lutece.portal.service.i18n.I18nService;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
-import fr.paris.lutece.portal.service.security.FailedLoginCaptchaException;
-import fr.paris.lutece.portal.service.security.LoginRedirectException;
 import fr.paris.lutece.portal.service.security.LuteceAuthentication;
 import fr.paris.lutece.portal.service.security.SecurityService;
 import fr.paris.lutece.portal.service.security.SecurityTokenService;
@@ -50,23 +48,18 @@ import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.portal.service.util.CryptoService;
-import fr.paris.lutece.portal.web.PortalJspBean;
 import fr.paris.lutece.portal.web.xpages.XPage;
 import fr.paris.lutece.portal.web.xpages.XPageApplication;
 import fr.paris.lutece.util.html.HtmlTemplate;
-import fr.paris.lutece.util.http.SecurityUtil;
 import fr.paris.lutece.util.url.UrlItem;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.security.auth.login.FailedLoginException;
-import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -98,14 +91,6 @@ public class MyLuteceApp implements XPageApplication
 
     // Parameters
     private static final String PARAMETER_ACTION = "action";
-    private static final String PARAMETER_USERNAME = "username";
-    private static final String PARAMETER_PASSWORD = "password";
-    private static final String PARAMETER_ERROR = "error";
-    private static final String PARAMETER_ERROR_VALUE_INVALID = "invalid";
-    private static final String PARAMETER_ERROR_MSG = "error_msg";
-    private static final String PARAMETER_AUTH_PROVIDER = "auth_provider";
-    private static final String PARAMETER_IS_ACTIVE_CAPTCHA = "mylutece_is_active_captcha";
-    private static final String PARAMETER_ERROR_CAPTCHA = "error_captcha";
     private static final String PARAMETER_DATE_LOGIN = "date_login";
     private static final String PARAMETER_INTERVAL = "interval";
     private static final String PARAMETER_IP = "ip";
@@ -206,22 +191,22 @@ public class MyLuteceApp implements XPageApplication
     {
         Map<String, Object> model = new HashMap<String, Object>( );
 
-        String strError = request.getParameter( PARAMETER_ERROR );
+        String strError = request.getParameter( MyLuteceAuthenticationService.PARAMETER_ERROR );
         String strErrorMessage = "";
         String strErrorDetail = "";
 
         if ( strError != null )
         {
-            if ( strError.equals( PARAMETER_ERROR_VALUE_INVALID ) )
+            if ( strError.equals( MyLuteceAuthenticationService.PARAMETER_ERROR_VALUE_INVALID ) )
             {
                 strErrorMessage = AppPropertiesService.getProperty( PROPERTY_MYLUTECE_MESSAGE_INVALID_LOGIN );
 
-                if ( request.getParameter( PARAMETER_ERROR_MSG ) != null )
+                if ( request.getParameter( MyLuteceAuthenticationService.PARAMETER_ERROR_MSG ) != null )
                 {
-                    strErrorDetail = request.getParameter( PARAMETER_ERROR_MSG );
+                    strErrorDetail = request.getParameter( MyLuteceAuthenticationService.PARAMETER_ERROR_MSG );
                 }
             }
-            else if ( strError.equals( PARAMETER_ERROR_CAPTCHA ) )
+            else if ( strError.equals( MyLuteceAuthenticationService.PARAMETER_ERROR_CAPTCHA ) )
             {
                 strErrorMessage = I18nService.getLocalizedString( PROPERTY_MYLUTECE_MESSAGE_INVALID_CAPTCHA,
                         request.getLocale( ) );
@@ -233,7 +218,7 @@ public class MyLuteceApp implements XPageApplication
 
         if ( session != null )
         {
-            bEnableCaptcha = (Boolean) session.getAttribute( PARAMETER_IS_ACTIVE_CAPTCHA );
+            bEnableCaptcha = (Boolean) session.getAttribute( MyLuteceAuthenticationService.PARAMETER_IS_ACTIVE_CAPTCHA );
 
             if ( bEnableCaptcha == null )
             {
@@ -244,7 +229,7 @@ public class MyLuteceApp implements XPageApplication
         model.put( MARK_ERROR_MESSAGE, strErrorMessage );
         model.put( MARK_ERROR_DETAIL, strErrorDetail );
         model.put( MARK_URL_DOLOGIN, getDoLoginUrl( ) );
-        model.put( MARK_AUTH_PROVIDER, request.getParameter( PARAMETER_AUTH_PROVIDER ) );
+        model.put( MARK_AUTH_PROVIDER, request.getParameter( MyLuteceAuthenticationService.PARAMETER_AUTH_PROVIDER ) );
         model.put( MARK_IS_ACTIVE_CAPTCHA, bEnableCaptcha );
 
         if ( bEnableCaptcha )
@@ -291,109 +276,25 @@ public class MyLuteceApp implements XPageApplication
      */
     public String doLogin( HttpServletRequest request ) throws UnsupportedEncodingException
     {
-        String strUsername = request.getParameter( PARAMETER_USERNAME );
-        String strPassword = request.getParameter( PARAMETER_PASSWORD );
-        String strAuthProvider = request.getParameter( PARAMETER_AUTH_PROVIDER );
-
-        String strReturn = "../../../../" + getLoginPageUrl( );
-
-        Boolean bIsCaptchaEnabled = (Boolean) request.getSession( true ).getAttribute( PARAMETER_IS_ACTIVE_CAPTCHA );
-
-        if ( ( bIsCaptchaEnabled != null ) && bIsCaptchaEnabled )
+        UrlItem redirectUrl = null;
+        
+        // login attempt
+        Map<String,String> mapLoginAttemptResultUrlParameters = MyLuteceAuthenticationService.doLogin( request );
+        
+        if ( mapLoginAttemptResultUrlParameters.containsKey( MyLuteceAuthenticationService.PARAMETER_REDIRECT_URL ) )
         {
-            CaptchaSecurityService captchaService = new CaptchaSecurityService( );
-
-            if ( !captchaService.validate( request ) )
-            {
-                strReturn += ( "&" + PARAMETER_ERROR + "=" + PARAMETER_ERROR_CAPTCHA );
+            redirectUrl = new UrlItem( mapLoginAttemptResultUrlParameters.get( MyLuteceAuthenticationService.PARAMETER_REDIRECT_URL ) );
+        }
+        else
+        {
+            redirectUrl = new UrlItem( "../../../../" + getLoginPageUrl( ) );
+            
+            for (Map.Entry<String, String> entry : mapLoginAttemptResultUrlParameters.entrySet( ) ) {
+                redirectUrl.addParameter( entry.getKey( ), entry.getValue( ) );
             }
         }
-
-        Plugin plugin = PluginService.getPlugin( MyLutecePlugin.PLUGIN_NAME );
-
-        try
-        {
-            SecurityService.getInstance( ).loginUser( request, strUsername, strPassword );
-        }
-        catch ( LoginRedirectException ex )
-        {
-            HttpSession session = request.getSession( false );
-
-            if ( session != null )
-            {
-                session.removeAttribute( PARAMETER_IS_ACTIVE_CAPTCHA );
-            }
-
-            return ex.getRedirectUrl( );
-        }
-        catch ( FailedLoginException ex )
-        {
-            // Creating a record of connections log
-            ConnectionLog connectionLog = new ConnectionLog( );
-            connectionLog.setIpAddress( SecurityUtil.getRealIp( request ) );
-            connectionLog.setDateLogin( new java.sql.Timestamp( new java.util.Date( ).getTime( ) ) );
-            connectionLog.setLoginStatus( ConnectionLog.LOGIN_DENIED ); // will be inserted only if access denied
-            ConnectionLogHome.addUserLog( connectionLog, plugin );
-
-            strReturn += ( "&" + PARAMETER_ERROR + "=" + PARAMETER_ERROR_VALUE_INVALID );
-
-            if ( StringUtils.isNotBlank( strAuthProvider ) )
-            {
-                strReturn += ( "&" + PARAMETER_AUTH_PROVIDER + "=" + strAuthProvider );
-            }
-
-            if ( ex.getMessage( ) != null )
-            {
-                String strMessage = "&" + PARAMETER_ERROR_MSG + "=" + URLEncoder.encode( ex.getMessage( ), "UTF-8" );
-                strReturn += strMessage;
-            }
-
-            if ( ex instanceof FailedLoginCaptchaException )
-            {
-                Boolean bEnableCaptcha = ( (FailedLoginCaptchaException) ex ).isCaptchaEnabled( );
-                request.getSession( true ).setAttribute( PARAMETER_IS_ACTIVE_CAPTCHA, bEnableCaptcha );
-            }
-
-            return strReturn;
-        }
-        catch ( LoginException ex )
-        {
-            strReturn += ( "&" + PARAMETER_ERROR + "=" + PARAMETER_ERROR_VALUE_INVALID );
-
-            if ( StringUtils.isNotBlank( strAuthProvider ) )
-            {
-                strReturn += ( "&" + PARAMETER_AUTH_PROVIDER + "=" + strAuthProvider );
-            }
-
-            if ( ex.getMessage( ) != null )
-            {
-                String strMessage = "&" + PARAMETER_ERROR_MSG + "=" + ex.getMessage( );
-                strReturn += strMessage;
-            }
-
-            return strReturn;
-        }
-
-        HttpSession session = request.getSession( false );
-
-        if ( session != null )
-        {
-            session.removeAttribute( PARAMETER_IS_ACTIVE_CAPTCHA );
-        }
-
-        String strNextUrl = PortalJspBean.getLoginNextUrl( request );
-        String strCurrentUrl = getCurrentUrl( request );
-
-        if ( strNextUrl != null )
-        {
-            return strNextUrl;
-        }
-        else if ( strCurrentUrl != null )
-        {
-            return strCurrentUrl;
-        }
-
-        return getDefaultRedirectUrl( );
+        
+        return redirectUrl.toString( );
     }
 
     /**
@@ -469,7 +370,7 @@ public class MyLuteceApp implements XPageApplication
         return AppPathService.getBaseUrl( request )
                 + AppPropertiesService.getProperty( PROPERTY_MYLUTECE_RESET_PASSWORD_URL );
     }
-
+    
     /**
      * Returns the Default redirect URL of the Authentication Service
      * @return The URL
@@ -486,7 +387,14 @@ public class MyLuteceApp implements XPageApplication
      */
     public String doLogout( HttpServletRequest request )
     {
-        SecurityService.getInstance( ).logoutUser( request );
+        // logout attempt
+        Map<String,String> mapLoginAttemptResultUrlParameters = MyLuteceAuthenticationService.doLogout( request );
+        
+        if ( mapLoginAttemptResultUrlParameters.containsKey( MyLuteceAuthenticationService.PARAMETER_REDIRECT_URL ) )
+        {
+            UrlItem redirectUrl = new UrlItem( mapLoginAttemptResultUrlParameters.get( MyLuteceAuthenticationService.PARAMETER_REDIRECT_URL ) );
+            return redirectUrl.getUrl( );
+        }
 
         return getDefaultRedirectUrl( );
     }
