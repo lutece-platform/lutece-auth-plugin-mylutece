@@ -33,30 +33,6 @@
  */
 package fr.paris.lutece.plugins.mylutece.web;
 
-import fr.paris.lutece.plugins.mylutece.authentication.MultiLuteceAuthentication;
-import fr.paris.lutece.plugins.mylutece.authentication.logs.ConnectionLog;
-import fr.paris.lutece.plugins.mylutece.authentication.logs.ConnectionLogHome;
-import fr.paris.lutece.plugins.mylutece.service.MyLutecePlugin;
-import fr.paris.lutece.portal.service.captcha.CaptchaSecurityService;
-import fr.paris.lutece.portal.service.i18n.I18nService;
-import fr.paris.lutece.portal.service.plugin.Plugin;
-import fr.paris.lutece.portal.service.plugin.PluginService;
-import fr.paris.lutece.portal.service.security.FailedLoginCaptchaException;
-import fr.paris.lutece.portal.service.security.LoginRedirectException;
-import fr.paris.lutece.portal.service.security.LuteceAuthentication;
-import fr.paris.lutece.portal.service.security.SecurityService;
-import fr.paris.lutece.portal.service.security.SecurityTokenService;
-import fr.paris.lutece.portal.service.template.AppTemplateService;
-import fr.paris.lutece.portal.service.util.AppPathService;
-import fr.paris.lutece.portal.service.util.AppPropertiesService;
-import fr.paris.lutece.portal.service.util.CryptoService;
-import fr.paris.lutece.portal.web.PortalJspBean;
-import fr.paris.lutece.portal.web.xpages.XPage;
-import fr.paris.lutece.portal.web.xpages.XPageApplication;
-import fr.paris.lutece.util.html.HtmlTemplate;
-import fr.paris.lutece.util.http.SecurityUtil;
-import fr.paris.lutece.util.url.UrlItem;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
@@ -71,6 +47,34 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
+
+import fr.paris.lutece.plugins.mylutece.authentication.MultiLuteceAuthentication;
+import fr.paris.lutece.plugins.mylutece.authentication.logs.ConnectionLog;
+import fr.paris.lutece.plugins.mylutece.authentication.logs.ConnectionLogHome;
+import fr.paris.lutece.plugins.mylutece.service.MyLutecePlugin;
+import fr.paris.lutece.portal.service.captcha.CaptchaSecurityService;
+import fr.paris.lutece.portal.service.i18n.I18nService;
+import fr.paris.lutece.portal.service.plugin.Plugin;
+import fr.paris.lutece.portal.service.plugin.PluginService;
+import fr.paris.lutece.portal.service.security.FailedLoginCaptchaException;
+import fr.paris.lutece.portal.service.security.LoginRedirectException;
+import fr.paris.lutece.portal.service.security.LuteceAuthentication;
+import fr.paris.lutece.portal.service.security.LuteceUser;
+import fr.paris.lutece.portal.service.security.SecurityService;
+import fr.paris.lutece.portal.service.security.SecurityTokenService;
+import fr.paris.lutece.portal.service.template.AppTemplateService;
+import fr.paris.lutece.portal.service.util.AppPathService;
+import fr.paris.lutece.portal.service.util.AppPropertiesService;
+import fr.paris.lutece.portal.service.util.CryptoService;
+import fr.paris.lutece.portal.web.PortalJspBean;
+import fr.paris.lutece.portal.web.xpages.XPage;
+import fr.paris.lutece.portal.web.xpages.XPageApplication;
+import fr.paris.lutece.util.html.HtmlTemplate;
+import fr.paris.lutece.util.http.SecurityUtil;
+import fr.paris.lutece.util.json.AbstractJsonResponse;
+import fr.paris.lutece.util.json.JsonResponse;
+import fr.paris.lutece.util.json.JsonUtil;
+import fr.paris.lutece.util.url.UrlItem;
 
 
 /**
@@ -395,6 +399,29 @@ public class MyLuteceApp implements XPageApplication
 
         return getDefaultRedirectUrl( );
     }
+    
+	/**
+	 * Check if the current user is authenticated
+	 * 
+	 * @param request The request
+	 * @return A JSON string containing true in the field result if the user is
+	 *         authenticated
+	 */
+	public String isUserAuthenticated(HttpServletRequest request) {
+		AbstractJsonResponse jsonResponse = null;
+
+		LuteceUser user = null;
+
+		user = SecurityService.getInstance().getRegisteredUser(request);
+
+		if (user != null) {
+			jsonResponse = new JsonResponse(Boolean.TRUE);
+		} else {
+			jsonResponse = new JsonResponse(Boolean.FALSE);
+		}
+
+		return JsonUtil.buildJsonResponse(jsonResponse);
+	}
 
     /**
      * Returns the Login page URL of the Authentication Service
