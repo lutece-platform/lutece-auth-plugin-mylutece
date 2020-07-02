@@ -41,12 +41,15 @@ import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.security.SecurityService;
 import fr.paris.lutece.portal.service.security.UserNotSignedException;
 import fr.paris.lutece.portal.service.util.AppPathService;
+import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.portal.web.PortalJspBean;
 import fr.paris.lutece.portal.web.constants.Messages;
 import fr.paris.lutece.util.url.UrlItem;
 
 import java.io.IOException;
+import java.util.Arrays;
 
+import javax.security.auth.login.FailedLoginException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -66,6 +69,12 @@ public class MyluteceAuthFilter implements Filter
     private static final String URL_AMPERSAND = "&";
     private static final String URL_EQUAL = "=";
     private static final String URL_STAR = "*";
+    
+    // Properties
+    private static final String PROPERTY_ACCESS_ROLE = "mylutece.role.AccessRole";
+
+    // Attributes
+    private static final String ATTRIBUTE_ACCES_ROLE = AppPropertiesService.getProperty( PROPERTY_ACCESS_ROLE );    
 
     /**
      * {@inheritDoc}
@@ -123,6 +132,17 @@ public class MyluteceAuthFilter implements Filter
 
                 return;
             }
+            catch ( FailedLoginException e ) {
+                try
+                {
+                    SiteMessageService.setMessage( req, Messages.MESSAGE_AUTH_FAILURE, null,
+                        Messages.MESSAGE_AUTH_FAILURE, null, "", SiteMessage.TYPE_STOP );
+                }
+                catch ( SiteMessageException lme )
+                {
+                    resp.sendRedirect( AppPathService.getSiteMessageUrl( req ) );
+                }
+            }
         }
 
         chain.doFilter( request, response );
@@ -154,15 +174,17 @@ public class MyluteceAuthFilter implements Filter
      *
      **/
     private static void filterAccess( HttpServletRequest request )
-        throws UserNotSignedException
+        throws UserNotSignedException, FailedLoginException
     {
+        LuteceUser user = null;
         // Try to register the user in case of external authentication
         if ( SecurityService.getInstance(  ).isExternalAuthentication(  ) &&
                 !SecurityService.getInstance(  ).isMultiAuthenticationSupported(  ) )
         {
             // The authentication is external
             // Should register the user if it's not already done
-            if ( SecurityService.getInstance(  ).getRegisteredUser( request ) == null )
+            user = SecurityService.getInstance(  ).getRegisteredUser( request );
+            if ( user == null )
             {
                 if ( ( SecurityService.getInstance(  ).getRemoteUser( request ) == null ) &&
                         ( SecurityService.getInstance(  ).isPortalAuthenticationRequired(  ) ) )
@@ -174,7 +196,7 @@ public class MyluteceAuthFilter implements Filter
         }
         else
         {
-            LuteceUser user = SecurityService.getInstance(  ).getRegisteredUser( request );
+            user = SecurityService.getInstance(  ).getRegisteredUser( request );
 
             // no checks are needed if the user is already registered
             if ( user == null )
@@ -200,6 +222,11 @@ public class MyluteceAuthFilter implements Filter
                     throw new UserNotSignedException(  );
                 }
             }
+        }
+        // check if the user have the right to access to the portal
+        if( !isUserAccessRole( user ) ) {
+            
+            throw new FailedLoginException( );
         }
     }
 
@@ -317,5 +344,20 @@ public class MyluteceAuthFilter implements Filter
     private String getResquestedUrl( HttpServletRequest request )
     {
         return AppPathService.getBaseUrl( request ) + request.getServletPath(  ).substring( 1 );
+    }
+
+    /**
+     * Checks if the user have the role access
+     *
+     * @param user the LuteceUser
+     * 
+     * @return true if the user have the access role
+     *
+     */
+    private static Boolean isUserAccessRole( LuteceUser user ) {
+        if( ATTRIBUTE_ACCES_ROLE != null && !ATTRIBUTE_ACCES_ROLE.isEmpty( ) ) {
+            return  Arrays.asList( user.getRoles( ) ).stream( ).anyMatch( str -> str.trim( ).equals( ATTRIBUTE_ACCES_ROLE.trim( ) ) );
+        }
+        return true;
     }
 }
