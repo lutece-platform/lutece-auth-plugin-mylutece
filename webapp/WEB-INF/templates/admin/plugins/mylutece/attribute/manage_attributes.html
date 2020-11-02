@@ -2,15 +2,19 @@
 	<@columns>
 		<@box>
 			<@boxHeader title='#i18n{mylutece.manage_attributes.pageTitle}'>
-				<@tform method='post' action='jsp/admin/plugins/mylutece/attribute/CreateAttribute.jsp'>
-					<@formGroup labelFor='attribute_type_class_name' labelKey='#i18n{mylutece.manage_attributes.addNewAttributes}'>
-						<@select id='attribute_type_class_name' name='attribute_type_class_name'>
-							<#list attribute_types_list as attribute_type>
-								<option value="${attribute_type.className}">${attribute_type.name}</option>
-							</#list>
-						</@select>
+				<@tform type='inline' method='post' action='jsp/admin/plugins/mylutece/attribute/CreateAttribute.jsp'>
+					<@formGroup formStyle='inline' labelFor='attribute_type_class_name' labelKey='#i18n{mylutece.manage_attributes.addNewAttributes}'>
+						<@inputGroup>
+							<@select id='attribute_type_class_name' name='attribute_type_class_name' size='sm'>
+								<#list attribute_types_list as attribute_type>
+									<option value="${attribute_type.className}">${attribute_type.name}</option>
+								</#list>
+							</@select>
+							<@inputGroupItem>
+								<@button type='submit' buttonIcon='plus' title='#i18n{mylutece.manage_attributes.buttonAdd}' size='sm' />
+							</@inputGroupItem>
+						</@inputGroup>
 					</@formGroup>
-					<@button type='submit' buttonIcon='plus' title='#i18n{mylutece.manage_attributes.buttonAdd}' />
 				</@tform>
 			</@boxHeader>
 			<@boxBody>
