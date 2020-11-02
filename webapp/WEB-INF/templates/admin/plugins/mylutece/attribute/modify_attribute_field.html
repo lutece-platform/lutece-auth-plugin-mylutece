@@ -1,41 +1,29 @@
-<div class="row-fluid">
-	<form class="form-horizontal" action="jsp/admin/plugins/mylutece/attribute/DoModifyAttributeField.jsp#list" method="post" name="" id=""  >
-		<fieldset>
-			<legend>#i18n{mylutece.modify_attribute_field.pageTitle} :'${attribute.title}'</legend>
-			<div class="control-group">
-				<label class="control-label" for="title">#i18n{mylutece.modify_attribute_field.labelTitle} * :  </label>
-				<div class="controls">
-					<input type="text" name="title" id="title" size="80" value="${attribute_field.title}"  maxlength="255" />
-				</div>
-			</div>
-			<div class="control-group">
-				<label class="control-label" for="value">#i18n{mylutece.modify_attribute_field.labelValue} * :  </label>
-				<div class="controls">
-					<input type="text" name="value" id="value" size="80" value="${attribute_field.value}" />
-				</div>
-			</div>
-			<div class="control-group">
-	 			<label class="control-label" for="default_value">#i18n{mylutece.modify_attribute_field.labelDefaultValue} : </label>
-	 			<div class="controls">
-		 			<#if attribute_field.defaultValue>
-						<input name="default_value" value="1" type="checkbox" checked="checked" />
-					<#else>
-						<input name="default_value" value="1" type="checkbox" />
-					</#if>
-				</div>
-			</div>
-			<div class="form-actions">
-				<input type="hidden" value="${attribute.idAttribute}" name="id_attribute" />
-				<input type="hidden" value="${attribute_field.idField}" name="id_field" />
-				<button type="submit" class="btn btn-primary btn-small" name="save">
-					<i class="icon-ok icon-white">&nbsp;</i>
-					#i18n{mylutece.modify_attribute_field.buttonSave}
-				</button>
-				<button type="submit" class="btn btn-small" name="cancel">
-					<i class="icon-remove-circle">&nbsp;</i>
-					#i18n{portal.admin.message.buttonCancel}
-				</button>
-			</div>
-		</fieldset>
-	</form>
-</div>
+<@row>
+	<@columns>
+		<@box>
+			<@boxHeader title='#i18n{mylutece.modify_attribute_field.pageTitle} : \'${attribute.title}\'' />
+			<@boxBody>
+			
+				<@tform action='jsp/admin/plugins/mylutece/attribute/DoModifyAttributeField.jsp#list'>
+					<fieldset>
+						<@formGroup labelFor='title' labelKey='#i18n{mylutece.modify_attribute_field.labelTitle}' mandatory=true>
+							<@input type='text' name='title' id='title' inputSize=80 value='${attribute_field.title}' maxlength=255 />
+						</@formGroup>
+						<@formGroup labelFor='value' labelKey='#i18n{mylutece.modify_attribute_field.labelValue}' mandatory=true>
+							<@input type='text' name='value=' id='value' inputSize=80 value='${attribute_field.value}' />
+						</@formGroup>
+						<@formGroup labelKey='#i18n{mylutece.modify_attribute_field.labelDefaultValue}'>
+							<@checkBox labelFor='default_value' name='default_value' id='default_value' value='1' checked=attribute_field.defaultValue />
+						</@formGroup>
+						<@formGroup>
+							<@input type='hidden' value='${attribute.idAttribute}' name='id_attribute' />
+							<@input type='hidden' value='${attribute_field.idField}' name='id_field' />
+							<@button type='submit' name='save' buttonIcon='check' title='#i18n{mylutece.modify_attribute_field.buttonSave}' />
+							<@button type='submit' name='cancel' title='#i18n{portal.admin.message.buttonCancel}' buttonIcon='times' cancel=true />
+						</@formGroup>
+					</fieldset>
+				</@tform>
+			</@boxBody>
+		</@box>
+	</@columns>
+</@row>

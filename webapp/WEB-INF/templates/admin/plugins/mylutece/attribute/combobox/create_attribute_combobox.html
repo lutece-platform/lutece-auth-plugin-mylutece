@@ -12,15 +12,17 @@
 						<@formGroup labelFor='help_message' labelKey='#i18n{mylutece.create_attribute.labelHelpMessage}' helpKey='#i18n{mylutece.create_attribute.labelHelpMessageComment}'>
 							<@input type='textarea' name='help_message' id='help_message' cols=80 rows=5></@input>
 						</@formGroup>
-						<@formGroup labelKey='#i18n{mylutece.create_attribute.labelType}' helpKey='${attribute_type.name}' />
+						<@formGroup labelKey='#i18n{mylutece.create_attribute.labelType}'>
+							<@staticText><@tag color='info'>${attribute_type.name}</@tag></@staticText>
+						</@formGroup>
 						<@formGroup labelKey='#i18n{mylutece.create_attribute.labelIsShownInSearch}'>
-							<@checkBox labelFor='is_shown_in_search' name='is_shown_in_search' value='1' />
+							<@checkBox labelFor='is_shown_in_search' name='is_shown_in_search' id='is_shown_in_search' value='1' />
 						</@formGroup>
 						<@formGroup labelKey='#i18n{mylutece.create_attribute.labelMandatory}'>
-							<@checkBox labelFor='mandatory' value='1' />
+							<@checkBox labelFor='mandatory' name='mandatory' id='mandatory' value='1' />
 						</@formGroup>
 						<@formGroup labelKey='#i18n{mylutece.create_attribute.labelMultiple}' helpKey='#i18n{mylutece.create_attribute.labelMultipleComment}'>
-							<@checkBox labelFor='multiple' name='multiple' value='1' />
+							<@checkBox labelFor='multiple' name='multiple' id='multiple' value='1' />
 						</@formGroup>
 						<@formGroup>
 							<@input type='hidden' name='attribute_type_class_name' value='${attribute_type.className}' />

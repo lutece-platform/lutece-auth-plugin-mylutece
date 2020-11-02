@@ -11,7 +11,9 @@
 					<@formGroup labelFor='help_message' labelKey='#i18n{mylutece.modify_attribute.labelHelpMessage}' helpKey='#i18n{mylutece.modify_attribute.labelHelpMessageComment}'>
 						<@input type='textarea' name='help_message' id='help_message' cols=80 rows=5>${attribute.helpMessage}</@input>
 					</@formGroup>
-					<@formGroup labelFor='' labelKey='#i18n{mylutece.modify_attribute.labelType}' helpKey='${attribute.attributeType.name}' />
+					<@formGroup labelFor='' labelKey='#i18n{mylutece.modify_attribute.labelType}'>
+						<@staticText><@tag color='info'>${attribute.attributeType.name}</@tag></@staticText>
+					</@formGroup>
 					<@formGroup labelKey='#i18n{mylutece.modify_attribute.labelIsShownInSearch}'>
 						<@checkBox labelFor='is_shown_in_search' name='is_shown_in_search' id='is_shown_in_search' value='1' checked=attribute.shownInSearch />
 					</@formGroup>
@@ -34,20 +36,18 @@
 					</fieldset>
 				</@tform>
 			</@boxBody>
-			
-			<@boxBody>
+		</@box>
+		
+		<@box>
+			<@boxHeader title='#i18n{mylutece.modify_attribute.listAssociatedFields}'>
 				<@tform method='post' action='jsp/admin/plugins/mylutece/attribute/CreateAttributeField.jsp'>
-					<fieldset>
-						<legend>#i18n{mylutece.modify_attribute.listAssociatedFields}
-							<div class="pull-right">
-								<@input type='hidden' value='${attribute.idAttribute}' name='id_attribute' />
-								<@button type='submit' name='create' value='#i18n{mylutece.modify_attribute.buttonCreateField}' />
-							</div>
-						</legend>
-					</fieldset>
+					<@input type='hidden' value='${attribute.idAttribute}' name='id_attribute' />
+					<@button type='submit' name='create' value='#i18n{mylutece.modify_attribute.buttonCreateField}' buttonIcon='plus' />
 				</@tform>
+			</@boxHeader>
+			<@boxBody>
 				<a name="list" id="list"></a>
-				<@table id="list">
+				<@table id='list'>
 					<tr>
 						<th>#i18n{mylutece.modify_attribute.columnLabelTitle}</th>
 						<th>#i18n{mylutece.modify_attribute.columnLabelValue}</th>
