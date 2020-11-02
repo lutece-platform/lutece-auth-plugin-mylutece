@@ -1,71 +1,45 @@
+<@accordionPanel collapsed=true childId='myluteceauthfilter'>
+	<@accordionHeader title='#i18n{mylutece.authentication_filter_advanced_parameters.tableLabel}' id='myluteceauthfilterh' parentId='technical_settings'>
+	   <@tform method='post' action='jsp/admin/plugins/mylutece/security/ConfirmChangeUseAuthenticationRequired.jsp'>
+		 <#if !portal_authentication_required>
+		   <@button type='submit' name='submit' buttonIcon='check' title='#i18n{mylutece.authentication_filter_advanced_parameters.buttonEnableAuthenticationRequired}' />
+		 <#else>
+			<@button type='submit' name='submit' buttonIcon='check' title='#i18n{mylutece.authentication_filter_advanced_parameters.buttonDisableAuthenticationRequired}' />
+		 </#if>
+		</@tform>
+	</@accordionHeader>
+	<@accordionBody>
+		<@tform method='post' action='jsp/admin/plugins/mylutece/security/DoCreatePublicUrl.jsp'>
+			<@formGroup labelFor='public_url_code' labelKey='#i18n{mylutece.authentication_filter_advanced_parameters.labelPublicUrlCode}'>
+				<@input type='text' inputSize=40 name='public_url_code' value='' />
+			</@formGroup>
+			<@formGroup labelFor='new_public_url_value' labelKey='#i18n{mylutece.authentication_filter_advanced_parameters.labelPublicUrlValue}'>
+				<@input type='text' inputSize=80 name='public_url_value' value='' />
+			</@formGroup>
+			<@formGroup>
+				<@button type='submit' name='addField' id='addField' buttonIcon='plus' title='#i18n{mylutece.authentication_filter_advanced_parameters.buttonAddUrl}' />
+			</@formGroup>
+		</@tform>
 
-<div class="row">
-   <div class="col-md-12">
-     <div class="box box-primary">
-       <div class="box-header">
-         <h3 class="box-title"></i>&nbsp;#i18n{mylutece.authentication_filter_advanced_parameters.tableLabel}</h3>
-         <div class="box-tools pull-right">
-           <form method="post" action="jsp/admin/plugins/mylutece/security/ConfirmChangeUseAuthenticationRequired.jsp" class="form-inline">
-             <#if !portal_authentication_required>
-               <button type="submit" name="submit" class="btn btn-success btn-sm">
-                   <i class="fa fa-check"></i>&nbsp;#i18n{mylutece.authentication_filter_advanced_parameters.buttonEnableAuthenticationRequired}
-               </button>
-             <#else>
-                <button type="submit" name="submit" class="btn btn-danger btn-sm">
-                   <i class="fa fa-check"></i>&nbsp;#i18n{mylutece.authentication_filter_advanced_parameters.buttonDisableAuthenticationRequired}
-               </button>
-             </#if>
-            </form>
-         </div>
-       </div>
-       <div class="box-body">
-
-         <div class="row">
-           <div class="col-md-offset-1 col-md-10">
-
-             <div class="well">
-             <form method="post" action="jsp/admin/plugins/mylutece/security/DoCreatePublicUrl.jsp" class="form-inline">
-               <label for="public_url_code">#i18n{mylutece.authentication_filter_advanced_parameters.labelPublicUrlCode}</label>
-               <input type="text" class="form-control input-xs" size="40" name="public_url_code" value="">
-               <label for="new_public_url_value">#i18n{mylutece.authentication_filter_advanced_parameters.labelPublicUrlValue}</label>
-               <input type="text" class="form-control input-xs" size="80" name="public_url_value" value="">
-               <button id="addField" class="btn btn-primary btn-xs" type="submit">
-                 <i class="fa fa-plus"></i> #i18n{mylutece.authentication_filter_advanced_parameters.buttonAddUrl}
-               </button>
-              </form>
-            </div>
-          </div>
-      	</div>
-        <div class="row">
-          <div class="col-md-offset-1 col-md-10">
-              <h4>#i18n{mylutece.authentication_filter_advanced_parameters.publicListUrlLabelComment}</h4>
-              <#if public_list_url?exists>
-                <ul class="todo-list">
-          		    <#list public_list_url as public_url>
-                  <li>
-                			<form method="post" action="jsp/admin/plugins/mylutece/security/DoModifyPublicUrl.jsp" class="form-inline">
-                        <input type="hidden" name="public_url_code" value="${public_url.code}">
-                        <label for="public_url_code">#i18n{mylutece.authentication_filter_advanced_parameters.labelPublicUrlCode}</label>
-                			  <input type="text" class="form-control disabled input-sm" name="" size="40"  value="${public_url.code}" disabled="disabled">
-                        <label for="public_url_value">&nbsp;#i18n{mylutece.authentication_filter_advanced_parameters.labelPublicUrlValue}</label>
-                				<input type="text" class="form-control input-sm" name="public_url_value" size="80"  value="${public_url.name}">
-                        <button type="submit" name="submit" class="btn btn-primary btn-small" title="#i18n{mylutece.authentication_filter_advanced_parameters.buttonValidate}">
-                  			  <i class="fa fa-check"></i>
-                  			</button>
-                      	<a class="btn btn-danger btn-sm" title="Supprimer" href="jsp/admin/plugins/mylutece/security/ConfirmRemovePublicUrl.jsp?public_url_code=${public_url.code}">
-                      		<i class="fa fa-trash"></i>
-                      	</a>
-                			</form>
-                  </li>
-        			  </#list>
-              <#else>
-                <div class="alert alert-warning">No Filters ! </div>
-        		  </#if>
-              </ul>
-            </div>
-          </div>
-      	</div>
-    	</div>
-	  </div>
-  </div>
-</div>
+		<h4>#i18n{mylutece.authentication_filter_advanced_parameters.publicListUrlLabelComment}</h4>
+		<#if public_list_url?exists>
+			<#list public_list_url as public_url>
+				<@tform method='post' action='jsp/admin/plugins/mylutece/security/DoModifyPublicUrl.jsp' params='style="margin-bottom:30px;"'>
+					<@input type='hidden' name='public_url_code' value='${public_url.code}' />
+					<@formGroup labelFor='public_url_codee' labelKey='#i18n{mylutece.authentication_filter_advanced_parameters.labelPublicUrlCode}'>
+						<@input type='text' disabled=true name='public_url_codee' inputSize=40  value='${public_url.code}' />
+					</@formGroup>
+					<@formGroup labelFor='public_url_value' labelKey='#i18n{mylutece.authentication_filter_advanced_parameters.labelPublicUrlValue}'>
+						<@input type='text' name='public_url_value' inputSize=80 value='${public_url.name}' />
+					</@formGroup>
+					<@formGroup>
+						<@button type='submit' name='submit' title='#i18n{mylutece.authentication_filter_advanced_parameters.buttonValidate}' buttonIcon='check' />
+						<@aButton href='jsp/admin/plugins/mylutece/security/ConfirmRemovePublicUrl.jsp?public_url_code=${public_url.code}' title='Supprimer' buttonIcon='trash' color='danger'/>
+					</@formGroup>
+				</@tform>
+			</#list>
+		<#else>
+			<@alert color='warning'>No Filters ! </@alert>
+		</#if>
+	</@accordionBody>
+</@accordionPanel>
