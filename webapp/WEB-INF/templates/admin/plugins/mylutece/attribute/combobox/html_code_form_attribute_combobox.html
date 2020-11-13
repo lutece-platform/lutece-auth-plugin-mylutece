@@ -27,20 +27,13 @@
 	</#list>
 	<#return false>
 </#function>
-<div class="control-group">
-	<label class="control-label" for="attribute_${attribute.idAttribute}">
-		${attribute.title}
-	<#if attribute.mandatory>
-		*
+<@formGroup labelFor='attribute_${attribute.idAttribute}' labelKey='${attribute.title}' helpKey='${attribute.helpMessage!}' mandatory=attribute.mandatory>
+	<#if isMultiple( attribute.listAttributeFields ) >
+		<#assign multiple = 10 />
+	<#else>
+		<#assign multiple = 0 />
 	</#if>
-		: 
-	</label>
-	<div class="controls">
-	<select name="attribute_${attribute.idAttribute}" id="attribute_${attribute.idAttribute}"
-		<#if isMultiple( attribute.listAttributeFields ) >
-				multiple="multiple" size="10"
-		</#if>
-	>
+	<@select name='attribute_${attribute.idAttribute}' id='attribute_${attribute.idAttribute}' multiple=multiple>
 		<#if !attribute.mandatory && !isMultiple( attribute.listAttributeFields )>
 			<option value=""
 				<#if default_values_list?has_content && isEmptyString( default_values_list ) >
@@ -61,9 +54,5 @@
 				</option>
 			</#if>
 		</#list>
-	</select>
-	<#if attribute.helpMessage?exists&&attribute.helpMessage!=''>
-		<span class="help-block">${attribute.helpMessage}</span>
-	</#if>
-	</div>
-</div>
+	</@select>
+</@formGroup>

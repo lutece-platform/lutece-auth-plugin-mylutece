@@ -15,15 +15,13 @@
 	</#list>
 	<#return false>
 </#function>
-<p>
-	<label for="attribute_${attribute.idAttribute}">
-		${attribute.title} : 
-	</label>
-	<select name="attribute_${attribute.idAttribute}" id="attribute_${attribute.idAttribute}"
-		<#if isMultiple( attribute.listAttributeFields ) >
-				multiple="multiple" size="10"
-		</#if>
-	>
+<@formGroup labelFor='attribute_${attribute.idAttribute}' labelKey='${attribute.title}'>
+	<#if isMultiple( attribute.listAttributeFields ) >
+		<#assign multiple = 10 />
+	<#else>
+		<#assign multiple = 0 />
+	</#if>
+	<@select name='attribute_${attribute.idAttribute}' id='attribute_${attribute.idAttribute}' multiple=multiple>
 		<#if !isMultiple( attribute.listAttributeFields )>
 			<option value="">
 				#i18n{portal.users.attribute.comboBox.labelAll}
@@ -40,5 +38,5 @@
 				</option>
 			</#if>
 		</#list>
-	</select>
-</p>
+	</@select>
+</@formGroup>
