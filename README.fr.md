@@ -7,15 +7,15 @@
 
 ## Introduction
 
-This plugin allows to manage authentication on the Lutece site. It must be associated with a specific authentication modulecorresponding to the chosen system: Database, LDAP, OAuth, CAS ...
+Ce plugin permet de gérer l'authentification "front-office" sur le site Lutece (utilisateurs "MyLutece").Il doit être associé à un module d'authentification spécifique correspondant au mode d'authentification choisi: Base de données, LDAP, OAuth, CAS ... (exemple : le module-auth-mylutece-database)
 
-Attributes can be associated with the user.
+Des attributs peuvent être associés à l'utilisateur.
 
-During authentication, some attributes can be set by the authenticator.
+Lors de l'authentification, certains attributs peuvent être définis par le système d'authentification.
 
-It is possible to configure external attribute providers that will provide attribute values for the user after authentication.
+Il est possible de configurer des fournisseurs d'attributs externes qui fourniront des valeurs d'attributs pour l'utilisateur après l'authentification.
 
-It is also possible to configure role providers making it possible to assign a role (front office role) to the connected user (a default role provider class is available to associate a single default role after authentication, configured in the datastore ).
+Il est également possible de configurer des fournisseurs de rôles permettant d'attribuer un rôle (rôle front office) à l'utilisateur connecté (une classe DefaultMyLuteceRoleProvider est disponible pour associer un seul rôle par défaut après l'authentification, configurable via le datastore).
 
 
 [Maven documentation and reports](https://dev.lutece.paris.fr/plugins/plugin-mylutece/)

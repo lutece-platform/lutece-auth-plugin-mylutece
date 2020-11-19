@@ -3,13 +3,30 @@
     <properties>
         <title>Plugin MyLutece</title>
     </properties>
+    <head>
+	<meta name="keywords" content="authentification, mylutece, utilisateur, rôle" />
+    </head>
     <body>
         <section name="Plugin MyLutece">
             <subsection name="Introduction">
+		<p>                
+                    Ce plugin permet de gérer l'authentification "front-office" sur le site Lutece (utilisateurs "MyLutece").
+                    Il doit être associé à un module d'authentification spécifique
+                    correspondant au mode d'authentification choisi: Base de données, LDAP, OAuth, CAS ... (exemple : le module-auth-mylutece-database)
+                </p>
                 <p>
-                    This plugin allows to manage authentication on the Lutece site. 
-                    It must be associated with a specific authentication module 
-                    corresponding to the chosen system: Database, LDAP, OAuth, CAS ...
+                Des attributs peuvent être associés à l'utilisateur.
+                </p>
+                <p>
+                Lors de l'authentification, certains attributs peuvent être définis par le système d'authentification.
+                </p>
+                <p>
+Il est possible de configurer des fournisseurs d'attributs externes qui fourniront des valeurs d'attributs pour l'utilisateur après l'authentification.
+</p>
+                <p>
+Il est également possible de configurer des fournisseurs de rôles permettant d'attribuer un rôle (rôle front office) à l'utilisateur connecté
+(une classe DefaultMyLuteceRoleProvider est disponible pour associer un seul rôle par défaut après l'authentification, configurable via le datastore).
+                
                 </p>
             </subsection>
         </section>
