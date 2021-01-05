@@ -21,11 +21,11 @@
 								<@tag color='info'>${attribute.attributeType.name}</@tag>
 							</@staticText>
 						</@formGroup>
-						<@formGroup labelKey='#i18n{mylutece.modify_attribute.labelIsShownInSearch}'>
-							<@checkBox labelFor='is_shown_in_search' name='is_shown_in_search' id='is_shown_in_search' value='1' checked=attribute.shownInSearch />
+						<@formGroup>
+							<@checkBox labelFor='is_shown_in_search' labelKey='#i18n{mylutece.modify_attribute.labelIsShownInSearch}' name='is_shown_in_search' id='is_shown_in_search' value='1' checked=attribute.shownInSearch />
 						</@formGroup>
-						<@formGroup labelKey='#i18n{mylutece.modify_attribute.labelMandatory}'>
-							<@checkBox labelFor='mandatory' name='mandatory' id='mandatory' checked=attribute.mandatory />
+						<@formGroup>
+							<@checkBox labelFor='mandatory' labelKey='#i18n{mylutece.modify_attribute.labelMandatory}' name='mandatory' id='mandatory' checked=attribute.mandatory />
 						</@formGroup>
 						<@formGroup labelFor='width' labelKey='#i18n{mylutece.modify_attribute.labelWidth}' mandatory=true>
 						<#list attribute_fields_list as attribute_field>

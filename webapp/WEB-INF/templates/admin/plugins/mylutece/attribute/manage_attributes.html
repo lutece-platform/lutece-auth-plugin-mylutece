@@ -11,7 +11,7 @@
 								</#list>
 							</@select>
 							<@inputGroupItem>
-								<@button type='submit' buttonIcon='plus' title='#i18n{mylutece.manage_attributes.buttonAdd}' size='sm' />
+								<@button type='submit' buttonIcon='plus' title='#i18n{mylutece.manage_attributes.buttonAdd}' hideTitle=['all'] size='sm' />
 							</@inputGroupItem>
 						</@inputGroup>
 					</@formGroup>
@@ -20,26 +20,26 @@
 			<@boxBody>
 				<a name="list" id="list"></a>
 				<@table>
-					<tr>
-						<th>#i18n{mylutece.manage_attributes.columnTitle}</th>
-						<th>#i18n{mylutece.manage_attributes.columnType}</th>
-						<th>#i18n{mylutece.manage_attributes.columnOriginalComponent}</th>
-						<th>#i18n{mylutece.manage_attributes.columnTitleActions}</th>
-					</tr>
+					<@tr>
+						<@th>#i18n{mylutece.manage_attributes.columnTitle}</@th>
+						<@th>#i18n{mylutece.manage_attributes.columnType}</@th>
+						<@th>#i18n{mylutece.manage_attributes.columnOriginalComponent}</@th>
+						<@th>#i18n{mylutece.manage_attributes.columnTitleActions}</@th>
+					</@tr>
 					<#assign cpt = 0>
 					<#list attributes_list as attribute >
 					<#assign cpt = cpt + 1>
-						<tr>
-							<td>${attribute.title}</td>
-							<td>${attribute.attributeType.name}</td>
-							<td>
+						<@tr>
+							<@td>${attribute.title}</@td>
+							<@td>${attribute.attributeType.name}</@td>
+							<@td>
 								<#if attribute.plugin?exists && attribute.plugin.name?has_content>
 									${attribute.plugin.name}
 								<#else>
 									#i18n{mylutece.manage_attributes.labelMyLutece}
 								</#if>
-							</td>
-							<td>
+							</@td>
+							<@td>
 								<#if attribute.plugin?exists && attribute.plugin.name != "">
 									<#if cpt != 1>
 										<@aButton href='jsp/admin/plugins/mylutece/attribute/DoMoveUpAttribute.jsp?id_attribute=${attribute.idAttribute}#list' title='#i18n{mylutece.modify_attribute.buttonLabelMoveUp}' hideTitle=['all'] buttonIcon='arrow-up' size='sm' />
@@ -57,8 +57,8 @@
 								   </#if>
 									<@aButton href='jsp/admin/plugins/mylutece/attribute/RemoveAttribute.jsp?id_attribute=${attribute.idAttribute}' title='#i18n{mylutece.manage_attributes.buttonLabelDelete}' hideTitle=['all'] buttonIcon='trash' color='danger' size='sm' />
 								</#if>
-							</td>
-						</tr>
+							</@td>
+						</@tr>
 					</#list>
 				</@table>
 			</@boxBody>
