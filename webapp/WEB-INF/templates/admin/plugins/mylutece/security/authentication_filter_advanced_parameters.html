@@ -1,15 +1,16 @@
-<@accordionPanel collapsed=true childId='myluteceauthfilter'>
-	<@accordionHeader title='#i18n{mylutece.authentication_filter_advanced_parameters.tableLabel}' id='myluteceauthfilterh' parentId='technical_settings'>
-	   <@tform method='post' action='jsp/admin/plugins/mylutece/security/ConfirmChangeUseAuthenticationRequired.jsp'>
+<#macro myluteceAuthFilterAdvParamsFormActions params=''>
+	   <@tform method='post' action='jsp/admin/plugins/mylutece/security/ConfirmChangeUseAuthenticationRequired.jsp' params='${params!}'>
 		 <#if !portal_authentication_required>
-		   <@button type='submit' name='submit' buttonIcon='check' title='#i18n{mylutece.authentication_filter_advanced_parameters.buttonEnableAuthenticationRequired}' />
+		   <@button type='submit' name='submit' buttonIcon='check' title='#i18n{mylutece.authentication_filter_advanced_parameters.buttonEnableAuthenticationRequired}' size='sm' />
 		 <#else>
-			<@button type='submit' name='submit' buttonIcon='check' title='#i18n{mylutece.authentication_filter_advanced_parameters.buttonDisableAuthenticationRequired}' />
+			<@button type='submit' name='submit' buttonIcon='check' title='#i18n{mylutece.authentication_filter_advanced_parameters.buttonDisableAuthenticationRequired}' size='sm' />
 		 </#if>
 		</@tform>
-	</@accordionHeader>
-	<@accordionBody>
-		<@tform method='post' action='jsp/admin/plugins/mylutece/security/DoCreatePublicUrl.jsp'>
+</#macro>
+
+<#macro myluteceAuthFilterAdvParamsMainForm>
+	<@tform method='post' action='jsp/admin/plugins/mylutece/security/DoCreatePublicUrl.jsp'>
+		<@fieldSet legend='#i18n{mylutece.authentication_filter_advanced_parameters.buttonAddUrl}'>
 			<@formGroup labelFor='public_url_code' labelKey='#i18n{mylutece.authentication_filter_advanced_parameters.labelPublicUrlCode}'>
 				<@input type='text' inputSize=40 name='public_url_code' value='' />
 			</@formGroup>
@@ -19,9 +20,10 @@
 			<@formGroup>
 				<@button type='submit' name='addField' id='addField' buttonIcon='plus' title='#i18n{mylutece.authentication_filter_advanced_parameters.buttonAddUrl}' />
 			</@formGroup>
-		</@tform>
+		</@fieldSet>
+	</@tform>
 
-		<h4>#i18n{mylutece.authentication_filter_advanced_parameters.publicListUrlLabelComment}</h4>
+	<@fieldSet legend='#i18n{mylutece.authentication_filter_advanced_parameters.publicListUrlLabelComment}'>
 		<#if public_list_url?exists>
 			<#list public_list_url as public_url>
 				<@tform method='post' action='jsp/admin/plugins/mylutece/security/DoModifyPublicUrl.jsp' params='style="margin-bottom:30px;"'>
@@ -41,5 +43,5 @@
 		<#else>
 			<@alert color='warning'>No Filters ! </@alert>
 		</#if>
-	</@accordionBody>
-</@accordionPanel>
+	</@fieldSet>
+</#macro>
