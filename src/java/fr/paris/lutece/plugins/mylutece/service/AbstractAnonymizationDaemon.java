@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,6 @@ import fr.paris.lutece.portal.service.util.AppLogService;
 import java.util.List;
 import java.util.Locale;
 
-
 /**
  * Daemon to anonymize users
  */
@@ -50,56 +49,57 @@ public abstract class AbstractAnonymizationDaemon extends Daemon
 
     /**
      * Get the anonymization service implementation to use
+     * 
      * @return The anonymization service
      */
-    public abstract IAnonymizationService getAnonymizationService(  );
+    public abstract IAnonymizationService getAnonymizationService( );
 
     /**
      * Get the name of the daemon
+     * 
      * @return The name of the daemon
      */
-    public abstract String getDaemonName(  );
+    public abstract String getDaemonName( );
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public void run(  )
+    public void run( )
     {
-        IAnonymizationService anonymizationService = getAnonymizationService(  );
-        Locale locale = Locale.getDefault(  );
-        StringBuilder sbLogs = new StringBuilder(  );
-        StringBuilder sbResult = new StringBuilder(  );
-        List<Integer> expiredUserIdList = anonymizationService.getExpiredUserIdList(  );
+        IAnonymizationService anonymizationService = getAnonymizationService( );
+        Locale locale = Locale.getDefault( );
+        StringBuilder sbLogs = new StringBuilder( );
+        StringBuilder sbResult = new StringBuilder( );
+        List<Integer> expiredUserIdList = anonymizationService.getExpiredUserIdList( );
 
-        if ( ( expiredUserIdList != null ) && ( expiredUserIdList.size(  ) > 0 ) )
+        if ( ( expiredUserIdList != null ) && ( expiredUserIdList.size( ) > 0 ) )
         {
-            int nbUserFound = expiredUserIdList.size(  );
+            int nbUserFound = expiredUserIdList.size( );
             AppLogService.info( CONSTANT_FOUND_EXPIRED_USER_ANONYMIZED_START );
 
             for ( Integer nIdUser : expiredUserIdList )
             {
                 anonymizationService.anonymizeUser( nIdUser, locale );
-                AppLogService.info( getDaemonName(  ) + " - User with id " + Integer.toString( nIdUser ) +
-                    " has been anonymized" );
+                AppLogService.info( getDaemonName( ) + " - User with id " + Integer.toString( nIdUser ) + " has been anonymized" );
             }
 
-            sbLogs.append( getDaemonName(  ) );
+            sbLogs.append( getDaemonName( ) );
             sbLogs.append( " - " );
             sbLogs.append( nbUserFound );
             sbLogs.append( " user(s) have been anonymized" );
-            AppLogService.info( sbLogs.toString(  ) );
-            sbResult.append( sbLogs.toString(  ) );
+            AppLogService.info( sbLogs.toString( ) );
+            sbResult.append( sbLogs.toString( ) );
         }
         else
         {
-            sbLogs.append( getDaemonName(  ) );
+            sbLogs.append( getDaemonName( ) );
             sbLogs.append( " - " );
             sbLogs.append( CONSTANT_NO_EXPIRED_USER );
-            AppLogService.info( sbLogs.toString(  ) );
-            sbResult.append( sbLogs.toString(  ) );
+            AppLogService.info( sbLogs.toString( ) );
+            sbResult.append( sbLogs.toString( ) );
         }
 
-        this.setLastRunLogs( sbResult.toString(  ) );
+        this.setLastRunLogs( sbResult.toString( ) );
     }
 }

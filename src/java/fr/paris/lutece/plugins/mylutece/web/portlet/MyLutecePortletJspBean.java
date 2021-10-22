@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,6 @@ import fr.paris.lutece.util.html.HtmlTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
  * This class provides the user interface to manage MyLutece Portlet
  */
@@ -59,14 +58,15 @@ public class MyLutecePortletJspBean extends PortletJspBean
     /**
      * Creates a new MyLutecePortletJspBean object.
      */
-    public MyLutecePortletJspBean(  )
+    public MyLutecePortletJspBean( )
     {
     }
 
     /**
      * Returns the Download portlet creation form
      *
-     * @param request The http request
+     * @param request
+     *            The http request
      * @return The HTML form
      */
     public String getCreate( HttpServletRequest request )
@@ -75,13 +75,14 @@ public class MyLutecePortletJspBean extends PortletJspBean
         String strIdPortletType = request.getParameter( PARAMETER_PORTLET_TYPE_ID );
         HtmlTemplate template = getCreateTemplate( strIdPage, strIdPortletType );
 
-        return template.getHtml(  );
+        return template.getHtml( );
     }
 
     /**
      * Returns the Download portlet modification form
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return The HTML form
      */
     public String getModify( HttpServletRequest request )
@@ -91,18 +92,19 @@ public class MyLutecePortletJspBean extends PortletJspBean
         MyLutecePortlet portlet = (MyLutecePortlet) PortletHome.findByPrimaryKey( nIdPortlet );
         HtmlTemplate template = getModifyTemplate( portlet );
 
-        return template.getHtml(  );
+        return template.getHtml( );
     }
 
     /**
      * Process portlet's creation
      *
-     * @param request The Http request
+     * @param request
+     *            The Http request
      * @return The Jsp management URL of the process result
      */
     public String doCreate( HttpServletRequest request )
     {
-        MyLutecePortlet portlet = new MyLutecePortlet(  );
+        MyLutecePortlet portlet = new MyLutecePortlet( );
 
         // get portlet common attributes
         String strErrorUrl = setPortletCommonData( request, portlet );
@@ -115,22 +117,23 @@ public class MyLutecePortletJspBean extends PortletJspBean
         int nIdPage = Integer.parseInt( request.getParameter( PARAMETER_PAGE_ID ) );
         portlet.setPageId( nIdPage );
 
-        //Portlet creation
-        MyLutecePortletHome.getInstance(  ).create( portlet );
+        // Portlet creation
+        MyLutecePortletHome.getInstance( ).create( portlet );
 
-        //Displays the page with the new Portlet
+        // Displays the page with the new Portlet
         return getPageUrl( nIdPage );
     }
 
     /**
      * Process portlet's modification
      *
-     * @param request The http request
+     * @param request
+     *            The http request
      * @return Management's Url
      */
     public String doModify( HttpServletRequest request )
     {
-        //recovery of the portlet
+        // recovery of the portlet
         String strIdPortlet = request.getParameter( PARAMETER_PORTLET_ID );
         int nIdPortlet = Integer.parseInt( strIdPortlet );
         MyLutecePortlet portlet = (MyLutecePortlet) PortletHome.findByPrimaryKey( nIdPortlet );
@@ -143,10 +146,10 @@ public class MyLutecePortletJspBean extends PortletJspBean
             return strErrorUrl;
         }
 
-        //Update of the portlet
-        portlet.update(  );
+        // Update of the portlet
+        portlet.update( );
 
-        //Displays the page with the updated portlet
-        return getPageUrl( portlet.getPageId(  ) );
+        // Displays the page with the updated portlet
+        return getPageUrl( portlet.getPageId( ) );
     }
 }

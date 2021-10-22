@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2018, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,6 @@ import javax.servlet.http.HttpServletRequest;
 import fr.paris.lutece.plugins.mylutece.service.MyLuteceUserService;
 import java.util.Arrays;
 
-
 public abstract class AbstractAuthentication implements LuteceAuthentication
 {
     /**
@@ -67,7 +66,7 @@ public abstract class AbstractAuthentication implements LuteceAuthentication
 
         return user;
     }
-    
+
     /**
      * {@inheritDoc }
      */
@@ -79,12 +78,16 @@ public abstract class AbstractAuthentication implements LuteceAuthentication
 
     /**
      * Process the login of the user
-     * @param strUsername the username
-     * @param strPassword the password
-     * @param request the HttpServletRequest
+     * 
+     * @param strUsername
+     *            the username
+     * @param strPassword
+     *            the password
+     * @param request
+     *            the HttpServletRequest
      * @return the LuteceUser
      * @throws LoginException
-     * @throws LoginRedirectException 
+     * @throws LoginRedirectException
      */
     protected LuteceUser processLogin( String strUsername, String strPassword, HttpServletRequest request ) throws LoginException, LoginRedirectException
     {
@@ -95,7 +98,9 @@ public abstract class AbstractAuthentication implements LuteceAuthentication
 
     /**
      * Process the authentication of the user when authentication infos are on the request
-     * @param request the HttpServletRequest
+     * 
+     * @param request
+     *            the HttpServletRequest
      * @return the LuteceUser
      */
     protected LuteceUser processHttpAuthenticatedUser( HttpServletRequest request )
@@ -104,5 +109,5 @@ public abstract class AbstractAuthentication implements LuteceAuthentication
         // with authentication modules which called "getHttpAuthenticated" method directly
         return null;
     }
-    
+
 }

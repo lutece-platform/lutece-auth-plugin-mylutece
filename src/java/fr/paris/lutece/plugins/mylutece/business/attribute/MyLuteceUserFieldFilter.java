@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -49,7 +49,6 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
  *
  * MyLuteceUserFieldFilter
@@ -73,16 +72,19 @@ public class MyLuteceUserFieldFilter
 
     /**
      * Get list user fields
+     * 
      * @return list user fields
      */
-    public List<MyLuteceUserField> getListUserFields(  )
+    public List<MyLuteceUserField> getListUserFields( )
     {
         return _listUserFields;
     }
 
     /**
      * Set list user fields
-     * @param listUserFields list user fields
+     * 
+     * @param listUserFields
+     *            list user fields
      */
     public void setListUserFields( List<MyLuteceUserField> listUserFields )
     {
@@ -91,12 +93,15 @@ public class MyLuteceUserFieldFilter
 
     /**
      * Set admin user field filter
-     * @param request HttpServletRequest
-     * @param locale locale
+     * 
+     * @param request
+     *            HttpServletRequest
+     * @param locale
+     *            locale
      */
     public void setMyLuteceUserFieldFilter( HttpServletRequest request, Locale locale )
     {
-        _listUserFields = new ArrayList<MyLuteceUserField>(  );
+        _listUserFields = new ArrayList<MyLuteceUserField>( );
 
         String strIsSearch = request.getParameter( PARAMETER_SEARCH_IS_SEARCH );
 
@@ -109,7 +114,7 @@ public class MyLuteceUserFieldFilter
             {
                 for ( MyLuteceUserField userField : attribute.getUserFieldsData( request, 0 ) )
                 {
-                    if ( ( userField != null ) && !userField.getValue(  ).equals( EMPTY_STRING ) )
+                    if ( ( userField != null ) && !userField.getValue( ).equals( EMPTY_STRING ) )
                     {
                         _listUserFields.add( userField );
                     }
@@ -120,7 +125,9 @@ public class MyLuteceUserFieldFilter
 
     /**
      * Build url attributes
-     * @param url the url
+     * 
+     * @param url
+     *            the url
      */
     public void setUrlAttributes( UrlItem url )
     {
@@ -128,50 +135,46 @@ public class MyLuteceUserFieldFilter
         {
             try
             {
-                url.addParameter( PARAMETER_ATTRIBUTE + CONSTANT_UNDERSCORE +
-                    userField.getAttribute(  ).getIdAttribute(  ),
-                    URLEncoder.encode( userField.getValue(  ), AppPropertiesService.getProperty( PROPERTY_ENCODING_URL ) ) );
+                url.addParameter( PARAMETER_ATTRIBUTE + CONSTANT_UNDERSCORE + userField.getAttribute( ).getIdAttribute( ),
+                        URLEncoder.encode( userField.getValue( ), AppPropertiesService.getProperty( PROPERTY_ENCODING_URL ) ) );
             }
-            catch ( UnsupportedEncodingException e )
+            catch( UnsupportedEncodingException e )
             {
-                e.printStackTrace(  );
+                e.printStackTrace( );
             }
         }
     }
 
     /**
      * Build url attributes
+     * 
      * @return the url attributes
      */
-    public String getUrlAttributes(  )
+    public String getUrlAttributes( )
     {
-        StringBuilder sbUrlAttributes = new StringBuilder(  );
+        StringBuilder sbUrlAttributes = new StringBuilder( );
 
         for ( MyLuteceUserField userField : _listUserFields )
         {
-            if ( userField.getAttribute(  ).getAttributeType(  ).getClassName(  )
-                              .equals( AttributeComboBox.class.getName(  ) ) )
+            if ( userField.getAttribute( ).getAttributeType( ).getClassName( ).equals( AttributeComboBox.class.getName( ) ) )
             {
-                sbUrlAttributes.append( CONSTANT_ESPERLUETTE + PARAMETER_ATTRIBUTE + CONSTANT_UNDERSCORE +
-                    userField.getAttribute(  ).getIdAttribute(  ) + CONSTANT_EQUAL +
-                    userField.getAttributeField(  ).getIdField(  ) );
+                sbUrlAttributes.append( CONSTANT_ESPERLUETTE + PARAMETER_ATTRIBUTE + CONSTANT_UNDERSCORE + userField.getAttribute( ).getIdAttribute( )
+                        + CONSTANT_EQUAL + userField.getAttributeField( ).getIdField( ) );
             }
             else
             {
                 try
                 {
-                    sbUrlAttributes.append( CONSTANT_ESPERLUETTE + PARAMETER_ATTRIBUTE + CONSTANT_UNDERSCORE +
-                        userField.getAttribute(  ).getIdAttribute(  ) + CONSTANT_EQUAL +
-                        URLEncoder.encode( userField.getValue(  ),
-                            AppPropertiesService.getProperty( PROPERTY_ENCODING_URL ) ) );
+                    sbUrlAttributes.append( CONSTANT_ESPERLUETTE + PARAMETER_ATTRIBUTE + CONSTANT_UNDERSCORE + userField.getAttribute( ).getIdAttribute( )
+                            + CONSTANT_EQUAL + URLEncoder.encode( userField.getValue( ), AppPropertiesService.getProperty( PROPERTY_ENCODING_URL ) ) );
                 }
-                catch ( UnsupportedEncodingException e )
+                catch( UnsupportedEncodingException e )
                 {
-                    e.printStackTrace(  );
+                    e.printStackTrace( );
                 }
             }
         }
 
-        return sbUrlAttributes.toString(  );
+        return sbUrlAttributes.toString( );
     }
 }

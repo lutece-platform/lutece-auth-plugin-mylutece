@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-
 /**
  *
  * IAttributeDAO
@@ -49,99 +48,135 @@ public interface IAttributeDAO
 {
     /**
      * Load attribute
-     * @param nIdAttribute ID
-     * @param locale Locale
-     * @param plugin The plugin
+     * 
+     * @param nIdAttribute
+     *            ID
+     * @param locale
+     *            Locale
+     * @param plugin
+     *            The plugin
      * @return Attribute
      */
     IAttribute load( int nIdAttribute, Locale locale, Plugin plugin );
 
     /**
      * Insert a new attribute
-     * @param attribute the attribute
-     * @param plugin The plugin
+     * 
+     * @param attribute
+     *            the attribute
+     * @param plugin
+     *            The plugin
      * @return new PK
      */
     int insert( IAttribute attribute, Plugin plugin );
 
     /**
      * Update an attribute
-     * @param attribute the attribute
-     * @param plugin The plugin
+     * 
+     * @param attribute
+     *            the attribute
+     * @param plugin
+     *            The plugin
      */
     void store( IAttribute attribute, Plugin plugin );
 
     /**
      * Delete an attribute
-     * @param nIdAttribute the ID of the attribute
-     * @param plugin The plugin
+     * 
+     * @param nIdAttribute
+     *            the ID of the attribute
+     * @param plugin
+     *            The plugin
      */
     void delete( int nIdAttribute, Plugin plugin );
 
     /**
      * Load every attributes
-     * @param locale locale
-     * @param plugin The plugin
+     * 
+     * @param locale
+     *            locale
+     * @param plugin
+     *            The plugin
      * @return list of attributes
      */
     List<IAttribute> selectAll( Locale locale, Plugin plugin );
 
     /**
      * Load every attributes from plugin name
-     * @param strPluginName plugin name
-     * @param locale locale
-     * @param plugin The plugin
+     * 
+     * @param strPluginName
+     *            plugin name
+     * @param locale
+     *            locale
+     * @param plugin
+     *            The plugin
      * @return list of attributes
      */
     List<IAttribute> selectPluginAttributes( String strPluginName, Locale locale, Plugin plugin );
 
     /**
      * Load every attributes that do not come from a plugin
-     * @param locale locale
-     * @param plugin The plugin
+     * 
+     * @param locale
+     *            locale
+     * @param plugin
+     *            The plugin
      * @return list of attributes
      */
     List<IAttribute> selectMyLuteceAttributes( Locale locale, Plugin plugin );
 
     /**
      * Update the anonymization status of the attribute.
-     * @param nIdAttribute Id of the attribute
-     * @param bAnonymize New value of the anonymization status. True means the
-     *            attribute should be anonymize, false means it doesn't.
-     * @param plugin The plugin
+     * 
+     * @param nIdAttribute
+     *            Id of the attribute
+     * @param bAnonymize
+     *            New value of the anonymization status. True means the attribute should be anonymize, false means it doesn't.
+     * @param plugin
+     *            The plugin
      */
     void updateAttributeAnonymization( int nIdAttribute, boolean bAnonymize, Plugin plugin );
 
     /**
      * Get the anonymization status of a user field.
-     * @param plugin The plugin
-     * @return A map containing the associations of user field name and a
-     *         boolean describing whether the field should be anonymized.
+     * 
+     * @param plugin
+     *            The plugin
+     * @return A map containing the associations of user field name and a boolean describing whether the field should be anonymized.
      */
     Map<String, Boolean> selectAnonymizationStatusUserStaticField( Plugin plugin );
 
     /**
      * Add an anonymization status to a user field.
-     * @param strFieldName Name of the field
-     * @param bAnonymizeFiled True if the field should be anonymize, false
-     *            otherwise
-     * @param plugin The plugin
+     * 
+     * @param strFieldName
+     *            Name of the field
+     * @param bAnonymizeFiled
+     *            True if the field should be anonymize, false otherwise
+     * @param plugin
+     *            The plugin
      */
     void addAnonymizationStatusUserField( String strFieldName, boolean bAnonymizeFiled, Plugin plugin );
 
     /**
      * Remove an anonymization status to a user field.
-     * @param strFieldName Name of the field
-     * @param plugin The plugin
+     * 
+     * @param strFieldName
+     *            Name of the field
+     * @param plugin
+     *            The plugin
      */
     void removeAnonymizationStatusUserField( String strFieldName, Plugin plugin );
 
     /**
      * Update the anonymization status of a user field.
-     * @param strFieldName Name of the field to update
-     * @param bAnonymizeFiled True if the field should be anonymize, false
-     *            otherwise
-     * @param plugin The plugin
+     * 
+     * @param strFieldName
+     *            Name of the field to update
+     * @param bAnonymizeFiled
+     *            True if the field should be anonymize, false otherwise
+     * @param plugin
+     *            The plugin
      */
     void updateAnonymizationStatusUserStaticField( String strFieldName, boolean bAnonymizeFiled, Plugin plugin );
 }

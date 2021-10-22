@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,6 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * Account life time service interface
  *
@@ -48,98 +47,120 @@ import java.util.Map;
 public interface IAccountLifeTimeService
 {
     /**
-     * Get the list of id of users that have an expired time life but not the
-     * expired status
-     * @param currentTimestamp Timestamp describing the current time.
+     * Get the list of id of users that have an expired time life but not the expired status
+     * 
+     * @param currentTimestamp
+     *            Timestamp describing the current time.
      * @return the list of id of users with expired time life
      */
     List<Integer> getIdUsersWithExpiredLifeTimeList( Timestamp currentTimestamp );
 
     /**
      * Get the list of id of users that need to receive their first alert
-     * @param alertMaxDate The maximum date to send alerts.
+     * 
+     * @param alertMaxDate
+     *            The maximum date to send alerts.
      * @return the list of id of users that need to receive their first alert
      */
     List<Integer> getIdUsersToSendFirstAlert( Timestamp alertMaxDate );
 
     /**
      * Get the list of id of users that need to receive their first alert
-     * @param alertMaxDate The maximum date to send alerts.
-     * @param timeBetweenAlerts Timestamp describing the time between two
-     *            alerts.
-     * @param maxNumberAlerts Maximum number of alerts to send to a user
+     * 
+     * @param alertMaxDate
+     *            The maximum date to send alerts.
+     * @param timeBetweenAlerts
+     *            Timestamp describing the time between two alerts.
+     * @param maxNumberAlerts
+     *            Maximum number of alerts to send to a user
      * @return the list of id of users that need to receive their first alert
      */
     List<Integer> getIdUsersToSendOtherAlert( Timestamp alertMaxDate, Timestamp timeBetweenAlerts, int maxNumberAlerts );
 
     /**
      * Get the list of id of users that have an expired password but not the change password flag
-     * @param currentTimestamp Timestamp describing the current time.
+     * 
+     * @param currentTimestamp
+     *            Timestamp describing the current time.
      * @return the list of id of users with expired passwords
      */
     List<Integer> getIdUsersWithExpiredPasswordsList( Timestamp currentTimestamp );
 
     /**
      * Increment the number of alert send to users by 1
-     * @param listIdUser The list of users to update
+     * 
+     * @param listIdUser
+     *            The list of users to update
      */
     void updateNbAlert( List<Integer> listIdUser );
 
     /**
      * Set the "change password" flag of users to true
-     * @param listIdUser List of user's id to update
+     * 
+     * @param listIdUser
+     *            List of user's id to update
      */
     void updateChangePassword( List<Integer> listIdUser );
 
     /**
      * Set a user account status as expired. Expired user will be anonymized by an anonymization daemon
-     * @param listIdUser User accounts list to set as expired
+     * 
+     * @param listIdUser
+     *            User accounts list to set as expired
      */
     void setUserStatusExpired( List<Integer> listIdUser );
 
     /**
      * Get the body of the mail to send when a user account expire
+     * 
      * @return The body of the mail to send
      */
-    String getExpirationtMailBody(  );
+    String getExpirationtMailBody( );
 
     /**
-     * Get the body of the mail to send for a first notification of a user
-     * before his account expire
+     * Get the body of the mail to send for a first notification of a user before his account expire
+     * 
      * @return The body of the mail to send
      */
-    String getFirstAlertMailBody(  );
+    String getFirstAlertMailBody( );
 
     /**
-     * Get the body of the mail to send for a new notification of a user
-     * before his account expire
+     * Get the body of the mail to send for a new notification of a user before his account expire
+     * 
      * @return The body of the mail to send
      */
-    String getOtherAlertMailBody(  );
+    String getOtherAlertMailBody( );
 
     /**
      * Get the body of the mail to send when a password expired
+     * 
      * @return The body of the mail to send
      */
-    String getPasswordExpiredMailBody(  );
+    String getPasswordExpiredMailBody( );
 
     /**
      * Add specifiques parameters to a given model
-     * @param model The model
-     * @param nIdUser The id of the user to add the parameters
+     * 
+     * @param model
+     *            The model
+     * @param nIdUser
+     *            The id of the user to add the parameters
      */
     void addParametersToModel( Map<String, String> model, Integer nIdUser );
 
     /**
      * Get the main email adresse of a user
-     * @param nUserId Id of the user
+     * 
+     * @param nUserId
+     *            Id of the user
      * @return The main email adresse of a user
      */
     String getUserMainEmail( int nUserId );
 
     /**
      * Get the current plugin
+     * 
      * @return The plugin
      */
-    Plugin getPlugin(  );
+    Plugin getPlugin( );
 }

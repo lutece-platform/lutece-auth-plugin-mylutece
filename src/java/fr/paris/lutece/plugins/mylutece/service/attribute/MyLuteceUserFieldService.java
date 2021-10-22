@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -51,7 +51,6 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
  *
  * MyLuteceUserFieldService
@@ -66,28 +65,30 @@ public class MyLuteceUserFieldService
     // PARAMETERS
     private static final String PARAMETER_ATTRIBUTE = "attribute";
 
-    private static Plugin getMyLutecePlugin(  )
+    private static Plugin getMyLutecePlugin( )
     {
         return PluginService.getPlugin( MyLutecePlugin.PLUGIN_NAME );
     }
 
     /**
      * Check if the user fields are correctly filled
-     * @param request HttpServletRequest
-     * @param locale locale
+     * 
+     * @param request
+     *            HttpServletRequest
+     * @param locale
+     *            locale
      * @return null if there are no problem
      */
     public static String checkUserFields( HttpServletRequest request, Locale locale )
     {
         // Specific attributes
-        List<IAttribute> listAttributes = AttributeHome.findAll( locale, getMyLutecePlugin(  ) );
+        List<IAttribute> listAttributes = AttributeHome.findAll( locale, getMyLutecePlugin( ) );
 
         for ( IAttribute attribute : listAttributes )
         {
-            String value = request.getParameter( PARAMETER_ATTRIBUTE + CONSTANT_UNDERSCORE +
-                    attribute.getIdAttribute(  ) );
+            String value = request.getParameter( PARAMETER_ATTRIBUTE + CONSTANT_UNDERSCORE + attribute.getIdAttribute( ) );
 
-            if ( attribute.isMandatory(  ) && ( ( value == null ) || value.equals( CONSTANT_EMPTY_STRING ) ) )
+            if ( attribute.isMandatory( ) && ( ( value == null ) || value.equals( CONSTANT_EMPTY_STRING ) ) )
             {
                 return AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
             }
@@ -98,14 +99,18 @@ public class MyLuteceUserFieldService
 
     /**
      * Create the user fields
-     * @param nIdUser The id of the user
-     * @param request HttpServletRequest
-     * @param locale locale
+     * 
+     * @param nIdUser
+     *            The id of the user
+     * @param request
+     *            HttpServletRequest
+     * @param locale
+     *            locale
      */
     public static void doCreateUserFields( int nIdUser, HttpServletRequest request, Locale locale )
     {
         // Attributes created in the Back-Office
-        List<IAttribute> listAttributes = AttributeHome.findMyLuteceAttributes( locale, getMyLutecePlugin(  ) );
+        List<IAttribute> listAttributes = AttributeHome.findMyLuteceAttributes( locale, getMyLutecePlugin( ) );
 
         for ( IAttribute attribute : listAttributes )
         {
@@ -115,14 +120,14 @@ public class MyLuteceUserFieldService
             {
                 if ( userField != null )
                 {
-                    MyLuteceUserFieldHome.create( userField, getMyLutecePlugin(  ) );
+                    MyLuteceUserFieldHome.create( userField, getMyLutecePlugin( ) );
                 }
             }
         }
 
         // Attributes associated to the plugins
-        for ( MyLuteceUserFieldListenerService myLuteceUserFieldListenerService : SpringContextService.getBeansOfType( 
-                MyLuteceUserFieldListenerService.class ) )
+        for ( MyLuteceUserFieldListenerService myLuteceUserFieldListenerService : SpringContextService
+                .getBeansOfType( MyLuteceUserFieldListenerService.class ) )
         {
             myLuteceUserFieldListenerService.doCreateUserFields( nIdUser, request, locale );
         }
@@ -130,18 +135,23 @@ public class MyLuteceUserFieldService
 
     /**
      * Modify the user fields
-     * @param nIdUser The id of the user
-     * @param request HttpServletRequest
-     * @param locale locale
-     * @param currentUser current user
+     * 
+     * @param nIdUser
+     *            The id of the user
+     * @param request
+     *            HttpServletRequest
+     * @param locale
+     *            locale
+     * @param currentUser
+     *            current user
      */
     public static void doModifyUserFields( int nIdUser, HttpServletRequest request, Locale locale, AdminUser currentUser )
     {
         // Remove all user fields
-        MyLuteceUserFieldHome.removeUserFieldsFromIdUser( nIdUser, getMyLutecePlugin(  ) );
+        MyLuteceUserFieldHome.removeUserFieldsFromIdUser( nIdUser, getMyLutecePlugin( ) );
 
         // Attributes created in the Back-Office
-        List<IAttribute> listAttributes = AttributeHome.findMyLuteceAttributes( locale, getMyLutecePlugin(  ) );
+        List<IAttribute> listAttributes = AttributeHome.findMyLuteceAttributes( locale, getMyLutecePlugin( ) );
 
         for ( IAttribute attribute : listAttributes )
         {
@@ -151,14 +161,14 @@ public class MyLuteceUserFieldService
             {
                 if ( userField != null )
                 {
-                    MyLuteceUserFieldHome.create( userField, getMyLutecePlugin(  ) );
+                    MyLuteceUserFieldHome.create( userField, getMyLutecePlugin( ) );
                 }
             }
         }
 
         // Attributes associated to the plugins
-        for ( MyLuteceUserFieldListenerService myLuteceUserFieldListenerService : SpringContextService.getBeansOfType( 
-                MyLuteceUserFieldListenerService.class ) )
+        for ( MyLuteceUserFieldListenerService myLuteceUserFieldListenerService : SpringContextService
+                .getBeansOfType( MyLuteceUserFieldListenerService.class ) )
         {
             myLuteceUserFieldListenerService.doModifyUserFields( nIdUser, request, locale, currentUser );
         }
@@ -166,17 +176,21 @@ public class MyLuteceUserFieldService
 
     /**
      * Remove the user fields
-     * @param nIdUser The id of the user
-     * @param request HttpServletRequest
-     * @param locale locale
+     * 
+     * @param nIdUser
+     *            The id of the user
+     * @param request
+     *            HttpServletRequest
+     * @param locale
+     *            locale
      */
     public static void doRemoveUserFields( int nIdUser, HttpServletRequest request, Locale locale )
     {
-        MyLuteceUserFieldHome.removeUserFieldsFromIdUser( nIdUser, getMyLutecePlugin(  ) );
+        MyLuteceUserFieldHome.removeUserFieldsFromIdUser( nIdUser, getMyLutecePlugin( ) );
 
         // Attributes associated to the plugins
-        for ( MyLuteceUserFieldListenerService myLuteceUserFieldListenerService : SpringContextService.getBeansOfType( 
-                MyLuteceUserFieldListenerService.class ) )
+        for ( MyLuteceUserFieldListenerService myLuteceUserFieldListenerService : SpringContextService
+                .getBeansOfType( MyLuteceUserFieldListenerService.class ) )
         {
             myLuteceUserFieldListenerService.doRemoveUserFields( nIdUser, request, locale );
         }
@@ -184,16 +198,19 @@ public class MyLuteceUserFieldService
 
     /**
      * Remove the user fields
-     * @param nIdUser The id of the user
-     * @param locale locale
+     * 
+     * @param nIdUser
+     *            The id of the user
+     * @param locale
+     *            locale
      */
     public static void doRemoveUserFields( int nIdUser, Locale locale )
     {
-        MyLuteceUserFieldHome.removeUserFieldsFromIdUser( nIdUser, getMyLutecePlugin(  ) );
+        MyLuteceUserFieldHome.removeUserFieldsFromIdUser( nIdUser, getMyLutecePlugin( ) );
 
         // Attributes associated to the plugins
-        for ( MyLuteceUserFieldListenerService myLuteceUserFieldListenerService : SpringContextService.getBeansOfType( 
-                MyLuteceUserFieldListenerService.class ) )
+        for ( MyLuteceUserFieldListenerService myLuteceUserFieldListenerService : SpringContextService
+                .getBeansOfType( MyLuteceUserFieldListenerService.class ) )
         {
             myLuteceUserFieldListenerService.doRemoveUserFields( nIdUser, locale );
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-
 /**
  *
  * AttributeHome
@@ -52,9 +51,13 @@ public class AttributeHome
 
     /**
      * Load attribute
-     * @param nIdAttribute ID Attribute
-     * @param locale Locale
-     * @param plugin The plugin
+     * 
+     * @param nIdAttribute
+     *            ID Attribute
+     * @param locale
+     *            Locale
+     * @param plugin
+     *            The plugin
      * @return Attribute
      */
     public static IAttribute findByPrimaryKey( int nIdAttribute, Locale locale, Plugin plugin )
@@ -64,8 +67,11 @@ public class AttributeHome
 
     /**
      * Insert an new attribute
-     * @param attribute attribute
-     * @param plugin The plugin
+     * 
+     * @param attribute
+     *            attribute
+     * @param plugin
+     *            The plugin
      * @return new PK
      */
     public static int create( IAttribute attribute, Plugin plugin )
@@ -75,8 +81,11 @@ public class AttributeHome
 
     /**
      * Update an attribute
-     * @param attribute the attribute
-     * @param plugin The plugin
+     * 
+     * @param attribute
+     *            the attribute
+     * @param plugin
+     *            The plugin
      */
     public static void update( IAttribute attribute, Plugin plugin )
     {
@@ -85,8 +94,11 @@ public class AttributeHome
 
     /**
      * Delete an attribute
-     * @param nIdAttribute The id of the attribute
-     * @param plugin The plugin
+     * 
+     * @param nIdAttribute
+     *            The id of the attribute
+     * @param plugin
+     *            The plugin
      */
     public static void remove( int nIdAttribute, Plugin plugin )
     {
@@ -95,8 +107,11 @@ public class AttributeHome
 
     /**
      * Load every attributes
-     * @param locale locale
-     * @param plugin The plugin
+     * 
+     * @param locale
+     *            locale
+     * @param plugin
+     *            The plugin
      * @return list of attributes
      */
     public static List<IAttribute> findAll( Locale locale, Plugin plugin )
@@ -106,9 +121,13 @@ public class AttributeHome
 
     /**
      * Load every attributes associated to a plugin
-     * @param strPluginName plugin name
-     * @param locale locale
-     * @param plugin The plugin
+     * 
+     * @param strPluginName
+     *            plugin name
+     * @param locale
+     *            locale
+     * @param plugin
+     *            The plugin
      * @return list of attributes
      */
     public static List<IAttribute> findPluginAttributes( String strPluginName, Locale locale, Plugin plugin )
@@ -118,8 +137,11 @@ public class AttributeHome
 
     /**
      * Load every attributes that do not come from a plugin
-     * @param locale locale
-     * @param plugin The plugin
+     * 
+     * @param locale
+     *            locale
+     * @param plugin
+     *            The plugin
      * @return list of attributes
      */
     public static List<IAttribute> findMyLuteceAttributes( Locale locale, Plugin plugin )
@@ -129,10 +151,13 @@ public class AttributeHome
 
     /**
      * Update the anonymization status of the attribute.
-     * @param nIdAttribute Id of the attribute
-     * @param bAnonymize New value of the anonymization status. True means the
-     *            attribute should be anonymize, false means it doesn't.
-     * @param plugin The plugin
+     * 
+     * @param nIdAttribute
+     *            Id of the attribute
+     * @param bAnonymize
+     *            New value of the anonymization status. True means the attribute should be anonymize, false means it doesn't.
+     * @param plugin
+     *            The plugin
      */
     public static void updateAttributeAnonymization( int nIdAttribute, boolean bAnonymize, Plugin plugin )
     {
@@ -141,9 +166,10 @@ public class AttributeHome
 
     /**
      * Get a map of anonymization status of a user field.
-     * @param plugin The plugin
-     * @return A map containing the associations of user field name and a
-     *         boolean describing whether the field should be anonymized.
+     * 
+     * @param plugin
+     *            The plugin
+     * @return A map containing the associations of user field name and a boolean describing whether the field should be anonymized.
      */
     public static Map<String, Boolean> getAnonymizationStatusUserStaticField( Plugin plugin )
     {
@@ -152,10 +178,13 @@ public class AttributeHome
 
     /**
      * Add an anonymization status to a user field.
-     * @param strFieldName Name of the field
-     * @param bAnonymizeFiled True if the field should be anonymize, false
-     *            otherwise
-     * @param plugin The plugin
+     * 
+     * @param strFieldName
+     *            Name of the field
+     * @param bAnonymizeFiled
+     *            True if the field should be anonymize, false otherwise
+     * @param plugin
+     *            The plugin
      */
     public static void addAnonymizationStatusUserField( String strFieldName, boolean bAnonymizeFiled, Plugin plugin )
     {
@@ -164,8 +193,11 @@ public class AttributeHome
 
     /**
      * Remove an anonymization status of a user field.
-     * @param strFieldName Name of the field
-     * @param plugin The plugin
+     * 
+     * @param strFieldName
+     *            Name of the field
+     * @param plugin
+     *            The plugin
      */
     public static void removeAnonymizationStatusUserField( String strFieldName, Plugin plugin )
     {
@@ -174,13 +206,15 @@ public class AttributeHome
 
     /**
      * Update the anonymization status of a user field.
-     * @param strFieldName Name of the field to update
-     * @param bAnonymizeFiled True if the field should be anonymize, false
-     *            otherwise
-     * @param plugin The plugin
+     * 
+     * @param strFieldName
+     *            Name of the field to update
+     * @param bAnonymizeFiled
+     *            True if the field should be anonymize, false otherwise
+     * @param plugin
+     *            The plugin
      */
-    public static void updateAnonymizationStatusUserStaticField( String strFieldName, boolean bAnonymizeFiled,
-        Plugin plugin )
+    public static void updateAnonymizationStatusUserStaticField( String strFieldName, boolean bAnonymizeFiled, Plugin plugin )
     {
         _dao.updateAnonymizationStatusUserStaticField( strFieldName, bAnonymizeFiled, plugin );
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,6 @@ import fr.paris.lutece.portal.business.portlet.PortletHome;
 import fr.paris.lutece.portal.business.portlet.PortletTypeHome;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 
-
 /**
  * Home for MyLutece portlet
  */
@@ -53,7 +52,7 @@ public class MyLutecePortletHome extends PortletHome
     /**
      * Constructor
      */
-    public MyLutecePortletHome(  )
+    public MyLutecePortletHome( )
     {
         if ( _singleton == null )
         {
@@ -66,11 +65,11 @@ public class MyLutecePortletHome extends PortletHome
      *
      * @return the ActorPortletHome instance
      */
-    public static PortletHome getInstance(  )
+    public static PortletHome getInstance( )
     {
         if ( _singleton == null )
         {
-            _singleton = new MyLutecePortletHome(  );
+            _singleton = new MyLutecePortletHome( );
         }
 
         return _singleton;
@@ -81,7 +80,7 @@ public class MyLutecePortletHome extends PortletHome
      *
      * @return the instance of the DownloadPortletDAO
      */
-    public IPortletInterfaceDAO getDAO(  )
+    public IPortletInterfaceDAO getDAO( )
     {
         return _dao;
     }
@@ -91,9 +90,9 @@ public class MyLutecePortletHome extends PortletHome
      *
      * @return The type of the portlet
      */
-    public String getPortletTypeId(  )
+    public String getPortletTypeId( )
     {
-        String strCurrentClassName = this.getClass(  ).getName(  );
+        String strCurrentClassName = this.getClass( ).getName( );
         String strPortletTypeId = PortletTypeHome.getPortletTypeId( strCurrentClassName );
 
         return strPortletTypeId;

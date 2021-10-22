@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,6 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
 
 import java.util.List;
 
-
 /**
  *
  * AttributeFieldHome
@@ -50,8 +49,11 @@ public class AttributeFieldHome
 
     /**
      * Load attribute field
-     * @param nIdField ID Field
-     * @param plugin The plugin
+     * 
+     * @param nIdField
+     *            ID Field
+     * @param plugin
+     *            The plugin
      * @return Attribute Field
      */
     public static AttributeField findByPrimaryKey( int nIdField, Plugin plugin )
@@ -61,8 +63,11 @@ public class AttributeFieldHome
 
     /**
      * Load the lists of attribute field associated to an attribute
-     * @param nIdAttribute the ID attribute
-     * @param plugin The plugin
+     * 
+     * @param nIdAttribute
+     *            the ID attribute
+     * @param plugin
+     *            The plugin
      * @return the list of attribute fields
      */
     public static List<AttributeField> selectAttributeFieldsByIdAttribute( int nIdAttribute, Plugin plugin )
@@ -72,8 +77,11 @@ public class AttributeFieldHome
 
     /**
      * Load the attribute associated to the id field
-     * @param nIdField the id field
-     * @param plugin The plugin
+     * 
+     * @param nIdField
+     *            the id field
+     * @param plugin
+     *            The plugin
      * @return attribute
      */
     public static IAttribute selectAttributeByIdField( int nIdField, Plugin plugin )
@@ -83,8 +91,11 @@ public class AttributeFieldHome
 
     /**
      * Insert an new attribute field
-     * @param attributeField the attribute field
-     * @param plugin The plugin
+     * 
+     * @param attributeField
+     *            the attribute field
+     * @param plugin
+     *            The plugin
      * @return @return new PK
      */
     public static int create( AttributeField attributeField, Plugin plugin )
@@ -94,8 +105,11 @@ public class AttributeFieldHome
 
     /**
      * Update an attribute field
-     * @param attributeField the attribute field
-     * @param plugin The plugin
+     * 
+     * @param attributeField
+     *            the attribute field
+     * @param plugin
+     *            The plugin
      */
     public static void update( AttributeField attributeField, Plugin plugin )
     {
@@ -104,8 +118,11 @@ public class AttributeFieldHome
 
     /**
      * Delete an attribute field
-     * @param nIdField the attribute field id
-     * @param plugin The plugin
+     * 
+     * @param nIdField
+     *            the attribute field id
+     * @param plugin
+     *            The plugin
      */
     public static void remove( int nIdField, Plugin plugin )
     {
@@ -114,8 +131,11 @@ public class AttributeFieldHome
 
     /**
      * Delete all attribute field from an attribute id
-     * @param nIdAttribute the ID attribute
-     * @param plugin The plugin
+     * 
+     * @param nIdAttribute
+     *            the ID attribute
+     * @param plugin
+     *            The plugin
      */
     public static void removeAttributeFieldsFromIdAttribute( int nIdAttribute, Plugin plugin )
     {

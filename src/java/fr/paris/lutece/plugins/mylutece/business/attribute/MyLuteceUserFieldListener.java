@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,6 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
  *
  * MyLuteceUserFieldListener
@@ -50,51 +49,75 @@ public interface MyLuteceUserFieldListener
 {
     /**
      * Create user fields
-     * @param nIdUser The Id of the user
-     * @param request HttpServletRequest
-     * @param locale locale
+     * 
+     * @param nIdUser
+     *            The Id of the user
+     * @param request
+     *            HttpServletRequest
+     * @param locale
+     *            locale
      */
     void doCreateUserFields( int nIdUser, HttpServletRequest request, Locale locale );
 
     /**
-     * Create user fields. This method may do nothing if user fields can not be
-     * created just from a String value.
-     * @param nIdUser The Id of the user
-     * @param listUserFields The list of user fields to create
-     * @param locale locale
+     * Create user fields. This method may do nothing if user fields can not be created just from a String value.
+     * 
+     * @param nIdUser
+     *            The Id of the user
+     * @param listUserFields
+     *            The list of user fields to create
+     * @param locale
+     *            locale
      */
     void doCreateUserFields( int nIdUser, List<MyLuteceUserField> listUserFields, Locale locale );
 
     /**
      * Modify user fields
-     * @param nIdUser The Id of the user
-     * @param request HttpServletRequest
-     * @param locale locale
-     * @param currentUser current user. The current user may be null.
+     * 
+     * @param nIdUser
+     *            The Id of the user
+     * @param request
+     *            HttpServletRequest
+     * @param locale
+     *            locale
+     * @param currentUser
+     *            current user. The current user may be null.
      */
     void doModifyUserFields( int nIdUser, HttpServletRequest request, Locale locale, AdminUser currentUser );
 
     /**
      * Modify user fields
-     * @param nIdUser The Id of the user
-     * @param listUserFields The list of user fields to update
-     * @param locale locale
-     * @param currentUser current user. The current user may be null.
+     * 
+     * @param nIdUser
+     *            The Id of the user
+     * @param listUserFields
+     *            The list of user fields to update
+     * @param locale
+     *            locale
+     * @param currentUser
+     *            current user. The current user may be null.
      */
     void doModifyUserFields( int nIdUser, List<MyLuteceUserField> listUserFields, Locale locale, AdminUser currentUser );
 
     /**
      * Remove user fields
-     * @param nIdUser The Id of the user
-     * @param request HttpServletRequest
-     * @param locale locale
+     * 
+     * @param nIdUser
+     *            The Id of the user
+     * @param request
+     *            HttpServletRequest
+     * @param locale
+     *            locale
      */
     void doRemoveUserFields( int nIdUser, HttpServletRequest request, Locale locale );
 
     /**
      * Remove user fields
-     * @param nIdUser The Id of the user
-     * @param locale locale
+     * 
+     * @param nIdUser
+     *            The Id of the user
+     * @param locale
+     *            locale
      */
     void doRemoveUserFields( int nIdUser, Locale locale );
 }

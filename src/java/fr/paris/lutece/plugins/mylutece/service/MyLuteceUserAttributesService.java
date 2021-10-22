@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -42,7 +42,6 @@ import org.apache.commons.lang.StringUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-
 /**
  *
  * MyLuteceUserAttributesService
@@ -56,7 +55,7 @@ public final class MyLuteceUserAttributesService implements UserAttributesServic
     public String getAttribute( String strUserId, String strAttribute )
     {
         String strAttributeValue = StringUtils.EMPTY;
-        LuteceUser user = SecurityService.getInstance(  ).getUser( strUserId );
+        LuteceUser user = SecurityService.getInstance( ).getUser( strUserId );
 
         if ( user != null )
         {
@@ -71,12 +70,12 @@ public final class MyLuteceUserAttributesService implements UserAttributesServic
      */
     public Map<String, String> getAttributes( String strUserId )
     {
-        Map<String, String> mapAttributes = new HashMap<String, String>(  );
-        LuteceUser user = SecurityService.getInstance(  ).getUser( strUserId );
+        Map<String, String> mapAttributes = new HashMap<String, String>( );
+        LuteceUser user = SecurityService.getInstance( ).getUser( strUserId );
 
         if ( user != null )
         {
-            mapAttributes = user.getUserInfos(  );
+            mapAttributes = user.getUserInfos( );
         }
 
         return mapAttributes;

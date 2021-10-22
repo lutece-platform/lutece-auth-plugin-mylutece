@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2018, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -91,10 +91,11 @@ public class MyLuteceAppTest extends LuteceTestCase
             {
                 request.setParameter( "date_login", matcher.group( 2 ) );
             }
-            else if ( "key".equals( matcher.group( 1 ) ) )
-            {
-                request.setParameter( "key", matcher.group( 2 ) );
-            }
+            else
+                if ( "key".equals( matcher.group( 1 ) ) )
+                {
+                    request.setParameter( "key", matcher.group( 2 ) );
+                }
         }
         MyLuteceApp app = new MyLuteceApp( );
         request.setParameter( "ip", STR_IP_ADDRESS );
@@ -119,19 +120,20 @@ public class MyLuteceAppTest extends LuteceTestCase
             {
                 request.setParameter( "date_login", matcher.group( 2 ) );
             }
-            else if ( "key".equals( matcher.group( 1 ) ) )
-            {
-                String strKey = matcher.group( 2 );
-                if ( strKey.startsWith( "0" ) )
+            else
+                if ( "key".equals( matcher.group( 1 ) ) )
                 {
-                    strKey = "1" + strKey.substring( 1 );
+                    String strKey = matcher.group( 2 );
+                    if ( strKey.startsWith( "0" ) )
+                    {
+                        strKey = "1" + strKey.substring( 1 );
+                    }
+                    else
+                    {
+                        strKey = "0" + strKey.substring( 1 );
+                    }
+                    request.setParameter( "key", strKey );
                 }
-                else
-                {
-                    strKey = "0" + strKey.substring( 1 );
-                }
-                request.setParameter( "key", strKey );
-            }
         }
         MyLuteceApp app = new MyLuteceApp( );
         request.setParameter( "ip", STR_IP_ADDRESS );

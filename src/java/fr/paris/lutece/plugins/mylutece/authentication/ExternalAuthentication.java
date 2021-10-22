@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,6 @@ import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
  *
  * ExternalAuthentication.
@@ -52,9 +51,10 @@ public abstract class ExternalAuthentication extends AbstractAuthentication
 
     /**
      * Indicates that the user should be already authenticated by an external authentication service (ex : Web Server authentication).
+     * 
      * @return true if the authentication is external, false if the authentication is provided by the Lutece portal.
      */
-    public boolean isExternalAuthentication(  )
+    public boolean isExternalAuthentication( )
     {
         return true;
     }
@@ -62,63 +62,70 @@ public abstract class ExternalAuthentication extends AbstractAuthentication
     /**
      *
      * Always false
+     * 
      * @return false
      */
-    public boolean isDelegatedAuthentication(  )
+    public boolean isDelegatedAuthentication( )
     {
         return false;
     }
 
     /**
      * Returns the Login page URL of the Authentication Service
+     * 
      * @return The URL
      */
-    public String getLoginPageUrl(  )
+    public String getLoginPageUrl( )
     {
         return null;
     }
 
     /**
      * Returns the DoLogin URL of the Authentication Service
+     * 
      * @return The URL
      */
-    public String getDoLoginUrl(  )
+    public String getDoLoginUrl( )
     {
         return null;
     }
 
     /**
      * Returns the DoLogout URL of the Authentication Service
+     * 
      * @return The URL
      */
-    public String getDoLogoutUrl(  )
+    public String getDoLogoutUrl( )
     {
         return null;
     }
 
     /**
      * Returns the new account page URL of the Authentication Service
+     * 
      * @return The URL
      */
-    public String getNewAccountPageUrl(  )
+    public String getNewAccountPageUrl( )
     {
         return null;
     }
 
     /**
      * Returns the View account page URL of the Authentication Service
+     * 
      * @return The URL
      */
-    public String getViewAccountPageUrl(  )
+    public String getViewAccountPageUrl( )
     {
         return null;
     }
 
     /**
      * Returns the lost password URL of the Authentication Service
+     * 
      * @return The URL
      */
-    public String getLostPasswordPageUrl(  )
+    public String getLostPasswordPageUrl( )
     {
         return null;
     }
@@ -127,50 +134,56 @@ public abstract class ExternalAuthentication extends AbstractAuthentication
      * {@inheritDoc}
      */
     @Override
-    public String getLostLoginPageUrl(  )
+    public String getLostLoginPageUrl( )
     {
         return null;
     }
 
     /**
      * Returns the access denied template
+     * 
      * @return The template
      */
-    public String getAccessDeniedTemplate(  )
+    public String getAccessDeniedTemplate( )
     {
-        return MyLuteceApp.getAccessDeniedTemplate(  );
+        return MyLuteceApp.getAccessDeniedTemplate( );
     }
 
     /**
      * Returns the access controled template
+     * 
      * @return The template
      */
-    public String getAccessControledTemplate(  )
+    public String getAccessControledTemplate( )
     {
-        return MyLuteceApp.getAccessControledTemplate(  );
+        return MyLuteceApp.getAccessControledTemplate( );
     }
 
     /**
      * Tells whether or not the authentication service can provide a list of all its users
+     * 
      * @return true if the service can return a users list
      */
-    public boolean isUsersListAvailable(  )
+    public boolean isUsersListAvailable( )
     {
         return false;
     }
 
     /**
      * Returns all users managed by the authentication service if this feature is available.
+     * 
      * @return A collection of Lutece users or null if the service doesn't provide a users list
      */
-    public Collection<LuteceUser> getUsers(  )
+    public Collection<LuteceUser> getUsers( )
     {
         return null;
     }
 
     /**
      * Returns the user managed by the authentication service if this feature is available.
-     * @param userLogin user login
+     * 
+     * @param userLogin
+     *            user login
      * @return A Lutece users or null if the service doesn't provide a user
      */
     public LuteceUser getUser( String userLogin )
@@ -181,30 +194,32 @@ public abstract class ExternalAuthentication extends AbstractAuthentication
     /**
      * get all roles for this user : - user's roles - user's groups roles
      *
-     * @param user The user
+     * @param user
+     *            The user
      * @return Array of roles
      */
-    public String[] getRolesByUser( LuteceUser user )
+    public String [ ] getRolesByUser( LuteceUser user )
     {
         return null;
     }
 
     /**
      * Returns false
+     * 
      * @return false
      * @see LuteceAuthentication#isMultiAuthenticationSupported()
      *
      */
-    public boolean isMultiAuthenticationSupported(  )
+    public boolean isMultiAuthenticationSupported( )
     {
         return false;
     }
 
     /**
      *
-     *{@inheritDoc}
+     * {@inheritDoc}
      */
-    public String getIconUrl(  )
+    public String getIconUrl( )
     {
         return CONSTANT_PATH_ICON;
     }
@@ -231,7 +246,7 @@ public abstract class ExternalAuthentication extends AbstractAuthentication
 
     /**
      *
-     *{@inheritDoc}
+     * {@inheritDoc}
      */
     @Override
     public void updateDateLastLogin( LuteceUser user, HttpServletRequest request )

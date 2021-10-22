@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -39,7 +39,6 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
 import java.util.List;
 import java.util.Locale;
 
-
 /**
  *
  * MyLuteceUserFieldHome
@@ -51,9 +50,13 @@ public class MyLuteceUserFieldHome
 
     /**
      * Load the user field
-     * @param nIdUserField ID
-     * @param locale the locale
-     * @param plugin The plugin
+     * 
+     * @param nIdUserField
+     *            ID
+     * @param locale
+     *            the locale
+     * @param plugin
+     *            The plugin
      * @return MyLuteceUserField
      */
     public static MyLuteceUserField findByPrimaryKey( int nIdUserField, Locale locale, Plugin plugin )
@@ -63,8 +66,11 @@ public class MyLuteceUserFieldHome
 
     /**
      * Insert a new user field
-     * @param userField the user field
-     * @param plugin The plugin
+     * 
+     * @param userField
+     *            the user field
+     * @param plugin
+     *            The plugin
      */
     public static void create( MyLuteceUserField userField, Plugin plugin )
     {
@@ -73,8 +79,11 @@ public class MyLuteceUserFieldHome
 
     /**
      * Update an user field
-     * @param userField the user field
-     * @param plugin The plugin
+     * 
+     * @param userField
+     *            the user field
+     * @param plugin
+     *            The plugin
      */
     public static void update( MyLuteceUserField userField, Plugin plugin )
     {
@@ -83,8 +92,11 @@ public class MyLuteceUserFieldHome
 
     /**
      * Delete an attribute
-     * @param nIdUserField the ID of the user field
-     * @param plugin The plugin
+     * 
+     * @param nIdUserField
+     *            the ID of the user field
+     * @param plugin
+     *            The plugin
      */
     public static void remove( int nIdUserField, Plugin plugin )
     {
@@ -93,8 +105,11 @@ public class MyLuteceUserFieldHome
 
     /**
      * Delete all user fields from given id field
-     * @param nIdField id field
-     * @param plugin The plugin
+     * 
+     * @param nIdField
+     *            id field
+     * @param plugin
+     *            The plugin
      */
     public static void removeUserFieldsFromIdField( int nIdField, Plugin plugin )
     {
@@ -103,8 +118,11 @@ public class MyLuteceUserFieldHome
 
     /**
      * Delete all user fields from given id user
-     * @param nIdUser id user
-     * @param plugin The plugin
+     * 
+     * @param nIdUser
+     *            id user
+     * @param plugin
+     *            The plugin
      */
     public static void removeUserFieldsFromIdUser( int nIdUser, Plugin plugin )
     {
@@ -113,8 +131,11 @@ public class MyLuteceUserFieldHome
 
     /**
      * Delete all user fields from given id attribute
-     * @param nIdAttribute id attribute
-     * @param plugin The plugin
+     * 
+     * @param nIdAttribute
+     *            id attribute
+     * @param plugin
+     *            The plugin
      */
     public static void removeUserFieldsFromIdAttribute( int nIdAttribute, Plugin plugin )
     {
@@ -123,21 +144,27 @@ public class MyLuteceUserFieldHome
 
     /**
      * Load all the user field by a given ID user and a given ID attribute
-     * @param nIdUser the ID user
-     * @param nIdAttribute The id of the attribute
-     * @param plugin The plugin
+     * 
+     * @param nIdUser
+     *            the ID user
+     * @param nIdAttribute
+     *            The id of the attribute
+     * @param plugin
+     *            The plugin
      * @return a list of adminuserfield
      */
-    public static List<MyLuteceUserField> selectUserFieldsByIdUserIdAttribute( int nIdUser, int nIdAttribute,
-        Plugin plugin )
+    public static List<MyLuteceUserField> selectUserFieldsByIdUserIdAttribute( int nIdUser, int nIdAttribute, Plugin plugin )
     {
         return _dao.selectUserFieldsByIdUserIdAttribute( nIdUser, nIdAttribute, plugin );
     }
 
     /**
      * Load users by a given filter
-     * @param mlFieldFilter the filter
-     * @param plugin Plugin
+     * 
+     * @param mlFieldFilter
+     *            the filter
+     * @param plugin
+     *            Plugin
      * @return a list of users
      */
     public static List<Integer> findUsersByFilter( MyLuteceUserFieldFilter mlFieldFilter, Plugin plugin )

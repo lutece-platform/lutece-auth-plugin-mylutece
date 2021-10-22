@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -37,7 +37,6 @@ import fr.paris.lutece.portal.service.plugin.Plugin;
 
 import java.sql.Timestamp;
 
-
 /**
  *
  * @author lenaini
@@ -46,28 +45,38 @@ public interface IConnectionLogDAO
 {
     /**
      * Insert a new record in the table of connections
-     * @param connectionLog the ConnectionLog Object
-     * @param plugin The plugin
+     * 
+     * @param connectionLog
+     *            the ConnectionLog Object
+     * @param plugin
+     *            The plugin
      */
     void insertLog( ConnectionLog connectionLog, Plugin plugin );
 
     /**
-     * Calculate the number of connections with a given ip_address by a
-     * determinate time
-     * @param connectionLog The Log of connection
-     * @param nIntervalMinutes The number of minutes since the last connection
-     * @param plugin The plugin
-     * @return int The number of loggin error during the last
-     *         <i>nIntervalMinutes</i> minutes
+     * Calculate the number of connections with a given ip_address by a determinate time
+     * 
+     * @param connectionLog
+     *            The Log of connection
+     * @param nIntervalMinutes
+     *            The number of minutes since the last connection
+     * @param plugin
+     *            The plugin
+     * @return int The number of loggin error during the last <i>nIntervalMinutes</i> minutes
      */
     int selectLoginErrors( ConnectionLog connectionLog, int nIntervalMinutes, Plugin plugin );
 
     /**
-         * Update connection logs of an IP to allow the user to login.
-         * @param strIp Ip to clean
-         * @param dateLogin Date of the last login. Anly logs between this date plus or minus the minute interval will be cleared.
-         * @param nIntervalMinutes Minutes interval
-         * @param plugin The plugin
-         */
+     * Update connection logs of an IP to allow the user to login.
+     * 
+     * @param strIp
+     *            Ip to clean
+     * @param dateLogin
+     *            Date of the last login. Anly logs between this date plus or minus the minute interval will be cleared.
+     * @param nIntervalMinutes
+     *            Minutes interval
+     * @param plugin
+     *            The plugin
+     */
     void resetConnectionLogs( String strIp, Timestamp dateLogin, int nIntervalMinutes, Plugin plugin );
 }

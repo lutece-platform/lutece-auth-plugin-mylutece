@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -76,11 +76,8 @@ import fr.paris.lutece.util.json.JsonResponse;
 import fr.paris.lutece.util.json.JsonUtil;
 import fr.paris.lutece.util.url.UrlItem;
 
-
 /**
- * This class provides the XPageApp that manage personalization features for
- * Lutece
- * : login, account management, ...
+ * This class provides the XPageApp that manage personalization features for Lutece : login, account management, ...
  */
 public class MyLuteceApp implements XPageApplication
 {
@@ -97,8 +94,6 @@ public class MyLuteceApp implements XPageApplication
     private static final String MARK_AUTH_PROVIDER = "auth_provider";
     private static final String MARK_IS_ACTIVE_CAPTCHA = "is_active_captcha";
     private static final String MARK_CAPTCHA = "captcha";
-   
-    
 
     // Parameters
     private static final String PARAMETER_ACTION = "action";
@@ -168,9 +163,13 @@ public class MyLuteceApp implements XPageApplication
 
     /**
      * This method builds a XPage object corresponding to the request
-     * @param request The HTTP request
-     * @param nMode The mode
-     * @param plugin The plugin object which belongs the App
+     * 
+     * @param request
+     *            The HTTP request
+     * @param nMode
+     *            The mode
+     * @param plugin
+     *            The plugin object which belongs the App
      * @return The XPage object containing the page content
      */
     public XPage getPage( HttpServletRequest request, int nMode, Plugin plugin )
@@ -184,26 +183,32 @@ public class MyLuteceApp implements XPageApplication
         {
             return getCreateAccountPage( page, request );
         }
-        else if ( StringUtils.equals( strAction, ACTION_VIEW_ACCOUNT ) )
-        {
-            return getViewAccountPage( page );
-        }
-        else if ( StringUtils.equals( strAction, ACTION_LOST_PASSWORD ) )
-        {
-            return getLostPasswordPage( page );
-        }
-        else if ( StringUtils.equals( strAction, ACTION_LOST_LOGIN ) )
-        {
-            return getLostLoginPage( page );
-        }
+        else
+            if ( StringUtils.equals( strAction, ACTION_VIEW_ACCOUNT ) )
+            {
+                return getViewAccountPage( page );
+            }
+            else
+                if ( StringUtils.equals( strAction, ACTION_LOST_PASSWORD ) )
+                {
+                    return getLostPasswordPage( page );
+                }
+                else
+                    if ( StringUtils.equals( strAction, ACTION_LOST_LOGIN ) )
+                    {
+                        return getLostLoginPage( page );
+                    }
 
         return getLoginPage( page, request );
     }
 
     /**
      * Build the Login page
-     * @param page The XPage object to fill
-     * @param request The HTTP request
+     * 
+     * @param page
+     *            The XPage object to fill
+     * @param request
+     *            The HTTP request
      * @return The XPage object containing the page content
      */
     private XPage getLoginPage( XPage page, HttpServletRequest request )
@@ -225,11 +230,11 @@ public class MyLuteceApp implements XPageApplication
                     strErrorDetail = request.getParameter( PARAMETER_ERROR_MSG );
                 }
             }
-            else if ( strError.equals( PARAMETER_ERROR_CAPTCHA ) )
-            {
-                strErrorMessage = I18nService.getLocalizedString( PROPERTY_MYLUTECE_MESSAGE_INVALID_CAPTCHA,
-                        request.getLocale( ) );
-            }
+            else
+                if ( strError.equals( PARAMETER_ERROR_CAPTCHA ) )
+                {
+                    strErrorMessage = I18nService.getLocalizedString( PROPERTY_MYLUTECE_MESSAGE_INVALID_CAPTCHA, request.getLocale( ) );
+                }
         }
 
         HttpSession session = request.getSession( false );
@@ -256,12 +261,11 @@ public class MyLuteceApp implements XPageApplication
             CaptchaSecurityService captchaService = new CaptchaSecurityService( );
             model.put( MARK_CAPTCHA, captchaService.getHtmlCode( ) );
         }
-        
-        model.put(SecurityTokenService.MARK_TOKEN,SecurityTokenService.getInstance().getToken(request, TOKEN_ACTION_LOGIN));
+
+        model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, TOKEN_ACTION_LOGIN ) );
 
         HtmlTemplate template;
-        model.put( MARK_URL_NEWACCOUNT, SecurityService.getInstance( ).getAuthenticationService( )
-                .getNewAccountPageUrl( ) );
+        model.put( MARK_URL_NEWACCOUNT, SecurityService.getInstance( ).getAuthenticationService( ).getNewAccountPageUrl( ) );
 
         if ( SecurityService.getInstance( ).isMultiAuthenticationSupported( ) )
         {
@@ -269,8 +273,7 @@ public class MyLuteceApp implements XPageApplication
 
             if ( luteceAuthentication instanceof MultiLuteceAuthentication )
             {
-                model.put( MARK_LIST_AUTHENTICATIONS,
-                        ( (MultiLuteceAuthentication) luteceAuthentication ).getListLuteceAuthentication( ) );
+                model.put( MARK_LIST_AUTHENTICATIONS, ( (MultiLuteceAuthentication) luteceAuthentication ).getListLuteceAuthentication( ) );
             }
 
             template = AppTemplateService.getTemplate( TEMPLATE_LOGIN_MULTI_PAGE, _locale, model );
@@ -289,7 +292,9 @@ public class MyLuteceApp implements XPageApplication
 
     /**
      * This method is call by the JSP named DoMyLuteceLogin.jsp
-     * @param request The HTTP request
+     * 
+     * @param request
+     *            The HTTP request
      * @return The URL to forward depending of the result of the login.
      * @throws UnsupportedEncodingException
      */
@@ -319,7 +324,7 @@ public class MyLuteceApp implements XPageApplication
         {
             SecurityService.getInstance( ).loginUser( request, strUsername, strPassword );
         }
-        catch ( LoginRedirectException ex )
+        catch( LoginRedirectException ex )
         {
             HttpSession session = request.getSession( false );
 
@@ -330,7 +335,7 @@ public class MyLuteceApp implements XPageApplication
 
             return ex.getRedirectUrl( );
         }
-        catch ( FailedLoginException ex )
+        catch( FailedLoginException ex )
         {
             // Creating a record of connections log
             ConnectionLog connectionLog = new ConnectionLog( );
@@ -360,7 +365,7 @@ public class MyLuteceApp implements XPageApplication
 
             return strReturn;
         }
-        catch ( LoginException ex )
+        catch( LoginException ex )
         {
             strReturn += ( "&" + PARAMETER_ERROR + "=" + PARAMETER_ERROR_VALUE_INVALID );
 
@@ -392,39 +397,45 @@ public class MyLuteceApp implements XPageApplication
         {
             return strNextUrl;
         }
-        else if ( strCurrentUrl != null )
-        {
-            return strCurrentUrl;
-        }
+        else
+            if ( strCurrentUrl != null )
+            {
+                return strCurrentUrl;
+            }
 
         return getDefaultRedirectUrl( );
     }
-    
-	/**
-	 * Check if the current user is authenticated
-	 * 
-	 * @param request The request
-	 * @return A JSON string containing true in the field result if the user is
-	 *         authenticated
-	 */
-	public String isUserAuthenticated(HttpServletRequest request) {
-		AbstractJsonResponse jsonResponse = null;
 
-		LuteceUser user = null;
+    /**
+     * Check if the current user is authenticated
+     * 
+     * @param request
+     *            The request
+     * @return A JSON string containing true in the field result if the user is authenticated
+     */
+    public String isUserAuthenticated( HttpServletRequest request )
+    {
+        AbstractJsonResponse jsonResponse = null;
 
-		user = SecurityService.getInstance().getRegisteredUser(request);
+        LuteceUser user = null;
 
-		if (user != null) {
-			jsonResponse = new JsonResponse(Boolean.TRUE);
-		} else {
-			jsonResponse = new JsonResponse(Boolean.FALSE);
-		}
+        user = SecurityService.getInstance( ).getRegisteredUser( request );
 
-		return JsonUtil.buildJsonResponse(jsonResponse);
-	}
+        if ( user != null )
+        {
+            jsonResponse = new JsonResponse( Boolean.TRUE );
+        }
+        else
+        {
+            jsonResponse = new JsonResponse( Boolean.FALSE );
+        }
+
+        return JsonUtil.buildJsonResponse( jsonResponse );
+    }
 
     /**
      * Returns the Login page URL of the Authentication Service
+     * 
      * @return The URL
      */
     public static String getLoginPageUrl( )
@@ -434,6 +445,7 @@ public class MyLuteceApp implements XPageApplication
 
     /**
      * Returns the DoLogin URL of the Authentication Service
+     * 
      * @return The URL
      */
     public static String getDoLoginUrl( )
@@ -443,6 +455,7 @@ public class MyLuteceApp implements XPageApplication
 
     /**
      * Returns the DoLogout URL of the Authentication Service
+     * 
      * @return The URL
      */
     public static String getDoLogoutUrl( )
@@ -452,6 +465,7 @@ public class MyLuteceApp implements XPageApplication
 
     /**
      * Returns the NewAccount URL of the Authentication Service
+     * 
      * @return The URL
      */
     public static String getNewAccountUrl( )
@@ -461,6 +475,7 @@ public class MyLuteceApp implements XPageApplication
 
     /**
      * Returns the ViewAccount URL of the Authentication Service
+     * 
      * @return The URL
      */
     public static String getViewAccountUrl( )
@@ -470,6 +485,7 @@ public class MyLuteceApp implements XPageApplication
 
     /**
      * Returns the Lost Password URL of the Authentication Service
+     * 
      * @return The URL
      */
     public static String getLostPasswordUrl( )
@@ -479,6 +495,7 @@ public class MyLuteceApp implements XPageApplication
 
     /**
      * Returns the Lost login URL of the Authentication Service
+     * 
      * @return The URL
      */
     public static String getLostLoginUrl( )
@@ -488,17 +505,19 @@ public class MyLuteceApp implements XPageApplication
 
     /**
      * Returns the Reset Password URL of the Authentication Service
-     * @param request The request
+     * 
+     * @param request
+     *            The request
      * @return The URL
      */
     public static String getResetPasswordUrl( HttpServletRequest request )
     {
-        return AppPathService.getBaseUrl( request )
-                + AppPropertiesService.getProperty( PROPERTY_MYLUTECE_RESET_PASSWORD_URL );
+        return AppPathService.getBaseUrl( request ) + AppPropertiesService.getProperty( PROPERTY_MYLUTECE_RESET_PASSWORD_URL );
     }
 
     /**
      * Returns the Default redirect URL of the Authentication Service
+     * 
      * @return The URL
      */
     public static String getDefaultRedirectUrl( )
@@ -508,7 +527,9 @@ public class MyLuteceApp implements XPageApplication
 
     /**
      * This method is call by the JSP named DoMyLuteceLogout.jsp
-     * @param request The HTTP request
+     * 
+     * @param request
+     *            The HTTP request
      * @return The URL to forward depending of the result of the login.
      */
     public String doLogout( HttpServletRequest request )
@@ -520,8 +541,11 @@ public class MyLuteceApp implements XPageApplication
 
     /**
      * Build the CreateAccount page
-     * @param page The XPage object to fill
-     * @param request the request
+     * 
+     * @param page
+     *            The XPage object to fill
+     * @param request
+     *            the request
      * @return The XPage object containing the page content
      */
     private XPage getCreateAccountPage( XPage page, HttpServletRequest request )
@@ -530,14 +554,14 @@ public class MyLuteceApp implements XPageApplication
 
         if ( SecurityService.getInstance( ).isMultiAuthenticationSupported( ) )
         {
-            model.put( MARK_LIST_AUTHENTICATIONS, ( (MultiLuteceAuthentication) SecurityService.getInstance( )
-                    .getAuthenticationService( ) ).getListLuteceAuthentication( ) );
+            model.put( MARK_LIST_AUTHENTICATIONS,
+                    ( (MultiLuteceAuthentication) SecurityService.getInstance( ).getAuthenticationService( ) ).getListLuteceAuthentication( ) );
         }
 
         HtmlTemplate t = AppTemplateService.getTemplate( TEMPLATE_CREATE_ACCOUNT_PAGE, _locale, model );
         page.setContent( t.getHtml( ) );
-        //	page.setPathLabel( "Create Account" );
-        //		page.setTitle( "Create Account" );
+        // page.setPathLabel( "Create Account" );
+        // page.setTitle( "Create Account" );
         page.setPathLabel( I18nService.getLocalizedString( PROPERTY_CREATE_ACCOUNT_LABEL, _locale ) );
         page.setTitle( I18nService.getLocalizedString( PROPERTY_CREATE_ACCOUNT_TITLE, _locale ) );
 
@@ -546,15 +570,17 @@ public class MyLuteceApp implements XPageApplication
 
     /**
      * Build the ViewAccount page
-     * @param page The XPage object to fill
+     * 
+     * @param page
+     *            The XPage object to fill
      * @return The XPage object containing the page content
      */
     private XPage getViewAccountPage( XPage page )
     {
         HtmlTemplate t = AppTemplateService.getTemplate( TEMPLATE_VIEW_ACCOUNT_PAGE, _locale );
         page.setContent( t.getHtml( ) );
-        //	page.setPathLabel( "View Account" );
-        //page.setTitle( "View Account" );
+        // page.setPathLabel( "View Account" );
+        // page.setTitle( "View Account" );
         page.setPathLabel( I18nService.getLocalizedString( PROPERTY_VIEW_ACCOUNT_LABEL, _locale ) );
         page.setTitle( I18nService.getLocalizedString( PROPERTY_VIEW_ACCOUNT_TITLE, _locale ) );
 
@@ -563,15 +589,17 @@ public class MyLuteceApp implements XPageApplication
 
     /**
      * Build the default Lost password page
-     * @param page The XPage object to fill
+     * 
+     * @param page
+     *            The XPage object to fill
      * @return The XPage object containing the page content
      */
     private XPage getLostPasswordPage( XPage page )
     {
         HtmlTemplate t = AppTemplateService.getTemplate( TEMPLATE_LOST_PASSWORD_PAGE, _locale );
         page.setContent( t.getHtml( ) );
-        //	page.setPathLabel( "Lost password" );
-        //	page.setTitle( "Lost password" );
+        // page.setPathLabel( "Lost password" );
+        // page.setTitle( "Lost password" );
         page.setPathLabel( I18nService.getLocalizedString( PROPERTY_LOST_PASSWORD_LABEL, _locale ) );
         page.setTitle( I18nService.getLocalizedString( PROPERTY_LOST_PASSWORD_TITLE, _locale ) );
 
@@ -580,7 +608,9 @@ public class MyLuteceApp implements XPageApplication
 
     /**
      * Build the default Lost password page
-     * @param page The XPage object to fill
+     * 
+     * @param page
+     *            The XPage object to fill
      * @return The XPage object containing the page content
      */
     private XPage getLostLoginPage( XPage page )
@@ -595,6 +625,7 @@ public class MyLuteceApp implements XPageApplication
 
     /**
      * Returns the template for access denied
+     * 
      * @return The template path
      */
     public static String getAccessDeniedTemplate( )
@@ -604,6 +635,7 @@ public class MyLuteceApp implements XPageApplication
 
     /**
      * Returns the template for access controled
+     * 
      * @return The template path
      */
     public static String getAccessControledTemplate( )
@@ -613,7 +645,9 @@ public class MyLuteceApp implements XPageApplication
 
     /**
      * Reset the connection log of an IP.
-     * @param request The request
+     * 
+     * @param request
+     *            The request
      * @return The URL of the next page to display
      */
     public String doResetConnectionLog( HttpServletRequest request )
@@ -623,19 +657,17 @@ public class MyLuteceApp implements XPageApplication
         String strInterval = request.getParameter( PARAMETER_INTERVAL );
         String strKey = request.getParameter( PARAMETER_KEY );
 
-        if ( StringUtils.isNotBlank( strIp ) && StringUtils.isNotBlank( strDateLogin )
-                && StringUtils.isNotBlank( strKey ) && StringUtils.isNotBlank( strInterval ) )
+        if ( StringUtils.isNotBlank( strIp ) && StringUtils.isNotBlank( strDateLogin ) && StringUtils.isNotBlank( strKey )
+                && StringUtils.isNotBlank( strInterval ) )
         {
             String strCryptoKey = CryptoService.getCryptoKey( );
             String strComputedKey = CryptoService.encrypt( strIp + strDateLogin + strInterval + strCryptoKey,
-                    AppPropertiesService.getProperty( PROPERTY_DEFAULT_ENCRYPTION_ALGORITHM,
-                            CONSTANT_DEFAULT_ENCRYPTION_ALGORITHM ) );
+                    AppPropertiesService.getProperty( PROPERTY_DEFAULT_ENCRYPTION_ALGORITHM, CONSTANT_DEFAULT_ENCRYPTION_ALGORITHM ) );
 
             if ( StringUtils.equals( strKey, strComputedKey ) )
             {
                 Plugin plugin = PluginService.getPlugin( MyLutecePlugin.PLUGIN_NAME );
-                ConnectionLogHome.resetConnectionLogs( strIp, new Timestamp( Long.parseLong( strDateLogin ) ),
-                        Integer.parseInt( strInterval ), plugin );
+                ConnectionLogHome.resetConnectionLogs( strIp, new Timestamp( Long.parseLong( strDateLogin ) ), Integer.parseInt( strInterval ), plugin );
             }
         }
 
@@ -644,7 +676,9 @@ public class MyLuteceApp implements XPageApplication
 
     /**
      * Returns the current url
-     * @param request The Http request
+     * 
+     * @param request
+     *            The Http request
      * @return The current url
      * 
      */
@@ -658,7 +692,9 @@ public class MyLuteceApp implements XPageApplication
 
     /**
      * Set the current url
-     * @param request The Http request
+     * 
+     * @param request
+     *            The Http request
      * 
      */
     public static void setCurrentUrl( HttpServletRequest request )

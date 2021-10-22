@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,17 +38,16 @@ import fr.paris.lutece.util.sql.DAOUtil;
 
 import java.sql.Timestamp;
 
-
 /**
  * This class provides Data Access methods for AppUser objects
  */
 public final class ConnectionLogDAO implements IConnectionLogDAO
 {
     // Constants
-    private static final String SQL_QUERY_SELECT_LOGIN_ERRORS = " SELECT COUNT(*) FROM mylutece_connections_log  WHERE ip_address = ? AND login_status = ? " +
-        " AND date_login > ? AND date_login < ? ";
-    private static final String SQL_QUERY_INSERT_LOGS = " INSERT INTO mylutece_connections_log ( ip_address, date_login, login_status ) " +
-        " VALUES ( ?, ?, ? )";
+    private static final String SQL_QUERY_SELECT_LOGIN_ERRORS = " SELECT COUNT(*) FROM mylutece_connections_log  WHERE ip_address = ? AND login_status = ? "
+            + " AND date_login > ? AND date_login < ? ";
+    private static final String SQL_QUERY_INSERT_LOGS = " INSERT INTO mylutece_connections_log ( ip_address, date_login, login_status ) "
+            + " VALUES ( ?, ?, ? )";
     private static final String SQL_UPDATE_CLEAR_LOGS = " UPDATE mylutece_connections_log SET login_status = ? WHERE ip_address = ? AND date_login > ? AND date_login < ? ";
 
     /**
@@ -58,24 +57,24 @@ public final class ConnectionLogDAO implements IConnectionLogDAO
     public int selectLoginErrors( ConnectionLog connectionLog, int nIntervalMinutes, Plugin plugin )
     {
         int nCount = 0;
-        java.sql.Timestamp dateEnd = new java.sql.Timestamp( new java.util.Date(  ).getTime(  ) );
-        java.sql.Timestamp dateBegin = new java.sql.Timestamp( dateEnd.getTime(  ) - ( nIntervalMinutes * 1000 * 60 ) );
+        java.sql.Timestamp dateEnd = new java.sql.Timestamp( new java.util.Date( ).getTime( ) );
+        java.sql.Timestamp dateBegin = new java.sql.Timestamp( dateEnd.getTime( ) - ( nIntervalMinutes * 1000 * 60 ) );
 
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_LOGIN_ERRORS, plugin );
 
-        daoUtil.setString( 1, connectionLog.getIpAddress(  ) );
+        daoUtil.setString( 1, connectionLog.getIpAddress( ) );
         daoUtil.setInt( 2, ConnectionLog.LOGIN_DENIED );
         daoUtil.setTimestamp( 3, dateBegin );
         daoUtil.setTimestamp( 4, dateEnd );
 
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
-        if ( daoUtil.next(  ) )
+        if ( daoUtil.next( ) )
         {
             nCount = daoUtil.getInt( 1 );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return nCount;
     }
@@ -87,12 +86,12 @@ public final class ConnectionLogDAO implements IConnectionLogDAO
     public void insertLog( ConnectionLog connectionLog, Plugin plugin )
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT_LOGS, plugin );
-        daoUtil.setString( 1, connectionLog.getIpAddress(  ) );
-        daoUtil.setTimestamp( 2, connectionLog.getDateLogin(  ) );
-        daoUtil.setInt( 3, connectionLog.getLoginStatus(  ) );
+        daoUtil.setString( 1, connectionLog.getIpAddress( ) );
+        daoUtil.setTimestamp( 2, connectionLog.getDateLogin( ) );
+        daoUtil.setInt( 3, connectionLog.getLoginStatus( ) );
 
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 
     /**
@@ -103,15 +102,15 @@ public final class ConnectionLogDAO implements IConnectionLogDAO
     {
         DAOUtil daoUtil = new DAOUtil( SQL_UPDATE_CLEAR_LOGS, plugin );
 
-        Timestamp dateMin = new Timestamp( dateLogin.getTime(  ) - ( nIntervalMinutes * 1000 * 60 ) );
-        Timestamp dateMax = new Timestamp( dateLogin.getTime(  ) + ( nIntervalMinutes * 1000 * 60 ) );
+        Timestamp dateMin = new Timestamp( dateLogin.getTime( ) - ( nIntervalMinutes * 1000 * 60 ) );
+        Timestamp dateMax = new Timestamp( dateLogin.getTime( ) + ( nIntervalMinutes * 1000 * 60 ) );
 
         daoUtil.setInt( 1, ConnectionLog.LOGIN_DENIED_CANCELED );
         daoUtil.setString( 2, strIp );
         daoUtil.setTimestamp( 3, dateMin );
         daoUtil.setTimestamp( 4, dateMax );
 
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 }

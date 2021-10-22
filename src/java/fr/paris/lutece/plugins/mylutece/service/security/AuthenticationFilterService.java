@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,7 +47,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
  * This class provides public Url Service
  */
@@ -61,20 +60,21 @@ public final class AuthenticationFilterService
     public static final String MARK_PORTAL_AUTHENTICATION_REQUIRED = "portal_authentication_required";
     private static final String MARK_LOCALE = "locale";
     private static final String MARK_WEBAPP_URL = "webapp_url";
-    private static AuthenticationFilterService _singleton = new AuthenticationFilterService(  );
+    private static AuthenticationFilterService _singleton = new AuthenticationFilterService( );
 
     /**
      * Private constructor
      */
-    private AuthenticationFilterService(  )
+    private AuthenticationFilterService( )
     {
     }
 
     /**
      * Get the unique instance of the Public url Service
+     * 
      * @return The instance
      */
-    public static AuthenticationFilterService getInstance(  )
+    public static AuthenticationFilterService getInstance( )
     {
         return _singleton;
     }
@@ -82,43 +82,45 @@ public final class AuthenticationFilterService
     /**
      * Build the advanced parameters management.
      *
-     * @param user the current admin user
-     * @param request the request
+     * @param user
+     *            the current admin user
+     * @param request
+     *            the request
      * @return the model for the advanced parameters
      */
     public Map<String, Object> getManageAdvancedParameters( AdminUser user, HttpServletRequest request )
     {
-        Map<String, Object> model = new HashMap<String, Object>(  );
+        Map<String, Object> model = new HashMap<String, Object>( );
         ReferenceList refListUrlPublic = DatastoreService.getDataByPrefix( PUBLIC_URL_PREFIX );
 
         for ( ReferenceItem refUrl : refListUrlPublic )
         {
-            refUrl.setCode( refUrl.getCode(  ).replace( PUBLIC_URL_PREFIX, "" ) );
+            refUrl.setCode( refUrl.getCode( ).replace( PUBLIC_URL_PREFIX, "" ) );
         }
 
-        model.put( MARK_PORTAL_AUTHENTICATION_REQUIRED,
-            SecurityService.getInstance(  ).isPortalAuthenticationRequired(  ) );
+        model.put( MARK_PORTAL_AUTHENTICATION_REQUIRED, SecurityService.getInstance( ).isPortalAuthenticationRequired( ) );
         model.put( MARK_PUBLIC_LIST_URL, refListUrlPublic );
-        model.put( MARK_LOCALE, user.getLocale(  ) );
+        model.put( MARK_LOCALE, user.getLocale( ) );
         model.put( MARK_WEBAPP_URL, AppPathService.getBaseUrl( request ) );
 
         return model;
     }
 
     /**
-     * Gets the list of Public Urls defined in  Security service Manage Advanced Parameters
+     * Gets the list of Public Urls defined in Security service Manage Advanced Parameters
+     * 
      * @return a list of Public Urls
      */
-    public List<String> getPublicUrls(  )
+    public List<String> getPublicUrls( )
     {
-        ArrayList<String> lstPublicUrl = new ArrayList<String>(  );
+        ArrayList<String> lstPublicUrl = new ArrayList<String>( );
         ReferenceList referenceListPublicUrl = DatastoreService.getDataByPrefix( PUBLIC_URL_PREFIX );
 
-        if ( ( referenceListPublicUrl != null ) && !referenceListPublicUrl.isEmpty(  ) )
+        if ( ( referenceListPublicUrl != null ) && !referenceListPublicUrl.isEmpty( ) )
         {
             for ( ReferenceItem item : referenceListPublicUrl )
             {
-                lstPublicUrl.add( item.getName(  ) );
+                lstPublicUrl.add( item.getName( ) );
             }
         }
 

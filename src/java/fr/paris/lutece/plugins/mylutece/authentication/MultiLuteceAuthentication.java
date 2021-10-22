@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,30 +55,33 @@ import javax.security.auth.login.LoginException;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
- * Manages serveral {@link MyLuteceAuthentication}. Call {@link #registerAuthentication(LuteceAuthentication)} to register your authentication and {@link #removeAuthentication(String)} to unregister
- * it.
+ * Manages serveral {@link MyLuteceAuthentication}. Call {@link #registerAuthentication(LuteceAuthentication)} to register your authentication and
+ * {@link #removeAuthentication(String)} to unregister it.
  */
 public class MultiLuteceAuthentication extends AbstractAuthentication
 {
     private static final String PROPERTY_MESSAGE_NO_AUTHENTICATION_SELECTED = "mylutece.message.noAuthenticationSelected";
     private static final String PARAMETER_AUTH_PROVIDER = "auth_provider";
-    private static final Map<String, LuteceAuthentication> _mapAuthentications = new HashMap<String, LuteceAuthentication>(  );
+    private static final Map<String, LuteceAuthentication> _mapAuthentications = new HashMap<String, LuteceAuthentication>( );
 
     /**
      * Registers an authentication. Should be called at plugin init/install.
-     * @param authentication the authentication to register.
+     * 
+     * @param authentication
+     *            the authentication to register.
      */
     public static void registerAuthentication( LuteceAuthentication authentication )
     {
-        AppLogService.info( "MultiLuteceAuthentication : Registering authentication " + authentication.getName(  ) );
-        _mapAuthentications.put( authentication.getName(  ), authentication );
+        AppLogService.info( "MultiLuteceAuthentication : Registering authentication " + authentication.getName( ) );
+        _mapAuthentications.put( authentication.getName( ), authentication );
     }
 
     /**
      * Removes the authentication from managed authentication
-     * @param strAuthenticationName the authentication key
+     * 
+     * @param strAuthenticationName
+     *            the authentication key
      */
     public static void removeAuthentication( String strAuthenticationName )
     {
@@ -89,20 +92,21 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
         }
         else
         {
-            AppLogService.error( "Unable to remove authentication " + strAuthenticationName +
-                ". Authentication not found. Available values are " + _mapAuthentications.keySet(  ) );
+            AppLogService.error( "Unable to remove authentication " + strAuthenticationName + ". Authentication not found. Available values are "
+                    + _mapAuthentications.keySet( ) );
         }
     }
 
     /**
      * Returns the Login page URL of the Authentication Service. <br>
      * Tries to get authentication specific login page url form request (passed through {@link LocalVariables} ), default otherswise.
+     * 
      * @return The URL authentication specific login page url, default otherswise.
      */
-    public String getLoginPageUrl(  )
+    public String getLoginPageUrl( )
     {
-        String strLoginUrl = MyLuteceApp.getLoginPageUrl(  );
-        HttpServletRequest request = LocalVariables.getRequest(  );
+        String strLoginUrl = MyLuteceApp.getLoginPageUrl( );
+        HttpServletRequest request = LocalVariables.getRequest( );
 
         if ( request != null )
         {
@@ -111,7 +115,7 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
             if ( StringUtils.isNotBlank( strAuthentication ) )
             {
                 LuteceAuthentication authentication = _mapAuthentications.get( strAuthentication );
-                strLoginUrl = authentication.getLoginPageUrl(  );
+                strLoginUrl = authentication.getLoginPageUrl( );
             }
         }
 
@@ -121,12 +125,13 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
     /**
      * Returns the DoLogin URL of the Authentication Service. <br>
      * Tries to get authentication specific dologin page url form request (passed through {@link LocalVariables} ), default otherswise.
+     * 
      * @return The URL
      */
-    public String getDoLoginUrl(  )
+    public String getDoLoginUrl( )
     {
-        String strLoginUrl = MyLuteceApp.getDoLoginUrl(  );
-        HttpServletRequest request = LocalVariables.getRequest(  );
+        String strLoginUrl = MyLuteceApp.getDoLoginUrl( );
+        HttpServletRequest request = LocalVariables.getRequest( );
 
         if ( request != null )
         {
@@ -135,7 +140,7 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
             if ( StringUtils.isNotBlank( strAuthentication ) )
             {
                 LuteceAuthentication authentication = _mapAuthentications.get( strAuthentication );
-                strLoginUrl = authentication.getDoLoginUrl(  );
+                strLoginUrl = authentication.getDoLoginUrl( );
             }
         }
 
@@ -145,12 +150,13 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
     /**
      * Returns the new account page URL of the Authentication Service <br>
      * Tries to get authentication specific new account page url form request (passed through {@link LocalVariables} ), default otherswise.
+     * 
      * @return The URL
      */
-    public String getNewAccountPageUrl(  )
+    public String getNewAccountPageUrl( )
     {
-        String strNewAccountUrl = MyLuteceApp.getNewAccountUrl(  );
-        HttpServletRequest request = LocalVariables.getRequest(  );
+        String strNewAccountUrl = MyLuteceApp.getNewAccountUrl( );
+        HttpServletRequest request = LocalVariables.getRequest( );
 
         if ( request != null )
         {
@@ -159,7 +165,7 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
             if ( StringUtils.isNotBlank( strAuthentication ) )
             {
                 LuteceAuthentication authentication = _mapAuthentications.get( strAuthentication );
-                strNewAccountUrl = authentication.getNewAccountPageUrl(  );
+                strNewAccountUrl = authentication.getNewAccountPageUrl( );
             }
         }
 
@@ -169,12 +175,13 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
     /**
      * Returns the View account page URL of the Authentication Service <br>
      * Tries to get authentication specific view account page url form request (passed through {@link LocalVariables} ), default otherswise.
+     * 
      * @return The URL
      */
-    public String getViewAccountPageUrl(  )
+    public String getViewAccountPageUrl( )
     {
-        String strViewAccountUrl = MyLuteceApp.getViewAccountUrl(  );
-        HttpServletRequest request = LocalVariables.getRequest(  );
+        String strViewAccountUrl = MyLuteceApp.getViewAccountUrl( );
+        HttpServletRequest request = LocalVariables.getRequest( );
 
         if ( request != null )
         {
@@ -183,7 +190,7 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
             if ( StringUtils.isNotBlank( strAuthentication ) )
             {
                 LuteceAuthentication authentication = _mapAuthentications.get( strAuthentication );
-                strViewAccountUrl = authentication.getViewAccountPageUrl(  );
+                strViewAccountUrl = authentication.getViewAccountPageUrl( );
             }
         }
 
@@ -193,12 +200,13 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
     /**
      * Returns the lost password URL of the Authentication Service. <br>
      * Tries to get authentication specific lost password page url form request (passed through {@link LocalVariables} ), default otherswise.
+     * 
      * @return The URL
      */
-    public String getLostPasswordPageUrl(  )
+    public String getLostPasswordPageUrl( )
     {
-        String strLostPasswordUrl = MyLuteceApp.getLostPasswordUrl(  );
-        HttpServletRequest request = LocalVariables.getRequest(  );
+        String strLostPasswordUrl = MyLuteceApp.getLostPasswordUrl( );
+        HttpServletRequest request = LocalVariables.getRequest( );
 
         if ( request != null )
         {
@@ -207,7 +215,7 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
             if ( StringUtils.isNotBlank( strAuthentication ) )
             {
                 LuteceAuthentication authentication = _mapAuthentications.get( strAuthentication );
-                strLostPasswordUrl = authentication.getLostPasswordPageUrl(  );
+                strLostPasswordUrl = authentication.getLostPasswordPageUrl( );
             }
         }
 
@@ -217,13 +225,14 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
     /**
      * Returns the lost login URL of the Authentication Service. <br>
      * Tries to get authentication specific lost login page url from request (passed through {@link LocalVariables} ), default otherwise.
+     * 
      * @return The URL
      */
     @Override
-    public String getLostLoginPageUrl(  )
+    public String getLostLoginPageUrl( )
     {
-        String strLostLoginUrl = MyLuteceApp.getLostPasswordUrl(  );
-        HttpServletRequest request = LocalVariables.getRequest(  );
+        String strLostLoginUrl = MyLuteceApp.getLostPasswordUrl( );
+        HttpServletRequest request = LocalVariables.getRequest( );
 
         if ( request != null )
         {
@@ -232,7 +241,7 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
             if ( StringUtils.isNotBlank( strAuthentication ) )
             {
                 LuteceAuthentication authentication = _mapAuthentications.get( strAuthentication );
-                strLostLoginUrl = authentication.getLostLoginPageUrl(  );
+                strLostLoginUrl = authentication.getLostLoginPageUrl( );
             }
         }
 
@@ -287,12 +296,13 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
     /**
      * Returns the disconnect URL of the Authentication Service. <br>
      * Tries to get authentication specific dologout page url form request (passed through {@link LocalVariables} ), default otherswise.
+     * 
      * @return The URL
      */
-    public String getDoLogoutUrl(  )
+    public String getDoLogoutUrl( )
     {
-        String strDoLogoutUrl = MyLuteceApp.getDoLogoutUrl(  );
-        HttpServletRequest request = LocalVariables.getRequest(  );
+        String strDoLogoutUrl = MyLuteceApp.getDoLogoutUrl( );
+        HttpServletRequest request = LocalVariables.getRequest( );
 
         if ( request != null )
         {
@@ -301,7 +311,7 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
             if ( StringUtils.isNotBlank( strAuthentication ) )
             {
                 LuteceAuthentication authentication = _mapAuthentications.get( strAuthentication );
-                strDoLogoutUrl = authentication.getDoLogoutUrl(  );
+                strDoLogoutUrl = authentication.getDoLogoutUrl( );
             }
         }
 
@@ -310,27 +320,29 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
 
     /**
      * Returns the access denied template
+     * 
      * @return The template
      */
-    public String getAccessDeniedTemplate(  )
+    public String getAccessDeniedTemplate( )
     {
-        return MyLuteceApp.getAccessDeniedTemplate(  );
+        return MyLuteceApp.getAccessDeniedTemplate( );
     }
 
     /**
      * Returns the access controled template
+     * 
      * @return The template
      */
-    public String getAccessControledTemplate(  )
+    public String getAccessControledTemplate( )
     {
-        return MyLuteceApp.getAccessControledTemplate(  );
+        return MyLuteceApp.getAccessControledTemplate( );
     }
 
     /**
      *
      * {@inheritDoc}
      */
-    public LuteceUser getAnonymousUser(  )
+    public LuteceUser getAnonymousUser( )
     {
         /**
          * Anonymous user
@@ -338,20 +350,20 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
          */
         final class AnonymousUser extends LuteceUser
         {
-            AnonymousUser(  )
+            AnonymousUser( )
             {
                 super( LuteceUser.ANONYMOUS_USERNAME, MultiLuteceAuthentication.this );
             }
         }
 
-        return new AnonymousUser(  );
+        return new AnonymousUser( );
     }
 
     /**
      *
      * {@inheritDoc}
      */
-    public String getAuthServiceName(  )
+    public String getAuthServiceName( )
     {
         return "Lutece Multi Authentication Service";
     }
@@ -368,16 +380,18 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
     /**
      *
      * Finds the http authenticated user. <br>
-     * @param request the reuqest
+     * 
+     * @param request
+     *            the reuqest
      * @return the first successfully recovered user, <code>null</code> otherwise.
      */
     public LuteceUser getHttpAuthenticatedUser( HttpServletRequest request )
     {
         LuteceUser luteceUser = null;
 
-        for ( LuteceAuthentication luteceAuthentication : getListLuteceAuthentication(  ) )
+        for ( LuteceAuthentication luteceAuthentication : getListLuteceAuthentication( ) )
         {
-            if ( luteceAuthentication.isExternalAuthentication(  ) )
+            if ( luteceAuthentication.isExternalAuthentication( ) )
             {
                 luteceUser = luteceAuthentication.getHttpAuthenticatedUser( request );
 
@@ -395,9 +409,9 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
      *
      * {@inheritDoc}
      */
-    public String[] getRolesByUser( LuteceUser user )
+    public String [ ] getRolesByUser( LuteceUser user )
     {
-        LuteceAuthentication userAuthentication = user.getLuteceAuthenticationService(  );
+        LuteceAuthentication userAuthentication = user.getLuteceAuthenticationService( );
 
         if ( userAuthentication != null )
         {
@@ -411,13 +425,15 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
      *
      * Tries to get user from any authentication. <br>
      * Due to huge calculation, this method should not be called often.
-     * @param strUserLogin user login
+     * 
+     * @param strUserLogin
+     *            user login
      * @return the LuteceUser found, <code>null</code> otherwise.
      */
     public LuteceUser getUser( String strUserLogin )
     {
         // try to get user from any authentication
-        for ( LuteceAuthentication authentication : getListLuteceAuthentication(  ) )
+        for ( LuteceAuthentication authentication : getListLuteceAuthentication( ) )
         {
             LuteceUser user = authentication.getUser( strUserLogin );
 
@@ -433,19 +449,21 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
     /**
      *
      * Gets all known users from all authentications.
+     * 
      * @return all kown users list.
      */
-    public Collection<LuteceUser> getUsers(  )
+    public Collection<LuteceUser> getUsers( )
     {
-        List<LuteceUser> listUsers = new ArrayList<LuteceUser>(  );
+        List<LuteceUser> listUsers = new ArrayList<LuteceUser>( );
 
-        for ( LuteceAuthentication luteceAuthentication : getListLuteceAuthentication(  ) )
+        for ( LuteceAuthentication luteceAuthentication : getListLuteceAuthentication( ) )
         {
-        	if( luteceAuthentication.getUsers(  )!= null ){
-        			
-        		listUsers.addAll( luteceAuthentication.getUsers(  ) );
-        	
-        	}
+            if ( luteceAuthentication.getUsers( ) != null )
+            {
+
+                listUsers.addAll( luteceAuthentication.getUsers( ) );
+
+            }
         }
 
         return listUsers;
@@ -455,7 +473,7 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
      *
      * {@inheritDoc}
      */
-    public boolean isExternalAuthentication(  )
+    public boolean isExternalAuthentication( )
     {
         return true;
     }
@@ -471,7 +489,7 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
             return false;
         }
 
-        LuteceAuthentication authentication = user.getLuteceAuthenticationService(  );
+        LuteceAuthentication authentication = user.getLuteceAuthenticationService( );
 
         if ( authentication != null )
         {
@@ -484,9 +502,10 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
     /**
      *
      * Returns false. User list should not be directly recovered, due to use CPU usage.
+     * 
      * @return false.
      */
-    public boolean isUsersListAvailable(  )
+    public boolean isUsersListAvailable( )
     {
         return false;
     }
@@ -495,8 +514,7 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
      *
      * {@inheritDoc}
      */
-    public LuteceUser login( String strUserName, String strUserPassword, HttpServletRequest request )
-        throws LoginException, LoginRedirectException
+    public LuteceUser login( String strUserName, String strUserPassword, HttpServletRequest request ) throws LoginException, LoginRedirectException
     {
         LuteceUser luteceUser = null;
         String strAuthProvider = request.getParameter( PARAMETER_AUTH_PROVIDER );
@@ -507,10 +525,9 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
 
             if ( myLuteceAuthentication != null )
             {
-                if ( AppLogService.isDebugEnabled(  ) )
+                if ( AppLogService.isDebugEnabled( ) )
                 {
-                    AppLogService.debug( "Using " + myLuteceAuthentication.getAuthServiceName(  ) + " for user " +
-                        strUserName );
+                    AppLogService.debug( "Using " + myLuteceAuthentication.getAuthServiceName( ) + " for user " + strUserName );
                 }
 
                 luteceUser = myLuteceAuthentication.login( strUserName, strUserPassword, request );
@@ -518,14 +535,12 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
             else
             {
                 AppLogService.error( "Authentication null for key " + strAuthProvider );
-                throw new LoginException( I18nService.getLocalizedString( PROPERTY_MESSAGE_NO_AUTHENTICATION_SELECTED,
-                        request.getLocale(  ) ) );
+                throw new LoginException( I18nService.getLocalizedString( PROPERTY_MESSAGE_NO_AUTHENTICATION_SELECTED, request.getLocale( ) ) );
             }
         }
         else
         {
-            throw new LoginException( I18nService.getLocalizedString( PROPERTY_MESSAGE_NO_AUTHENTICATION_SELECTED,
-                    request.getLocale(  ) ) );
+            throw new LoginException( I18nService.getLocalizedString( PROPERTY_MESSAGE_NO_AUTHENTICATION_SELECTED, request.getLocale( ) ) );
         }
 
         return luteceUser;
@@ -539,7 +554,7 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
     {
         if ( user != null )
         {
-            LuteceAuthentication luteceAuthentication = user.getLuteceAuthenticationService(  );
+            LuteceAuthentication luteceAuthentication = user.getLuteceAuthenticationService( );
 
             if ( luteceAuthentication != null )
             {
@@ -547,9 +562,9 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
             }
             else
             {
-                AppLogService.error( "No auth provider found for " + user.getName(  ) + ". Brute force logout." );
+                AppLogService.error( "No auth provider found for " + user.getName( ) + ". Brute force logout." );
 
-                for ( LuteceAuthentication authentication : _mapAuthentications.values(  ) )
+                for ( LuteceAuthentication authentication : _mapAuthentications.values( ) )
                 {
                     authentication.logout( user );
                 }
@@ -565,14 +580,16 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
      *
      * {@inheritDoc}
      */
-    public boolean isMultiAuthenticationSupported(  )
+    public boolean isMultiAuthenticationSupported( )
     {
         return true;
     }
 
     /**
      * Gets the authentication by its key
-     * @param strKey the key
+     * 
+     * @param strKey
+     *            the key
      * @return the {@link LuteceAuthentication} found, <code>null</code> otherwise.
      */
     public LuteceAuthentication getLuteceAuthentication( String strKey )
@@ -584,32 +601,33 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
      *
      * {@inheritDoc}
      */
-    public boolean isDelegatedAuthentication(  )
+    public boolean isDelegatedAuthentication( )
     {
         return false;
     }
 
     /**
      * Returns all known security authentication services
+     * 
      * @return all known security authentication services
      */
-    public List<LuteceAuthentication> getListLuteceAuthentication(  )
+    public List<LuteceAuthentication> getListLuteceAuthentication( )
     {
-        List<LuteceAuthentication> listAuthentications = new ArrayList<LuteceAuthentication>(  );
+        List<LuteceAuthentication> listAuthentications = new ArrayList<LuteceAuthentication>( );
 
-        for ( LuteceAuthentication authentication : _mapAuthentications.values(  ) )
+        for ( LuteceAuthentication authentication : _mapAuthentications.values( ) )
         {
-            Plugin plugin = PluginService.getPlugin( authentication.getPluginName(  ) );
+            Plugin plugin = PluginService.getPlugin( authentication.getPluginName( ) );
 
-            if ( ( plugin != null ) && plugin.isInstalled(  ) )
+            if ( ( plugin != null ) && plugin.isInstalled( ) )
             {
                 listAuthentications.add( authentication );
             }
-            else if ( AppLogService.isDebugEnabled(  ) )
-            {
-                AppLogService.debug( "Authentication : Plugin not found or not installed for plugin name " +
-                    authentication.getPluginName(  ) );
-            }
+            else
+                if ( AppLogService.isDebugEnabled( ) )
+                {
+                    AppLogService.debug( "Authentication : Plugin not found or not installed for plugin name " + authentication.getPluginName( ) );
+                }
         }
 
         return listAuthentications;
@@ -617,9 +635,10 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
 
     /**
      * No icon directlty shown for this authentication.
+     * 
      * @return icon url
      */
-    public String getIconUrl(  )
+    public String getIconUrl( )
     {
         return null;
     }
@@ -627,9 +646,10 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
     /**
      *
      * Always <code>null</code>, not supposed to be identifiable
+     * 
      * @return null
      */
-    public String getName(  )
+    public String getName( )
     {
         return null;
     }
@@ -637,9 +657,10 @@ public class MultiLuteceAuthentication extends AbstractAuthentication
     /**
      *
      * Always <code>null</code>, this implementation is not plugin related.
+     * 
      * @return null
      */
-    public String getPluginName(  )
+    public String getPluginName( )
     {
         return null;
     }

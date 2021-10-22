@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,6 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
  * IAttribute
  */
@@ -48,194 +47,239 @@ public interface IAttribute
 {
     /**
      * Get ID Attribute
+     * 
      * @return ID attribute
      */
-    int getIdAttribute(  );
+    int getIdAttribute( );
 
     /**
      * Set ID Attribute
-     * @param nIdAttribute ID Attribute
+     * 
+     * @param nIdAttribute
+     *            ID Attribute
      */
     void setIdAttribute( int nIdAttribute );
 
     /**
      * Get Mandatory
+     * 
      * @return true if it's mandatory, false otherwise
      */
-    boolean isMandatory(  );
+    boolean isMandatory( );
 
     /**
      * Set mandatory
-     * @param bMandatory true if it's mandatory, false otherwise
+     * 
+     * @param bMandatory
+     *            true if it's mandatory, false otherwise
      */
     void setMandatory( boolean bMandatory );
 
     /**
      * Get list fields
+     * 
      * @return list fields
      */
-    List<AttributeField> getListAttributeFields(  );
+    List<AttributeField> getListAttributeFields( );
 
     /**
      * Set list fields
-     * @param listAttributeFields list fields
+     * 
+     * @param listAttributeFields
+     *            list fields
      */
     void setListAttributeFields( List<AttributeField> listAttributeFields );
 
     /**
      * Get title
+     * 
      * @return title
      */
-    String getTitle(  );
+    String getTitle( );
 
     /**
      * Set title
-     * @param strTitle title
+     * 
+     * @param strTitle
+     *            title
      */
     void setTitle( String strTitle );
 
     /**
      * Get help Message
+     * 
      * @return help message
      */
-    String getHelpMessage(  );
+    String getHelpMessage( );
 
     /**
      * Set help message
-     * @param strHelpMessage help message
+     * 
+     * @param strHelpMessage
+     *            help message
      */
     void setHelpMessage( String strHelpMessage );
 
     /**
      * Get position
+     * 
      * @return position
      */
-    int getPosition(  );
+    int getPosition( );
 
     /**
      * Set position
-     * @param nPosition position
+     * 
+     * @param nPosition
+     *            position
      */
     void setPosition( int nPosition );
 
     /**
      * Get attribute type
+     * 
      * @return attribute type
      */
-    AttributeType getAttributeType(  );
+    AttributeType getAttributeType( );
 
     /**
      * Set attribute Type
-     * @param attributeType attribute type
+     * 
+     * @param attributeType
+     *            attribute type
      */
     void setAttributeType( AttributeType attributeType );
 
     /**
      * Get plugin
+     * 
      * @return plugin
      */
-    Plugin getPlugin(  );
+    Plugin getPlugin( );
 
     /**
      * Set plugin
-     * @param plugin plugin
+     * 
+     * @param plugin
+     *            plugin
      */
     void setPlugin( Plugin plugin );
 
     /**
      * Get the anonymize status of the attribute
+     * 
      * @return True if the attribute should be anonymize, false otherwise.
      */
-    boolean getAnonymize(  );
+    boolean getAnonymize( );
 
     /**
      * Set the anonymize status of the attribute
-     * @param bAnonymize New anonymize status. True if the attribute should be
-     *            anonymize, false otherwise.
+     * 
+     * @param bAnonymize
+     *            New anonymize status. True if the attribute should be anonymize, false otherwise.
      */
     void setAnonymize( boolean bAnonymize );
 
     /**
      * Check if the attribute is shown in search
+     * 
      * @return true if it is, false otherwise
      */
-    boolean isShownInSearch(  );
+    boolean isShownInSearch( );
 
     /**
      * Set isShownInSearch
-     * @param bIsShownInSearch shown in search
+     * 
+     * @param bIsShownInSearch
+     *            shown in search
      */
     void setShownInSearch( boolean bIsShownInSearch );
 
     /**
      * Get the data of the user fields
-     * @param request HttpServletRequest
-     * @param nIdUser Id of the user
+     * 
+     * @param request
+     *            HttpServletRequest
+     * @param nIdUser
+     *            Id of the user
      * @return user field data
      */
     List<MyLuteceUserField> getUserFieldsData( HttpServletRequest request, int nIdUser );
 
     /**
      * Set attribute type
-     * @param locale locale
+     * 
+     * @param locale
+     *            locale
      */
     void setAttributeType( Locale locale );
 
     /**
      * Get page title for create page
+     * 
      * @return page title
      */
-    String getPropertyCreatePageTitle(  );
+    String getPropertyCreatePageTitle( );
 
     /**
      * Get page title for modify page
+     * 
      * @return page title
      */
-    String getPropertyModifyPageTitle(  );
+    String getPropertyModifyPageTitle( );
 
     /**
      * Get the template create an attribute
+     * 
      * @return The URL of the template
      */
-    String getTemplateCreateAttribute(  );
+    String getTemplateCreateAttribute( );
 
     /**
      * Get the template modify an attribute
+     * 
      * @return The URL of the template
      */
-    String getTemplateModifyAttribute(  );
+    String getTemplateModifyAttribute( );
 
     /**
      * Get the template html form attribute
+     * 
      * @return the template
      */
-    String getTemplateHtmlFormAttribute(  );
+    String getTemplateHtmlFormAttribute( );
 
     /**
      * Get the template html form search attribute
+     * 
      * @return the template
      */
-    String getTemplateHtmlFormSearchAttribute(  );
+    String getTemplateHtmlFormSearchAttribute( );
 
     /**
      * Set the data of the attribute
-     * @param request HttpServletRequest
+     * 
+     * @param request
+     *            HttpServletRequest
      * @return null if there are no errors
      */
     String setAttributeData( HttpServletRequest request );
 
     /**
      * Get whether the attribute is anonymizable.
+     * 
      * @return True if the attribute can be anonymized, false otherwise.
      */
-    boolean isAnonymizable(  );
+    boolean isAnonymizable( );
 
     /**
      * Get user fields objects from values
-     * @param values The values of user fields. May contain either the value of
-     *            the user field or its title
-     * @param nIdUser The id of the user
+     * 
+     * @param values
+     *            The values of user fields. May contain either the value of the user field or its title
+     * @param nIdUser
+     *            The id of the user
      * @return The user fields
      */
-    List<MyLuteceUserField> getUserFieldsData( String[] values, int nIdUser );
+    List<MyLuteceUserField> getUserFieldsData( String [ ] values, int nIdUser );
 }

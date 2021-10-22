@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,6 @@ import java.sql.Timestamp;
 
 import java.util.List;
 
-
 /**
  * User parameter service interface
  *
@@ -50,54 +49,72 @@ public interface IUserParameterService
 {
     /**
      * Get the parameter from a given key
-     * @param strParameterKey the key
-     * @param plugin the plugin
+     * 
+     * @param strParameterKey
+     *            the key
+     * @param plugin
+     *            the plugin
      * @return the parameter
      */
     ReferenceItem findByKey( String strParameterKey, Plugin plugin );
 
     /**
      * Find all parameters
-     * @param plugin the plugin
+     * 
+     * @param plugin
+     *            the plugin
      * @return a ReferenceList
      */
     ReferenceList findAll( Plugin plugin );
 
     /**
      * Update a parameter
-     * @param userParam the parameter
-     * @param plugin the plugin
+     * 
+     * @param userParam
+     *            the parameter
+     * @param plugin
+     *            the plugin
      */
     void update( ReferenceItem userParam, Plugin plugin );
 
     /**
      * Check if the passwords must be encrypted or not
-     * @param plugin the plugin
+     * 
+     * @param plugin
+     *            the plugin
      * @return true if they are encrypted, false otherwise
      */
     boolean isPasswordEncrypted( Plugin plugin );
 
     /**
      * Get the encryption algorithm
-     * @param plugin the plugin
+     * 
+     * @param plugin
+     *            the plugin
      * @return the encryption algorithm
      */
     String getEncryptionAlgorithm( Plugin plugin );
 
     /**
      * Get the number of password change done by a user since the given date.
-     * @param minDate Minimum date to consider.
-     * @param nUserId Id of the user
-     * @param plugin the plugin
-     * @return The number of password change done by the user since the given
-     *         date.
+     * 
+     * @param minDate
+     *            Minimum date to consider.
+     * @param nUserId
+     *            Id of the user
+     * @param plugin
+     *            the plugin
+     * @return The number of password change done by the user since the given date.
      */
     int countUserPasswordHistoryFromDate( Timestamp minDate, int nUserId, Plugin plugin );
 
     /**
      * Gets the history of password of the given user
-     * @param nUserId Id of the user
-     * @param plugin the plugin
+     * 
+     * @param nUserId
+     *            Id of the user
+     * @param plugin
+     *            the plugin
      * @return The collection of recent passwords used by the user.
      */
     List<String> selectUserPasswordHistory( int nUserId, Plugin plugin );

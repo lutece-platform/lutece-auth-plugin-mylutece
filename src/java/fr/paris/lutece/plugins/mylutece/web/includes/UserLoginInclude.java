@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -50,15 +50,14 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
  * This class provide user login form in a UserLoginInclude
  *
  */
 public class UserLoginInclude implements PageInclude
 {
-	private static final String TOKEN_ACTION_LOGIN = "dologin";
-	private static final String MARK_USERLOGIN = "pageinclude_userlogin";
+    private static final String TOKEN_ACTION_LOGIN = "dologin";
+    private static final String MARK_USERLOGIN = "pageinclude_userlogin";
     private static final String MARK_USERLOGIN_TITLE = "pageinclude_userlogin_title";
     private static final String MARK_LIST_AUTHENTICATIONS = "list_authentications";
     private static final String MARK_URL_NEWACCOUNT = "url_new_account";
@@ -71,40 +70,43 @@ public class UserLoginInclude implements PageInclude
     private static final String MARK_DO_LOGOUT = "url_dologout";
     private static final String MARK_URL_ACCOUNT = "url_account";
     private static final String PARAMETER_XPAGE_MYLUTECE = "mylutece";
-  
 
     /**
      * Substitue specific Freemarker markers in the page template.
-     * @param rootModel the HashMap containing markers to substitute
-     * @param data A PageData object containing applications data
-     * @param nMode The current mode
-     * @param request The HTTP request
+     * 
+     * @param rootModel
+     *            the HashMap containing markers to substitute
+     * @param data
+     *            A PageData object containing applications data
+     * @param nMode
+     *            The current mode
+     * @param request
+     *            The HTTP request
      */
     public void fillTemplate( Map<String, Object> rootModel, PageData data, int nMode, HttpServletRequest request )
     {
         String strUserLoginTitle = "<!-- no authenticated user -->";
         String strUserLoginForm = "<!-- no authenticated user -->";
 
-        Map<String, Object> model = new HashMap<String, Object>(  );
+        Map<String, Object> model = new HashMap<String, Object>( );
 
-        if ( SecurityService.isAuthenticationEnable(  ) )
+        if ( SecurityService.isAuthenticationEnable( ) )
         {
             if ( request != null )
             {
-                LuteceUser user = SecurityService.getInstance(  ).getRegisteredUser( request );
-                model.put( MARK_DO_LOGIN, SecurityService.getInstance(  ).getDoLoginUrl(  ) );
-                model.put( MARK_DO_LOGOUT, SecurityService.getInstance(  ).getDoLogoutUrl(  ) );
-                model.put( MARK_URL_ACCOUNT, SecurityService.getInstance(  ).getViewAccountPageUrl() );
-                //Add Token
-                model.put(SecurityTokenService.MARK_TOKEN,SecurityTokenService.getInstance().getToken(request, TOKEN_ACTION_LOGIN));
-             
+                LuteceUser user = SecurityService.getInstance( ).getRegisteredUser( request );
+                model.put( MARK_DO_LOGIN, SecurityService.getInstance( ).getDoLoginUrl( ) );
+                model.put( MARK_DO_LOGOUT, SecurityService.getInstance( ).getDoLogoutUrl( ) );
+                model.put( MARK_URL_ACCOUNT, SecurityService.getInstance( ).getViewAccountPageUrl( ) );
+                // Add Token
+                model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, TOKEN_ACTION_LOGIN ) );
+
                 if ( user != null )
                 {
                     model.put( MARK_USER, user );
 
-                    HtmlTemplate tTitle = AppTemplateService.getTemplate( TEMPLATE_USER_LOGIN_TITLE_LOGGED,
-                            request.getLocale(  ), model );
-                    strUserLoginTitle = tTitle.getHtml(  );
+                    HtmlTemplate tTitle = AppTemplateService.getTemplate( TEMPLATE_USER_LOGIN_TITLE_LOGGED, request.getLocale( ), model );
+                    strUserLoginTitle = tTitle.getHtml( );
                 }
                 else
                 {
@@ -115,35 +117,31 @@ public class UserLoginInclude implements PageInclude
                         MyLuteceApp.setCurrentUrl( request );
                     }
 
-                    HtmlTemplate tTitle = AppTemplateService.getTemplate( TEMPLATE_USER_LOGIN_TITLE,
-                            request.getLocale(  ), model );
-                    strUserLoginTitle = tTitle.getHtml(  );
+                    HtmlTemplate tTitle = AppTemplateService.getTemplate( TEMPLATE_USER_LOGIN_TITLE, request.getLocale( ), model );
+                    strUserLoginTitle = tTitle.getHtml( );
                 }
 
                 HtmlTemplate t;
-                model.put( MARK_URL_NEWACCOUNT,
-                    SecurityService.getInstance(  ).getAuthenticationService(  ).getNewAccountPageUrl(  ) );
-                  
-                if ( SecurityService.getInstance(  ).isMultiAuthenticationSupported(  ) )
+                model.put( MARK_URL_NEWACCOUNT, SecurityService.getInstance( ).getAuthenticationService( ).getNewAccountPageUrl( ) );
+
+                if ( SecurityService.getInstance( ).isMultiAuthenticationSupported( ) )
                 {
-                    LuteceAuthentication luteceAuthentication = SecurityService.getInstance(  )
-                                                                               .getAuthenticationService(  );
+                    LuteceAuthentication luteceAuthentication = SecurityService.getInstance( ).getAuthenticationService( );
 
                     if ( luteceAuthentication instanceof MultiLuteceAuthentication )
                     {
-                        model.put( MARK_LIST_AUTHENTICATIONS,
-                            ( (MultiLuteceAuthentication) luteceAuthentication ).getListLuteceAuthentication(  ) );
+                        model.put( MARK_LIST_AUTHENTICATIONS, ( (MultiLuteceAuthentication) luteceAuthentication ).getListLuteceAuthentication( ) );
                     }
 
-                    t = AppTemplateService.getTemplate( TEMPLATE_USER_LOGIN_MULTI_FORM, request.getLocale(  ), model );
+                    t = AppTemplateService.getTemplate( TEMPLATE_USER_LOGIN_MULTI_FORM, request.getLocale( ), model );
                 }
                 else
                 {
-                    t = AppTemplateService.getTemplate( TEMPLATE_USER_LOGIN_FORM, request.getLocale(  ), model );
+                    t = AppTemplateService.getTemplate( TEMPLATE_USER_LOGIN_FORM, request.getLocale( ), model );
                 }
 
-                strUserLoginForm = t.getHtml(  );
-                rootModel.put("LUTECE_USER", user );
+                strUserLoginForm = t.getHtml( );
+                rootModel.put( "LUTECE_USER", user );
             }
         }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2017, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,7 +35,6 @@ package fr.paris.lutece.plugins.mylutece.service;
 
 import java.util.Map;
 
-
 /**
  *
  * IMyLuteceIdentityProviderService
@@ -45,7 +44,8 @@ public interface IMyLuteceExternalIdentityProviderService
 {
     /**
      *
-     * @param strUserName The usernamee
+     * @param strUserName
+     *            The usernamee
      * @return a Map containing the users informations
      */
     public Map<String, String> getIdentityInformations( String strName );

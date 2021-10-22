@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,7 +45,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
  *
  * Attribute
@@ -76,22 +75,25 @@ public abstract class AbstractAttribute implements IAttribute
     /**
      * Constructor
      */
-    public AbstractAttribute(  )
+    public AbstractAttribute( )
     {
     }
 
     /**
      * Get ID Attribute
+     * 
      * @return ID attribute
      */
-    public int getIdAttribute(  )
+    public int getIdAttribute( )
     {
         return _nIdAttribute;
     }
 
     /**
      * Set ID Attribute
-     * @param nIdAttribute ID Attribute
+     * 
+     * @param nIdAttribute
+     *            ID Attribute
      */
     public void setIdAttribute( int nIdAttribute )
     {
@@ -100,16 +102,19 @@ public abstract class AbstractAttribute implements IAttribute
 
     /**
      * Get Mandatory
+     * 
      * @return true if it's mandatory, false otherwise
      */
-    public boolean isMandatory(  )
+    public boolean isMandatory( )
     {
         return _bMandatory;
     }
 
     /**
      * Set mandatory
-     * @param bMandatory true if it's mandatory, false otherwise
+     * 
+     * @param bMandatory
+     *            true if it's mandatory, false otherwise
      */
     public void setMandatory( boolean bMandatory )
     {
@@ -118,16 +123,19 @@ public abstract class AbstractAttribute implements IAttribute
 
     /**
      * Get list fields
+     * 
      * @return list fields
      */
-    public List<AttributeField> getListAttributeFields(  )
+    public List<AttributeField> getListAttributeFields( )
     {
         return _listAttributeFields;
     }
 
     /**
      * Set list fields
-     * @param listAttributeFields list fields
+     * 
+     * @param listAttributeFields
+     *            list fields
      */
     public void setListAttributeFields( List<AttributeField> listAttributeFields )
     {
@@ -136,16 +144,19 @@ public abstract class AbstractAttribute implements IAttribute
 
     /**
      * Get title
+     * 
      * @return title
      */
-    public String getTitle(  )
+    public String getTitle( )
     {
         return _strTitle;
     }
 
     /**
      * Set title
-     * @param strTitle title
+     * 
+     * @param strTitle
+     *            title
      */
     public void setTitle( String strTitle )
     {
@@ -154,16 +165,19 @@ public abstract class AbstractAttribute implements IAttribute
 
     /**
      * Get help Message
+     * 
      * @return help message
      */
-    public String getHelpMessage(  )
+    public String getHelpMessage( )
     {
         return _strHelpMessage;
     }
 
     /**
      * Set help message
-     * @param strHelpMessage help message
+     * 
+     * @param strHelpMessage
+     *            help message
      */
     public void setHelpMessage( String strHelpMessage )
     {
@@ -172,16 +186,19 @@ public abstract class AbstractAttribute implements IAttribute
 
     /**
      * Get position
+     * 
      * @return position
      */
-    public int getPosition(  )
+    public int getPosition( )
     {
         return _nPosition;
     }
 
     /**
      * Set position
-     * @param nPosition position
+     * 
+     * @param nPosition
+     *            position
      */
     public void setPosition( int nPosition )
     {
@@ -190,16 +207,19 @@ public abstract class AbstractAttribute implements IAttribute
 
     /**
      * Get attribute type
+     * 
      * @return attribute type
      */
-    public AttributeType getAttributeType(  )
+    public AttributeType getAttributeType( )
     {
         return _attributeType;
     }
 
     /**
      * Set attribute Type
-     * @param attributeType attribute type
+     * 
+     * @param attributeType
+     *            attribute type
      */
     public void setAttributeType( AttributeType attributeType )
     {
@@ -208,55 +228,63 @@ public abstract class AbstractAttribute implements IAttribute
 
     /**
      * Get Html form
-     * @param locale locale
+     * 
+     * @param locale
+     *            locale
      * @return html form
      */
     public String getHtmlFormAttribute( Locale locale )
     {
-        Map<String, Object> model = new HashMap<String, Object>(  );
+        Map<String, Object> model = new HashMap<String, Object>( );
         model.put( MARK_ATTRIBUTE, this );
 
-        HtmlTemplate template = AppTemplateService.getTemplate( getTemplateHtmlFormAttribute(  ), locale, model );
+        HtmlTemplate template = AppTemplateService.getTemplate( getTemplateHtmlFormAttribute( ), locale, model );
 
-        return template.getHtml(  );
+        return template.getHtml( );
     }
 
     /**
      * Get Html form
-     * @param locale locale
-     * @param listDefaultValues Default values
+     * 
+     * @param locale
+     *            locale
+     * @param listDefaultValues
+     *            Default values
      * @return html form
      */
     public String getHtmlFormAttribute( Locale locale, List<MyLuteceUserField> listDefaultValues )
     {
-        Map<String, Object> model = new HashMap<String, Object>(  );
+        Map<String, Object> model = new HashMap<String, Object>( );
         model.put( MARK_ATTRIBUTE, this );
         model.put( MARK_DEFAULT_VALUES_LIST, listDefaultValues );
 
-        HtmlTemplate template = AppTemplateService.getTemplate( getTemplateHtmlFormAttribute(  ), locale, model );
+        HtmlTemplate template = AppTemplateService.getTemplate( getTemplateHtmlFormAttribute( ), locale, model );
 
-        return template.getHtml(  );
+        return template.getHtml( );
     }
 
     /**
      * Get Html form
-     * @param auFieldFilter Search filter
-     * @param locale locale
+     * 
+     * @param auFieldFilter
+     *            Search filter
+     * @param locale
+     *            locale
      * @return html form
      */
     public String getHtmlFormSearchAttribute( MyLuteceUserFieldFilter auFieldFilter, Locale locale )
     {
-        Map<String, Object> model = new HashMap<String, Object>(  );
-        List<MyLuteceUserField> listUserFields = auFieldFilter.getListUserFields(  );
+        Map<String, Object> model = new HashMap<String, Object>( );
+        List<MyLuteceUserField> listUserFields = auFieldFilter.getListUserFields( );
         List<MyLuteceUserField> selectedUserFields = null;
 
-        if ( ( listUserFields != null ) && ( listUserFields.size(  ) != 0 ) )
+        if ( ( listUserFields != null ) && ( listUserFields.size( ) != 0 ) )
         {
-            selectedUserFields = new ArrayList<MyLuteceUserField>(  );
+            selectedUserFields = new ArrayList<MyLuteceUserField>( );
 
             for ( MyLuteceUserField userField : listUserFields )
             {
-                if ( userField.getAttribute(  ).getIdAttribute(  ) == _nIdAttribute )
+                if ( userField.getAttribute( ).getIdAttribute( ) == _nIdAttribute )
                 {
                     selectedUserFields.add( userField );
                 }
@@ -266,23 +294,26 @@ public abstract class AbstractAttribute implements IAttribute
         model.put( MARK_DEFAULT_VALUES_LIST, selectedUserFields );
         model.put( MARK_ATTRIBUTE, this );
 
-        HtmlTemplate template = AppTemplateService.getTemplate( getTemplateHtmlFormSearchAttribute(  ), locale, model );
+        HtmlTemplate template = AppTemplateService.getTemplate( getTemplateHtmlFormSearchAttribute( ), locale, model );
 
-        return template.getHtml(  );
+        return template.getHtml( );
     }
 
     /**
      * Get plugin
+     * 
      * @return plugin
      */
-    public Plugin getPlugin(  )
+    public Plugin getPlugin( )
     {
         return _plugin;
     }
 
     /**
      * Set plugin
-     * @param plugin plugin
+     * 
+     * @param plugin
+     *            plugin
      */
     public void setPlugin( Plugin plugin )
     {
@@ -291,17 +322,19 @@ public abstract class AbstractAttribute implements IAttribute
 
     /**
      * Get the anonymize status of the attribute
+     * 
      * @return True if the attribute should be anonymize, false otherwise.
      */
-    public boolean getAnonymize(  )
+    public boolean getAnonymize( )
     {
         return _bAnonymize;
     }
 
     /**
      * Set the anonymize status of the attribute
-     * @param bAnonymize New anonymize status. True if the attribute should be
-     *            anonymize, false otherwise.
+     * 
+     * @param bAnonymize
+     *            New anonymize status. True if the attribute should be anonymize, false otherwise.
      */
     public void setAnonymize( boolean bAnonymize )
     {
@@ -310,16 +343,19 @@ public abstract class AbstractAttribute implements IAttribute
 
     /**
      * Check if the attribute is shown in search
+     * 
      * @return true if it is, false otherwise
      */
-    public boolean isShownInSearch(  )
+    public boolean isShownInSearch( )
     {
         return _bIsShownInSearch;
     }
 
     /**
      * Set isShownInSearch
-     * @param bIsShownInSearch shown in search
+     * 
+     * @param bIsShownInSearch
+     *            shown in search
      */
     public void setShownInSearch( boolean bIsShownInSearch )
     {
@@ -328,13 +364,16 @@ public abstract class AbstractAttribute implements IAttribute
 
     /**
      * Get the data of the user fields
-     * @param request HttpServletRequest
-     * @param nIdUser Id of the user
+     * 
+     * @param request
+     *            HttpServletRequest
+     * @param nIdUser
+     *            Id of the user
      * @return user field data
      */
     public List<MyLuteceUserField> getUserFieldsData( HttpServletRequest request, int nIdUser )
     {
-        String[] values = request.getParameterValues( PARAMETER_ATTRIBUTE + CONSTANT_UNDERSCORE + _nIdAttribute );
+        String [ ] values = request.getParameterValues( PARAMETER_ATTRIBUTE + CONSTANT_UNDERSCORE + _nIdAttribute );
 
         return getUserFieldsData( values, nIdUser );
     }

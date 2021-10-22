@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -38,7 +38,6 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
 
 import java.sql.Timestamp;
 
-
 /**
  * This class provides instances management methods (create, find, ...) for UserLog objects
  */
@@ -50,7 +49,7 @@ public final class ConnectionLogHome
     /**
      * Creates a new UserLogHome object.
      */
-    private ConnectionLogHome(  )
+    private ConnectionLogHome( )
     {
     }
 
@@ -59,8 +58,11 @@ public final class ConnectionLogHome
 
     /**
      * Insert a new record in the table of connections
-     * @param connetionLog the ConnectionLog object
-     * @param plugin The plugin
+     * 
+     * @param connetionLog
+     *            the ConnectionLog object
+     * @param plugin
+     *            The plugin
      */
     public static void addUserLog( ConnectionLog connetionLog, Plugin plugin )
     {
@@ -68,11 +70,14 @@ public final class ConnectionLogHome
     }
 
     /**
-     * Calculate the number of connections with a given ip_address by a
-     * determinate time
-     * @param connetionLog the connetionLog object
-     * @param nIntervalMinutes The number of minutes of properties file
-     * @param plugin The plugin
+     * Calculate the number of connections with a given ip_address by a determinate time
+     * 
+     * @param connetionLog
+     *            the connetionLog object
+     * @param nIntervalMinutes
+     *            The number of minutes of properties file
+     * @param plugin
+     *            The plugin
      * @return int the count of errors of login
      */
     public static int getLoginErrors( ConnectionLog connetionLog, int nIntervalMinutes, Plugin plugin )
@@ -82,10 +87,15 @@ public final class ConnectionLogHome
 
     /**
      * Update connection logs of an IP to allow the user to login.
-     * @param strIp Ip to clean
-     * @param dateLogin Date of the last login. Anly logs between this date plus or minus the minute interval will be cleared.
-     * @param nIntervalMinutes Minutes interval
-     * @param plugin The plugin
+     * 
+     * @param strIp
+     *            Ip to clean
+     * @param dateLogin
+     *            Date of the last login. Anly logs between this date plus or minus the minute interval will be cleared.
+     * @param nIntervalMinutes
+     *            Minutes interval
+     * @param plugin
+     *            The plugin
      */
     public static void resetConnectionLogs( String strIp, Timestamp dateLogin, int nIntervalMinutes, Plugin plugin )
     {

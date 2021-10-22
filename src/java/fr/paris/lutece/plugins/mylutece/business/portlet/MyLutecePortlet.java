@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,7 +47,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
  * MyLutecePortlet
  */
@@ -75,76 +74,70 @@ public class MyLutecePortlet extends Portlet
     /**
      * Constructor
      */
-    public MyLutecePortlet(  )
+    public MyLutecePortlet( )
     {
     }
 
     /**
      * Returns the Xml code of the MyLutece portlet without XML heading
      *
-     * @param request The HTTP Servlet request
+     * @param request
+     *            The HTTP Servlet request
      * @return the Xml code of the MyLutece portlet content
      */
     public String getXml( HttpServletRequest request )
     {
-        StringBuffer sbXml = new StringBuffer(  );
+        StringBuffer sbXml = new StringBuffer( );
 
-        if ( !SecurityService.isAuthenticationEnable(  ) )
+        if ( !SecurityService.isAuthenticationEnable( ) )
         {
             XmlUtil.beginElement( sbXml, TAG_MY_LUTECE_PORTLET );
             XmlUtil.endElement( sbXml, TAG_MY_LUTECE_PORTLET );
 
-            return sbXml.toString(  );
+            return sbXml.toString( );
         }
 
-        LuteceUser user = ( request == null ) ? null : SecurityService.getInstance(  ).getRegisteredUser( request );
+        LuteceUser user = ( request == null ) ? null : SecurityService.getInstance( ).getRegisteredUser( request );
 
         XmlUtil.beginElement( sbXml, TAG_MY_LUTECE_PORTLET );
 
         if ( user != null )
         {
             XmlUtil.beginElement( sbXml, TAG_LUTECE_USER );
-            XmlUtil.addElementHtml( sbXml, TAG_LUTECE_USER_NAME, user.getName(  ) );
+            XmlUtil.addElementHtml( sbXml, TAG_LUTECE_USER_NAME, user.getName( ) );
             XmlUtil.addElementHtml( sbXml, TAG_LUTECE_USER_NAME_GIVEN, user.getUserInfo( LuteceUser.NAME_GIVEN ) );
             XmlUtil.addElementHtml( sbXml, TAG_LUTECE_USER_NAME_FAMILY, user.getUserInfo( LuteceUser.NAME_FAMILY ) );
 
-            if ( user.getLuteceAuthenticationService(  ) != null )
+            if ( user.getLuteceAuthenticationService( ) != null )
             {
-                Map<String, Object> mapAttributes = new HashMap<String, Object>(  );
-                mapAttributes.put( ATTRIBUTE_AUTHENTICATION_EXTERNAL,
-                    user.getLuteceAuthenticationService(  ).isExternalAuthentication(  ) );
-                mapAttributes.put( ATTRIBUTE_AUTHENTICATION_DELEGATED,
-                    user.getLuteceAuthenticationService(  ).isDelegatedAuthentication(  ) );
-                mapAttributes.put( ATTRIBUTE_AUTHENTICATION_LOGINPASSWORD_REQUIRED,
-                    user.getLuteceAuthenticationService(  ).isExternalAuthentication(  ) &&
-                    user.getLuteceAuthenticationService(  ).isDelegatedAuthentication(  ) );
+                Map<String, Object> mapAttributes = new HashMap<String, Object>( );
+                mapAttributes.put( ATTRIBUTE_AUTHENTICATION_EXTERNAL, user.getLuteceAuthenticationService( ).isExternalAuthentication( ) );
+                mapAttributes.put( ATTRIBUTE_AUTHENTICATION_DELEGATED, user.getLuteceAuthenticationService( ).isDelegatedAuthentication( ) );
+                mapAttributes.put( ATTRIBUTE_AUTHENTICATION_LOGINPASSWORD_REQUIRED, user.getLuteceAuthenticationService( ).isExternalAuthentication( )
+                        && user.getLuteceAuthenticationService( ).isDelegatedAuthentication( ) );
                 XmlUtil.beginElement( sbXml, TAG_LUTECE_USER_AUTHENTICATION_SERVICE, mapAttributes );
-                XmlUtil.addElement( sbXml, TAG_AUTHENTICATION_NAME, user.getLuteceAuthenticationService(  ).getName(  ) );
-                XmlUtil.addElement( sbXml, TAG_AUTHENTICATION_DISPLAY_NAME,
-                    user.getLuteceAuthenticationService(  ).getAuthServiceName(  ) );
-                XmlUtil.addElement( sbXml, TAG_AUTHENTICATION_ICON_URL,
-                    ObjectUtils.toString( user.getLuteceAuthenticationService(  ).getIconUrl(  ) ) );
+                XmlUtil.addElement( sbXml, TAG_AUTHENTICATION_NAME, user.getLuteceAuthenticationService( ).getName( ) );
+                XmlUtil.addElement( sbXml, TAG_AUTHENTICATION_DISPLAY_NAME, user.getLuteceAuthenticationService( ).getAuthServiceName( ) );
+                XmlUtil.addElement( sbXml, TAG_AUTHENTICATION_ICON_URL, ObjectUtils.toString( user.getLuteceAuthenticationService( ).getIconUrl( ) ) );
                 XmlUtil.addElement( sbXml, ATTRIBUTE_AUTHENTICATION_DELEGATED,
-                    Boolean.toString( user.getLuteceAuthenticationService(  ).isDelegatedAuthentication(  ) ) );
-                XmlUtil.addElement( sbXml, TAG_AUTHENTICATION_URL,
-                    user.getLuteceAuthenticationService(  ).getDoLoginUrl(  ) );
+                        Boolean.toString( user.getLuteceAuthenticationService( ).isDelegatedAuthentication( ) ) );
+                XmlUtil.addElement( sbXml, TAG_AUTHENTICATION_URL, user.getLuteceAuthenticationService( ).getDoLoginUrl( ) );
                 XmlUtil.endElement( sbXml, TAG_LUTECE_USER_AUTHENTICATION_SERVICE );
             }
 
-            String strLogoutUrl = SecurityService.getInstance(  ).getDoLogoutUrl(  );
+            String strLogoutUrl = SecurityService.getInstance( ).getDoLogoutUrl( );
 
             if ( strLogoutUrl != null )
             {
                 XmlUtil.addElementHtml( sbXml, TAG_LUTECE_USER_LOGOUT_URL, strLogoutUrl );
             }
 
-            String strViewAccountUrl = ( user.getLuteceAuthenticationService(  ) != null )
-                ? user.getLuteceAuthenticationService(  ).getViewAccountPageUrl(  ) : null;
+            String strViewAccountUrl = ( user.getLuteceAuthenticationService( ) != null ) ? user.getLuteceAuthenticationService( ).getViewAccountPageUrl( )
+                    : null;
 
             if ( strViewAccountUrl != null )
             {
-                XmlUtil.addElementHtml( sbXml, TAG_LUTECE_USER_VIEW_ACCOUNT_URL,
-                    user.getLuteceAuthenticationService(  ).getViewAccountPageUrl(  ) );
+                XmlUtil.addElementHtml( sbXml, TAG_LUTECE_USER_VIEW_ACCOUNT_URL, user.getLuteceAuthenticationService( ).getViewAccountPageUrl( ) );
             }
 
             XmlUtil.endElement( sbXml, TAG_LUTECE_USER );
@@ -153,42 +146,37 @@ public class MyLutecePortlet extends Portlet
         {
             XmlUtil.beginElement( sbXml, TAG_USER_NOT_SIGNED );
 
-            if ( SecurityService.getInstance(  ).getAuthenticationService(  ).isMultiAuthenticationSupported(  ) )
+            if ( SecurityService.getInstance( ).getAuthenticationService( ).isMultiAuthenticationSupported( ) )
             {
-                LuteceAuthentication multiAuthentication = SecurityService.getInstance(  ).getAuthenticationService(  );
+                LuteceAuthentication multiAuthentication = SecurityService.getInstance( ).getAuthenticationService( );
 
                 if ( multiAuthentication instanceof MultiLuteceAuthentication )
                 {
-                    for ( LuteceAuthentication luteceAuthentication : ( (MultiLuteceAuthentication) multiAuthentication ).getListLuteceAuthentication(  ) )
+                    for ( LuteceAuthentication luteceAuthentication : ( (MultiLuteceAuthentication) multiAuthentication ).getListLuteceAuthentication( ) )
                     {
-                        Map<String, Object> mapAttributes = new HashMap<String, Object>(  );
-                        mapAttributes.put( ATTRIBUTE_AUTHENTICATION_EXTERNAL,
-                            luteceAuthentication.isExternalAuthentication(  ) );
-                        mapAttributes.put( ATTRIBUTE_AUTHENTICATION_DELEGATED,
-                            luteceAuthentication.isDelegatedAuthentication(  ) );
+                        Map<String, Object> mapAttributes = new HashMap<String, Object>( );
+                        mapAttributes.put( ATTRIBUTE_AUTHENTICATION_EXTERNAL, luteceAuthentication.isExternalAuthentication( ) );
+                        mapAttributes.put( ATTRIBUTE_AUTHENTICATION_DELEGATED, luteceAuthentication.isDelegatedAuthentication( ) );
                         mapAttributes.put( ATTRIBUTE_AUTHENTICATION_LOGINPASSWORD_REQUIRED,
-                            !luteceAuthentication.isExternalAuthentication(  ) &&
-                            !luteceAuthentication.isDelegatedAuthentication(  ) );
+                                !luteceAuthentication.isExternalAuthentication( ) && !luteceAuthentication.isDelegatedAuthentication( ) );
                         XmlUtil.beginElement( sbXml, TAG_LUTECE_USER_AUTHENTICATION_SERVICE, mapAttributes );
-                        XmlUtil.addElement( sbXml, TAG_AUTHENTICATION_NAME, luteceAuthentication.getName(  ) );
-                        XmlUtil.addElement( sbXml, TAG_AUTHENTICATION_DISPLAY_NAME,
-                            luteceAuthentication.getAuthServiceName(  ) );
-                        XmlUtil.addElement( sbXml, TAG_AUTHENTICATION_ICON_URL,
-                            ObjectUtils.toString( luteceAuthentication.getIconUrl(  ) ) );
-                        XmlUtil.addElement( sbXml, TAG_AUTHENTICATION_URL, luteceAuthentication.getDoLoginUrl(  ) );
+                        XmlUtil.addElement( sbXml, TAG_AUTHENTICATION_NAME, luteceAuthentication.getName( ) );
+                        XmlUtil.addElement( sbXml, TAG_AUTHENTICATION_DISPLAY_NAME, luteceAuthentication.getAuthServiceName( ) );
+                        XmlUtil.addElement( sbXml, TAG_AUTHENTICATION_ICON_URL, ObjectUtils.toString( luteceAuthentication.getIconUrl( ) ) );
+                        XmlUtil.addElement( sbXml, TAG_AUTHENTICATION_URL, luteceAuthentication.getDoLoginUrl( ) );
                         XmlUtil.endElement( sbXml, TAG_LUTECE_USER_AUTHENTICATION_SERVICE );
                     }
                 }
             }
 
-            String strNewAccountUrl = SecurityService.getInstance(  ).getNewAccountPageUrl(  );
+            String strNewAccountUrl = SecurityService.getInstance( ).getNewAccountPageUrl( );
 
             if ( strNewAccountUrl != null )
             {
                 XmlUtil.addElementHtml( sbXml, TAG_LUTECE_USER_NEW_ACCOUNT_URL, strNewAccountUrl );
             }
 
-            String strLostPasswordUrl = SecurityService.getInstance(  ).getLostPasswordPageUrl(  );
+            String strLostPasswordUrl = SecurityService.getInstance( ).getLostPasswordPageUrl( );
 
             if ( strLostPasswordUrl != null )
             {
@@ -206,27 +194,28 @@ public class MyLutecePortlet extends Portlet
     /**
      * Returns the Xml code of the MyLutece portlet with XML heading
      *
-     * @param request The HTTP servlet request
+     * @param request
+     *            The HTTP servlet request
      * @return the Xml code of the MyLutece portlet
      */
     public String getXmlDocument( HttpServletRequest request )
     {
-        return XmlUtil.getXmlHeader(  ) + getXml( request );
+        return XmlUtil.getXmlHeader( ) + getXml( request );
     }
 
     /**
      * Update portlet's data
      */
-    public void update(  )
+    public void update( )
     {
-        MyLutecePortletHome.getInstance(  ).update( this );
+        MyLutecePortletHome.getInstance( ).update( this );
     }
 
     /**
      * Remove of this portlet
      */
-    public void remove(  )
+    public void remove( )
     {
-        MyLutecePortletHome.getInstance(  ).remove( this );
+        MyLutecePortletHome.getInstance( ).remove( this );
     }
 }

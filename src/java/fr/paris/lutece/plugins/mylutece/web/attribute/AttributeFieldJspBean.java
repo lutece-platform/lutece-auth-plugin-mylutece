@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -55,7 +55,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
  *
  * AttributeFieldJspBean
@@ -93,7 +92,9 @@ public class AttributeFieldJspBean extends AdminFeaturesPageJspBean
 
     /**
      * Create attribute field
-     * @param request HttpServletRequest
+     * 
+     * @param request
+     *            HttpServletRequest
      * @return the html form
      */
     public String getCreateAttributeField( HttpServletRequest request )
@@ -104,20 +105,21 @@ public class AttributeFieldJspBean extends AdminFeaturesPageJspBean
         int nIdAttribute = Integer.parseInt( strIdAttribute );
         Plugin plugin = PluginService.getPlugin( MyLutecePlugin.PLUGIN_NAME );
 
-        IAttribute attribute = AttributeHome.findByPrimaryKey( nIdAttribute, getLocale(  ), plugin );
+        IAttribute attribute = AttributeHome.findByPrimaryKey( nIdAttribute, getLocale( ), plugin );
 
         HtmlTemplate template;
-        Map<String, Object> model = new HashMap<String, Object>(  );
+        Map<String, Object> model = new HashMap<String, Object>( );
         model.put( MARK_ATTRIBUTE, attribute );
 
-        template = AppTemplateService.getTemplate( TEMPLATE_CREATE_ATTRIBUTE_FIELD, getLocale(  ), model );
+        template = AppTemplateService.getTemplate( TEMPLATE_CREATE_ATTRIBUTE_FIELD, getLocale( ), model );
 
-        return getAdminPage( template.getHtml(  ) );
+        return getAdminPage( template.getHtml( ) );
     }
 
     /**
      *
-     * @param request The request
+     * @param request
+     *            The request
      * @return the html form
      */
     public String doCreateAttributeField( HttpServletRequest request )
@@ -142,12 +144,12 @@ public class AttributeFieldJspBean extends AdminFeaturesPageJspBean
             }
 
             Plugin plugin = PluginService.getPlugin( MyLutecePlugin.PLUGIN_NAME );
-            AttributeField attributeField = new AttributeField(  );
+            AttributeField attributeField = new AttributeField( );
             attributeField.setTitle( strTitle );
             attributeField.setValue( strValue );
             attributeField.setDefaultValue( strDefaultValue != null );
 
-            IAttribute attribute = AttributeHome.findByPrimaryKey( nIdAttribute, getLocale(  ), plugin );
+            IAttribute attribute = AttributeHome.findByPrimaryKey( nIdAttribute, getLocale( ), plugin );
             attributeField.setAttribute( attribute );
 
             AttributeFieldHome.create( attributeField, plugin );
@@ -160,7 +162,9 @@ public class AttributeFieldJspBean extends AdminFeaturesPageJspBean
 
     /**
      * Modify an attribute field
-     * @param request HttpServletRequest
+     * 
+     * @param request
+     *            HttpServletRequest
      * @return the html form
      */
     public String getModifyAttributeField( HttpServletRequest request )
@@ -173,23 +177,25 @@ public class AttributeFieldJspBean extends AdminFeaturesPageJspBean
         int nIdAttribute = Integer.parseInt( strIdAttribute );
         Plugin plugin = PluginService.getPlugin( MyLutecePlugin.PLUGIN_NAME );
 
-        IAttribute attribute = AttributeHome.findByPrimaryKey( nIdAttribute, getLocale(  ), plugin );
+        IAttribute attribute = AttributeHome.findByPrimaryKey( nIdAttribute, getLocale( ), plugin );
 
         AttributeField attributeField = AttributeFieldHome.findByPrimaryKey( nIdField, plugin );
 
         HtmlTemplate template;
-        Map<String, Object> model = new HashMap<String, Object>(  );
+        Map<String, Object> model = new HashMap<String, Object>( );
         model.put( MARK_ATTRIBUTE_FIELD, attributeField );
         model.put( MARK_ATTRIBUTE, attribute );
 
-        template = AppTemplateService.getTemplate( TEMPLATE_MODIFY_ATTRIBUTE_FIELD, getLocale(  ), model );
+        template = AppTemplateService.getTemplate( TEMPLATE_MODIFY_ATTRIBUTE_FIELD, getLocale( ), model );
 
-        return getAdminPage( template.getHtml(  ) );
+        return getAdminPage( template.getHtml( ) );
     }
 
     /**
      * Modify an attribute field
-     * @param request HttpServletRequest
+     * 
+     * @param request
+     *            HttpServletRequest
      * @return The Jsp URL of the process result
      */
     public String doModifyAttributeField( HttpServletRequest request )
@@ -216,7 +222,7 @@ public class AttributeFieldJspBean extends AdminFeaturesPageJspBean
 
             Plugin plugin = PluginService.getPlugin( MyLutecePlugin.PLUGIN_NAME );
 
-            AttributeField attributeField = new AttributeField(  );
+            AttributeField attributeField = new AttributeField( );
             attributeField.setIdField( nIdField );
             attributeField.setTitle( strTitle );
             attributeField.setValue( strValue );
@@ -232,25 +238,29 @@ public class AttributeFieldJspBean extends AdminFeaturesPageJspBean
 
     /**
      * Confirm the removal of the attribute field
-     * @param request HttpServletRequest
+     * 
+     * @param request
+     *            HttpServletRequest
      * @return the html form
      */
     public String doConfirmRemoveAttributeField( HttpServletRequest request )
     {
         String strIdAttribute = request.getParameter( PARAMETER_ID_ATTRIBUTE );
         String strIdField = request.getParameter( PARAMETER_ID_FIELD );
-        String strUrlRemove = JSP_URL_REMOVE_ATTRIBUTE_FIELD + "?" + PARAMETER_ID_ATTRIBUTE + "=" + strIdAttribute +
-            "&" + PARAMETER_ID_FIELD + "=" + strIdField;
+        String strUrlRemove = JSP_URL_REMOVE_ATTRIBUTE_FIELD + "?" + PARAMETER_ID_ATTRIBUTE + "=" + strIdAttribute + "&" + PARAMETER_ID_FIELD + "="
+                + strIdField;
 
-        String strUrl = AdminMessageService.getMessageUrl( request, PROPERTY_MESSAGE_CONFIRM_REMOVE_ATTRIBUTE_FIELD,
-                strUrlRemove, AdminMessage.TYPE_CONFIRMATION );
+        String strUrl = AdminMessageService.getMessageUrl( request, PROPERTY_MESSAGE_CONFIRM_REMOVE_ATTRIBUTE_FIELD, strUrlRemove,
+                AdminMessage.TYPE_CONFIRMATION );
 
         return strUrl;
     }
 
     /**
      * Remove the attribute field
-     * @param request HttpServletRequest
+     * 
+     * @param request
+     *            HttpServletRequest
      * @return The Jsp URL of the process result
      */
     public String doRemoveAttributeField( HttpServletRequest request )
@@ -270,7 +280,9 @@ public class AttributeFieldJspBean extends AdminFeaturesPageJspBean
 
     /**
      * Move up the position of the attribute field
-     * @param request HttpServletRequest
+     * 
+     * @param request
+     *            HttpServletRequest
      * @return The Jsp URL of the process result
      */
     public String doMoveUpAttributeField( HttpServletRequest request )
@@ -281,23 +293,22 @@ public class AttributeFieldJspBean extends AdminFeaturesPageJspBean
         int nIdField = Integer.parseInt( strIdField );
         Plugin plugin = PluginService.getPlugin( MyLutecePlugin.PLUGIN_NAME );
 
-        List<AttributeField> listAttributeFields = AttributeFieldHome.selectAttributeFieldsByIdAttribute( nIdAttribute,
-                plugin );
+        List<AttributeField> listAttributeFields = AttributeFieldHome.selectAttributeFieldsByIdAttribute( nIdAttribute, plugin );
         AttributeField previousField = null;
         AttributeField currentField = null;
 
-        Iterator<AttributeField> it = listAttributeFields.iterator(  );
-        previousField = it.next(  );
-        currentField = it.next(  );
+        Iterator<AttributeField> it = listAttributeFields.iterator( );
+        previousField = it.next( );
+        currentField = it.next( );
 
-        while ( it.hasNext(  ) && ( currentField.getIdField(  ) != nIdField ) )
+        while ( it.hasNext( ) && ( currentField.getIdField( ) != nIdField ) )
         {
             previousField = currentField;
-            currentField = it.next(  );
+            currentField = it.next( );
         }
 
-        int previousFieldPosition = previousField.getPosition(  );
-        int currentFieldPosition = currentField.getPosition(  );
+        int previousFieldPosition = previousField.getPosition( );
+        int currentFieldPosition = currentField.getPosition( );
         previousField.setPosition( currentFieldPosition );
         currentField.setPosition( previousFieldPosition );
 
@@ -311,7 +322,9 @@ public class AttributeFieldJspBean extends AdminFeaturesPageJspBean
 
     /**
      * Move down the position of the attribute field
-     * @param request HttpServletRequest
+     * 
+     * @param request
+     *            HttpServletRequest
      * @return The Jsp URL of the process result
      */
     public String doMoveDownAttributeField( HttpServletRequest request )
@@ -322,23 +335,22 @@ public class AttributeFieldJspBean extends AdminFeaturesPageJspBean
         int nIdField = Integer.parseInt( strIdField );
         Plugin plugin = PluginService.getPlugin( MyLutecePlugin.PLUGIN_NAME );
 
-        List<AttributeField> listAttributeFields = AttributeFieldHome.selectAttributeFieldsByIdAttribute( nIdAttribute,
-                plugin );
+        List<AttributeField> listAttributeFields = AttributeFieldHome.selectAttributeFieldsByIdAttribute( nIdAttribute, plugin );
         AttributeField currentField = null;
         AttributeField nextField = null;
 
-        Iterator<AttributeField> it = listAttributeFields.iterator(  );
-        currentField = it.next(  );
-        nextField = it.next(  );
+        Iterator<AttributeField> it = listAttributeFields.iterator( );
+        currentField = it.next( );
+        nextField = it.next( );
 
-        while ( it.hasNext(  ) && ( currentField.getIdField(  ) != nIdField ) )
+        while ( it.hasNext( ) && ( currentField.getIdField( ) != nIdField ) )
         {
             currentField = nextField;
-            nextField = it.next(  );
+            nextField = it.next( );
         }
 
-        int nextFieldPosition = nextField.getPosition(  );
-        int currentFieldPosition = currentField.getPosition(  );
+        int nextFieldPosition = nextField.getPosition( );
+        int currentFieldPosition = currentField.getPosition( );
         nextField.setPosition( currentFieldPosition );
         currentField.setPosition( nextFieldPosition );
 

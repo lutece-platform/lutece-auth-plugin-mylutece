@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -36,7 +36,6 @@ package fr.paris.lutece.plugins.mylutece.service;
 import java.util.List;
 import java.util.Locale;
 
-
 /**
  * User anonymization service interface
  *
@@ -45,14 +44,18 @@ public interface IAnonymizationService
 {
     /**
      * Anonymize user data based on anonymize status of his fields.
-     * @param nUserId Id of the user to anonymize
-     * @param locale The locale
+     * 
+     * @param nUserId
+     *            Id of the user to anonymize
+     * @param locale
+     *            The locale
      */
     void anonymizeUser( Integer nUserId, Locale locale );
 
     /**
      * Get the list of id of expired users
+     * 
      * @return the list of id of expired users
      */
-    List<Integer> getExpiredUserIdList(  );
+    List<Integer> getExpiredUserIdList( );
 }

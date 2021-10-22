@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,6 @@ import fr.paris.lutece.util.ReferenceList;
 
 import java.util.Locale;
 
-
 /**
  *
  * class RoleResourceIdService
@@ -63,7 +62,7 @@ public class MyLuteceResourceIdService extends ResourceIdService
     private static final String PLUGIN_NAME = "mylutece";
 
     /** Creates a new instance of RoleResourceIdService */
-    public MyLuteceResourceIdService(  )
+    public MyLuteceResourceIdService( )
     {
         setPluginName( PLUGIN_NAME );
     }
@@ -71,30 +70,30 @@ public class MyLuteceResourceIdService extends ResourceIdService
     /**
      * Initializes the service
      */
-    public void register(  )
+    public void register( )
     {
-        ResourceType rt = new ResourceType(  );
-        rt.setResourceIdServiceClass( MyLuteceResourceIdService.class.getName(  ) );
+        ResourceType rt = new ResourceType( );
+        rt.setResourceIdServiceClass( MyLuteceResourceIdService.class.getName( ) );
         rt.setPluginName( PLUGIN_NAME );
         rt.setResourceTypeKey( RESOURCE_TYPE );
         rt.setResourceTypeLabelKey( PROPERTY_LABEL_RESOURCE_TYPE );
 
-        Permission p = new Permission(  );
+        Permission p = new Permission( );
         p.setPermissionKey( PERMISSION_CREATE_ATTRIBUTE );
         p.setPermissionTitleKey( PROPERTY_LABEL_PERMISSION_CREATE_ATTRIBUTE );
         rt.registerPermission( p );
 
-        p = new Permission(  );
+        p = new Permission( );
         p.setPermissionKey( PERMISSION_MODIFY_ATTRIBUTE );
         p.setPermissionTitleKey( PROPERTY_LABEL_PERMISSION_MODIFY_ATTRIBUTE );
         rt.registerPermission( p );
 
-        p = new Permission(  );
+        p = new Permission( );
         p.setPermissionKey( PERMISSION_DELETE_ATTRIBUTE );
         p.setPermissionTitleKey( PROPERTY_LABEL_PERMISSION_DELETE_ATTRIBUTE );
         rt.registerPermission( p );
 
-        p = new Permission(  );
+        p = new Permission( );
         p.setPermissionKey( PERMISSION_MANAGE_AUTHENTICATION_FILTER );
         p.setPermissionTitleKey( PROPERTY_LABEL_MANAGE_AUTHENTICATION_FILTER );
         rt.registerPermission( p );
@@ -104,7 +103,9 @@ public class MyLuteceResourceIdService extends ResourceIdService
 
     /**
      * Returns a list of role resource ids
-     * @param locale The current locale
+     * 
+     * @param locale
+     *            The current locale
      * @return A list of role resource ids
      */
     public ReferenceList getResourceIdList( Locale locale )
@@ -113,11 +114,14 @@ public class MyLuteceResourceIdService extends ResourceIdService
     }
 
     /**
-    * Returns the Title of a given resource
-    * @param strId The Id of the resource
-    * @param locale The current locale
-    * @return The Title of a given resource
-    */
+     * Returns the Title of a given resource
+     * 
+     * @param strId
+     *            The Id of the resource
+     * @param locale
+     *            The current locale
+     * @return The Title of a given resource
+     */
     public String getTitle( String strId, Locale locale )
     {
         return "";

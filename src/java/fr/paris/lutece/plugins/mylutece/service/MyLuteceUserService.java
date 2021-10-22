@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2018, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -47,40 +47,41 @@ import java.util.Set;
 public class MyLuteceUserService
 {
     /**
-     * This method is used to provide external infos to the user, such as the roles, 
-     * and the identity informations
-     * @param user The LuteceUser 
+     * This method is used to provide external infos to the user, such as the roles, and the identity informations
+     * 
+     * @param user
+     *            The LuteceUser
      */
     public static void provideUserExternalInfos( LuteceUser user )
     {
         // add external identities informations
         Map<String, String> identityInformations = MyLuteceExternalIdentityService.getInstance( ).getIdentityInformations( user.getName( ) );
-       
+
         if ( identityInformations != null && !identityInformations.isEmpty( ) )
         {
             user.getUserInfos( ).putAll( identityInformations );
         }
-        
-        // Get the external roles 
+
+        // Get the external roles
         Set<String> listRoles = new HashSet<>( );
         for ( IMyLuteceExternalRolesProvider roleProvider : SpringContextService.getBeansOfType( IMyLuteceExternalRolesProvider.class ) )
         {
             listRoles.addAll( roleProvider.providesRoles( user ) );
         }
-        //Check existence of each front role
-        List<String> listUnexistingRoles = new ArrayList<>();
+        // Check existence of each front role
+        List<String> listUnexistingRoles = new ArrayList<>( );
         for ( String strRole : listRoles )
         {
             Role role = RoleHome.findByPrimaryKey( strRole );
             if ( role == null )
             {
                 listUnexistingRoles.add( strRole );
-                AppLogService.error( "The role " + strRole + " doesn't exist in BO.");
+                AppLogService.error( "The role " + strRole + " doesn't exist in BO." );
             }
         }
         listRoles.removeAll( listUnexistingRoles );
 
-        //Add to the user the existing roles
+        // Add to the user the existing roles
         user.addRoles( listRoles );
     }
 }

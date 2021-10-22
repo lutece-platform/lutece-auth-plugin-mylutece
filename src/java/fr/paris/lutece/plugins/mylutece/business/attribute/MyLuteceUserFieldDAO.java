@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-
 /**
  *
  * MyLuteceUserFieldDAO
@@ -58,21 +57,20 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
     private static final String SQL_QUERY_NEW_PK = " SELECT max(id_user_field) FROM mylutece_user_field ";
 
     // SELECT
-    private static final String SQL_QUERY_SELECT = " SELECT auf.id_user_field, auf.id_user, auf.id_attribute, auf.id_field, auf.user_field_value, " +
-        " a.type_class_name, a.title, a.help_message, a.is_mandatory, a.attribute_position, " +
-        " af.title, af.DEFAULT_value, af.is_DEFAULT_value, af.field_position " + " FROM mylutece_user_field auf " +
-        " INNER JOIN mylutece_attribute a ON auf.id_attribute = a.id_attribute " +
-        " INNER JOIN mylutece_attribute_field af ON auf.id_field = af.id_field " + " WHERE auf.id_user_field = ? ";
-    private static final String SQL_QUERY_SELECT_USER_FIELDS_BY_ID_USER_ID_ATTRIBUTE = " SELECT auf.id_user_field, auf.id_user, auf.id_attribute, auf.id_field, auf.user_field_value, " +
-        " a.type_class_name, a.title, a.help_message, a.is_mandatory, a.attribute_position " +
-        " FROM mylutece_user_field auf " + " INNER JOIN mylutece_attribute a ON a.id_attribute = auf.id_attribute " +
-        " WHERE auf.id_user = ? AND auf.id_attribute = ? ";
+    private static final String SQL_QUERY_SELECT = " SELECT auf.id_user_field, auf.id_user, auf.id_attribute, auf.id_field, auf.user_field_value, "
+            + " a.type_class_name, a.title, a.help_message, a.is_mandatory, a.attribute_position, "
+            + " af.title, af.DEFAULT_value, af.is_DEFAULT_value, af.field_position " + " FROM mylutece_user_field auf "
+            + " INNER JOIN mylutece_attribute a ON auf.id_attribute = a.id_attribute "
+            + " INNER JOIN mylutece_attribute_field af ON auf.id_field = af.id_field " + " WHERE auf.id_user_field = ? ";
+    private static final String SQL_QUERY_SELECT_USER_FIELDS_BY_ID_USER_ID_ATTRIBUTE = " SELECT auf.id_user_field, auf.id_user, auf.id_attribute, auf.id_field, auf.user_field_value, "
+            + " a.type_class_name, a.title, a.help_message, a.is_mandatory, a.attribute_position " + " FROM mylutece_user_field auf "
+            + " INNER JOIN mylutece_attribute a ON a.id_attribute = auf.id_attribute " + " WHERE auf.id_user = ? AND auf.id_attribute = ? ";
     private static final String SQL_QUERY_SELECT_ID_USER = " SELECT id_user FROM mylutece_user_field WHERE id_attribute = ? AND id_field = ? AND user_field_value LIKE ? ";
     private static final String SQL_AND_ID_USER_IN = " AND id_user IN ";
 
     // INSERT
-    private static final String SQL_QUERY_INSERT = " INSERT INTO mylutece_user_field (id_user_field, id_user, id_attribute, id_field, user_field_value) " +
-        " VALUES (?,?,?,?,?) ";
+    private static final String SQL_QUERY_INSERT = " INSERT INTO mylutece_user_field (id_user_field, id_user, id_attribute, id_field, user_field_value) "
+            + " VALUES (?,?,?,?,?) ";
 
     // UPDATE
     private static final String SQL_QUERY_UPDATE = " UPDATE mylutece_user_field SET user_field_value = ? WHERE id_user_field = ? ";
@@ -85,23 +83,25 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
 
     /**
      * Generate a new PK
-     * @param plugin The plugin
+     * 
+     * @param plugin
+     *            The plugin
      * @return The new ID
      */
     private int newPrimaryKey( Plugin plugin )
     {
         StringBuilder sbSQL = new StringBuilder( SQL_QUERY_NEW_PK );
-        DAOUtil daoUtil = new DAOUtil( sbSQL.toString(  ), plugin );
-        daoUtil.executeQuery(  );
+        DAOUtil daoUtil = new DAOUtil( sbSQL.toString( ), plugin );
+        daoUtil.executeQuery( );
 
         int nKey = 1;
 
-        if ( daoUtil.next(  ) )
+        if ( daoUtil.next( ) )
         {
             nKey = daoUtil.getInt( 1 ) + 1;
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return nKey;
     }
@@ -114,13 +114,13 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT, plugin );
         daoUtil.setInt( 1, nIdUserField );
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
         MyLuteceUserField userField = null;
 
-        if ( daoUtil.next(  ) )
+        if ( daoUtil.next( ) )
         {
-            userField = new MyLuteceUserField(  );
+            userField = new MyLuteceUserField( );
             userField.setIdUserField( daoUtil.getInt( 1 ) );
             userField.setValue( daoUtil.getString( 5 ) );
 
@@ -132,20 +132,20 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
 
             try
             {
-                attribute = (IAttribute) Class.forName( daoUtil.getString( 6 ) ).newInstance(  );
+                attribute = (IAttribute) Class.forName( daoUtil.getString( 6 ) ).newInstance( );
             }
-            catch ( ClassNotFoundException e )
+            catch( ClassNotFoundException e )
             {
                 // class doesn't exist
                 AppLogService.error( e );
             }
-            catch ( InstantiationException e )
+            catch( InstantiationException e )
             {
                 // Class is abstract or is an interface or haven't accessible
                 // builder
                 AppLogService.error( e );
             }
-            catch ( IllegalAccessException e )
+            catch( IllegalAccessException e )
             {
                 // can't access to the class
                 AppLogService.error( e );
@@ -160,7 +160,7 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
             userField.setAttribute( attribute );
 
             // ATTRIBUTEFIELD
-            AttributeField attributeField = new AttributeField(  );
+            AttributeField attributeField = new AttributeField( );
             attributeField.setIdField( daoUtil.getInt( 4 ) );
             attributeField.setTitle( daoUtil.getString( 11 ) );
             attributeField.setValue( daoUtil.getString( 12 ) );
@@ -169,7 +169,7 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
             userField.setAttributeField( attributeField );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return userField;
     }
@@ -182,13 +182,13 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT, plugin );
         daoUtil.setInt( 1, newPrimaryKey( plugin ) );
-        daoUtil.setInt( 2, userField.getUserId(  ) );
-        daoUtil.setInt( 3, userField.getAttribute(  ).getIdAttribute(  ) );
-        daoUtil.setInt( 4, userField.getAttributeField(  ).getIdField(  ) );
-        daoUtil.setString( 5, userField.getValue(  ) );
+        daoUtil.setInt( 2, userField.getUserId( ) );
+        daoUtil.setInt( 3, userField.getAttribute( ).getIdAttribute( ) );
+        daoUtil.setInt( 4, userField.getAttributeField( ).getIdField( ) );
+        daoUtil.setString( 5, userField.getValue( ) );
 
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 
     /**
@@ -198,11 +198,11 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
     public void store( MyLuteceUserField userField, Plugin plugin )
     {
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_UPDATE, plugin );
-        daoUtil.setString( 1, userField.getValue(  ) );
-        daoUtil.setInt( 2, userField.getIdUserField(  ) );
+        daoUtil.setString( 1, userField.getValue( ) );
+        daoUtil.setInt( 2, userField.getIdUserField( ) );
 
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 
     /**
@@ -214,8 +214,8 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE, plugin );
         daoUtil.setInt( 1, nIdUserField );
 
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 
     /**
@@ -227,8 +227,8 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE_FROM_ID_FIELD, plugin );
         daoUtil.setInt( 1, nIdField );
 
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 
     /**
@@ -240,8 +240,8 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE_FROM_ID_USER, plugin );
         daoUtil.setInt( 1, nIdUser );
 
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 
     /**
@@ -253,8 +253,8 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_DELETE_FROM_ID_ATTRIBUTE, plugin );
         daoUtil.setInt( 1, nIdAttribute );
 
-        daoUtil.executeUpdate(  );
-        daoUtil.free(  );
+        daoUtil.executeUpdate( );
+        daoUtil.free( );
     }
 
     /**
@@ -266,13 +266,13 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
         DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_USER_FIELDS_BY_ID_USER_ID_ATTRIBUTE, plugin );
         daoUtil.setInt( 1, nIdUser );
         daoUtil.setInt( 2, nIdAttribute );
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
-        List<MyLuteceUserField> listUserFields = new ArrayList<MyLuteceUserField>(  );
+        List<MyLuteceUserField> listUserFields = new ArrayList<MyLuteceUserField>( );
 
-        while ( daoUtil.next(  ) )
+        while ( daoUtil.next( ) )
         {
-            MyLuteceUserField userField = new MyLuteceUserField(  );
+            MyLuteceUserField userField = new MyLuteceUserField( );
             userField.setIdUserField( daoUtil.getInt( 1 ) );
             userField.setValue( daoUtil.getString( 5 ) );
 
@@ -284,20 +284,20 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
 
             try
             {
-                attribute = (IAttribute) Class.forName( daoUtil.getString( 6 ) ).newInstance(  );
+                attribute = (IAttribute) Class.forName( daoUtil.getString( 6 ) ).newInstance( );
             }
-            catch ( ClassNotFoundException e )
+            catch( ClassNotFoundException e )
             {
                 // class doesn't exist
                 AppLogService.error( e );
             }
-            catch ( InstantiationException e )
+            catch( InstantiationException e )
             {
                 // Class is abstract or is an interface or haven't accessible
                 // builder
                 AppLogService.error( e );
             }
-            catch ( IllegalAccessException e )
+            catch( IllegalAccessException e )
             {
                 // can't access to the class
                 AppLogService.error( e );
@@ -311,14 +311,14 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
             userField.setAttribute( attribute );
 
             // ATTRIBUTEFIELD
-            AttributeField attributeField = new AttributeField(  );
+            AttributeField attributeField = new AttributeField( );
             attributeField.setIdField( daoUtil.getInt( 4 ) );
             userField.setAttributeField( attributeField );
 
             listUserFields.add( userField );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return listUserFields;
     }
@@ -329,17 +329,17 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
     @Override
     public List<Integer> selectUsersByFilter( MyLuteceUserFieldFilter mlFieldFilter, Plugin plugin )
     {
-        List<MyLuteceUserField> listUserFields = mlFieldFilter.getListUserFields(  );
+        List<MyLuteceUserField> listUserFields = mlFieldFilter.getListUserFields( );
 
-        if ( ( listUserFields == null ) || ( listUserFields.size(  ) == 0 ) )
+        if ( ( listUserFields == null ) || ( listUserFields.size( ) == 0 ) )
         {
             return null;
         }
 
-        List<Integer> listUsers = new ArrayList<Integer>(  );
-        StringBuilder sbSQL = new StringBuilder(  );
+        List<Integer> listUsers = new ArrayList<Integer>( );
+        StringBuilder sbSQL = new StringBuilder( );
 
-        for ( int i = 1; i <= listUserFields.size(  ); i++ )
+        for ( int i = 1; i <= listUserFields.size( ); i++ )
         {
             if ( i == 1 )
             {
@@ -350,36 +350,36 @@ public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
                 sbSQL.append( CONSTANT_OPEN_BRACKET + SQL_QUERY_SELECT_ID_USER );
             }
 
-            if ( i != listUserFields.size(  ) )
+            if ( i != listUserFields.size( ) )
             {
                 sbSQL.append( SQL_AND_ID_USER_IN );
             }
         }
 
-        for ( int i = 2; i <= listUserFields.size(  ); i++ )
+        for ( int i = 2; i <= listUserFields.size( ); i++ )
         {
             sbSQL.append( CONSTANT_CLOSED_BRACKET );
         }
 
-        DAOUtil daoUtil = new DAOUtil( sbSQL.toString(  ), plugin );
+        DAOUtil daoUtil = new DAOUtil( sbSQL.toString( ), plugin );
 
         int nbCount = 1;
 
         for ( MyLuteceUserField userField : listUserFields )
         {
-            daoUtil.setInt( nbCount++, userField.getAttribute(  ).getIdAttribute(  ) );
-            daoUtil.setInt( nbCount++, userField.getAttributeField(  ).getIdField(  ) );
-            daoUtil.setString( nbCount++, CONSTANT_PERCENT + userField.getValue(  ) + CONSTANT_PERCENT );
+            daoUtil.setInt( nbCount++, userField.getAttribute( ).getIdAttribute( ) );
+            daoUtil.setInt( nbCount++, userField.getAttributeField( ).getIdField( ) );
+            daoUtil.setString( nbCount++, CONSTANT_PERCENT + userField.getValue( ) + CONSTANT_PERCENT );
         }
 
-        daoUtil.executeQuery(  );
+        daoUtil.executeQuery( );
 
-        while ( daoUtil.next(  ) )
+        while ( daoUtil.next( ) )
         {
             listUsers.add( daoUtil.getInt( 1 ) );
         }
 
-        daoUtil.free(  );
+        daoUtil.free( );
 
         return listUsers;
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -46,7 +46,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
  *
  * DashBoard used for managing Public Url
@@ -64,15 +63,14 @@ public class AuthenticationFilterAdminDashboardComponent extends AdminDashboardC
     public String getDashboardData( AdminUser user, HttpServletRequest request )
     {
         if ( !RBACService.isAuthorized( MyLuteceResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
-                    MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, user ) )
+                MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, user ) )
         {
             return EMPTY_STRING;
         }
 
-        Map<String, Object> model = AuthenticationFilterService.getInstance(  )
-                                                               .getManageAdvancedParameters( user, request );
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_ADMIN_DASHBOARD, user.getLocale(  ), model );
+        Map<String, Object> model = AuthenticationFilterService.getInstance( ).getManageAdvancedParameters( user, request );
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_ADMIN_DASHBOARD, user.getLocale( ), model );
 
-        return template.getHtml(  );
+        return template.getHtml( );
     }
 }

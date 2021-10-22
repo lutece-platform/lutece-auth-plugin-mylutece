@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.mylutece.business.attribute;
 
-
 /**
  *
  * MyLuteceUserField
@@ -49,16 +48,19 @@ public class MyLuteceUserField
 
     /**
      * Get user
+     * 
      * @return user
      */
-    public int getUserId(  )
+    public int getUserId( )
     {
         return _nUserId;
     }
 
     /**
      * Set user
-     * @param nUserId The id of the user
+     * 
+     * @param nUserId
+     *            The id of the user
      */
     public void setUserId( int nUserId )
     {
@@ -67,16 +69,19 @@ public class MyLuteceUserField
 
     /**
      * Get attribute field
+     * 
      * @return attribute field
      */
-    public AttributeField getAttributeField(  )
+    public AttributeField getAttributeField( )
     {
         return _attributeField;
     }
 
     /**
      * Set attribute field
-     * @param attributeField attribute field
+     * 
+     * @param attributeField
+     *            attribute field
      */
     public void setAttributeField( AttributeField attributeField )
     {
@@ -85,16 +90,19 @@ public class MyLuteceUserField
 
     /**
      * Get attribute
+     * 
      * @return attribute
      */
-    public IAttribute getAttribute(  )
+    public IAttribute getAttribute( )
     {
         return _attribute;
     }
 
     /**
      * Set attribute
-     * @param attribute attribute
+     * 
+     * @param attribute
+     *            attribute
      */
     public void setAttribute( IAttribute attribute )
     {
@@ -103,16 +111,19 @@ public class MyLuteceUserField
 
     /**
      * Get value
+     * 
      * @return value
      */
-    public String getValue(  )
+    public String getValue( )
     {
         return _value;
     }
 
     /**
      * Set value
-     * @param value value
+     * 
+     * @param value
+     *            value
      */
     public void setValue( String value )
     {
@@ -121,16 +132,19 @@ public class MyLuteceUserField
 
     /**
      * Get Id user field
+     * 
      * @return id user field
      */
-    public int getIdUserField(  )
+    public int getIdUserField( )
     {
         return _nIdUserField;
     }
 
     /**
      * Set id user field
-     * @param nIdUserField id user field
+     * 
+     * @param nIdUserField
+     *            id user field
      */
     public void setIdUserField( int nIdUserField )
     {

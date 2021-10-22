@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -35,18 +35,19 @@ package fr.paris.lutece.plugins.mylutece.business.portlet;
 
 import fr.paris.lutece.portal.business.portlet.Portlet;
 
-
 /**
  * this class provides Data Access methods for HtmlPortlet objects
  */
 public final class MyLutecePortletDAO implements IMyLutecePortletDAO
 {
     ///////////////////////////////////////////////////////////////////////////////////////
-    //Access methods to data
+    // Access methods to data
 
     /**
      * Insert a new record in the table.
-     * @param portlet the object to be inserted
+     * 
+     * @param portlet
+     *            the object to be inserted
      */
     public void insert( Portlet portlet )
     {
@@ -55,7 +56,9 @@ public final class MyLutecePortletDAO implements IMyLutecePortletDAO
 
     /**
      * Delete a record from the table
-     * @param nPortletId the Html Portlet identifier
+     * 
+     * @param nPortletId
+     *            the Html Portlet identifier
      */
     public void delete( int nPortletId )
     {
@@ -64,20 +67,24 @@ public final class MyLutecePortletDAO implements IMyLutecePortletDAO
 
     /**
      * loads the data of portlet from the table
-     * @param nPortletId The Html Portlet identifier
+     * 
+     * @param nPortletId
+     *            The Html Portlet identifier
      * @return the Html Portlet object
      */
     public Portlet load( int nPortletId )
     {
         // Nothing to load from a specific table
-        MyLutecePortlet portlet = new MyLutecePortlet(  );
+        MyLutecePortlet portlet = new MyLutecePortlet( );
 
         return portlet;
     }
 
     /**
      * Update the record in the table
-     * @param portlet the instance of Portlet class to be updated
+     * 
+     * @param portlet
+     *            the instance of Portlet class to be updated
      */
     public void store( Portlet portlet )
     {

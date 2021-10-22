@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -59,7 +59,6 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-
 /**
  * Filter to prevent unauthenticated access to site if site authentication is enabled
  */
@@ -69,12 +68,12 @@ public class MyluteceAuthFilter implements Filter
     private static final String URL_AMPERSAND = "&";
     private static final String URL_EQUAL = "=";
     private static final String URL_STAR = "*";
-    
+
     // Properties
     private static final String PROPERTY_ACCESS_ROLE = "mylutece.role.AccessRole";
 
     // Attributes
-    private static final String ATTRIBUTE_ACCES_ROLE = AppPropertiesService.getProperty( PROPERTY_ACCESS_ROLE );    
+    private static final String ATTRIBUTE_ACCES_ROLE = AppPropertiesService.getProperty( PROPERTY_ACCESS_ROLE );
 
     /**
      * {@inheritDoc}
@@ -88,7 +87,7 @@ public class MyluteceAuthFilter implements Filter
      * {@inheritDoc}
      */
     @Override
-    public void destroy(  )
+    public void destroy( )
     {
         // Do nothing
     }
@@ -97,30 +96,27 @@ public class MyluteceAuthFilter implements Filter
      * {@inheritDoc}
      */
     @Override
-    public void doFilter( ServletRequest request, ServletResponse response, FilterChain chain )
-        throws IOException, ServletException
+    public void doFilter( ServletRequest request, ServletResponse response, FilterChain chain ) throws IOException, ServletException
     {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse resp = (HttpServletResponse) response;
 
-        if ( SecurityService.isAuthenticationEnable(  ) &&
-                SecurityService.getInstance(  ).isPortalAuthenticationRequired(  ) && isPrivateUrl( req ) )
+        if ( SecurityService.isAuthenticationEnable( ) && SecurityService.getInstance( ).isPortalAuthenticationRequired( ) && isPrivateUrl( req ) )
         {
             try
             {
                 filterAccess( req );
             }
-            catch ( UserNotSignedException e )
+            catch( UserNotSignedException e )
             {
-                if ( SecurityService.getInstance(  ).isExternalAuthentication(  ) &&
-                        !SecurityService.getInstance(  ).isMultiAuthenticationSupported(  ) )
+                if ( SecurityService.getInstance( ).isExternalAuthentication( ) && !SecurityService.getInstance( ).isMultiAuthenticationSupported( ) )
                 {
                     try
                     {
-                        SiteMessageService.setMessage( req, Messages.MESSAGE_USER_NOT_AUTHENTICATED, null,
-                            Messages.MESSAGE_USER_NOT_AUTHENTICATED, null, "", SiteMessage.TYPE_STOP );
+                        SiteMessageService.setMessage( req, Messages.MESSAGE_USER_NOT_AUTHENTICATED, null, Messages.MESSAGE_USER_NOT_AUTHENTICATED, null, "",
+                                SiteMessage.TYPE_STOP );
                     }
-                    catch ( SiteMessageException lme )
+                    catch( SiteMessageException lme )
                     {
                         resp.sendRedirect( AppPathService.getSiteMessageUrl( req ) );
                     }
@@ -132,13 +128,13 @@ public class MyluteceAuthFilter implements Filter
 
                 return;
             }
-            catch ( FailedLoginException e ) {
+            catch( FailedLoginException e )
+            {
                 try
                 {
-                    SiteMessageService.setMessage( req, Messages.MESSAGE_AUTH_FAILURE, null,
-                        Messages.MESSAGE_AUTH_FAILURE, null, "", SiteMessage.TYPE_STOP );
+                    SiteMessageService.setMessage( req, Messages.MESSAGE_AUTH_FAILURE, null, Messages.MESSAGE_AUTH_FAILURE, null, "", SiteMessage.TYPE_STOP );
                 }
-                catch ( SiteMessageException lme )
+                catch( SiteMessageException lme )
                 {
                     resp.sendRedirect( AppPathService.getSiteMessageUrl( req ) );
                 }
@@ -149,15 +145,14 @@ public class MyluteceAuthFilter implements Filter
     }
 
     /**
-     * Check wether a given url is to be considered as private (ie that needs a
-     * successful authentication to be accessed) or public (ie that can be
-     * access without being authenticated)
+     * Check wether a given url is to be considered as private (ie that needs a successful authentication to be accessed) or public (ie that can be access
+     * without being authenticated)
      *
      * @param request
      *            the http request
      * @return true if the url needs to be authenticated, false otherwise
      *
-     * */
+     */
     private boolean isPrivateUrl( HttpServletRequest request )
     {
         return !( ( isInSiteMessageUrl( request ) || ( isInPublicUrlList( request ) ) ) );
@@ -173,44 +168,42 @@ public class MyluteceAuthFilter implements Filter
      *             If the user is not signed
      *
      **/
-    private static void filterAccess( HttpServletRequest request )
-        throws UserNotSignedException, FailedLoginException
+    private static void filterAccess( HttpServletRequest request ) throws UserNotSignedException, FailedLoginException
     {
         LuteceUser user = null;
         // Try to register the user in case of external authentication
-        if ( SecurityService.getInstance(  ).isExternalAuthentication(  ) &&
-                !SecurityService.getInstance(  ).isMultiAuthenticationSupported(  ) )
+        if ( SecurityService.getInstance( ).isExternalAuthentication( ) && !SecurityService.getInstance( ).isMultiAuthenticationSupported( ) )
         {
             // The authentication is external
             // Should register the user if it's not already done
-            user = SecurityService.getInstance(  ).getRegisteredUser( request );
+            user = SecurityService.getInstance( ).getRegisteredUser( request );
             if ( user == null )
             {
-                if ( ( SecurityService.getInstance(  ).getRemoteUser( request ) == null ) &&
-                        ( SecurityService.getInstance(  ).isPortalAuthenticationRequired(  ) ) )
+                if ( ( SecurityService.getInstance( ).getRemoteUser( request ) == null )
+                        && ( SecurityService.getInstance( ).isPortalAuthenticationRequired( ) ) )
                 {
                     // Authentication is required to access to the portal
-                    throw new UserNotSignedException(  );
+                    throw new UserNotSignedException( );
                 }
             }
         }
         else
         {
-            user = SecurityService.getInstance(  ).getRegisteredUser( request );
+            user = SecurityService.getInstance( ).getRegisteredUser( request );
 
             // no checks are needed if the user is already registered
             if ( user == null )
             {
                 // if multiauthentication is supported, then when have to
                 // check remote user before other check
-                if ( SecurityService.getInstance(  ).isMultiAuthenticationSupported(  ) )
+                if ( SecurityService.getInstance( ).isMultiAuthenticationSupported( ) )
                 {
                     // getRemoteUser needs to be checked before any check so
                     // the user is registered
                     // getRemoteUser throws an exception if no user found,
                     // but here we have to bypass this exception to display
                     // login page.
-                    user = SecurityService.getInstance(  ).getRemoteUser( request );
+                    user = SecurityService.getInstance( ).getRemoteUser( request );
                 }
 
                 // If portal authentication is enabled and user is null and
@@ -219,20 +212,23 @@ public class MyluteceAuthFilter implements Filter
                 if ( user == null )
                 {
                     // Authentication is required to access to the portal
-                    throw new UserNotSignedException(  );
+                    throw new UserNotSignedException( );
                 }
             }
         }
         // check if the user have the right to access to the portal
-        if( !isUserAccessRole( user ) ) {
-            
+        if ( !isUserAccessRole( user ) )
+        {
+
             throw new FailedLoginException( );
         }
     }
 
     /**
      * Checks if the requested is the url of site message
-     * @param request The HTTP request
+     * 
+     * @param request
+     *            The HTTP request
      * @return true if the requested is the url of site message
      */
     private boolean isInSiteMessageUrl( HttpServletRequest request )
@@ -241,18 +237,17 @@ public class MyluteceAuthFilter implements Filter
     }
 
     /**
-     * Checks if the requested is in the list of urls defined in  Security service
-     * that shouldn't be protected
+     * Checks if the requested is in the list of urls defined in Security service that shouldn't be protected
      *
      * @param request
      *            the http request
-    
+     * 
      * @return true if the url is in the list, false otherwise
      *
-     * */
+     */
     private boolean isInPublicUrlList( HttpServletRequest request )
     {
-        for ( String strPubliUrl : AuthenticationFilterService.getInstance(  ).getPublicUrls(  ) )
+        for ( String strPubliUrl : AuthenticationFilterService.getInstance( ).getPublicUrls( ) )
         {
             if ( matchUrl( request, strPubliUrl ) )
             {
@@ -265,9 +260,11 @@ public class MyluteceAuthFilter implements Filter
 
     /**
      * method to test if the URL matches the pattern
-    
-     * @param request the request
-     * @param strUrlPatern the pattern
+     * 
+     * @param request
+     *            the request
+     * @param strUrlPatern
+     *            the pattern
      * @return true if the URL matches the pattern
      */
     private boolean matchUrl( HttpServletRequest request, String strUrlPatern )
@@ -280,15 +277,13 @@ public class MyluteceAuthFilter implements Filter
 
             if ( strUrlPatern.contains( URL_INTERROGATIVE ) )
             {
-                for ( String strParamPatternValue : strUrlPatern.substring( strUrlPatern.indexOf( URL_INTERROGATIVE ) +
-                        1 ).split( URL_AMPERSAND ) )
+                for ( String strParamPatternValue : strUrlPatern.substring( strUrlPatern.indexOf( URL_INTERROGATIVE ) + 1 ).split( URL_AMPERSAND ) )
                 {
-                    String[] arrayPatternParamValue = strParamPatternValue.split( URL_EQUAL );
+                    String [ ] arrayPatternParamValue = strParamPatternValue.split( URL_EQUAL );
 
-                    if ( ( arrayPatternParamValue != null ) &&
-                            ( request.getParameter( arrayPatternParamValue[0] ) != null ) )
+                    if ( ( arrayPatternParamValue != null ) && ( request.getParameter( arrayPatternParamValue [0] ) != null ) )
                     {
-                        url.addParameter( arrayPatternParamValue[0], request.getParameter( arrayPatternParamValue[0] ) );
+                        url.addParameter( arrayPatternParamValue [0], request.getParameter( arrayPatternParamValue [0] ) );
                     }
                 }
             }
@@ -297,12 +292,12 @@ public class MyluteceAuthFilter implements Filter
             {
                 String strUrlPaternLeftEnd = strUrlPatern.substring( 0, strUrlPatern.indexOf( URL_STAR ) );
                 String strAbsoluteUrlPattern = getAbsoluteUrl( request, strUrlPaternLeftEnd );
-                bMatch = url.getUrl(  ).startsWith( strAbsoluteUrlPattern );
+                bMatch = url.getUrl( ).startsWith( strAbsoluteUrlPattern );
             }
             else
             {
                 String strAbsoluteUrlPattern = getAbsoluteUrl( request, strUrlPatern );
-                bMatch = url.getUrl(  ).equals( strAbsoluteUrlPattern );
+                bMatch = url.getUrl( ).equals( strAbsoluteUrlPattern );
             }
         }
 
@@ -310,9 +305,8 @@ public class MyluteceAuthFilter implements Filter
     }
 
     /**
-     * Returns the absolute url corresponding to the given one, if the later was
-     * found to be relative. An url starting with "http://" is absolute. A
-     * relative url should be given relatively to the webapp root.
+     * Returns the absolute url corresponding to the given one, if the later was found to be relative. An url starting with "http://" is absolute. A relative
+     * url should be given relatively to the webapp root.
      *
      * @param request
      *            the http request (provides the base path if needed)
@@ -320,7 +314,7 @@ public class MyluteceAuthFilter implements Filter
      *            the url to transform
      * @return the corresonding absolute url
      *
-     * */
+     */
     private String getAbsoluteUrl( HttpServletRequest request, String strUrl )
     {
         if ( ( strUrl != null ) && !strUrl.startsWith( "http://" ) && !strUrl.startsWith( "https://" ) )
@@ -340,23 +334,26 @@ public class MyluteceAuthFilter implements Filter
      *            the http request (provides the base path if needed)
      * @return the requested url has a string
      *
-     * */
+     */
     private String getResquestedUrl( HttpServletRequest request )
     {
-        return AppPathService.getBaseUrl( request ) + request.getServletPath(  ).substring( 1 );
+        return AppPathService.getBaseUrl( request ) + request.getServletPath( ).substring( 1 );
     }
 
     /**
      * Checks if the user have the role access
      *
-     * @param user the LuteceUser
+     * @param user
+     *            the LuteceUser
      * 
      * @return true if the user have the access role
      *
      */
-    private static Boolean isUserAccessRole( LuteceUser user ) {
-        if( ATTRIBUTE_ACCES_ROLE != null && !ATTRIBUTE_ACCES_ROLE.isEmpty( ) ) {
-            return  Arrays.asList( user.getRoles( ) ).stream( ).anyMatch( str -> str.trim( ).equals( ATTRIBUTE_ACCES_ROLE.trim( ) ) );
+    private static Boolean isUserAccessRole( LuteceUser user )
+    {
+        if ( ATTRIBUTE_ACCES_ROLE != null && !ATTRIBUTE_ACCES_ROLE.isEmpty( ) )
+        {
+            return Arrays.asList( user.getRoles( ) ).stream( ).anyMatch( str -> str.trim( ).equals( ATTRIBUTE_ACCES_ROLE.trim( ) ) );
         }
         return true;
     }

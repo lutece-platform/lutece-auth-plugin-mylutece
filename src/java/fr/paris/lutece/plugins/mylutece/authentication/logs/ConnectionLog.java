@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,6 @@
  */
 package fr.paris.lutece.plugins.mylutece.authentication.logs;
 
-
 /**
  * This class represents business object UserLog
  */
@@ -53,7 +52,7 @@ public class ConnectionLog
      *
      * @return the user ip address
      */
-    public String getIpAddress(  )
+    public String getIpAddress( )
     {
         return _strIpAddress;
     }
@@ -61,7 +60,8 @@ public class ConnectionLog
     /**
      * Sets the ip address of the connection log to the specified string.
      *
-     * @param strIpAddress the new ip address
+     * @param strIpAddress
+     *            the new ip address
      */
     public void setIpAddress( String strIpAddress )
     {
@@ -73,7 +73,7 @@ public class ConnectionLog
      *
      * @return the user date of login
      */
-    public java.sql.Timestamp getDateLogin(  )
+    public java.sql.Timestamp getDateLogin( )
     {
         return _dateLogin;
     }
@@ -81,7 +81,8 @@ public class ConnectionLog
     /**
      * Sets the login date of the connection log to the specified timestamp.
      *
-     * @param dateLogin the new date of login
+     * @param dateLogin
+     *            the new date of login
      */
     public void setDateLogin( java.sql.Timestamp dateLogin )
     {
@@ -93,7 +94,7 @@ public class ConnectionLog
      *
      * @return the user status of login
      */
-    public int getLoginStatus(  )
+    public int getLoginStatus( )
     {
         return _nLoginStatus;
     }
@@ -101,7 +102,8 @@ public class ConnectionLog
     /**
      * Sets the login status of the connection log to the specified integer.
      *
-     * @param nLoginStatus the new status of login
+     * @param nLoginStatus
+     *            the new status of login
      */
     public void setLoginStatus( int nLoginStatus )
     {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2016, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -62,20 +62,25 @@ public class SecurityUtilsTest extends LuteceTestCase
             {
                 assertEquals( "127.0.0.1", strParamValue );
                 matchCount++;
-            } else if ( "date_login".equals( strParamName ) )
-            {
-                assertTrue( StringUtils.isNumeric( strParamValue ) );
-                matchCount++;
-            } else if ( "interval".equals( strParamName ) )
-            {
-                assertEquals( "1", strParamValue );
-                matchCount++;
             }
-            else if ( "key".equals( strParamName ) )
-            {
-                assertTrue( strParamValue.matches( "[0-9a-f]{64}" ) );
-                matchCount++;
-            }
+            else
+                if ( "date_login".equals( strParamName ) )
+                {
+                    assertTrue( StringUtils.isNumeric( strParamValue ) );
+                    matchCount++;
+                }
+                else
+                    if ( "interval".equals( strParamName ) )
+                    {
+                        assertEquals( "1", strParamValue );
+                        matchCount++;
+                    }
+                    else
+                        if ( "key".equals( strParamName ) )
+                        {
+                            assertTrue( strParamValue.matches( "[0-9a-f]{64}" ) );
+                            matchCount++;
+                        }
         }
         assertEquals( 4, matchCount );
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,6 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
  *
  * MyLuteceUserFieldListenerService
@@ -51,11 +50,13 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class MyLuteceUserFieldListenerService
 {
-    private List<MyLuteceUserFieldListener> _listRegisteredListeners = new ArrayList<MyLuteceUserFieldListener>(  );
+    private List<MyLuteceUserFieldListener> _listRegisteredListeners = new ArrayList<MyLuteceUserFieldListener>( );
 
     /**
      * Register a new Removal listener
-     * @param listener The listener to register
+     * 
+     * @param listener
+     *            The listener to register
      */
     public void registerListener( MyLuteceUserFieldListener listener )
     {
@@ -64,9 +65,13 @@ public class MyLuteceUserFieldListenerService
 
     /**
      * Create user fields
-     * @param nIdUser The id of the user
-     * @param request HttpServletRequest
-     * @param locale locale
+     * 
+     * @param nIdUser
+     *            The id of the user
+     * @param request
+     *            HttpServletRequest
+     * @param locale
+     *            locale
      */
     public void doCreateUserFields( int nIdUser, HttpServletRequest request, Locale locale )
     {
@@ -78,9 +83,13 @@ public class MyLuteceUserFieldListenerService
 
     /**
      * Create user fields
-     * @param nIdUser The id of the user
-     * @param listUserFields The list of user fields to update
-     * @param locale locale
+     * 
+     * @param nIdUser
+     *            The id of the user
+     * @param listUserFields
+     *            The list of user fields to update
+     * @param locale
+     *            locale
      */
     public void doCreateUserFields( int nIdUser, List<MyLuteceUserField> listUserFields, Locale locale )
     {
@@ -92,10 +101,15 @@ public class MyLuteceUserFieldListenerService
 
     /**
      * Modify user fields
-     * @param nIdUser The id of the user
-     * @param request HttpServletRequest
-     * @param locale locale
-     * @param currentUser current user
+     * 
+     * @param nIdUser
+     *            The id of the user
+     * @param request
+     *            HttpServletRequest
+     * @param locale
+     *            locale
+     * @param currentUser
+     *            current user
      */
     public void doModifyUserFields( int nIdUser, HttpServletRequest request, Locale locale, AdminUser currentUser )
     {
@@ -107,13 +121,17 @@ public class MyLuteceUserFieldListenerService
 
     /**
      * Modify user fields
-     * @param nIdUser The id of the user
-     * @param listUserFields The list of user fields to modify
-     * @param locale locale
-     * @param currentUser current user
+     * 
+     * @param nIdUser
+     *            The id of the user
+     * @param listUserFields
+     *            The list of user fields to modify
+     * @param locale
+     *            locale
+     * @param currentUser
+     *            current user
      */
-    public void doModifyUserFields( int nIdUser, List<MyLuteceUserField> listUserFields, Locale locale,
-        AdminUser currentUser )
+    public void doModifyUserFields( int nIdUser, List<MyLuteceUserField> listUserFields, Locale locale, AdminUser currentUser )
     {
         for ( MyLuteceUserFieldListener listener : _listRegisteredListeners )
         {
@@ -123,9 +141,13 @@ public class MyLuteceUserFieldListenerService
 
     /**
      * Remove user fields
-     * @param nIdUser The id of the user
-     * @param request HttpServletRequest
-     * @param locale locale
+     * 
+     * @param nIdUser
+     *            The id of the user
+     * @param request
+     *            HttpServletRequest
+     * @param locale
+     *            locale
      */
     public void doRemoveUserFields( int nIdUser, HttpServletRequest request, Locale locale )
     {
@@ -137,8 +159,11 @@ public class MyLuteceUserFieldListenerService
 
     /**
      * Remove user fields
-     * @param nIdUser The id of the user
-     * @param locale locale
+     * 
+     * @param nIdUser
+     *            The id of the user
+     * @param locale
+     *            locale
      */
     public void doRemoveUserFields( int nIdUser, Locale locale )
     {

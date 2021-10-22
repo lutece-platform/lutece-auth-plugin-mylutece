@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -43,7 +43,6 @@ import fr.paris.lutece.util.ReferenceList;
 
 import java.util.Locale;
 
-
 /**
  *
  * class RoleResourceIdService
@@ -57,7 +56,7 @@ public class RoleResourceIdService extends ResourceIdService
     private static final String PROPERTY_LABEL_PERMISSION_ASSIGN_ROLE = "mylutece.permission.role.assign.label";
 
     /** Creates a new instance of RoleResourceIdService */
-    public RoleResourceIdService(  )
+    public RoleResourceIdService( )
     {
         setPluginName( MyLutecePlugin.PLUGIN_NAME );
     }
@@ -65,15 +64,15 @@ public class RoleResourceIdService extends ResourceIdService
     /**
      * Initializes the service
      */
-    public void register(  )
+    public void register( )
     {
-        ResourceType rt = new ResourceType(  );
-        rt.setResourceIdServiceClass( RoleResourceIdService.class.getName(  ) );
+        ResourceType rt = new ResourceType( );
+        rt.setResourceIdServiceClass( RoleResourceIdService.class.getName( ) );
         rt.setPluginName( MyLutecePlugin.PLUGIN_NAME );
         rt.setResourceTypeKey( Role.RESOURCE_TYPE );
         rt.setResourceTypeLabelKey( PROPERTY_LABEL_RESOURCE_TYPE );
 
-        Permission p = new Permission(  );
+        Permission p = new Permission( );
         p.setPermissionKey( PERMISSION_ASSIGN_ROLE );
         p.setPermissionTitleKey( PROPERTY_LABEL_PERMISSION_ASSIGN_ROLE );
         rt.registerPermission( p );
@@ -83,27 +82,32 @@ public class RoleResourceIdService extends ResourceIdService
 
     /**
      * Returns a list of role resource ids
-     * @param locale The current locale
+     * 
+     * @param locale
+     *            The current locale
      * @return A list of role resource ids
      */
     public ReferenceList getResourceIdList( Locale locale )
     {
-        return RoleHome.getRolesList(  );
+        return RoleHome.getRolesList( );
     }
 
     /**
-    * Returns the Title of a given resource
-    * @param strId The Id of the resource
-    * @param locale The current locale
-    * @return The Title of a given resource
-    */
+     * Returns the Title of a given resource
+     * 
+     * @param strId
+     *            The Id of the resource
+     * @param locale
+     *            The current locale
+     * @return The Title of a given resource
+     */
     public String getTitle( String strId, Locale locale )
     {
         Role role = RoleHome.findByPrimaryKey( strId );
 
         if ( role != null )
         {
-            return role.getRole(  );
+            return role.getRole( );
         }
 
         return "";

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2014, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,7 +41,6 @@ import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
 
-
 /**
  *
  * PortalAuthentication : default authentication
@@ -52,18 +51,10 @@ public abstract class PortalAuthentication extends AbstractAuthentication
 
     /**
      * Indicates that the user should be already authenticated by an external authentication service (ex : Web Server authentication).
+     * 
      * @return true if the authentication is external, false if the authentication is provided by the Lutece portal.
      */
-    public boolean isExternalAuthentication(  )
-    {
-        return false;
-    }
-
-    /**
-     *
-     *{@inheritDoc}
-     */
-    public boolean isDelegatedAuthentication(  )
+    public boolean isExternalAuthentication( )
     {
         return false;
     }
@@ -72,18 +63,27 @@ public abstract class PortalAuthentication extends AbstractAuthentication
      *
      * {@inheritDoc}
      */
-    public String getLoginPageUrl(  )
+    public boolean isDelegatedAuthentication( )
     {
-        return MyLuteceApp.getLoginPageUrl(  );
+        return false;
     }
 
     /**
      *
      * {@inheritDoc}
      */
-    public String getDoLoginUrl(  )
+    public String getLoginPageUrl( )
     {
-        return MyLuteceApp.getDoLoginUrl(  );
+        return MyLuteceApp.getLoginPageUrl( );
+    }
+
+    /**
+     *
+     * {@inheritDoc}
+     */
+    public String getDoLoginUrl( )
+    {
+        return MyLuteceApp.getDoLoginUrl( );
     }
 
     /**
@@ -105,53 +105,58 @@ public abstract class PortalAuthentication extends AbstractAuthentication
 
     /**
      * Returns the new account page URL of the Authentication Service
+     * 
      * @return The URL
      */
-    public String getNewAccountPageUrl(  )
+    public String getNewAccountPageUrl( )
     {
-        return MyLuteceApp.getNewAccountUrl(  );
+        return MyLuteceApp.getNewAccountUrl( );
     }
 
     /**
      * Returns the View account page URL of the Authentication Service
+     * 
      * @return The URL
      */
-    public String getViewAccountPageUrl(  )
+    public String getViewAccountPageUrl( )
     {
-        return MyLuteceApp.getViewAccountUrl(  );
+        return MyLuteceApp.getViewAccountUrl( );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getLostPasswordPageUrl(  )
+    public String getLostPasswordPageUrl( )
     {
-        return MyLuteceApp.getLostPasswordUrl(  );
+        return MyLuteceApp.getLostPasswordUrl( );
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public String getLostLoginPageUrl(  )
+    public String getLostLoginPageUrl( )
     {
-        return MyLuteceApp.getLostLoginUrl(  );
+        return MyLuteceApp.getLostLoginUrl( );
     }
 
     /**
      * Returns the disconnect URL of the Authentication Service
+     * 
      * @return The URL
      */
-    public String getDoLogoutUrl(  )
+    public String getDoLogoutUrl( )
     {
-        return MyLuteceApp.getDoLogoutUrl(  );
+        return MyLuteceApp.getDoLogoutUrl( );
     }
 
     /**
-     * Returns a Lutece user object if the user is already authenticated in the Http request. This method should return null if the user is not authenticated or if the authentication service is not
-     * based on Http authentication.
-     * @param request The HTTP request
+     * Returns a Lutece user object if the user is already authenticated in the Http request. This method should return null if the user is not authenticated or
+     * if the authentication service is not based on Http authentication.
+     * 
+     * @param request
+     *            The HTTP request
      * @return Returns A Lutece User
      */
     public LuteceUser getHttpAuthenticatedUser( HttpServletRequest request )
@@ -161,43 +166,49 @@ public abstract class PortalAuthentication extends AbstractAuthentication
 
     /**
      * Returns the access denied template
+     * 
      * @return The template
      */
-    public String getAccessDeniedTemplate(  )
+    public String getAccessDeniedTemplate( )
     {
-        return MyLuteceApp.getAccessDeniedTemplate(  );
+        return MyLuteceApp.getAccessDeniedTemplate( );
     }
 
     /**
      * Returns the access controled template
+     * 
      * @return The template
      */
-    public String getAccessControledTemplate(  )
+    public String getAccessControledTemplate( )
     {
-        return MyLuteceApp.getAccessControledTemplate(  );
+        return MyLuteceApp.getAccessControledTemplate( );
     }
 
     /**
      * Tells whether or not the authentication service can provide a list of all its users
+     * 
      * @return true if the service can return a users list
      */
-    public boolean isUsersListAvailable(  )
+    public boolean isUsersListAvailable( )
     {
         return false;
     }
 
     /**
      * Returns all users managed by the authentication service if this feature is available.
+     * 
      * @return A collection of Lutece users or null if the service doesn't provide a users list
      */
-    public Collection<LuteceUser> getUsers(  )
+    public Collection<LuteceUser> getUsers( )
     {
         return null;
     }
 
     /**
      * Returns the user managed by the authentication service if this feature is available.
-     * @param strUserLogin user login
+     * 
+     * @param strUserLogin
+     *            user login
      * @return A Lutece users or null if the service doesn't provide a user
      */
     public LuteceUser getUser( String strUserLogin )
@@ -209,46 +220,48 @@ public abstract class PortalAuthentication extends AbstractAuthentication
     /**
      * get all roles for this user : - user's roles - user's groups roles
      *
-     * @param user The user
+     * @param user
+     *            The user
      * @return Array of roles
      */
-    public String[] getRolesByUser( LuteceUser user )
+    public String [ ] getRolesByUser( LuteceUser user )
     {
         return null;
     }
 
     /**
      * Return false
+     * 
      * @see LuteceAuthentication#isMultiAuthenticationSupported()
      * @return false
      */
-    public boolean isMultiAuthenticationSupported(  )
+    public boolean isMultiAuthenticationSupported( )
     {
         return false;
     }
 
     /**
      *
-     *{@inheritDoc}
+     * {@inheritDoc}
      */
-    public String getIconUrl(  )
+    public String getIconUrl( )
     {
         return CONSTANT_PATH_ICON;
     }
 
     /**
      *
-     *{@inheritDoc}
+     * {@inheritDoc}
      */
     @Override
-    public String toString(  )
+    public String toString( )
     {
-        return this.getName(  );
+        return this.getName( );
     }
 
     /**
      *
-     *{@inheritDoc}
+     * {@inheritDoc}
      */
     @Override
     public void updateDateLastLogin( LuteceUser user, HttpServletRequest request )

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002-2020, Mairie de Paris
+ * Copyright (c) 2002-2021, City of Paris
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -45,21 +45,22 @@ import java.util.Collection;
  */
 public class MyLuteceDefaultRoleProvider implements IMyLuteceExternalRolesProvider
 {
-	// DS key
-	private static final String KEY_DATASTORE_DEFAULT_ROLES = "mylutece.site_property.default_role_keys";
+    // DS key
+    private static final String KEY_DATASTORE_DEFAULT_ROLES = "mylutece.site_property.default_role_keys";
 
-	@Override
-	public Collection<String> providesRoles(LuteceUser user) {
+    @Override
+    public Collection<String> providesRoles( LuteceUser user )
+    {
 
-		String strDefaultRoleKeys = DatastoreService.getDataValue( KEY_DATASTORE_DEFAULT_ROLES, null);
+        String strDefaultRoleKeys = DatastoreService.getDataValue( KEY_DATASTORE_DEFAULT_ROLES, null );
 
-		if ( strDefaultRoleKeys != null )
-		{
-			return Arrays.asList( strDefaultRoleKeys.split(",")  );
-		}
-		else
-		{
-			return new ArrayList<>();
-		}
-	}
+        if ( strDefaultRoleKeys != null )
+        {
+            return Arrays.asList( strDefaultRoleKeys.split( "," ) );
+        }
+        else
+        {
+            return new ArrayList<>( );
+        }
+    }
 }
