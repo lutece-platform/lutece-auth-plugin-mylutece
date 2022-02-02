@@ -14,5 +14,8 @@
 
     <bean id="mylutece.myLuteceUserAttributesService" class="fr.paris.lutece.plugins.mylutece.service.MyLuteceUserAttributesService" />
     <bean id="mylutece.myLuteceExternalIdentityService" class="fr.paris.lutece.plugins.mylutece.service.MyLuteceExternalIdentityService" />
+    <bean id=" mylutece.myLuteceExternalRoleService" class="fr.paris.lutece.plugins.mylutece.service.MyluteceExternalRoleService" />
+    
+   
     
 </beans>

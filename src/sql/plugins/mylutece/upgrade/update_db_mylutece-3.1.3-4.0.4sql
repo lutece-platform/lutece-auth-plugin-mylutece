@@ -1,0 +1,1 @@
+UPDATE core_admin_right set admin_url='jsp/admin/plugins/mylutece/ManageMylutece.jsp' WHERE id_right='MYLUTECE_MANAGEMENT';

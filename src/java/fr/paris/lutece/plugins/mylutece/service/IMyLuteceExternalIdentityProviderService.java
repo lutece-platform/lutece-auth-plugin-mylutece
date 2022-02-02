@@ -33,14 +33,18 @@
  */
 package fr.paris.lutece.plugins.mylutece.service;
 
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+
+import fr.paris.lutece.plugins.mylutece.business.LuteceUserAttributeDescription;
 
 /**
  *
  * IMyLuteceIdentityProviderService
  *
  */
-public interface IMyLuteceExternalIdentityProviderService
+public interface IMyLuteceExternalIdentityProviderService extends ILuteceUserAttributesProvidedDescription
 {
     /**
      *
@@ -49,4 +53,10 @@ public interface IMyLuteceExternalIdentityProviderService
      * @return a Map containing the users informations
      */
     public Map<String, String> getIdentityInformations( String strName );
+    
+    @Override
+    default List<LuteceUserAttributeDescription> getLuteceUserAttributesProvided(Locale locale)
+	{
+	     return MyLuteceExternalIdentityService.getInstance().getDefaulLuteceUserAttributeDescription(locale);
+	}
 }

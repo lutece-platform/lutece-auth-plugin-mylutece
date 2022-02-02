@@ -48,6 +48,13 @@
     <!-- Administration interface parameters -->
     <admin-features>
         <admin-feature>
+            <feature-id>MYLUTECE_MANAGEMENT</feature-id>
+            <feature-title>mylutece.adminFeature.mylutece_management.name</feature-title>
+            <feature-description>mylutece.adminFeature.mylutece_management.description</feature-description>
+            <feature-level>2</feature-level>
+            <feature-url>jsp/admin/plugins/mylutece/ManageMylutece.jsp</feature-url>
+        </admin-feature>
+        <admin-feature>
             <feature-id>MYLUTECE_MANAGE_EXTERNAL_APPLICATION</feature-id>
             <feature-title>mylutece.adminFeature.mylutece_management_external_application.name</feature-title>
             <feature-description>mylutece.adminFeature.mylutece_management_external_application.description</feature-description>

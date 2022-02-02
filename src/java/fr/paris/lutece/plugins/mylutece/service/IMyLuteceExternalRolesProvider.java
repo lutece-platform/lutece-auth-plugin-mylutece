@@ -39,7 +39,7 @@ import java.util.Collection;
 /**
  * This interface is used to provides roles
  */
-public interface IMyLuteceExternalRolesProvider
+public interface IMyLuteceExternalRolesProvider extends ILuteceUserRolesProvidedDescription
 {
     /**
      * Provides roles to the LuteceUser user

@@ -33,16 +33,15 @@
  */
 package fr.paris.lutece.plugins.mylutece.service;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
 import fr.paris.lutece.portal.business.role.Role;
 import fr.paris.lutece.portal.business.role.RoleHome;
 import fr.paris.lutece.portal.service.security.LuteceUser;
-import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppLogService;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class MyLuteceUserService
 {
@@ -63,11 +62,7 @@ public class MyLuteceUserService
         }
 
         // Get the external roles
-        Set<String> listRoles = new HashSet<>( );
-        for ( IMyLuteceExternalRolesProvider roleProvider : SpringContextService.getBeansOfType( IMyLuteceExternalRolesProvider.class ) )
-        {
-            listRoles.addAll( roleProvider.providesRoles( user ) );
-        }
+        Collection<String> listRoles = MyluteceExternalRoleService.getInstance().providesRoles(user);
         // Check existence of each front role
         List<String> listUnexistingRoles = new ArrayList<>( );
         for ( String strRole : listRoles )

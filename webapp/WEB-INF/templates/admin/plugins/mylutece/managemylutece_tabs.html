@@ -1,0 +1,13 @@
+<#macro tabs2 tab >
+<@tabs>
+	<@tabList>
+			<li <#if tab="manageMylutece">class="active"</#if>>
+				<@aButton href="jsp/admin/plugins/mylutece/ManageMylutece.jsp">#i18n{mylutece.adminFeature.mylutece_management.name}</@aButton>
+			</li>
+			<li <#if tab="manageAttributes">class="active"</#if>>
+				<@aButton href="jsp/admin/plugins/mylutece/attribute/ManageAttributes.jsp">#i18n{mylutece.manage_attributes.pageTitle}</@aButton>
+			</li>
+	</@tabList>
+</@tabs>
+
+</#macro>

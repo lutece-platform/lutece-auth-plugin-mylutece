@@ -36,11 +36,13 @@ package fr.paris.lutece.plugins.mylutece.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
 
+import fr.paris.lutece.plugins.mylutece.business.LuteceUserAttributeDescription;
 import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 
@@ -113,8 +115,7 @@ public class MyLuteceExternalIdentityService implements IMyLuteceExternalIdentit
     {
         Map<String, String> mapIdentityInformationsResult = new HashMap<String, String>( );
         Map<String, String> mapIdentityInformations = null;
-        for ( IMyLuteceExternalIdentityProviderService identityProviderService : SpringContextService
-                .getBeansOfType( IMyLuteceExternalIdentityProviderService.class ) )
+        for ( IMyLuteceExternalIdentityProviderService identityProviderService : getProviders() )
         {
             mapIdentityInformations = identityProviderService.getIdentityInformations( strUserName );
             break;
@@ -137,5 +138,45 @@ public class MyLuteceExternalIdentityService implements IMyLuteceExternalIdentit
         }
         return mapIdentityInformationsResult;
     }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<LuteceUserAttributeDescription> getDefaulLuteceUserAttributeDescription(Locale locale)
+    {
+    	
+    	List<LuteceUserAttributeDescription> listUserDescription=  new ArrayList<LuteceUserAttributeDescription>();
+    
+    	
+    	String strUserMappingAttributes = AppPropertiesService.getProperty( PROPERTY_USER_MAPPING_ATTRIBUTES );
+        ATTRIBUTE_USER_MAPPING = new HashMap<String, List<String>>( );
+
+        if ( StringUtils.isNotBlank( strUserMappingAttributes ) )
+        {
+            String [ ] tabUserProperties = strUserMappingAttributes.split( SEPARATOR );
+            
+            for ( int i = 0; i < tabUserProperties.length; i++ )
+            {
+                 
+                  listUserDescription.add(new LuteceUserAttributeDescription( tabUserProperties [i],  AppPropertiesService.getProperty( CONSTANT_LUTECE_USER_PROPERTIES_PATH + "." + tabUserProperties [i] ) , ""));
+            }
+        }
+    	
+         	
+        return listUserDescription;
+    }
+    
+    /**
+	 * Gets the providers.
+	 *
+	 * @return the providers
+	 */
+	public List<IMyLuteceExternalIdentityProviderService> getProviders()
+	{
+		return  SpringContextService
+                .getBeansOfType( IMyLuteceExternalIdentityProviderService.class );
+		
+	}
 
 }
