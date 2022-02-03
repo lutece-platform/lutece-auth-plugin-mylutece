@@ -60,21 +60,20 @@ public final class ConnectionLogDAO implements IConnectionLogDAO
         java.sql.Timestamp dateEnd = new java.sql.Timestamp( new java.util.Date( ).getTime( ) );
         java.sql.Timestamp dateBegin = new java.sql.Timestamp( dateEnd.getTime( ) - ( nIntervalMinutes * 1000 * 60 ) );
 
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_LOGIN_ERRORS, plugin );
-
-        daoUtil.setString( 1, connectionLog.getIpAddress( ) );
-        daoUtil.setInt( 2, ConnectionLog.LOGIN_DENIED );
-        daoUtil.setTimestamp( 3, dateBegin );
-        daoUtil.setTimestamp( 4, dateEnd );
-
-        daoUtil.executeQuery( );
-
-        if ( daoUtil.next( ) )
+        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_SELECT_LOGIN_ERRORS, plugin ) )
         {
-            nCount = daoUtil.getInt( 1 );
+            daoUtil.setString( 1, connectionLog.getIpAddress( ) );
+            daoUtil.setInt( 2, ConnectionLog.LOGIN_DENIED );
+            daoUtil.setTimestamp( 3, dateBegin );
+            daoUtil.setTimestamp( 4, dateEnd );
+    
+            daoUtil.executeQuery( );
+    
+            if ( daoUtil.next( ) )
+            {
+                nCount = daoUtil.getInt( 1 );
+            }
         }
-
-        daoUtil.free( );
 
         return nCount;
     }
@@ -85,13 +84,14 @@ public final class ConnectionLogDAO implements IConnectionLogDAO
     @Override
     public void insertLog( ConnectionLog connectionLog, Plugin plugin )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT_LOGS, plugin );
-        daoUtil.setString( 1, connectionLog.getIpAddress( ) );
-        daoUtil.setTimestamp( 2, connectionLog.getDateLogin( ) );
-        daoUtil.setInt( 3, connectionLog.getLoginStatus( ) );
-
-        daoUtil.executeUpdate( );
-        daoUtil.free( );
+        try( DAOUtil daoUtil = new DAOUtil( SQL_QUERY_INSERT_LOGS, plugin ) )
+        {
+            daoUtil.setString( 1, connectionLog.getIpAddress( ) );
+            daoUtil.setTimestamp( 2, connectionLog.getDateLogin( ) );
+            daoUtil.setInt( 3, connectionLog.getLoginStatus( ) );
+    
+            daoUtil.executeUpdate( );
+        }
     }
 
     /**
@@ -100,17 +100,17 @@ public final class ConnectionLogDAO implements IConnectionLogDAO
     @Override
     public void resetConnectionLogs( String strIp, Timestamp dateLogin, int nIntervalMinutes, Plugin plugin )
     {
-        DAOUtil daoUtil = new DAOUtil( SQL_UPDATE_CLEAR_LOGS, plugin );
-
-        Timestamp dateMin = new Timestamp( dateLogin.getTime( ) - ( nIntervalMinutes * 1000 * 60 ) );
-        Timestamp dateMax = new Timestamp( dateLogin.getTime( ) + ( nIntervalMinutes * 1000 * 60 ) );
-
-        daoUtil.setInt( 1, ConnectionLog.LOGIN_DENIED_CANCELED );
-        daoUtil.setString( 2, strIp );
-        daoUtil.setTimestamp( 3, dateMin );
-        daoUtil.setTimestamp( 4, dateMax );
-
-        daoUtil.executeUpdate( );
-        daoUtil.free( );
+        try( DAOUtil daoUtil = new DAOUtil( SQL_UPDATE_CLEAR_LOGS, plugin ) )
+        {    
+            Timestamp dateMin = new Timestamp( dateLogin.getTime( ) - ( nIntervalMinutes * 1000 * 60 ) );
+            Timestamp dateMax = new Timestamp( dateLogin.getTime( ) + ( nIntervalMinutes * 1000 * 60 ) );
+    
+            daoUtil.setInt( 1, ConnectionLog.LOGIN_DENIED_CANCELED );
+            daoUtil.setString( 2, strIp );
+            daoUtil.setTimestamp( 3, dateMin );
+            daoUtil.setTimestamp( 4, dateMax );
+    
+            daoUtil.executeUpdate( );
+        }
     }
 }
