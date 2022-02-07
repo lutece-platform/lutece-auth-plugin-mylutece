@@ -130,7 +130,7 @@ public class ManageMyLuteceJspBean extends AbstractManageMyluteceJspBean
     	List<IMyLuteceExternalRolesProvider>  listMyluteceExternalRolesProvider= MyluteceExternalRoleService.getInstance().getProviders();
     	List<IMyLuteceExternalIdentityProviderService>  listMyluteceExternalIdentiryProvider= MyLuteceExternalIdentityService.getInstance().getProviders();
     	
-    	 int nCpt=1;
+    	 int nCpt=0;
  		//filter role description
     	 for(IMyLuteceExternalRolesProvider externalRoleProvider: listMyluteceExternalRolesProvider)
 		 {

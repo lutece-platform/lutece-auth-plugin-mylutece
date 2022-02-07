@@ -35,7 +35,7 @@
    	<@alert color='primary'><h2>#i18n{mylutece.manage_mylutece.externalRoleProvider.title} </h2></@alert>
  		<#if external_roles_providers?has_content>
  			<#list external_roles_providers as role_provider>
- 					<@displayRoleProvidedDescription map_external_provider_role_description[role_provider?index]!/>
+ 					<@displayRoleProvidedDescription map_external_provider_role_description["${role_provider?index}"]!/>
  			</#list>	
  		</#if>
   	 
