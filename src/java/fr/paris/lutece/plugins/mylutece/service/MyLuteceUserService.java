@@ -34,6 +34,7 @@
 package fr.paris.lutece.plugins.mylutece.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -64,17 +65,24 @@ public class MyLuteceUserService
         // Get the external roles
         Collection<String> listRoles = MyluteceExternalRoleService.getInstance().providesRoles(user);
         // Check existence of each front role
-        List<String> listUnexistingRoles = new ArrayList<>( );
+        
+        
+        List<String> listCurrentUserRoles=user.getRoles()!=null?Arrays.asList(user.getRoles()):null;
+        List<String> listRolesToRemove = new ArrayList<>( );
         for ( String strRole : listRoles )
         {
             Role role = RoleHome.findByPrimaryKey( strRole );
             if ( role == null )
             {
-                listUnexistingRoles.add( strRole );
+                listRolesToRemove.add( strRole );
                 AppLogService.error( "The role " + strRole + " doesn't exist in BO." );
             }
+            else if(listCurrentUserRoles!=null && listCurrentUserRoles.contains(strRole) )
+            {
+            	listRolesToRemove.add( strRole );
+            }
         }
-        listRoles.removeAll( listUnexistingRoles );
+        listRoles.removeAll( listRolesToRemove );
 
         // Add to the user the existing roles
         user.addRoles( listRoles );

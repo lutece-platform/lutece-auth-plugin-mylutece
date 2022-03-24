@@ -33,12 +33,18 @@
  */
 package fr.paris.lutece.plugins.mylutece.service;
 
+import fr.paris.lutece.plugins.mylutece.business.LuteceUserRoleDescription;
+import fr.paris.lutece.portal.business.role.Role;
+import fr.paris.lutece.portal.business.role.RoleHome;
 import fr.paris.lutece.portal.service.datastore.DatastoreService;
+import fr.paris.lutece.portal.service.i18n.I18nService;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * This class is used to provide default roles for myluteceusers
@@ -46,7 +52,13 @@ import java.util.Collection;
 public class MyLuteceDefaultRoleProvider implements IMyLuteceExternalRolesProvider
 {
     // DS key
-    private static final String KEY_DATASTORE_DEFAULT_ROLES = "mylutece.site_property.default_role_keys";
+    
+    private static final String PROPERTY_DEFAULT_ROLE_DESCRIPTION = "mylutece.defaultRoleProvider.roleDescription";
+    private static final String PROPERTY_DEFAULT_ROLE_NOT_EXIST = "mylutece.defaultRoleProvider.roleNotExist";
+    
+	
+	private static final String KEY_DATASTORE_DEFAULT_ROLES = "mylutece.site_property.default_role_keys";
+    
 
     @Override
     public Collection<String> providesRoles( LuteceUser user )
@@ -63,4 +75,37 @@ public class MyLuteceDefaultRoleProvider implements IMyLuteceExternalRolesProvid
             return new ArrayList<>( );
         }
     }
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<LuteceUserRoleDescription> getLuteceUserRolesProvided(Locale locale) {
+		String strDefaultRoleKeys = DatastoreService.getDataValue(KEY_DATASTORE_DEFAULT_ROLES, null);
+		List<LuteceUserRoleDescription> lisDescriptions = new ArrayList<LuteceUserRoleDescription>();
+		if (strDefaultRoleKeys != null) {
+
+			for (String strRole : Arrays.asList(strDefaultRoleKeys.split(","))) {
+				Role role = RoleHome.findByPrimaryKey(strRole);
+				if (role != null) {
+					lisDescriptions.add(
+							new LuteceUserRoleDescription(role, LuteceUserRoleDescription.TYPE_AUTOMATIC_ASSIGNMENT,
+									I18nService.getLocalizedString(PROPERTY_DEFAULT_ROLE_DESCRIPTION, locale)));
+
+				} else {
+					Role roleEmty = new Role();
+					roleEmty.setRole(strRole);
+					lisDescriptions.add(new LuteceUserRoleDescription(roleEmty,
+							LuteceUserRoleDescription.TYPE_AUTOMATIC_ASSIGNMENT,
+							I18nService.getLocalizedString(PROPERTY_DEFAULT_ROLE_NOT_EXIST, locale)));
+
+				}
+
+			}
+
+		}
+		return lisDescriptions;
+
+	}
+    
 }

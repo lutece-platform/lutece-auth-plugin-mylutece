@@ -134,7 +134,7 @@ public class ManageMyLuteceJspBean extends AbstractManageMyluteceJspBean
  		//filter role description
     	 for(IMyLuteceExternalRolesProvider externalRoleProvider: listMyluteceExternalRolesProvider)
 		 {
-			mapExternalProviderRolesDescription.put(Integer.toString(nCpt),filterRolesDescriptionByUser(externalRoleProvider));
+			mapExternalProviderRolesDescription.put(Integer.toString(nCpt++),filterRolesDescriptionByUser(externalRoleProvider));
 			
 		}
     	
