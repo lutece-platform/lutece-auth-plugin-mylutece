@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+    <properties>
+        <title>Plugin MyLutece</title>
+    </properties>
+    <head>
+	<meta name="keywords" content="authentication, mylutece, user, role"/>
+    </head>
+    <body>
+        <section name="Plugin MyLutece">
+            <subsection name="Introduction">
+                <p>
+                    This plugin allows to manage authentication on the Lutece site. 
+                    It must be associated with a specific authentication module 
+                    corresponding to the chosen system: Database, LDAP, OAuth, CAS ...    
+                </p>
+                <p>
+                Attributes can be associated with the user. 
+                </p>
+                <p>
+                During authentication, some attributes can be set by the authenticator.
+                </p>
+                <p>
+		It is possible to configure external attribute providers that will provide attribute values for the user after authentication.
+		</p>
+                <p>
+		It is also possible to configure role providers making it possible to assign a role (front office role) to the connected user 
+		(a default role provider class is available to associate a single default role after authentication, configured in the datastore ).
+                
+                </p>
+            </subsection>
+        </section>
+    </body>
+</document>
