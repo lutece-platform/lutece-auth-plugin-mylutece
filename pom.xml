@@ -35,6 +35,12 @@
             <version>${springVersion}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <artifactId>module-mydashboard-favorites</artifactId>
+            <groupId>fr.paris.lutece.plugins</groupId>
+            <version>[1.0.5,)</version>
+            <type>lutece-plugin</type>
+        </dependency>
     </dependencies>
 
     <properties>

@@ -33,8 +33,13 @@
  */
 package fr.paris.lutece.plugins.mylutece.web.includes;
 
+import fr.paris.lutece.plugins.mydashboard.modules.favorites.business.Favorite;
+import fr.paris.lutece.plugins.mydashboard.modules.favorites.service.FavoriteService;
 import fr.paris.lutece.plugins.mylutece.authentication.MultiLuteceAuthentication;
 import fr.paris.lutece.plugins.mylutece.web.MyLuteceApp;
+import fr.paris.lutece.plugins.subscribe.business.Subscription;
+import fr.paris.lutece.plugins.subscribe.business.SubscriptionFilter;
+import fr.paris.lutece.plugins.subscribe.service.SubscriptionService;
 import fr.paris.lutece.portal.service.content.PageData;
 import fr.paris.lutece.portal.service.content.XPageAppService;
 import fr.paris.lutece.portal.service.includes.PageInclude;
@@ -43,10 +48,15 @@ import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.security.SecurityService;
 import fr.paris.lutece.portal.service.security.SecurityTokenService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
+import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.util.html.HtmlTemplate;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -69,7 +79,14 @@ public class UserLoginInclude implements PageInclude
     private static final String MARK_DO_LOGIN = "url_dologin";
     private static final String MARK_DO_LOGOUT = "url_dologout";
     private static final String MARK_URL_ACCOUNT = "url_account";
+    private static final String MARK_FAVORITES = "favorites";
+    
     private static final String PARAMETER_XPAGE_MYLUTECE = "mylutece";
+    
+    private static final String FAVORITES_PROVIDER_NAME = "FAVORITES_PROVIDER";
+    
+    private static final String PROPERTY_NUMBER_OF_FAVORITES = "mylutece.menu.numberOfFavorites.show";
+
 
     /**
      * Substitue specific Freemarker markers in the page template.
@@ -104,7 +121,9 @@ public class UserLoginInclude implements PageInclude
                 if ( user != null )
                 {
                     model.put( MARK_USER, user );
-
+                    
+                    addFavoritesToModel( model, user );                    
+                    
                     HtmlTemplate tTitle = AppTemplateService.getTemplate( TEMPLATE_USER_LOGIN_TITLE_LOGGED, request.getLocale( ), model );
                     strUserLoginTitle = tTitle.getHtml( );
                 }
@@ -148,5 +167,29 @@ public class UserLoginInclude implements PageInclude
         rootModel.put( MARK_USERLOGIN_TITLE, strUserLoginTitle );
         rootModel.put( MARK_USERLOGIN, strUserLoginForm );
 
+    }
+
+    private void addFavoritesToModel( Map<String, Object> model, LuteceUser user )
+    {
+        int nNbFavoritesShow = AppPropertiesService.getPropertyInt( PROPERTY_NUMBER_OF_FAVORITES, 4 );
+
+        SubscriptionFilter sFilter = new SubscriptionFilter( );
+        sFilter.setIdSubscriber( user.getName( ) );
+        sFilter.setSubscriptionProvider( FAVORITES_PROVIDER_NAME );
+                
+        List<Subscription> listFavorites = SubscriptionService.getInstance( ).findByFilter( sFilter );
+        if( !listFavorites.isEmpty( ) )
+        {
+            listFavorites = listFavorites.stream( ).sorted( Comparator.comparing( Subscription::getOrder ) ).limit( nNbFavoritesShow ).collect( Collectors.toList() );
+            
+            List<Favorite> listFavoritesSuscribed = new ArrayList<>( );
+            for ( Subscription sub : listFavorites )
+            {
+                Favorite favorite = FavoriteService.getInstance( ).findByPrimaryKey( Integer.parseInt( sub.getIdSubscribedResource( ) ) );
+                favorite.setOrder( sub.getOrder( ) );
+                listFavoritesSuscribed.add( favorite );
+            }    
+            model.put( MARK_FAVORITES, listFavoritesSuscribed);
+        }
     }
 }
