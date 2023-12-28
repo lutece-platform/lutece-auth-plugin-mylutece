@@ -22,3 +22,4 @@
 <#if list_authentications?exists><#list list_authentications as authentication><#if !authentication.externalAuthentication><#if authentication.delegatedAuthentication><a class="btn btn-outline-light" href="${authentication.doLoginUrl}?auth_provider=${authentication.name}"><#else><a class="btn btn-outline-dark" href="${authentication.loginPageUrl}&auth_provider=${authentication.name}"></#if><span class="ti ti-login"></span> #i18n{mylutece.user_login_include.labelButton}</a></#if></#list></#if>
 </li>
 </#if>
+

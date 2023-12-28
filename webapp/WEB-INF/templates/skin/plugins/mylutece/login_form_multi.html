@@ -1,115 +1,93 @@
-<div class="row">
-    <div class="well col-xs-12 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
-        <#if list_authentications?exists>
-        <form class="form-horizontal" method="post" action="${url_dologin}" role="form" >
-            <fieldset>
-                <legend>#i18n{mylutece.xpage.login_form.pageTitle}</legend>
-                <input type="hidden" name="page" value="mylutece" />
-                <input type="hidden" name="action" value="dologin" />
-                <input type="hidden" name="token" value="${token}" />
-                <#if error_message!="">
-                    <div class="alert alert-danger">
-                         <span class="glyphicon glyphicon-info-sign"></span>&nbsp;
-                         ${error_message}
-                         <br/>
-                         <blockquote>
-                            ${error_detail}
-                         </blockquote>
-                     </div>
-                    </#if>
-                <#-- first display delegated authentications [oauth etc...]-->
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-4 offset-md-4">
+        <#if list_authentications??>
+            <#if error_message?? && error_message != ''>
+            <div class="alert alert-warning">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 9v4" /><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" /><path d="M12 16h.01" /></svg>
+                <span class="ms-2">${error_message!}</span>
+                <#if error_details?? && error_details !=''><br/>${error_detail!}</#if>
+            </div>
+            </#if>
+            <form method="post" action="${url_dologin}">
+            <input type="hidden" name="page" value="mylutece" >
+            <input type="hidden" name="action" value="dologin" >
+            <input type="hidden" name="token" value="${token}" >
+            <p class="text-center">
+                <img class="mb-4" src="images/lutece-logo-dark.svg" alt="" width="72">
+            </p>
+            <h1 class="h3 mb-3 fw-normal">#i18n{mylutece.xpage.login_form.pageTitle}</h1>
+            <#-- first display delegated authentications [oauth etc...]-->
+            <#list list_authentications as authentication>
+                <#if authentication.delegatedAuthentication>
+                <div class="form-group">
+                    <label for="" class="col-xs-12 col-sm-12 col-md-3 col-lg-3"></label>
+                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <a href="${url_dologin}?page=mylutece&action=dologin&auth_provider=${authentication.name}">
+                            <img src="${authentication.iconUrl}" title="${authentication.authServiceName} " alt="${authentication.authServiceName} " />
+                        </a>
+                    </div>
+                </div>
+                </#if>
+            </#list>
+            <#-- display internal authentications [such as database]-->
+            <#assign bHasInternalAuth = false />
+            <#assign lostLoginUrl='' />
+            <#assign lostPasswordUrl='' />
+            <#if list_authentications?size != 1>
                 <#list list_authentications as authentication>
-                    <#if authentication.delegatedAuthentication>
+                <#if !authentication.externalAuthentication && !authentication.delegatedAuthentication>
+                    <#if !bHasInternalAuth><#assign bHasInternalAuth = true /></#if>
                     <div class="form-group">
                         <label for="" class="col-xs-12 col-sm-12 col-md-3 col-lg-3"></label>
-						<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-							<a href="${url_dologin}?page=mylutece&action=dologin&auth_provider=${authentication.name}">
-								<img src="${authentication.iconUrl}" title="${authentication.authServiceName} " alt="${authentication.authServiceName} " />
-							</a>
-						</div>
-                    </div>
-                    </#if>
-                </#list>
-                <#-- display internal authentications [such as database]-->
-                <#assign bHasInternalAuth = false />
-
-                <#if list_authentications?size != 1>
-                <#list list_authentications as authentication>
-                    <#if !authentication.externalAuthentication && !authentication.delegatedAuthentication>
-                        <#if !bHasInternalAuth>
-                            <#assign bHasInternalAuth = true />
-                        </#if>
-                        <div class="form-group">
-                            <label for="" class="col-xs-12 col-sm-12 col-md-3 col-lg-3"></label>
-							<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-								<#if auth_provider?has_content && auth_provider = authentication.name>
-								<div class="radio">
-									<label>
-										<input type="radio" name="auth_provider" value="${authentication.name}" checked="checked"/>${authentication.authServiceName}
-									</label>
-								</div>
-								<#else>
-								<div class="radio">
-									<label>
-										<input type="radio" name="auth_provider" value="${authentication.name}" />${authentication.authServiceName}
-									</label>
-								</div>
-								</#if>
-							</div>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="auth_provider" value="${authentication.name}"  <#if auth_provider?has_content && auth_provider = authentication.name>checked="checked"</#if> >${authentication.authServiceName}
+                                </label>
+                            </div>
                         </div>
-                    </#if>
+                    </div>
+                </#if>
                 </#list>
-                <#else>
+            <#else>
                 <#list list_authentications as authentication>
                     <#if !authentication.externalAuthentication && !authentication.delegatedAuthentication>
-                        <#if !bHasInternalAuth>
-                            <#assign bHasInternalAuth = true />
-                        </#if>
-                           <input type="hidden" name="auth_provider" value="${authentication.name}" />
-                        </#if>
-                </#list>
-                </#if>	
-                <#if bHasInternalAuth>
-                <div class="form-group">
-                    <label for="username" class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-						#i18n{mylutece.xpage.login_form.labelAccessCode} :
-					</label>
-					<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
-						<input type="text" name="username" id="username" class="form-control" maxlength="100" value=""  />
-					</div>
-                </div>
-                <div class="form-group">
-                    <label for="password" class="col-xs-12 col-sm-12 col-md-3 col-lg-3">	
-						#i18n{mylutece.xpage.login_form.labelPassword} : </label>
-					<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
-						<input type="password" name="password" id="password" class="form-control" maxlength="100" /> 
-					</div>
-                </div>
-                <#if is_active_captcha>
-                <div class="form-group">
-					<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
-						${captcha}
-					</div>
-                </div>
-                </#if>
-				<div class="form-group">
-					<div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
-                    <button type="submit" class="btn btn-primary btn-sm" name="Submit">
-                        <span class="glyphicon glyphicon-lock"></span>&nbsp;
-                        #i18n{mylutece.xpage.login_form.labelButton} 
-                    </button>
-                    <#if url_new_account?has_content>
-                    <a class="btn btn-primary btn-sm" title="#i18n{mylutece.xpage.login_form.labelButtonCreateAccount}" href="${url_new_account}">
-                        <span class="glyphicon glyphicon-plus"></span></i>&nbsp;
-                        #i18n{mylutece.xpage.login_form.labelButtonCreateAccount}
-                    </a>
+                        <#if !bHasInternalAuth><#assign bHasInternalAuth = true /></#if>
+                        <input type="hidden" name="auth_provider" value="${authentication.name}" />
+                        <#assign lostPasswordUrl=authentication.getLostPasswordPageUrl() />
+                        <#assign lostLoginUrl=authentication.getLostLoginPageUrl() />
                     </#if>
-					</div>
-				</div>
-	</div>
-
+                </#list>
+            </#if>	
+            <#if bHasInternalAuth>
+            <div class="form-floating">
+                <input type="test" class="form-control" name="username" id="floatingInput" placeholder="name@example.com">
+                <label for="floatingInput">#i18n{mylutece.xpage.login_form.labelAccessCode} </label>
+            </div>
+            <div class="form-floating">
+                <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="#i18n{mylutece.xpage.login_form.labelPassword}">
+                <label for="floatingPassword">#i18n{mylutece.xpage.login_form.labelPassword} </label>
+            </div>
+            <#if is_active_captcha>
+            <div class="form-row">${captcha}</div>
+            </#if>
+            <button class="btn btn-primary w-100 py-2 mt-2" type="submit">#i18n{mylutece.xpage.login_form.labelButton}</button>
+            <p class="mt-1 text-body-secondary">
+                #i18n{mylutece.xpage.login_form.labelNewAccount}
+                <#if url_new_account?has_content>
+                <a class="btn btn-light" title="#i18n{mylutece.xpage.login_form.labelButtonCreateAccount}" href="${url_new_account}">
+                    #i18n{mylutece.xpage.login_form.labelButtonCreateAccount} <span class="ti ti-user-plus"></span> 
+                </a>
                 </#if>
-            </fieldset>
-        </form>
-        </#if>
+            </p>
+            <p>
+            <#if lostPasswordUrl??><a class="btn btn-light" title="#i18n{mylutece.xpage.login_form.labelButtonLostPassword}" href="${lostPasswordUrl!}">#i18n{mylutece.xpage.login_form.labelButtonLostPassword}</a></#if>
+            <#if lostLoginUrl??><a class="btn btn-light" title="#i18n{mylutece.xpage.login_form.labelButtonLostLogin}" href="${lostLoginUrl!}">#i18n{mylutece.xpage.login_form.labelButtonLostLogin}</a></#if>
+            </p>
+            </#if>
+            </form>
+        </div>
+    </div>
 </div>
+</#if>

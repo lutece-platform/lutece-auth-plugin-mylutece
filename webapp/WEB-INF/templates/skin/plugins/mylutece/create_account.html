@@ -1,12 +1,9 @@
 <div class="row">
-	<div class="well">
+	<div class="col">
 		<h2>#i18n{mylutece.xpage.create_account.pageTitle}</h2>
-		<br />
-		<br />
-		<br />
 		<#assign no_authentication = true />
 		<#if list_authentications?has_content>
-			#i18n{mylutece.xpage.create_account.contentMessage}
+			<p>#i18n{mylutece.xpage.create_account.contentMessage}</p>
 			<ul>
 			<#list list_authentications as authentication >
 				<#if !authentication.externalAuthentication >
@@ -15,19 +12,13 @@
 				</#if>
 				<li>
 					<a href="${authentication.newAccountPageUrl}">
-						<img src="${authentication.iconUrl!}" title="${authentication.authServiceName!}" alt="${authentication.authServiceName!}" />
-						&nbsp;${authentication.authServiceName!}
+						<img src="${authentication.iconUrl!}" title="${authentication.authServiceName!}" alt="${authentication.authServiceName!}"> ${authentication.authServiceName!}
 					</a>
 				</li>
 				</#if>
 			</#list>
 			</ul>
 		</#if>
-		<#if no_authentication>
-			#i18n{mylutece.xpage.create_account.noAuthentication}
-		</#if>
-		<br />
-		<br />
-		<br />
+		<#if no_authentication><p>#i18n{mylutece.xpage.create_account.noAuthentication}</p></#if>
 	</div>
 </div>
