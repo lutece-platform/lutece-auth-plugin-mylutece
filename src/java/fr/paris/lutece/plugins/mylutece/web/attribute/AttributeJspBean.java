@@ -44,7 +44,6 @@ import fr.paris.lutece.portal.service.message.AdminMessage;
 import fr.paris.lutece.portal.service.message.AdminMessageService;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
-import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.portal.web.admin.AdminFeaturesPageJspBean;
@@ -56,7 +55,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.enterprise.inject.spi.CDI;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -109,7 +109,7 @@ public class AttributeJspBean extends AdminFeaturesPageJspBean
         // ATTRIBUTE TYPES
         List<AttributeType> listAttributeTypes = new ArrayList<AttributeType>( );
 
-        for ( IAttribute attribute : SpringContextService.getBeansOfType( IAttribute.class ) )
+        for ( IAttribute attribute : CDI.current( ).select( IAttribute.class ).stream( ).toList( ) )
         {
             attribute.setAttributeType( getLocale( ) );
             listAttributeTypes.add( attribute.getAttributeType( ) );

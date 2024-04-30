@@ -39,7 +39,7 @@ import fr.paris.lutece.portal.service.security.LuteceUser;
 
 import java.util.Collection;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  *

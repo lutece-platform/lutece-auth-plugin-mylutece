@@ -35,12 +35,16 @@ package fr.paris.lutece.plugins.mylutece.authentication.logs;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.util.sql.DAOUtil;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
 
 import java.sql.Timestamp;
 
 /**
  * This class provides Data Access methods for AppUser objects
  */
+@ApplicationScoped
+@Named( "mylutece.connectionLogDAO" )
 public final class ConnectionLogDAO implements IConnectionLogDAO
 {
     // Constants

@@ -39,7 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import fr.paris.lutece.api.user.User;
 import fr.paris.lutece.plugins.mylutece.authentication.MultiLuteceAuthentication;

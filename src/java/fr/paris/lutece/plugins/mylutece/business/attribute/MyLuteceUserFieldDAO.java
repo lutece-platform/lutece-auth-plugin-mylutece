@@ -33,19 +33,23 @@
  */
 package fr.paris.lutece.plugins.mylutece.business.attribute;
 
-import fr.paris.lutece.portal.service.plugin.Plugin;
-import fr.paris.lutece.portal.service.util.AppLogService;
-import fr.paris.lutece.util.sql.DAOUtil;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import fr.paris.lutece.portal.service.plugin.Plugin;
+import fr.paris.lutece.portal.service.util.AppLogService;
+import fr.paris.lutece.util.sql.DAOUtil;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
 
 /**
  *
  * MyLuteceUserFieldDAO
  *
  */
+@ApplicationScoped
+@Named( "mylutece.myLuteceUserFieldDAO" )
 public class MyLuteceUserFieldDAO implements IMyLuteceUserFieldDAO
 {
     // CONSTANTS

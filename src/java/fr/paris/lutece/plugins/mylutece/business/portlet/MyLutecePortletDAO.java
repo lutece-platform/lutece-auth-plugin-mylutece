@@ -34,10 +34,14 @@
 package fr.paris.lutece.plugins.mylutece.business.portlet;
 
 import fr.paris.lutece.portal.business.portlet.Portlet;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
 
 /**
  * this class provides Data Access methods for HtmlPortlet objects
  */
+@ApplicationScoped
+@Named( "mylutece.myLutecePortletDAO" )
 public final class MyLutecePortletDAO implements IMyLutecePortletDAO
 {
     ///////////////////////////////////////////////////////////////////////////////////////

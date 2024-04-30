@@ -53,7 +53,7 @@ import java.util.Map;
 
 import javax.security.auth.login.LoginException;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Manages serveral {@link MyLuteceAuthentication}. Call {@link #registerAuthentication(LuteceAuthentication)} to register your authentication and

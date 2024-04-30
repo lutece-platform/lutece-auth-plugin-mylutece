@@ -43,13 +43,13 @@ import fr.paris.lutece.portal.service.message.AdminMessage;
 import fr.paris.lutece.portal.service.message.AdminMessageService;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
-import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.web.constants.Messages;
 
 import java.util.List;
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.enterprise.inject.spi.CDI;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  *
@@ -126,8 +126,8 @@ public class MyLuteceUserFieldService
         }
 
         // Attributes associated to the plugins
-        for ( MyLuteceUserFieldListenerService myLuteceUserFieldListenerService : SpringContextService
-                .getBeansOfType( MyLuteceUserFieldListenerService.class ) )
+        for ( MyLuteceUserFieldListenerService myLuteceUserFieldListenerService : CDI.current( ).select( MyLuteceUserFieldListenerService.class ).stream( )
+                .toList( ) )
         {
             myLuteceUserFieldListenerService.doCreateUserFields( nIdUser, request, locale );
         }
@@ -167,8 +167,8 @@ public class MyLuteceUserFieldService
         }
 
         // Attributes associated to the plugins
-        for ( MyLuteceUserFieldListenerService myLuteceUserFieldListenerService : SpringContextService
-                .getBeansOfType( MyLuteceUserFieldListenerService.class ) )
+        for ( MyLuteceUserFieldListenerService myLuteceUserFieldListenerService : CDI.current( ).select( MyLuteceUserFieldListenerService.class ).stream( )
+                .toList( ) )
         {
             myLuteceUserFieldListenerService.doModifyUserFields( nIdUser, request, locale, currentUser );
         }
@@ -189,8 +189,8 @@ public class MyLuteceUserFieldService
         MyLuteceUserFieldHome.removeUserFieldsFromIdUser( nIdUser, getMyLutecePlugin( ) );
 
         // Attributes associated to the plugins
-        for ( MyLuteceUserFieldListenerService myLuteceUserFieldListenerService : SpringContextService
-                .getBeansOfType( MyLuteceUserFieldListenerService.class ) )
+        for ( MyLuteceUserFieldListenerService myLuteceUserFieldListenerService : CDI.current( ).select( MyLuteceUserFieldListenerService.class ).stream( )
+                .toList( ) )
         {
             myLuteceUserFieldListenerService.doRemoveUserFields( nIdUser, request, locale );
         }
@@ -209,8 +209,8 @@ public class MyLuteceUserFieldService
         MyLuteceUserFieldHome.removeUserFieldsFromIdUser( nIdUser, getMyLutecePlugin( ) );
 
         // Attributes associated to the plugins
-        for ( MyLuteceUserFieldListenerService myLuteceUserFieldListenerService : SpringContextService
-                .getBeansOfType( MyLuteceUserFieldListenerService.class ) )
+        for ( MyLuteceUserFieldListenerService myLuteceUserFieldListenerService : CDI.current( ).select( MyLuteceUserFieldListenerService.class ).stream( )
+                .toList( ) )
         {
             myLuteceUserFieldListenerService.doRemoveUserFields( nIdUser, locale );
         }

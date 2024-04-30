@@ -36,7 +36,7 @@ package fr.paris.lutece.plugins.mylutece.business.portlet;
 import fr.paris.lutece.portal.business.portlet.IPortletInterfaceDAO;
 import fr.paris.lutece.portal.business.portlet.PortletHome;
 import fr.paris.lutece.portal.business.portlet.PortletTypeHome;
-import fr.paris.lutece.portal.service.spring.SpringContextService;
+import jakarta.enterprise.inject.spi.CDI;
 
 /**
  * Home for MyLutece portlet
@@ -44,7 +44,7 @@ import fr.paris.lutece.portal.service.spring.SpringContextService;
 public class MyLutecePortletHome extends PortletHome
 {
     // Static variable pointed at the DAO instance
-    private static IMyLutecePortletDAO _dao = SpringContextService.getBean( "mylutece.myLutecePortletDAO" );
+    private static IMyLutecePortletDAO _dao = CDI.current( ).select( IMyLutecePortletDAO.class ).get( );
 
     /* This class implements the Singleton design pattern. */
     private static MyLutecePortletHome _singleton = null;

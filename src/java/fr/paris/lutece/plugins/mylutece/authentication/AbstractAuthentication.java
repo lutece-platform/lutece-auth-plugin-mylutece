@@ -37,7 +37,7 @@ import fr.paris.lutece.portal.service.security.LoginRedirectException;
 import fr.paris.lutece.portal.service.security.LuteceAuthentication;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import javax.security.auth.login.LoginException;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import fr.paris.lutece.plugins.mylutece.service.ILuteceUserAttributesProvidedDescription;
 import fr.paris.lutece.plugins.mylutece.service.ILuteceUserRolesProvidedDescription;

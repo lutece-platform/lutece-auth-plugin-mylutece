@@ -33,26 +33,29 @@
  */
 package fr.paris.lutece.plugins.mylutece.business.attribute;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import org.apache.commons.lang3.StringUtils;
+
 import fr.paris.lutece.plugins.mylutece.service.MyLutecePlugin;
 import fr.paris.lutece.portal.service.message.AdminMessage;
 import fr.paris.lutece.portal.service.message.AdminMessageService;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.web.constants.Messages;
-
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.inject.Named;
+import jakarta.inject.Singleton;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  *
  * AttributeText
  *
  */
+@Singleton
+@Named( "mylutece.myLuteceAttributeText" )
 public class AttributeText extends AbstractAttribute
 {
     // CONSTANTS

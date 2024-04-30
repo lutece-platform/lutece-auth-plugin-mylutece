@@ -43,61 +43,60 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.StringUtils;
 
 import fr.paris.lutece.plugins.mylutece.business.LuteceUserAttributeDescription;
-import fr.paris.lutece.portal.service.spring.SpringContextService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.spi.CDI;
+import jakarta.inject.Named;
 
+@ApplicationScoped
+@Named( "mylutece.myLuteceExternalIdentityService" )
 public class MyLuteceExternalIdentityService implements IMyLuteceExternalIdentityService
 {
 
     private static final String PROPERTY_USER_MAPPING_ATTRIBUTES = "mylutece.identity.userMappingAttributes";
     private static final String CONSTANT_LUTECE_USER_PROPERTIES_PATH = "mylutece.attribute";
     private static Map<String, List<String>> ATTRIBUTE_USER_MAPPING;
-    private static final String BEAN_MY_LUTECE_IDENTITY_SERVICE = "mylutece.myLuteceExternalIdentityService";
-    private static volatile IMyLuteceExternalIdentityService _singleton;
     private static final String SEPARATOR = ",";
 
+    @PostConstruct
+    public void init( ) {
+        String strUserMappingAttributes = AppPropertiesService.getProperty( PROPERTY_USER_MAPPING_ATTRIBUTES );
+        ATTRIBUTE_USER_MAPPING = new HashMap<String, List<String>>( );
+
+        if ( StringUtils.isNotBlank( strUserMappingAttributes ) )
+        {
+            String [ ] tabUserProperties = strUserMappingAttributes.split( SEPARATOR );
+            String userProperties;
+
+            for ( int i = 0; i < tabUserProperties.length; i++ )
+            {
+                userProperties = AppPropertiesService.getProperty( CONSTANT_LUTECE_USER_PROPERTIES_PATH + "." + tabUserProperties [i] );
+
+                if ( StringUtils.isNotBlank( userProperties ) )
+                {
+                    if ( !ATTRIBUTE_USER_MAPPING.containsKey( userProperties ) )
+                    {
+                        ATTRIBUTE_USER_MAPPING.put( userProperties, new ArrayList<String>( ) );
+                    }
+                    ATTRIBUTE_USER_MAPPING.get( userProperties ).add( tabUserProperties [i] );
+
+                }
+            }
+        }
+    }
+    
     /**
      * Get the instance of the MyLuteceExternalIdentityService service
      * 
      * @return the instance of the MyLuteceExternalIdentityService service
      */
+    @Deprecated
     public static IMyLuteceExternalIdentityService getInstance( )
     {
-        if ( _singleton == null )
-        {
-            synchronized( IMyLuteceExternalIdentityService.class )
-            {
-                IMyLuteceExternalIdentityService service = SpringContextService.getBean( BEAN_MY_LUTECE_IDENTITY_SERVICE );
-                _singleton = service;
-                String strUserMappingAttributes = AppPropertiesService.getProperty( PROPERTY_USER_MAPPING_ATTRIBUTES );
-                ATTRIBUTE_USER_MAPPING = new HashMap<String, List<String>>( );
-
-                if ( StringUtils.isNotBlank( strUserMappingAttributes ) )
-                {
-                    String [ ] tabUserProperties = strUserMappingAttributes.split( SEPARATOR );
-                    String userProperties;
-
-                    for ( int i = 0; i < tabUserProperties.length; i++ )
-                    {
-                        userProperties = AppPropertiesService.getProperty( CONSTANT_LUTECE_USER_PROPERTIES_PATH + "." + tabUserProperties [i] );
-
-                        if ( StringUtils.isNotBlank( userProperties ) )
-                        {
-                            if ( !ATTRIBUTE_USER_MAPPING.containsKey( userProperties ) )
-                            {
-                                ATTRIBUTE_USER_MAPPING.put( userProperties, new ArrayList<String>( ) );
-                            }
-                            ATTRIBUTE_USER_MAPPING.get( userProperties ).add( tabUserProperties [i] );
-
-                        }
-                    }
-                }
-            }
-        }
-
-        return _singleton;
+        return CDI.current( ).select( IMyLuteceExternalIdentityService.class ).get( );
     }
-
+    
     /**
      * {@inheritDoc}
      */
@@ -174,9 +173,7 @@ public class MyLuteceExternalIdentityService implements IMyLuteceExternalIdentit
 	 */
 	public List<IMyLuteceExternalIdentityProviderService> getProviders()
 	{
-		return  SpringContextService
-                .getBeansOfType( IMyLuteceExternalIdentityProviderService.class );
-		
+	    return CDI.current( ).select( IMyLuteceExternalIdentityProviderService.class ).stream( ).toList( );
 	}
 
 }
