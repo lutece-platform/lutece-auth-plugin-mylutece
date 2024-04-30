@@ -33,18 +33,22 @@
  */
 package fr.paris.lutece.plugins.mylutece.business.attribute;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.util.AppLogService;
 import fr.paris.lutece.util.sql.DAOUtil;
-
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
 
 /**
  *
  * AttributeFieldDAO
  *
  */
+@ApplicationScoped
+@Named( "mylutece.myLuteceAttributeFieldDAO" )
 public class AttributeFieldDAO implements IAttributeFieldDAO
 {
     // NEW PK

@@ -34,7 +34,7 @@
 package fr.paris.lutece.plugins.mylutece.authentication.logs;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
-import fr.paris.lutece.portal.service.spring.SpringContextService;
+import jakarta.enterprise.inject.spi.CDI;
 
 import java.sql.Timestamp;
 
@@ -44,7 +44,7 @@ import java.sql.Timestamp;
 public final class ConnectionLogHome
 {
     // Static variable pointed at the DAO instance
-    private static IConnectionLogDAO _dao = SpringContextService.getBean( "mylutece.connectionLogDAO" );
+    private static IConnectionLogDAO _dao = CDI.current( ).select( IConnectionLogDAO.class ).get( );
 
     /**
      * Creates a new UserLogHome object.

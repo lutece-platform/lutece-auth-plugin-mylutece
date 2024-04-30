@@ -39,6 +39,8 @@ import fr.paris.lutece.portal.business.role.RoleHome;
 import fr.paris.lutece.portal.service.datastore.DatastoreService;
 import fr.paris.lutece.portal.service.i18n.I18nService;
 import fr.paris.lutece.portal.service.security.LuteceUser;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,6 +51,8 @@ import java.util.Locale;
 /**
  * This class is used to provide default roles for myluteceusers
  */
+@ApplicationScoped
+@Named( "mylutece.myLuteceDefaultRoleProvider" )
 public class MyLuteceDefaultRoleProvider implements IMyLuteceExternalRolesProvider
 {
     // DS key

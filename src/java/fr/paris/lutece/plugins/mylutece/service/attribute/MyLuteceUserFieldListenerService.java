@@ -41,13 +41,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  *
  * MyLuteceUserFieldListenerService
  *
  */
+@ApplicationScoped
 public class MyLuteceUserFieldListenerService
 {
     private List<MyLuteceUserFieldListener> _listRegisteredListeners = new ArrayList<MyLuteceUserFieldListener>( );

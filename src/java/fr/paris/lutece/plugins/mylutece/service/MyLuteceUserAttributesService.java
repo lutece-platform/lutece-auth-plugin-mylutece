@@ -33,20 +33,24 @@
  */
 package fr.paris.lutece.plugins.mylutece.service;
 
-import fr.paris.lutece.portal.service.security.LuteceUser;
-import fr.paris.lutece.portal.service.security.SecurityService;
-import fr.paris.lutece.portal.service.security.UserAttributesService;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.HashMap;
-import java.util.Map;
+import fr.paris.lutece.portal.service.security.LuteceUser;
+import fr.paris.lutece.portal.service.security.SecurityService;
+import fr.paris.lutece.portal.service.security.UserAttributesService;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
 
 /**
  *
  * MyLuteceUserAttributesService
  *
  */
+@ApplicationScoped
+@Named( "mylutece.myLuteceUserAttributesService" )
 public final class MyLuteceUserAttributesService implements UserAttributesService
 {
     /**
