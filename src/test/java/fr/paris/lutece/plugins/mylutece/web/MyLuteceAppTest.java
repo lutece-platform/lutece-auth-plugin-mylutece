@@ -39,7 +39,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.springframework.mock.web.MockHttpServletRequest;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import fr.paris.lutece.plugins.mylutece.authentication.logs.ConnectionLog;
 import fr.paris.lutece.plugins.mylutece.authentication.logs.ConnectionLogHome;
@@ -48,6 +50,7 @@ import fr.paris.lutece.plugins.mylutece.util.SecurityUtils;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.test.LuteceTestCase;
+import fr.paris.lutece.test.mocks.MockHttpServletRequest;
 
 public class MyLuteceAppTest extends LuteceTestCase
 {
@@ -55,10 +58,9 @@ public class MyLuteceAppTest extends LuteceTestCase
     private Plugin _plugin;
     private ConnectionLog _connetionLog;
 
-    @Override
+    @BeforeEach
     public void setUp( ) throws Exception
     {
-        super.setUp( );
         _plugin = PluginService.getPlugin( MyLutecePlugin.PLUGIN_NAME );
         _connetionLog = new ConnectionLog( );
         _connetionLog.setDateLogin( new Timestamp( new Date( ).getTime( ) ) );
@@ -70,13 +72,13 @@ public class MyLuteceAppTest extends LuteceTestCase
         assertEquals( 1, ConnectionLogHome.getLoginErrors( _connetionLog, 1, _plugin ) );
     }
 
-    @Override
+    @AfterEach
     public void tearDown( ) throws Exception
     {
         ConnectionLogHome.resetConnectionLogs( STR_IP_ADDRESS, new Timestamp( new Date( ).getTime( ) ), 1, _plugin );
-        super.tearDown( );
     }
 
+    @Test
     public void testDoResetConnectionLog( )
     {
         MockHttpServletRequest request = new MockHttpServletRequest( );
@@ -106,6 +108,7 @@ public class MyLuteceAppTest extends LuteceTestCase
         assertEquals( 0, ConnectionLogHome.getLoginErrors( _connetionLog, 1, _plugin ) );
     }
 
+    @Test
     public void testDoResetConnectionLogBadKey( )
     {
         MockHttpServletRequest request = new MockHttpServletRequest( );

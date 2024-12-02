@@ -37,12 +37,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.mock.web.MockHttpServletRequest;
+import org.junit.jupiter.api.Test;
 
 import fr.paris.lutece.test.LuteceTestCase;
+import fr.paris.lutece.test.mocks.MockHttpServletRequest;
 
 public class SecurityUtilsTest extends LuteceTestCase
 {
+    @Test
     public void testBuildResetConnectionLogUrl( )
     {
         MockHttpServletRequest request = new MockHttpServletRequest( );
