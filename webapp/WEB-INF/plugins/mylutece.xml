@@ -41,7 +41,6 @@
     <applications>
         <application>
             <application-id>mylutece</application-id>
-            <application-class>fr.paris.lutece.plugins.mylutece.web.MyLuteceApp</application-class>
         </application>
     </applications>
 

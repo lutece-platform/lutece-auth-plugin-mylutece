@@ -39,6 +39,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 
 import fr.paris.lutece.api.user.User;
@@ -50,19 +52,21 @@ import fr.paris.lutece.plugins.mylutece.service.IMyLuteceExternalRolesProvider;
 import fr.paris.lutece.plugins.mylutece.service.MyLuteceExternalIdentityService;
 import fr.paris.lutece.plugins.mylutece.service.MyluteceExternalRoleService;
 import fr.paris.lutece.plugins.mylutece.service.RoleResourceIdService;
-import fr.paris.lutece.portal.business.user.AdminUser;
 import fr.paris.lutece.portal.service.rbac.RBACService;
 import fr.paris.lutece.portal.service.security.LuteceAuthentication;
 import fr.paris.lutece.portal.service.security.SecurityService;
 import fr.paris.lutece.portal.service.workgroup.AdminWorkgroupService;
+import fr.paris.lutece.portal.util.mvc.admin.MVCAdminJspBean;
 import fr.paris.lutece.portal.util.mvc.admin.annotations.Controller;
 import fr.paris.lutece.portal.util.mvc.commons.annotations.View;
 
 /**
  * This class provides the user interface to manage Administration features ( manage, create, modify, remove )
  */
+@RequestScoped
+@Named
 @Controller( controllerJsp = "ManageMylutece.jsp", controllerPath = "jsp/admin/plugins/mylutece/", right = "MYLUTECE_MANAGEMENT" )
-public class ManageMyLuteceJspBean extends AbstractManageMyluteceJspBean
+public class ManageMyLuteceJspBean extends MVCAdminJspBean
 {
     // Templates
     private static final String TEMPLATE_MANAGE_MYLUTECE = "/admin/plugins/mylutece/manage_mylutece.html";

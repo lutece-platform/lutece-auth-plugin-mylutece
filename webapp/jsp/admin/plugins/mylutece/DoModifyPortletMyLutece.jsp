@@ -1,8 +1,6 @@
 <%@ page errorPage="../../ErrorPage.jsp" %>
 
-<jsp:useBean id="portletMyLutece" scope="session" class="fr.paris.lutece.plugins.mylutece.web.portlet.MyLutecePortletJspBean" />
+<%@page import="fr.paris.lutece.plugins.mylutece.web.portlet.MyLutecePortletJspBean"%>
 
-<%
-    portletMyLutece.init( request, portletMyLutece.RIGHT_MANAGE_ADMIN_SITE );
-    response.sendRedirect( portletMyLutece.doModify( request )   );
-%>
+${ myLutecePortletJspBean.init( pageContext.request, MyLutecePortletJspBean.RIGHT_MANAGE_ADMIN_SITE ) }
+${ pageContext.response.sendRedirect( myLutecePortletJspBean.doModify( pageContext.request )) }

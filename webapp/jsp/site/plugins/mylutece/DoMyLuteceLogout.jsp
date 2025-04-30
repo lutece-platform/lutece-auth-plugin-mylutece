@@ -1,6 +1,8 @@
-<jsp:useBean id="myluteceApp" scope="request" class="fr.paris.lutece.plugins.mylutece.web.MyLuteceApp" />
 <jsp:include page="../../PortalHeader.jsp" />
+<%@page import="jakarta.inject.Inject"%>
+<%@page import="fr.paris.lutece.plugins.mylutece.web.MyLuteceApp"%>
 
+<%! @Inject private MyLuteceApp myLuteceApp; %>
 <%
-	response.sendRedirect( response.encodeRedirectURL( myluteceApp.doLogout( request ) ) );
+	response.sendRedirect( response.encodeRedirectURL( myLuteceApp.doLogout( request ) ) );
 %>

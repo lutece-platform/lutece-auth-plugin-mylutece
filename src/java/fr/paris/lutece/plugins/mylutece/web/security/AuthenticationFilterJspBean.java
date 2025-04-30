@@ -53,6 +53,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
 
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -60,6 +62,8 @@ import jakarta.servlet.http.HttpServletRequest;
  * PublicUrlJspBean used for managing Public Url
  *
  */
+@RequestScoped
+@Named
 public class AuthenticationFilterJspBean extends AdminFeaturesPageJspBean
 {
     /**

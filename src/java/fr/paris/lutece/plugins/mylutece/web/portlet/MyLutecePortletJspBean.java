@@ -38,12 +38,15 @@ import fr.paris.lutece.plugins.mylutece.business.portlet.MyLutecePortletHome;
 import fr.paris.lutece.portal.business.portlet.PortletHome;
 import fr.paris.lutece.portal.web.portlet.PortletJspBean;
 import fr.paris.lutece.util.html.HtmlTemplate;
-
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * This class provides the user interface to manage MyLutece Portlet
  */
+@RequestScoped
+@Named
 public class MyLutecePortletJspBean extends PortletJspBean
 {
     ////////////////////////////////////////////////////////////////////////////
