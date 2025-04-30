@@ -43,6 +43,9 @@ import java.util.Map;
 
 import javax.security.auth.login.FailedLoginException;
 import javax.security.auth.login.LoginException;
+
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -79,6 +82,8 @@ import fr.paris.lutece.util.url.UrlItem;
 /**
  * This class provides the XPageApp that manage personalization features for Lutece : login, account management, ...
  */
+@RequestScoped
+@Named( "mylutece.xpage.mylutece" )
 public class MyLuteceApp implements XPageApplication
 {
     //////////////////////////////////////////////////////////////////////////////////
@@ -153,13 +158,6 @@ public class MyLuteceApp implements XPageApplication
     private static final String TEMPLATE_VIEW_ACCOUNT_PAGE = "skin/plugins/mylutece/view_account.html";
     private static final String CONSTANT_DEFAULT_ENCRYPTION_ALGORITHM = "SHA-256";
     private Locale _locale;
-
-    /**
-     * Constructor
-     */
-    public MyLuteceApp( )
-    {
-    }
 
     /**
      * This method builds a XPage object corresponding to the request

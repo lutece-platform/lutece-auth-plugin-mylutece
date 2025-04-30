@@ -55,14 +55,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.enterprise.inject.spi.CDI;
+import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
- *
  * AttributeJspBean
- *
  */
+@RequestScoped
+@Named( "myluteceAttributeJspBean" )
 public class AttributeJspBean extends AdminFeaturesPageJspBean
 {
     public static final String RIGHT_MANAGE_MYLUTECE = "MYLUTECE_MANAGEMENT";

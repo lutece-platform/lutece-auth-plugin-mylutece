@@ -45,8 +45,8 @@ import fr.paris.lutece.portal.service.message.AdminMessageService;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.web.constants.Messages;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
-import jakarta.inject.Singleton;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
@@ -54,7 +54,7 @@ import jakarta.servlet.http.HttpServletRequest;
  * AttributeText
  *
  */
-@Singleton
+@ApplicationScoped
 @Named( "mylutece.myLuteceAttributeText" )
 public class AttributeText extends AbstractAttribute
 {

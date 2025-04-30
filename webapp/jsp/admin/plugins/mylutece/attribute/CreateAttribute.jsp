@@ -1,9 +1,9 @@
 <%@ page errorPage="../../../ErrorPage.jsp" %>
 <jsp:include page="../../../AdminHeader.jsp" />
 
-<jsp:useBean id="myLuteceAttribute" scope="session" class="fr.paris.lutece.plugins.mylutece.web.attribute.AttributeJspBean" />
+<%@page import="fr.paris.lutece.plugins.mylutece.web.attribute.AttributeJspBean"%>
 
-<% myLuteceAttribute.init( request, fr.paris.lutece.plugins.mylutece.web.attribute.AttributeJspBean.RIGHT_MANAGE_MYLUTECE ) ; %>
-<%= myLuteceAttribute.getCreateAttribute ( request ) %>
+${ myluteceAttributeJspBean.init( pageContext.request, AttributeJspBean.RIGHT_MANAGE_MYLUTECE ) }
+${ myluteceAttributeJspBean.getCreateAttribute( pageContext.request ) }
 
 <%@ include file="../../../AdminFooter.jsp" %>

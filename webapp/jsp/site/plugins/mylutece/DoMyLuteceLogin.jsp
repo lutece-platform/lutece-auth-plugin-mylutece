@@ -1,12 +1,14 @@
-<jsp:useBean id="myluteceApp" scope="request" class="fr.paris.lutece.plugins.mylutece.web.MyLuteceApp" />
 <jsp:include page="../../PortalHeader.jsp" />
 <%@ page import="fr.paris.lutece.portal.web.LocalVariables" %>
+<%@page import="jakarta.inject.Inject"%>
+<%@page import="fr.paris.lutece.plugins.mylutece.web.MyLuteceApp"%>
 
+<%! @Inject private MyLuteceApp myLuteceApp; %>
 <%
 LocalVariables.setLocal( config, request, response );
 try
 {
-	response.sendRedirect( response.encodeRedirectURL( myluteceApp.doLogin( request ) ) );
+	response.sendRedirect( response.encodeRedirectURL( myLuteceApp.doLogin( request ) ) );
 }
 finally
 {

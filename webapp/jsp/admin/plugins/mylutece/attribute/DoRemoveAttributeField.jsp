@@ -1,8 +1,6 @@
 <%@ page errorPage="../../../ErrorPage.jsp" %>
 
-<jsp:useBean id="myLuteceAttributeField" scope="session" class="fr.paris.lutece.plugins.mylutece.web.attribute.AttributeFieldJspBean" />
+<%@page import="fr.paris.lutece.plugins.mylutece.web.attribute.AttributeJspBean"%>
 
-<%
-	myLuteceAttributeField.init( request, fr.paris.lutece.plugins.mylutece.web.attribute.AttributeJspBean.RIGHT_MANAGE_MYLUTECE ) ; 
-    response.sendRedirect( myLuteceAttributeField.doRemoveAttributeField( request ) ); 
-%>
+${ myluteceAttributeFieldJspBean.init( pageContext.request, AttributeJspBean.RIGHT_MANAGE_MYLUTECE ) }
+${ pageContext.response.sendRedirect( myluteceAttributeFieldJspBean.doRemoveAttributeField( pageContext.request )) }
