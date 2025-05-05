@@ -53,13 +53,6 @@
             <feature-level>2</feature-level>
             <feature-url>jsp/admin/plugins/mylutece/ManageMylutece.jsp</feature-url>
         </admin-feature>
-        <admin-feature>
-            <feature-id>MYLUTECE_MANAGE_EXTERNAL_APPLICATION</feature-id>
-            <feature-title>mylutece.adminFeature.mylutece_management_external_application.name</feature-title>
-            <feature-description>mylutece.adminFeature.mylutece_management_external_application.description</feature-description>
-            <feature-level>3</feature-level>
-            <feature-url>jsp/admin/plugins/mylutece/ManageExternalApplicationUser.jsp</feature-url>
-        </admin-feature>
          <admin-feature>
             <feature-id>MYLUTECE_MANAGE_AUTHENTICATION_FILTER</feature-id>
             <feature-title>mylutece.adminFeature.mylutece_management_authentication_filter.name</feature-title>
