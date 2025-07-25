@@ -1,3 +1,6 @@
+--liquibase formatted sql
+--changeset mylutece:create_db_mylutece.sql
+--preconditions onFail:MARK_RAN onError:WARN
 --
 -- Table structure for table mylutece_attribute
 --
