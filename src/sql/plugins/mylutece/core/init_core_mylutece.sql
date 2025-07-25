@@ -1,3 +1,6 @@
+--liquibase formatted sql
+--changeset mylutece:init_core_mylutece.sql
+--preconditions onFail:MARK_RAN onError:WARN
 --
 -- Dumping data for table core_portlet_type
 --

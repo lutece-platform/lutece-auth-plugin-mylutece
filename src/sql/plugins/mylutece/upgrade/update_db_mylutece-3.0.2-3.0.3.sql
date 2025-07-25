@@ -1,3 +1,6 @@
+--liquibase formatted sql
+--changeset mylutece:update_db_mylutece-3.0.2-3.0.3.sql
+--preconditions onFail:MARK_RAN onError:WARN
 ALTER TABLE mylutece_attribute ADD COLUMN anonymize SMALLINT DEFAULT NULL ;
 
 DROP TABLE IF EXISTS mylutece_user_anonymize_field;
