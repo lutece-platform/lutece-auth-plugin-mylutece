@@ -1,6 +1,6 @@
---liquibase formatted sql
---changeset mylutece:update_db_mylutece-2.2.3-2.2.4.sql
---preconditions onFail:MARK_RAN onError:WARN
+-- liquibase formatted sql
+-- changeset mylutece:update_db_mylutece-2.2.3-2.2.4.sql
+-- preconditions onFail:MARK_RAN onError:WARN
 --
 -- Table structure for table mylutece_attribute
 --

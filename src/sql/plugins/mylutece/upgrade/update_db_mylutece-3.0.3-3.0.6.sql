@@ -1,6 +1,6 @@
---liquibase formatted sql
---changeset mylutece:update_db_mylutece-3.0.3-3.0.6.sql
---preconditions onFail:MARK_RAN onError:WARN
+-- liquibase formatted sql
+-- changeset mylutece:update_db_mylutece-3.0.3-3.0.6.sql
+-- preconditions onFail:MARK_RAN onError:WARN
 INSERT INTO core_user_right (id_right,id_user) VALUES ('MYLUTECE_MANAGE_AUTHENTICATION_FILTER',1);
 INSERT INTO core_admin_right VALUES ('MYLUTECE_MANAGE_AUTHENTICATION_FILTER', 'mylutece.adminFeature.mylutece_management_authentication_filter.name', 2, 'jsp/admin/plugins/mylutece/security/ManageAuthenticationFilter.jsp', 'mylutece.adminFeature.mylutece_management_authentication_filter.description', 0, 'mylutece', 'USERS', NULL, NULL, NULL);
 INSERT INTO core_admin_role (role_key,role_description) VALUES ('mylutece_manager','Gérer les patramètres avancés Mylutece');

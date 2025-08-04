@@ -1,6 +1,6 @@
---liquibase formatted sql
---changeset mylutece:update_db_core_mylutece-3.0.2-3.0.4.sql
---preconditions onFail:MARK_RAN onError:WARN
+-- liquibase formatted sql
+-- changeset mylutece:update_db_core_mylutece-3.0.2-3.0.4.sql
+-- preconditions onFail:MARK_RAN onError:WARN
 --
 -- Dumping data for table `core_style`
 --
