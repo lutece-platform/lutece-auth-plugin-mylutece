@@ -1,6 +1,6 @@
---liquibase formatted sql
---changeset mylutece:update_db_core_mylutece-2.2.3-2.2.4.sql
---preconditions onFail:MARK_RAN onError:WARN
+-- liquibase formatted sql
+-- changeset mylutece:update_db_core_mylutece-2.2.3-2.2.4.sql
+-- preconditions onFail:MARK_RAN onError:WARN
 --
 -- Dumping data for table core_admin_role_resource
 --
