@@ -37,7 +37,7 @@
     </form>
 </div>
 -->
-
+<@cTpl>
 <#if error_message?? && error_message != ''><div class="alert alert-warning">${error_message}<#if error_details !=''<br/>${error_detail}</#if></div></#if>
 <div class="form-signin w-100 m-auto">
     <form class="form-horizontal" method="post" action="${url_dologin}">
@@ -73,4 +73,5 @@
         <span class="glyphicon glyphicon-plus"></span>&nbsp;#i18n{mylutece.xpage.login_form.labelButtonCreateAccount}
     </a>
     </#if>
-  </div>
+</div>
+</@cTpl>
