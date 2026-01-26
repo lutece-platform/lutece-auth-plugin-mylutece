@@ -33,10 +33,10 @@ INSERT INTO core_admin_role (role_key,role_description) VALUES ('mylutece_manage
 --
 -- Dumping data for table core_admin_role_resource
 --
-INSERT INTO core_admin_role_resource (rbac_id,role_key,resource_type,resource_id,permission) VALUES 
- (205,'assign_roles','ROLE_TYPE','*','ASSIGN_ROLE');
-INSERT INTO core_admin_role_resource (rbac_id,role_key,resource_type,resource_id,permission) VALUES 
- (207,'mylutece_manager','MYLUTECE','*','*');
+INSERT INTO core_admin_role_resource (role_key,resource_type,resource_id,permission) VALUES
+ ('assign_roles','ROLE_TYPE','*','ASSIGN_ROLE');
+INSERT INTO core_admin_role_resource (role_key,resource_type,resource_id,permission) VALUES
+ ('mylutece_manager','MYLUTECE','*','*');
 
 
 --
