@@ -1,17 +1,17 @@
 <@formGroup labelFor='attribute_${attribute.idAttribute}' labelKey='${attribute.title}' helpKey='${attribute.helpMessage!}' mandatory=attribute.mandatory>
-	<#list attribute.listAttributeFields as attributeField>
-		<#if attributeField.value?exists && !default_values_list?has_content>
-			<#assign value = attributeField.value />
-		<#elseif default_values_list?has_content>
-			<#list default_values_list as default_value>
-				<#assign value = default_value.value />
-			</#list>
-		<#else>
-			 <#assign value = '' />
-		</#if>
-		<#if attributeField.maxSizeEnter!=-1>
-			<#assign maxlength = attributeField.maxSizeEnter />
-		</#if>
-		<@input type='text' name='attribute_${attribute.idAttribute}' id='attribute_${attribute.idAttribute}' inputSize=attributeField.width value=value maxlength=maxlength />
+<#list attribute.listAttributeFields as attributeField>
+<#if attributeField.value?exists && !default_values_list?has_content>
+	<#assign value = attributeField.value />
+<#elseif default_values_list?has_content>
+	<#list default_values_list as default_value>
+		<#assign value = default_value.value />
 	</#list>
+<#else>
+		<#assign value = '' />
+</#if>
+<#if attributeField.maxSizeEnter!=-1>
+	<#assign maxlength = attributeField.maxSizeEnter />
+</#if>
+<@input type='text' name='attribute_${attribute.idAttribute}' id='attribute_${attribute.idAttribute}' inputSize=attributeField.width value=value maxlength=maxlength />
+</#list>
 </@formGroup>

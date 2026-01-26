@@ -8,37 +8,25 @@
 					<@inputGroup>
 						<@select id='attribute_type_class_name' name='attribute_type_class_name' size='sm'>
 							<#list attribute_types_list as attribute_type>
-								<option value="${attribute_type.className}">${attribute_type.name}</option>
+								<@option value=attribute_type.className label=attribute_type.name />
 							</#list>
 						</@select>
-						<@inputGroupItem type='button'>
-							<@button type='submit' buttonIcon='plus' title='#i18n{mylutece.manage_attributes.buttonAdd}' hideTitle=['all'] size='sm' />
-						</@inputGroupItem>
+						<@button type='submit' buttonIcon='plus' title='#i18n{mylutece.manage_attributes.buttonAdd}' hideTitle=['all'] size='sm' />
 					</@inputGroup>
 				</@formGroup>
 			</@tform>
-			<a name="list" id="list"></a>
-			<@table>
-				<@tr>
-					<@th>#i18n{mylutece.manage_attributes.columnTitle}</@th>
-					<@th>#i18n{mylutece.manage_attributes.columnType}</@th>
-					<@th>#i18n{mylutece.manage_attributes.columnOriginalComponent}</@th>
-					<@th>#i18n{mylutece.manage_attributes.columnTitleActions}</@th>
-				</@tr>
-				<#assign cpt = 0>
-				<#list attributes_list as attribute >
+			<@link name='list' id='list' />
+			<#if attributes_list?has_content && attributes_list?size gt 0>
+			<@manageFeature>
+			<!--   -->
+			<#assign cpt = 0>
+			<#list attributes_list as attribute >
 				<#assign cpt = cpt + 1>
-					<@tr>
-						<@td>${attribute.title}</@td>
-						<@td>${attribute.attributeType.name}</@td>
-						<@td>
-							<#if attribute.plugin?exists && attribute.plugin.name?has_content>
-								${attribute.plugin.name}
-							<#else>
-								#i18n{mylutece.manage_attributes.labelMyLutece}
-							</#if>
-						</@td>
-						<@td>
+					<@manageFeatureItem>
+						<@manageFeatureItemColumn auto=true>
+						${attribute.title} - ${attribute.attributeType.name} - #i18n{mylutece.manage_attributes.columnOriginalComponent} : <#if attribute.plugin?exists && attribute.plugin.name?has_content>${attribute.plugin.name}<#else>#i18n{mylutece.manage_attributes.labelMyLutece}</#if>
+						</@manageFeatureItemColumn>
+						<@manageFeatureItemColumn align='end'>
 							<#if attribute.plugin?exists && attribute.plugin.name != "">
 								<#if cpt != 1>
 									<@aButton href='jsp/admin/plugins/mylutece/attribute/DoMoveUpAttribute.jsp?id_attribute=${attribute.idAttribute}#list' title='#i18n{mylutece.modify_attribute.buttonLabelMoveUp}' hideTitle=['all'] buttonIcon='arrow-up' size='sm' />
@@ -56,10 +44,13 @@
 							   </#if>
 								<@aButton href='jsp/admin/plugins/mylutece/attribute/RemoveAttribute.jsp?id_attribute=${attribute.idAttribute}' title='#i18n{mylutece.manage_attributes.buttonLabelDelete}' hideTitle=['all'] buttonIcon='trash' color='danger' size='sm' />
 							</#if>
-						</@td>
-					</@tr>
+						</@manageFeatureItemColumn>
+					</@manageFeatureItem>
 				</#list>
-			</@table>
+			</@manageFeature>
+			<#else>
+				<@empty />
+			</#if>
 		</@tabs2>
 	</@pageColumn>
 </@pageContainer>

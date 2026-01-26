@@ -1,13 +1,9 @@
 <#include "authentication_filter_advanced_parameters.html" />
-<@row>
-	<@columns>
-		<@box>
-			<@boxHeader title='#i18n{mylutece.authentication_filter_advanced_parameters.tableLabel}'>
-				<@myluteceAuthFilterAdvParamsFormActions />
-			</@boxHeader>
-			<@boxBody>
-				<@myluteceAuthFilterAdvParamsMainForm />
-			</@boxBody>
-		</@box>
-	</@columns>
-</@row>
+<@pageContainer>
+    <@pageColumn>
+		<@pageHeader title='#i18n{mylutece.authentication_filter_advanced_parameters.tableLabel}'>
+			<@myluteceAuthFilterAdvParamsFormActions />
+		</@pageHeader>
+		<@myluteceAuthFilterAdvParamsMainForm />
+	</@pageColumn>
+</@pageContainer>

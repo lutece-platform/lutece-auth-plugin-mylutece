@@ -1,42 +1,28 @@
 <#function isMultiple listAttributeFields>
-	<#list listAttributeFields as attributeField>
-		<#if attributeField.multiple = true>
-			<#return true>
-		</#if>
-		<#break>
-	</#list>
-	<#return false>
+<#list listAttributeFields as attributeField>
+<#if attributeField.multiple = true>
+<#return true>
+</#if>
+<#break>
+</#list>
+<#return false>
 </#function>
 <#function isSelected nIdField default_values_list>
-	<#list default_values_list as default_value>
-		<#if default_value.attributeField?exists && default_value.attributeField.idField = nIdField && default_value.value != "">  		
-			<#return true>
-		</#if>
-	</#list>
-	<#return false>
+<#list default_values_list as default_value>
+<#if default_value.attributeField?exists && default_value.attributeField.idField = nIdField && default_value.value != "">  		
+<#return true>
+</#if>
+</#list>
+<#return false>
 </#function>
 <@formGroup labelFor='attribute_${attribute.idAttribute}' labelKey='${attribute.title}'>
-	<#if isMultiple( attribute.listAttributeFields ) >
-		<#assign multiple = 10 />
-	<#else>
-		<#assign multiple = 0 />
-	</#if>
+<#if isMultiple( attribute.listAttributeFields ) >
+<#assign multiple = 10 />
+<#else>
+<#assign multiple = 0 />
+</#if>
 	<@select name='attribute_${attribute.idAttribute}' id='attribute_${attribute.idAttribute}' multiple=multiple>
-		<#if !isMultiple( attribute.listAttributeFields )>
-			<option value="">
-				#i18n{portal.users.attribute.comboBox.labelAll}
-			</option>
-		</#if>
-		<#list attribute.listAttributeFields as attributeField>
-			<#if attributeField.title?exists && attributeField.value != "">
-				<option value="${attributeField.idField}"
-					<#if default_values_list?has_content && isSelected( attributeField.idField,default_values_list ) >
-						selected="selected"
-					</#if>
-				>
-						${attributeField.title}
-				</option>
-			</#if>
-		</#list>
+		<#if !isMultiple( attribute.listAttributeFields )><option value="">#i18n{portal.users.attribute.comboBox.labelAll}</option></#if>
+		<#list attribute.listAttributeFields as attributeField><#if attributeField.title?exists && attributeField.value != ""><option value="${attributeField.idField}"<#if default_values_list?has_content && isSelected( attributeField.idField,default_values_list ) > selected="selected"</#if>>${attributeField.title}</option></#if></#list>
 	</@select>
 </@formGroup>

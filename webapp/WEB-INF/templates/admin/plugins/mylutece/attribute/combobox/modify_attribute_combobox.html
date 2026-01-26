@@ -1,88 +1,71 @@
-<@row>
-	<@columns>
-		<@box>
-			<@boxHeader title='#i18n{mylutece.modify_attribute.pageTitleAttributeComboBox}' />
-			<@boxBody>
-				<@tform method='post' action='jsp/admin/plugins/mylutece/attribute/DoModifyAttribute.jsp'>
-					<fieldset>
-					<@formGroup labelFor='title' labelKey='#i18n{mylutece.modify_attribute.labelTitle}' helpKey='#i18n{mylutece.modify_attribute.labelTitleComment}' mandatory=true>
-						<@input type='text' name='title' id='title' inputSize=80 value='${attribute.title}' maxlength=255 />
-					</@formGroup>
-					<@formGroup labelFor='help_message' labelKey='#i18n{mylutece.modify_attribute.labelHelpMessage}' helpKey='#i18n{mylutece.modify_attribute.labelHelpMessageComment}'>
-						<@input type='textarea' name='help_message' id='help_message' cols=80 rows=5>${attribute.helpMessage}</@input>
-					</@formGroup>
-					<@formGroup labelFor='' labelKey='#i18n{mylutece.modify_attribute.labelType}'>
-						<@staticText><@tag color='info'>${attribute.attributeType.name}</@tag></@staticText>
-					</@formGroup>
-					<@formGroup labelKey='#i18n{mylutece.modify_attribute.labelIsShownInSearch}'>
-						<@checkBox labelFor='is_shown_in_search' name='is_shown_in_search' id='is_shown_in_search' value='1' checked=attribute.shownInSearch />
-					</@formGroup>
-					<@formGroup labelKey='#i18n{mylutece.modify_attribute.labelMandatory}'>
-						<@checkBox labelFor='mandatory' name='mandatory' id='mandatory' value='1' checked=attribute.mandatory />
-					</@formGroup>
-					<@formGroup labelKey='#i18n{mylutece.create_attribute.labelMultiple}' helpKey='#i18n{mylutece.create_attribute.labelMultipleComment}'>
-			 		<#list attribute_fields_list as attribute_field>
-						<@checkBox labelFor='multiple' name='multiple' id='multiple' value='1' checked=attribute_field.multiple />
-					</#list>
-					</@formGroup>
-					
-					<@formGroup>
-						<@input type='hidden' name='id_attribute' value='${attribute.idAttribute}' />
-						
-						<@button type='submit' name='validate' value='#i18n{mylutece.modify_attribute.buttonValidate}' title='#i18n{mylutece.modify_attribute.buttonValidate}' buttonIcon='check' />
-						<@button type='submit' name='apply' value='#i18n{mylutece.modify_attribute.buttonApply}' title='#i18n{mylutece.modify_attribute.buttonApply}' buttonIcon='check' />
-						<@button type='submit' name='cancel' value='#i18n{portal.admin.message.buttonCancel}' title='#i18n{portal.admin.message.buttonCancel}' buttonIcon='times' color='default' cancel=true />
-					</@formGroup>
-					</fieldset>
+<@pageContainer>
+    <@pageColumn>
+		<@pageHeader title='#i18n{mylutece.modify_attribute.pageTitleAttributeComboBox}'>
+			<@tform method='post' action='jsp/admin/plugins/mylutece/attribute/CreateAttributeField.jsp'>
+				<@input type='hidden' value='${attribute.idAttribute}' name='id_attribute' />
+				<@button type='submit' name='create' value='#i18n{mylutece.modify_attribute.buttonCreateField}' buttonIcon='plus' />
+			</@tform>
+		</@pageHeader>
+		<@row>
+			<@columns sm=6>
+				<@tform method='post' action='jsp/admin/plugins/mylutece/attribute/DoModifyAttribute.jsp' boxed=true>
+				<@formGroup labelFor='title' labelKey='#i18n{mylutece.modify_attribute.labelTitle}' helpKey='#i18n{mylutece.modify_attribute.labelTitleComment}' mandatory=true>
+					<@input type='text' name='title' id='title' inputSize=80 value='${attribute.title}' maxlength=255 />
+				</@formGroup>
+				<@formGroup labelFor='help_message' labelKey='#i18n{mylutece.modify_attribute.labelHelpMessage}' helpKey='#i18n{mylutece.modify_attribute.labelHelpMessageComment}'>
+					<@input type='textarea' name='help_message' id='help_message' cols=80 rows=5>${attribute.helpMessage}</@input>
+				</@formGroup>
+				<@formGroup labelFor='' labelKey='#i18n{mylutece.modify_attribute.labelType}'>
+					<@staticText><@tag color='info'>${attribute.attributeType.name}</@tag></@staticText>
+				</@formGroup>
+				<@formGroup labelKey='#i18n{mylutece.modify_attribute.labelIsShownInSearch}'>
+					<@checkBox labelFor='is_shown_in_search' name='is_shown_in_search' id='is_shown_in_search' value='1' checked=attribute.shownInSearch />
+				</@formGroup>
+				<@formGroup labelKey='#i18n{mylutece.modify_attribute.labelMandatory}'>
+					<@checkBox labelFor='mandatory' name='mandatory' id='mandatory' value='1' checked=attribute.mandatory />
+				</@formGroup>
+				<@formGroup labelKey='#i18n{mylutece.create_attribute.labelMultiple}' helpKey='#i18n{mylutece.create_attribute.labelMultipleComment}'>
+				<#list attribute_fields_list as attribute_field>
+					<@checkBox labelFor='multiple' name='multiple' id='multiple' value='1' checked=attribute_field.multiple />
+				</#list>
+				</@formGroup>
+				<@formGroup>
+					<@input type='hidden' name='id_attribute' value='${attribute.idAttribute}' />
+					<@button type='submit' name='validate' value='#i18n{mylutece.modify_attribute.buttonValidate}' title='#i18n{mylutece.modify_attribute.buttonValidate}' buttonIcon='check' />
+					<@button type='submit' name='apply' value='#i18n{mylutece.modify_attribute.buttonApply}' title='#i18n{mylutece.modify_attribute.buttonApply}' buttonIcon='check' />
+					<@button type='submit' name='cancel' value='#i18n{portal.admin.message.buttonCancel}' title='#i18n{portal.admin.message.buttonCancel}' buttonIcon='times' color='default' cancel=true />
+				</@formGroup>
 				</@tform>
-			</@boxBody>
-		</@box>
-		
-		<@box>
-			<@boxHeader title='#i18n{mylutece.modify_attribute.listAssociatedFields}'>
-				<@tform method='post' action='jsp/admin/plugins/mylutece/attribute/CreateAttributeField.jsp'>
-					<@input type='hidden' value='${attribute.idAttribute}' name='id_attribute' />
-					<@button type='submit' name='create' value='#i18n{mylutece.modify_attribute.buttonCreateField}' buttonIcon='plus' />
-				</@tform>
-			</@boxHeader>
-			<@boxBody>
-				<a name="list" id="list"></a>
-				<@table id='list'>
-					<tr>
-						<th>#i18n{mylutece.modify_attribute.columnLabelTitle}</th>
-						<th>#i18n{mylutece.modify_attribute.columnLabelValue}</th>
-						<th>#i18n{mylutece.modify_attribute.columnLabelDefaultValue}</th>
-						<th>#i18n{mylutece.modify_attribute.columnLabelId}</th>
-						<th>#i18n{mylutece.modify_attribute.columnLabelActions}</th>
-					</tr>
-					<#assign cpt = 0>
-					<#list attribute_fields_list as attribute_field>
-						<#if attribute_field.title?exists>
-							<#assign cpt = cpt + 1>
-							<tr>
-								<td>${attribute_field.title}</td>
-								<td>${attribute_field.value}</td>
-								<td>
-									<#if attribute_field.defaultValue>
-										<img src="images/admin/skin/enable.png" alt="#i18n{mylutece.modify_attribute.defaultValue}" title="#i18n{mylutece.modify_attribute.defaultValue}" />
-									</#if>
-								</td>
-								<td>${attribute_field.idField}</td>
-								<td>
-									<@aButton href='jsp/admin/plugins/mylutece/attribute/ModifyAttributeField.jsp?id_attribute=${attribute.idAttribute}&amp;id_field=${attribute_field.idField}' title='#i18n{mylutece.modify_attribute.buttonLabelModify}' hideTitle=['all'] buttonIcon='edit' size='sm' />
-									<#if cpt != 1>
-										<@aButton href='jsp/admin/plugins/mylutece/attribute/DoMoveUpAttributeField.jsp?id_attribute=${attribute.idAttribute}&amp;id_field=${attribute_field.idField}#list' title='#i18n{mylutece.modify_attribute.buttonLabelMoveUp}' hideTitle=['all'] buttonIcon='arrow-up' size='sm' />
-									</#if>
-									<#if attribute_field_has_next>
-										<@aButton href='jsp/admin/plugins/mylutece/attribute/DoMoveDownAttributeField.jsp?id_attribute=${attribute.idAttribute}&amp;id_field=${attribute_field.idField}#list' title='#i18n{mylutece.modify_attribute.buttonLabelMoveDown}' hideTitle=['all'] buttonIcon='arrow-down' size='sm' />
-									</#if>
-									<@aButton href='jsp/admin/plugins/mylutece/attribute/RemoveAttributeField.jsp?id_attribute=${attribute.idAttribute}&amp;id_field=${attribute_field.idField}' title='#i18n{mylutece.modify_attribute.buttonLabelDelete}' hideTitle=['all'] buttonIcon='trash' size='sm' color='danger' />
-								</td>
-							</tr>
-						</#if>
-					</#list>
-				</@table>
-			</@boxBody>
-		</@box>
-	</@columns>
-</@row>
+			</@columns>
+			<@columns>
+				<@box title='#i18n{mylutece.modify_attribute.listAssociatedFields}'>
+				<@link name='list' id='list' />
+				<@manageFeature id='list'>
+				<#assign cpt = 0>
+				<#list attribute_fields_list as attribute_field>
+					<#if attribute_field.title?exists>
+						<#assign cpt = cpt + 1>
+						<@manageFeatureItem>
+							<@manageFeatureItemColumn auto=true>
+								<#if attribute_field.defaultValue><@icon style='check' title='#i18n{mylutece.modify_attribute.columnLabelDefaultValue}' /></#if>
+								#i18n{mylutece.modify_attribute.columnLabelTitle} : ${attribute_field.title} - #i18n{mylutece.modify_attribute.columnLabelValue} : ${attribute_field.value} - #i18n{mylutece.modify_attribute.columnLabelId} : ${attribute_field.idField}
+							</@manageFeatureItemColumn>
+							<@manageFeatureItemColumn align='end'>
+								<@aButton href='jsp/admin/plugins/mylutece/attribute/ModifyAttributeField.jsp?id_attribute=${attribute.idAttribute}&amp;id_field=${attribute_field.idField}' title='#i18n{mylutece.modify_attribute.buttonLabelModify}' hideTitle=['all'] buttonIcon='edit' size='sm' />
+								<#if cpt != 1>
+									<@aButton href='jsp/admin/plugins/mylutece/attribute/DoMoveUpAttributeField.jsp?id_attribute=${attribute.idAttribute}&amp;id_field=${attribute_field.idField}#list' title='#i18n{mylutece.modify_attribute.buttonLabelMoveUp}' hideTitle=['all'] buttonIcon='arrow-up' size='sm' />
+								</#if>
+								<#if attribute_field_has_next>
+									<@aButton href='jsp/admin/plugins/mylutece/attribute/DoMoveDownAttributeField.jsp?id_attribute=${attribute.idAttribute}&amp;id_field=${attribute_field.idField}#list' title='#i18n{mylutece.modify_attribute.buttonLabelMoveDown}' hideTitle=['all'] buttonIcon='arrow-down' size='sm' />
+								</#if>
+								<@aButton href='jsp/admin/plugins/mylutece/attribute/RemoveAttributeField.jsp?id_attribute=${attribute.idAttribute}&amp;id_field=${attribute_field.idField}' title='#i18n{mylutece.modify_attribute.buttonLabelDelete}' hideTitle=['all'] buttonIcon='trash' size='sm' color='danger' />
+							</@manageFeatureItemColumn>
+						</@manageFeatureItem>
+					</#if>
+				</#list>
+				</@manageFeature>
+				</@box>
+			</@columns>
+		</@row>
+	</@pageColumn>	
+</@pageContainer>
