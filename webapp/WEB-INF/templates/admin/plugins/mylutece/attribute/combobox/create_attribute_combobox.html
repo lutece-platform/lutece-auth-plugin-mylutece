@@ -12,13 +12,13 @@
 					<@staticText><@tag color='info'>${attribute_type.name}</@tag></@staticText>
 				</@formGroup>
 				<@formGroup labelKey='#i18n{mylutece.create_attribute.labelIsShownInSearch}'>
-					<@checkBox labelFor='is_shown_in_search' name='is_shown_in_search' id='is_shown_in_search' value='1' />
+					<@checkBox orientation='switch' labelFor='is_shown_in_search' name='is_shown_in_search' id='is_shown_in_search' value='1' />
 				</@formGroup>
 				<@formGroup labelKey='#i18n{mylutece.create_attribute.labelMandatory}'>
-					<@checkBox labelFor='mandatory' name='mandatory' id='mandatory' value='1' />
+					<@checkBox orientation='switch' labelFor='mandatory' name='mandatory' id='mandatory' value='1' />
 				</@formGroup>
 				<@formGroup labelKey='#i18n{mylutece.create_attribute.labelMultiple}' helpKey='#i18n{mylutece.create_attribute.labelMultipleComment}'>
-					<@checkBox labelFor='multiple' name='multiple' id='multiple' value='1' />
+					<@checkBox orientation='switch' labelFor='multiple' name='multiple' id='multiple' value='1' />
 				</@formGroup>
 				<@formGroup>
 					<@input type='hidden' name='attribute_type_class_name' value='${attribute_type.className}' />
