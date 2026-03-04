@@ -9,7 +9,7 @@
     <user-guide/>
     <provider>mylutece.plugin.provider</provider>
     <provider-url>http://lutece.paris.fr</provider-url>
-    <icon-url>images/admin/skin/plugins/mylutece/mylutece.png</icon-url>
+    <icon-url>themes/admin/shared/plugins/mylutece/mylutece.svg</icon-url>
     <copyright>Copyright 2001-2011 Mairie de Paris</copyright>
     <core-version-dependency>
         <min-core-version>4.3.0</min-core-version>
