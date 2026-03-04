@@ -1,95 +1,96 @@
- <@cTpl>
-<div class="container">
-    <div class="row">
-        <div class="col-sm-12 col-md-4 offset-md-4">
-        <#if list_authentications??>
+<@cTpl>
+<@cCol>
+    <@cForm method='post' action='${url_dologin}'>
+    <@cInput type='hidden' name='page' value='mylutece' class='' />
+    <@cInput type='hidden' name='action' value='doLogin' class='' />
+    <@cInput type='hidden' name='token' value='${token}' class='' />
+    <@cRow class='mt-5 pt-5'>
+        <@cCol cols='12 col-md-4 offset-md-2'>
             <#if error_message?? && error_message != ''>
-            <div class="alert alert-warning">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 9v4" /><path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" /><path d="M12 16h.01" /></svg>
-                <span class="ms-2">${error_message!}</span>
-                <#if error_details?? && error_details !=''><br/>${error_detail!}</#if>
-            </div>
+                <@cAlert type='warning' title='${error_message!}'><#if error_details?? && error_details !=''>${error_detail!}</#if></@cAlert>
             </#if>
-            <form method="post" action="${url_dologin}">
-            <input type="hidden" name="page" value="mylutece" >
-            <input type="hidden" name="action" value="doLogin" >
-            <input type="hidden" name="token" value="${token}" >
-            <p class="text-center">
-                <img class="mb-4" src="images/lutece-logo-dark.svg" alt="" width="72">
-            </p>
-            <h1 class="h3 mb-3 fw-normal">#i18n{mylutece.xpage.login_form.pageTitle}</h1>
-            <#-- first display delegated authentications [oauth etc...]-->
-            <#list list_authentications as authentication>
-                <#if authentication.delegatedAuthentication>
-                <div class="form-group">
-                    <label for="" class="col-xs-12 col-sm-12 col-md-3 col-lg-3"></label>
-                    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                        <a href="${url_dologin}?page=mylutece&action=dologin&auth_provider=${authentication.name}">
-                            <img src="${authentication.iconUrl}" title="${authentication.authServiceName} " alt="${authentication.authServiceName} " />
-                        </a>
-                    </div>
-                </div>
-                </#if>
-            </#list>
-            <#-- display internal authentications [such as database]-->
-            <#assign bHasInternalAuth = false />
-            <#assign lostLoginUrl='' />
-            <#assign lostPasswordUrl='' />
-            <#if list_authentications?size != 1>
-                <#list list_authentications as authentication>
-                <#if !authentication.externalAuthentication && !authentication.delegatedAuthentication>
-                    <#if !bHasInternalAuth><#assign bHasInternalAuth = true /></#if>
-                    <div class="form-group">
-                        <label for="" class="col-xs-12 col-sm-12 col-md-3 col-lg-3"></label>
-                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="auth_provider" value="${authentication.name}"  <#if auth_provider?has_content && auth_provider = authentication.name>checked="checked"</#if> >${authentication.authServiceName}
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </#if>
-                </#list>
-            <#else>
-                <#list list_authentications as authentication>
-                    <#if !authentication.externalAuthentication && !authentication.delegatedAuthentication>
-                        <#if !bHasInternalAuth><#assign bHasInternalAuth = true /></#if>
-                        <input type="hidden" name="auth_provider" value="${authentication.name}" />
-                        <#assign lostPasswordUrl=authentication.getLostPasswordPageUrl() />
-                        <#assign lostLoginUrl=authentication.getLostLoginPageUrl() />
+                <@cCard title='#i18n{mylutece.xpage.login_form.pageTitle}' class='my-5'>
+                    <#-- first display delegated authentications [oauth etc...] -->
+                    <#if list_authentications??>
+                        <#list list_authentications as authentication>
+                            <#if authentication.delegatedAuthentication>
+                            <@cBlock class='form-group'>
+                                <@cLink href='${url_dologin}?page=mylutece&action=dologin&auth_provider=${authentication.name}' label='' title='${authentication.authServiceName}'>
+                                    <@cImg src='${authentication.iconUrl}' alt='${authentication.authServiceName}' />
+                                </@cLink>
+                            </@cBlock>
+                            </#if>
+                        </#list>
+                        <#-- display internal authentications [such as database] -->
+                        <#assign bHasInternalAuth = false />
+                        <#assign lostLoginUrl='' />
+                        <#assign lostPasswordUrl='' />
+                        <#if list_authentications?size != 1>
+                            <#list list_authentications as authentication>
+                            <#if !authentication.externalAuthentication && !authentication.delegatedAuthentication>
+                                <#if !bHasInternalAuth><#assign bHasInternalAuth = true /></#if>
+                                <@cRadio name='auth_provider' label='${authentication.authServiceName}' value='${authentication.name}' checked=(auth_provider?has_content && auth_provider == authentication.name) />
+                            </#if>
+                            </#list>
+                        <#else>
+                            <#list list_authentications as authentication>
+                                <#if !authentication.externalAuthentication && !authentication.delegatedAuthentication>
+                                    <#if !bHasInternalAuth><#assign bHasInternalAuth = true /></#if>
+                                    <@cInput type='hidden' name='auth_provider' value='${authentication.name}' class='' />
+                                    <#assign lostPasswordUrl=authentication.getLostPasswordPageUrl() />
+                                    <#assign lostLoginUrl=authentication.getLostLoginPageUrl() />
+                                </#if>
+                            </#list>
+                        </#if>
                     </#if>
-                </#list>
-            </#if>	
-            <#if bHasInternalAuth>
-            <div class="form-floating">
-                <input type="test" class="form-control" name="username" id="floatingInput" placeholder="name@example.com">
-                <label for="floatingInput">#i18n{mylutece.xpage.login_form.labelAccessCode} </label>
-            </div>
-            <div class="form-floating">
-                <input type="password" name="password" class="form-control" id="floatingPassword" placeholder="#i18n{mylutece.xpage.login_form.labelPassword}">
-                <label for="floatingPassword">#i18n{mylutece.xpage.login_form.labelPassword} </label>
-            </div>
-            <#if is_active_captcha>
-            <div class="form-row">${captcha}</div>
-            </#if>
-            <button class="btn btn-primary w-100 py-2 mt-2" type="submit">#i18n{mylutece.xpage.login_form.labelButton}</button>
-            <p class="mt-1 text-body-secondary">
-                #i18n{mylutece.xpage.login_form.labelNewAccount}
-                <#if url_new_account?has_content>
-                <a class="btn btn-light" title="#i18n{mylutece.xpage.login_form.labelButtonCreateAccount}" href="${url_new_account}">
-                    #i18n{mylutece.xpage.login_form.labelButtonCreateAccount} <span class="ti ti-user-plus"></span> 
-                </a>
+                    <#if bHasInternalAuth>
+                        <@cField label='#i18n{mylutece.xpage.login_form.labelAccessCode}' for='username' >
+                            <@cInput type='text' name='username' id='username' placeholder='name@example.com' />
+                        </@cField>
+                        <@cField label='#i18n{mylutece.xpage.login_form.labelPassword}'  for='password' >
+                            <@cInput type='password' name='password' id='password' placeholder='#i18n{mylutece.xpage.login_form.labelPassword}' />
+                        </@cField>
+                        <#if is_active_captcha><@cRow>${captcha}</@cRow></#if>
+                        <@cBtn class='primary w-100 py-2 mt-3' type='submit' label='#i18n{mylutece.xpage.login_form.labelButton}' />
+                    </#if>
+                    <@cRow class='justify-content-center mt-3 g-3'>
+                        <#if lostPasswordUrl??>
+                            <@cCol>
+                                <@cBtn href='${lostPasswordUrl!}' class='primary w-100 p-2 fs-5'  label='' params='title="#i18n{mylutece.xpage.login_form.labelButtonLostPassword}"'>
+                                    <@cInline class='ti ti-password-user' /> #i18n{mylutece.xpage.login_form.labelButtonLostPassword}
+                                </@cBtn>
+                            </@cCol>
+                        </#if>
+                        <#if lostLoginUrl??>
+                            <@cCol>
+                                <@cBtn href='${lostLoginUrl!}' class='primary w-100 p-2 fs-5' label='' params='title="#i18n{mylutece.xpage.login_form.labelButtonLostLogin}"'>
+                                    <@cInline class='ti ti-user-star' /> #i18n{mylutece.xpage.login_form.labelButtonLostLogin}
+                                </@cBtn>
+                            </@cCol>
+                        </#if>
+                    </@cRow>
+                </@cCard>
+                <#-- display link to create account if url is provided --#>
+                <#-- only display if there is no internal authentication or if there is an internal authentication with a lost password url (to avoid displaying the link to create account without any possibility for the user to recover his account in case of problem) -->
+                <#if !bHasInternalAuth || (bHasInternalAuth && lostPasswordUrl??)>
+                    <#if url_new_account?has_content>
+                     <@cRow class='justify-content-center mt-3 g-3'>
+                         <@cCol>
+                            <@p class='m-0 pt-2'>#i18n{mylutece.xpage.login_form.labelNewAccount}</@p>
+                         </@cCol>
+                         <@cCol>
+                            <@cBtn href='${url_new_account}' label='' class='primary w-100 p-2 fs-5' params='title="#i18n{mylutece.xpage.login_form.labelButtonCreateAccount}"' nestedPos='after'>
+                            <@cInline class='ti ti-user-plus' /> #i18n{mylutece.xpage.login_form.labelButtonCreateAccount}
+                            </@cBtn>
+                        </@cCol>
+                    </@cRow>
+                    </#if>
                 </#if>
-            </p>
-            <p>
-            <#if lostPasswordUrl??><a class="btn btn-light" title="#i18n{mylutece.xpage.login_form.labelButtonLostPassword}" href="${lostPasswordUrl!}">#i18n{mylutece.xpage.login_form.labelButtonLostPassword}</a></#if>
-            <#if lostLoginUrl??><a class="btn btn-light" title="#i18n{mylutece.xpage.login_form.labelButtonLostLogin}" href="${lostLoginUrl!}">#i18n{mylutece.xpage.login_form.labelButtonLostLogin}</a></#if>
-            </p>
-            </#if>
-            </form>
-        </div>
-    </div>
-</div>
-</#if>
+            </@cCol>
+            <@cCol cols='12 col-md-3' class='mt-5'>
+                <@cImg src='themes/skin/lutece/images/signin.png' alt='#i18n{mylutece.xpage.login_form.labelButton}' />
+            </@cCol>
+        </@cRow>
+    </@cForm>
+</@cCol>
 </@cTpl>

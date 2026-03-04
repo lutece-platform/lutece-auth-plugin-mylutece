@@ -1,59 +1,56 @@
- <@cTpl>
- <ul class="nav pull-right">
-    <li class="divider-vertical"></li>
-	<#if user?has_content>
-		<#assign userNameGiven = user.getUserInfo('user.name.given') >
-		<#assign userNameFamily = user.getUserInfo('user.name.family') >
-		<#if userNameGiven?has_content || userNameFamily?has_content>
-			<#assign labelUserName = userNameGiven + ' ' + userNameFamily >
-		<#else>  
-			<#assign userBusinessMail = user.getUserInfo('user.business-info.online.email') >
-			<#assign userHomeMail = user.getUserInfo('user.home-info.online.email') >
-			<#if userBusinessMail?has_content>
-				<#assign labelUserName = userBusinessMail >
-			<#else>
-				<#assign labelUserName = userHomeMail >
-			</#if>
-		</#if>
-		<li>
-                    <span class="glyphicon glyphicon-user"></span>&nbsp;
-                    <a href="${url_account}">#i18n{mylutece.user_login_include.labelWelcome}	${labelUserName} </a><br />
-			#i18n{mylutece.user_login_include.labelLastLogin} : <#if (user.getUserInfo('user.lastLogin'))?has_content>${user.getUserInfo('user.lastLogin')}<#else>#i18n{mylutece.user_login_include.labelNever}</#if>
-		</li>
-		<li>
-                    <span class="glyphicon glyphicon-off"></span>&nbsp;
-                    <a href="${url_dologout}">#i18n{mylutece.user_login_include.labelLogout}</a>
-		</li>
-	<#else>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                    <li>
-                        <form class="form-in-dropdown" method="post" action="${url_dologin}">
-                            <input type="hidden" name="page" value="mylutece" />
-                            <input type="hidden" name="action" value="dologin" />
-                            <input type="hidden" name="token" value="${token}" id="token"/>
-
-                            <label for="mylutece_user_login_include_username">#i18n{mylutece.user_login_include.labelAccessCode} : </label>
-                            <input type="text" class="form-control input-sm" id="mylutece_user_login_include_username" name="username" placeholder="#i18n{mylutece.user_login_include.labelAccessCode}" />
-
-                            <label for="mylutece_user_login_include_password">#i18n{mylutece.user_login_include.labelPassword} : </label>
-                            <input type="password" class="form-control input-sm" id="mylutece_user_login_include_password" name="password" placeholder="#i18n{mylutece.user_login_include.labelPassword}" />
-                            <button type="submit" class="btn btn-primary btn-sm" name="Submit" >
-                                <span class="glyphicon glyphicon-lock"></span>&nbsp;
-                                #i18n{mylutece.user_login_include.labelButton}
-                            </button>
-                            <#if url_new_account?has_content>
-                                <a class="btn btn-primary btn-sm" style="color:#fff;" title="#i18n{mylutece.user_login_include.labelButtonCreateAccount}" href="${url_new_account}">
-                                    <span class="glyphicon glyphicon-plus"></span>&nbsp;
-                                    #i18n{mylutece.user_login_include.labelButtonCreateAccount}
-                                </a>
-                            </#if>
-                        </form>
-                    </li>
-
-                </ul>
-            </li>
-	</#if>
- </ul>
- </@cTpl>
+<@cTpl>
+<@chList class='nav ms-auto'>
+    <#if user?has_content>
+        <#assign userNameGiven = user.getUserInfo('user.name.given') >
+        <#assign userNameFamily = user.getUserInfo('user.name.family') >
+        <#if userNameGiven?has_content || userNameFamily?has_content>
+            <#assign labelUserName = userNameGiven + ' ' + userNameFamily >
+        <#else>
+            <#assign userBusinessMail = user.getUserInfo('user.business-info.online.email') >
+            <#assign userHomeMail = user.getUserInfo('user.home-info.online.email') >
+            <#if userBusinessMail?has_content>
+                <#assign labelUserName = userBusinessMail >
+            <#else>
+                <#assign labelUserName = userHomeMail >
+            </#if>
+        </#if>
+        <@chItem class='nav-item'>
+            <@cLink href='${url_account}' label='#i18n{mylutece.user_login_include.labelWelcome} ${labelUserName}' title='#i18n{mylutece.user_login_include.labelWelcome}'>
+                <@cInline class='ti ti-user' />
+            </@cLink>
+            #i18n{mylutece.user_login_include.labelLastLogin} : <#if (user.getUserInfo('user.lastLogin'))?has_content>${user.getUserInfo('user.lastLogin')}<#else>#i18n{mylutece.user_login_include.labelNever}</#if>
+        </@chItem>
+        <@chItem class='nav-item'>
+            <@cLink href='${url_dologout}' label='#i18n{mylutece.user_login_include.labelLogout}' title='#i18n{mylutece.user_login_include.labelLogout}'>
+                <@cInline class='ti ti-logout' />
+            </@cLink>
+        </@chItem>
+    <#else>
+        <@chItem class='nav-item'>
+            <@cDropdown label='#i18n{mylutece.user_login_include.labelButton}' btnClass='primary btn-sm' autoclose='outside'>
+                <@chItem>
+                    <@cForm method='post' action='${url_dologin}' class='p-m'>
+                        <@cInput type='hidden' name='page' value='mylutece' class='' />
+                        <@cInput type='hidden' name='action' value='dologin' class='' />
+                        <@cInput type='hidden' name='token' value='${token}' class='' />
+                        <@cField label='#i18n{mylutece.user_login_include.labelAccessCode}' for='mylutece_user_login_include_username'>
+                            <@cInput type='text' name='username' id='mylutece_user_login_include_username' placeholder='#i18n{mylutece.user_login_include.labelAccessCode}'/>
+                        </@cField>
+                        <@cField label='#i18n{mylutece.user_login_include.labelPassword}' for='mylutece_user_login_include_password'>
+                            <@cInput type='password' name='password' id='mylutece_user_login_include_password' placeholder='#i18n{mylutece.user_login_include.labelPassword}'/>
+                        </@cField>
+                        <@cBtn class='primary btn-sm' type='submit' label='#i18n{mylutece.user_login_include.labelButton}'>
+                            <@cInline class='ti ti-lock' />
+                        </@cBtn>
+                        <#if url_new_account?has_content>
+                            <@cBtn class='primary btn-sm' href='${url_new_account}' label='' params='title="#i18n{mylutece.user_login_include.labelButtonCreateAccount}"'>
+                                <@cInline class='ti ti-user-plus' /> #i18n{mylutece.user_login_include.labelButtonCreateAccount}
+                            </@cBtn>
+                        </#if>
+                    </@cForm>
+                </@chItem>
+            </@cDropdown>
+        </@chItem>
+    </#if>
+</@chList>
+</@cTpl>
