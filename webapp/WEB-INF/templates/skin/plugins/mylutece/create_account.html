@@ -1,26 +1,24 @@
- <@cTpl>
-<div class="row">
-	<div class="col">
-		<h2>#i18n{mylutece.xpage.create_account.pageTitle}</h2>
-		<#assign no_authentication = true />
-		<#if list_authentications?has_content>
-			<p>#i18n{mylutece.xpage.create_account.contentMessage}</p>
-			<ul>
-			<#list list_authentications as authentication >
-				<#if !authentication.externalAuthentication >
-				<#if no_authentication>
-					<#assign no_authentication = false />
-				</#if>
-				<li>
-					<a href="${authentication.newAccountPageUrl}">
-						<img src="${authentication.iconUrl!}" title="${authentication.authServiceName!}" alt="${authentication.authServiceName!}"> ${authentication.authServiceName!}
-					</a>
-				</li>
-				</#if>
-			</#list>
-			</ul>
-		</#if>
-		<#if no_authentication><p>#i18n{mylutece.xpage.create_account.noAuthentication}</p></#if>
-	</div>
-</div>
+<@cTpl>
+<@cRow>
+    <@cCol>
+        <@cTitle level=2>#i18n{mylutece.xpage.create_account.pageTitle}</@cTitle>
+        <#assign no_authentication = true />
+        <#if list_authentications?has_content>
+            <@cText>#i18n{mylutece.xpage.create_account.contentMessage}</@cText>
+            <@chList class='list-group'>
+            <#list list_authentications as authentication>
+                <#if !authentication.externalAuthentication>
+                <#if no_authentication><#assign no_authentication = false /></#if>
+                <@chItem class='list-group-item'>
+                    <@cLink href='${authentication.newAccountPageUrl}' label='${authentication.authServiceName!}' title='${authentication.authServiceName!}' nestedPos='before'>
+                        <@cImg src='${authentication.iconUrl!}' alt='${authentication.authServiceName!}'  />
+                    </@cLink>
+                </@chItem>
+                </#if>
+            </#list>
+            </@chList>
+        </#if>
+        <#if no_authentication><@cAlert type='warning' title='#i18n{mylutece.xpage.create_account.noAuthentication}' /></#if>
+    </@cCol>
+</@cRow>
 </@cTpl>

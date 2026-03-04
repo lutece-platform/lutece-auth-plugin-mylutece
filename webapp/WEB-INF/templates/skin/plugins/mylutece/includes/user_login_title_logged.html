@@ -1,19 +1,19 @@
- <@cTpl>
+<@cTpl>
 <#if user?has_content>
-	<#assign userNameGiven = user.getUserInfo('user.name.given') >
-	<#assign userNameFamily = user.getUserInfo('user.name.family') >
-	<#if userNameGiven?has_content || userNameFamily?has_content>
-            <a href="${url_account}">${userNameGiven} ${userNameFamily}</a>
-	<#else>  
-		<#assign userBusinessMail = user.getUserInfo('user.business-info.online.email') >
-		<#assign userHomeMail = user.getUserInfo('user.home-info.online.email') >
-		<#if userBusinessMail?has_content>
-                    <a href="${url_account}">${userBusinessMail}</a>
-		<#else>
-                    <a href="${url_account}">${userHomeMail}</a>
-		</#if>
-	</#if>
-	#i18n{mylutece.user_login_include.labelLastLogin} : <#if (user.getUserInfo('user.lastLogin'))?has_content>${user.getUserInfo('user.lastLogin')}<#else>#i18n{mylutece.user_login_include.labelNever}</#if>
+    <#assign userNameGiven = user.getUserInfo('user.name.given') >
+    <#assign userNameFamily = user.getUserInfo('user.name.family') >
+    <#if userNameGiven?has_content || userNameFamily?has_content>
+        <@cLink href='${url_account}' label='${userNameGiven} ${userNameFamily}' />
+    <#else>
+        <#assign userBusinessMail = user.getUserInfo('user.business-info.online.email') >
+        <#assign userHomeMail = user.getUserInfo('user.home-info.online.email') >
+        <#if userBusinessMail?has_content>
+            <@cLink href='${url_account}' label='${userBusinessMail}' />
+        <#else>
+            <@cLink href='${url_account}' label='${userHomeMail}' />
+        </#if>
+    </#if>
+    #i18n{mylutece.user_login_include.labelLastLogin} : <#if (user.getUserInfo('user.lastLogin'))?has_content>${user.getUserInfo('user.lastLogin')}<#else>#i18n{mylutece.user_login_include.labelNever}</#if>
 </#if>
-<a href="${url_dologout!}" title="#i18n{mylutece.user_login_include.labelLogout}">#i18n{mylutece.user_login_include.labelLogout}</a>
- </@cTpl>
+<@cLink href='${url_dologout!}' label='#i18n{mylutece.user_login_include.labelLogout}' title='#i18n{mylutece.user_login_include.labelLogout}' />
+</@cTpl>
