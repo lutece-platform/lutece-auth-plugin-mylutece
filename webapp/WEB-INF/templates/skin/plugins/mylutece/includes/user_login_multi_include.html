@@ -8,20 +8,18 @@
 <#assign userHomeMail = user.getUserInfo('user.home-info.online.email') >
 <#if userBusinessMail?has_content><#assign labelUserName = userBusinessMail ><#else><#assign labelUserName = userHomeMail > </#if>
 </#if>
-<@chItem class='ms-auto'>
-    <@cBtn href='${url_account}' class='link border-0 me-2' label=''>
-        <@cInline class='ti ti-user' />#i18n{mylutece.user_login_include.labelWelcome} ${labelUserName!}
+<@chItem class='ms-auto d-flex align-items-center'>
+    <@cBtn href='${url_account}' class='link nav-link border-0 me-2' label='' params='title="#i18n{mylutece.user_login_include.labelWelcome}"'>
+        <@cInline class='ti ti-user' /> ${labelUserName!}
     </@cBtn>
-</@chItem>
-<@chItem>
     <#assign btnParamTitle = '#i18n{mylutece.user_login_include.labelLastLogin} : '>
     <#if (user.getUserInfo('user.lastLogin'))?has_content>
         <#assign btnParamTitle = btnParamTitle + user.getUserInfo('user.lastLogin')>    
     <#else>
         <#assign btnParamTitle = btnParamTitle + '#i18n{mylutece.user_login_include.labelNever}'>   
     </#if>
-     <@cBtn href='${url_dologout}' class='link border-0 me-2' label='' params='title="${btnParamTitle}"'>
-        <@cInline class='ti ti-logout' /> #i18n{mylutece.user_login_include.labelLogout}
+     <@cBtn href='${url_dologout}' class='link p-0 border-0 me-2' label='' params='title="#i18n{mylutece.user_login_include.labelLogout}" data-bs-toggle="tooltip" data-bs-placement="bottom"' >
+        <@cInline class='ti ti-logout' /> 
     </@cBtn>
 </@chItem>
 <#else>
@@ -32,7 +30,7 @@
             <#if authentication.delegatedAuthentication>
                 <@cBtn href='${authentication.doLoginUrl}?auth_provider=${authentication.name}' class='outline-light' label='' />
             <#else>
-                <@cBtn href='${authentication.loginPageUrl}&auth_provider=${authentication.name}' class='link border-0' label=''>
+                <@cBtn href='${authentication.loginPageUrl}&auth_provider=${authentication.name}' class='link nav-link border-0' label=''>
                     <@cInline class='ti ti-login' /> #i18n{mylutece.user_login_include.labelButton}
                 </@cBtn>
             </#if>

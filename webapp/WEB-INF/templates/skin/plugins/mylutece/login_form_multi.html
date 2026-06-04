@@ -1,10 +1,11 @@
 <@cTpl>
+<@cContainer>
 <@cCol>
     <@cForm method='post' action='${url_dologin}'>
     <@cInput type='hidden' name='page' value='mylutece' class='' />
     <@cInput type='hidden' name='action' value='doLogin' class='' />
     <@cInput type='hidden' name='token' value='${token}' class='' />
-    <@cRow class='mt-5 pt-5'>
+    <@cRow>
         <@cCol cols='12 col-md-4 offset-md-2'>
             <#if error_message?? && error_message != ''>
                 <@cAlert type='warning' title='${error_message!}'><#if error_details?? && error_details !=''>${error_detail!}</#if></@cAlert>
@@ -44,10 +45,10 @@
                         </#if>
                     </#if>
                     <#if bHasInternalAuth>
-                        <@cField label='#i18n{mylutece.xpage.login_form.labelAccessCode}' for='username' >
+                        <@cField label='#i18n{mylutece.xpage.login_form.labelAccessCode}' class='cl-field' for='username' >
                             <@cInput type='text' name='username' id='username' placeholder='name@example.com' />
                         </@cField>
-                        <@cField label='#i18n{mylutece.xpage.login_form.labelPassword}'  for='password' >
+                        <@cField label='#i18n{mylutece.xpage.login_form.labelPassword}' class='cl-field' for='password' >
                             <@cInput type='password' name='password' id='password' placeholder='#i18n{mylutece.xpage.login_form.labelPassword}' />
                         </@cField>
                         <#if is_active_captcha><@cRow>${captcha}</@cRow></#if>
@@ -88,9 +89,10 @@
                 </#if>
             </@cCol>
             <@cCol cols='12 col-md-3' class='mt-5'>
-                <@cImg src='themes/skin/shared/images/signin.png' alt='#i18n{mylutece.xpage.login_form.labelButton}' />
+                <@cImg src='themes/skin/shared/images/signin.png' alt='#i18n{mylutece.xpage.login_form.labelButton}' class="img-fluid" />
             </@cCol>
         </@cRow>
     </@cForm>
 </@cCol>
+</@cContainer>
 </@cTpl>
