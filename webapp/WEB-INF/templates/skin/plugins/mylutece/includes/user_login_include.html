@@ -33,19 +33,27 @@
                         <@cInput type='hidden' name='page' value='mylutece' class='' />
                         <@cInput type='hidden' name='action' value='dologin' class='' />
                         <@cInput type='hidden' name='token' value='${token}' class='' />
-                        <@cField label='#i18n{mylutece.user_login_include.labelAccessCode}' for='mylutece_user_login_include_username'>
-                            <@cInput type='text' name='username' id='mylutece_user_login_include_username' placeholder='#i18n{mylutece.user_login_include.labelAccessCode}'/>
-                        </@cField>
-                        <@cField label='#i18n{mylutece.user_login_include.labelPassword}' for='mylutece_user_login_include_password'>
-                            <@cInput type='password' name='password' id='mylutece_user_login_include_password' placeholder='#i18n{mylutece.user_login_include.labelPassword}'/>
-                        </@cField>
-                        <@cBtn class='primary btn-sm' type='submit' label='#i18n{mylutece.user_login_include.labelButton}'>
-                            <@cInline class='ti ti-lock' />
-                        </@cBtn>
-                        <#if url_new_account?has_content>
-                            <@cBtn class='primary btn-sm' href='${url_new_account}' label='' params='title="#i18n{mylutece.user_login_include.labelButtonCreateAccount}"'>
-                                <@cInline class='ti ti-user-plus' /> #i18n{mylutece.user_login_include.labelButtonCreateAccount}
+                        <div class="mb-3">
+                            <@cField label='#i18n{mylutece.user_login_include.labelAccessCode}' for='mylutece_user_login_include_username'>
+                                <@cInput type='text' name='username' id='mylutece_user_login_include_username' placeholder='#i18n{mylutece.user_login_include.labelAccessCode}'/>
+                            </@cField>
+                        </div>
+                        <div class="mb-3">
+                            <@cField label='#i18n{mylutece.user_login_include.labelPassword}' for='mylutece_user_login_include_password'>
+                                <@cInput type='password' name='password' id='mylutece_user_login_include_password' placeholder='#i18n{mylutece.user_login_include.labelPassword}'/>
+                            </@cField>
+                        </div>
+                        <div class="mb-3">
+                            <@cBtn class='primary btn-sm' type='submit' label='#i18n{mylutece.user_login_include.labelButton}'>
+                                <@cInline class='ti ti-lock' />
                             </@cBtn>
+                        </div>
+                        <#if url_new_account?has_content>
+                            <div class="mb-3">
+                                <@cBtn class='primary btn-sm' href='${url_new_account}' label='#i18n{mylutece.user_login_include.labelButtonCreateAccount}' params='title="#i18n{mylutece.user_login_include.labelButtonCreateAccount}"'>
+                                    <@cInline class='ti ti-user-plus' />
+                                </@cBtn>
+                            </div>
                         </#if>
                     </@cForm>
                 </@chItem>
