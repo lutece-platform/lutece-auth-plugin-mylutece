@@ -45,15 +45,13 @@
         </#list>
       </#if>
       <#if bHasInternalAuth>
-        <@cField label='#i18n{mylutece.xpage.login_form.labelAccessCode}' class='cl-field' for='username' >
+        <@cField label='#i18n{mylutece.xpage.login_form.labelAccessCode}' for='username' >
           <@cInputGroup>
             <@cIcon name='user' />
-              <@cInput type='text' name='username' id='username' placeholder='name@example.com' />
+              <@cInput name='username' id='username' placeholder='name@example.com' />
           </@cInputGroup>
         </@cField>      
-        <@cField label='#i18n{mylutece.xpage.login_form.labelPassword}' class='cl-field' for='password' >
-          <@cInputPassword label='' name='password' icon='lock' id='password' placeholder='#i18n{mylutece.xpage.login_form.labelPassword}' />
-        </@cField>
+        <@cInputPassword label='#i18n{mylutece.xpage.login_form.labelPassword}' name='password' icon='lock' id='password' placeholder='#i18n{mylutece.xpage.login_form.labelPassword}' helpMsg='#i18n{portal.theme.labelPasswordHelp}' />
         <#if is_active_captcha>${captcha}</#if>
         <@cBtn class='primary' type='submit' label='#i18n{mylutece.xpage.login_form.labelButton}' nestedPos='after'>
           <@cIcon name='arrow-right' class='ms-2' />
