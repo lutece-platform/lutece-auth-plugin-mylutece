@@ -1,10 +1,13 @@
 <@cTpl>
 <@cRow>
-    <@cCol>
-        <@cTitle level=2>#i18n{mylutece.xpage.page_access_controled.contentMessage}</@cTitle>
-        <@cForm method='post' action='${url_login}'>
-            <@cBtn class='primary' type='submit' label='#i18n{mylutece.xpage.page_access_controled.labelButton}' params='name="Submit"' />
-        </@cForm>
-    </@cCol>
+	<@cCol>
+		<@cBlock class='d-flex justify-content-center align-items-center vh-50'>
+			<@cAlert class='danger w-50' title='#i18n{mylutece.xpage.page_access_controled.contentMessage}'>
+			<@cForm action=url_login!>
+				<@cBtn label='#i18n{mylutece.xpage.page_access_controled.labelButton}' class='primary' type='submit' params='name="Submit"' /> 
+			</@cForm>
+			</@cAlert>
+		</@cBlock>
+	</@cCol>
 </@cRow>
 </@cTpl>

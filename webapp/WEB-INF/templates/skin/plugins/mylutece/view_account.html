@@ -1,9 +1,12 @@
 <@cTpl>
 <@cRow>
-    <@cCol>
-        <@cTitle level=2>#i18n{mylutece.xpage.view_account.pageTitle}</@cTitle>
-        <@cText>#i18n{mylutece.xpage.view_account.contentMessage}</@cText>
-        <@cInline type='em'>mylutece.url.viewAccount.page=./plugins/account_manager/ViewAccount.jsp</@cInline>
-    </@cCol>
+	<@cCol>
+		<@cBlock class='d-flex justify-content-center align-items-center vh-50'>
+			<@cAlert title='#i18n{mylutece.xpage.view_account.pageTitle}'>
+				<@cText>#i18n{mylutece.xpage.view_account.contentMessage}</@cText>
+				<@cText class='text-muted'>mylutece.url.viewAccount.page=./plugins/account_manager/ViewAccount.jsp</@cText>
+			</@cAlert>
+		</@cBlock>
+	</@cCol>
 </@cRow>
 </@cTpl>
