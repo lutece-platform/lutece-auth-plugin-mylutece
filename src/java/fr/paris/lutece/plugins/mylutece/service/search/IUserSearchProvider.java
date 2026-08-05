@@ -33,7 +33,9 @@
  */
 package fr.paris.lutece.plugins.mylutece.service.search;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import fr.paris.lutece.util.ReferenceList;
 
@@ -83,5 +85,23 @@ public interface IUserSearchProvider
      * @return The list of MyLuteceSearchUser found
      */
     List<MyLuteceSearchUser> getUsersByIds( List<String> userIds );
+
+    /**
+     * Get the distinct combinations of values the given attributes take across the directory, to
+     * feed suggestion lists that narrow each other: knowing which values coexist tells which
+     * offices belong to a direction. Callers must not have to load every user to discover them.
+     *
+     * One element of the returned list is one combination, keyed by attribute name. An attribute
+     * missing from a directory entry is missing from its combination. Providers unable to enumerate
+     * values return an empty list.
+     *
+     * @param listAttributeNames
+     *            The attributes to enumerate together
+     * @return The distinct combinations, empty when the provider cannot enumerate them
+     */
+    default List<Map<String, String>> getAttributeValues( List<String> listAttributeNames )
+    {
+        return Collections.emptyList( );
+    }
 
 }
