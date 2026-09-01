@@ -35,6 +35,14 @@
             <version>${springVersion}</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- XSL/XML transformation services moved out of lutece-core (LUT-32172) , needed for portlet -->
+        <dependency>
+            <groupId>fr.paris.lutece.plugins</groupId>
+            <artifactId>plugin-xmltransformer</artifactId>
+            <version>[1.0.0,1.9.9]</version>
+            <type>lutece-plugin</type>
+        </dependency>
     </dependencies>
 
     <properties>
