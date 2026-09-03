@@ -33,24 +33,17 @@
         </dependency>
 
         <!-- JUnit -->
-	<dependency>
-            <groupId>fr.paris.lutece.plugins</groupId>
-            <artifactId>library-lutece-unit-testing</artifactId>
-            <type>jar</type>
-            <scope>test</scope>
-        </dependency>
-	<dependency>
-		<groupId>org.glassfish.jaxb</groupId>
-	        <artifactId>jaxb-runtime</artifactId>
-	        <version>4.0.5</version>
-	        <scope>test</scope>  
-	</dependency>
-
         <dependency>
-            <groupId>fr.paris.lutece.plugins</groupId>
-            <artifactId>plugin-xmltransformer</artifactId>
-            <version>[2.0.1-SNAPSHOT,)</version>
-            <type>lutece-plugin</type>
+                <groupId>fr.paris.lutece.plugins</groupId>
+                <artifactId>library-lutece-unit-testing</artifactId>
+                <type>jar</type>
+                <scope>test</scope>
+            </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+                <artifactId>jaxb-runtime</artifactId>
+                <version>4.0.5</version>
+                <scope>test</scope>  
         </dependency>
     </dependencies>
 
