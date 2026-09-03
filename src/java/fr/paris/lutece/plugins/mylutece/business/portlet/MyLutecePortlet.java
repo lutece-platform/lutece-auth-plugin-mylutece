@@ -34,15 +34,19 @@
 package fr.paris.lutece.plugins.mylutece.business.portlet;
 
 import fr.paris.lutece.plugins.mylutece.authentication.MultiLuteceAuthentication;
-import fr.paris.lutece.portal.business.portlet.Portlet;
+import fr.paris.lutece.portal.business.portlet.PortletHtmlContent;
 import fr.paris.lutece.portal.service.security.LuteceAuthentication;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.security.SecurityService;
-import fr.paris.lutece.util.xml.XmlUtil;
+import fr.paris.lutece.portal.service.security.SecurityTokenService;
+import fr.paris.lutece.portal.service.template.AppTemplateService;
+import fr.paris.lutece.util.html.HtmlTemplate;
 
-import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -50,157 +54,76 @@ import jakarta.servlet.http.HttpServletRequest;
 /**
  * MyLutecePortlet
  */
-public class MyLutecePortlet extends Portlet
+public class MyLutecePortlet extends PortletHtmlContent
 {
-    private static final String TAG_MY_LUTECE_PORTLET = "mylutece-portlet";
-    private static final String TAG_USER_NOT_SIGNED = "user-not-signed";
-    private static final String TAG_LUTECE_USER = "lutece-user";
-    private static final String TAG_LUTECE_USER_NAME = "lutece-user-name";
-    private static final String TAG_LUTECE_USER_NAME_GIVEN = "lutece-user-name-given";
-    private static final String TAG_LUTECE_USER_NAME_FAMILY = "lutece-user-name-family";
-    private static final String TAG_LUTECE_USER_NEW_ACCOUNT_URL = "lutece-user-new-account-url";
-    private static final String TAG_LUTECE_USER_VIEW_ACCOUNT_URL = "lutece-user-view-account-url";
-    private static final String TAG_LUTECE_USER_LOST_PASSWORD_URL = "lutece-user-lost-password-url";
-    private static final String TAG_LUTECE_USER_LOGOUT_URL = "lutece-user-logout-url";
-    private static final String TAG_LUTECE_USER_AUTHENTICATION_SERVICE = "lutece-user-authentication-service";
-    private static final String TAG_AUTHENTICATION_NAME = "name";
-    private static final String TAG_AUTHENTICATION_ICON_URL = "icon-url";
-    private static final String TAG_AUTHENTICATION_URL = "url";
-    private static final String TAG_AUTHENTICATION_DISPLAY_NAME = "display-name";
-    private static final String ATTRIBUTE_AUTHENTICATION_EXTERNAL = "external";
-    private static final String ATTRIBUTE_AUTHENTICATION_DELEGATED = "delegated";
-    private static final String ATTRIBUTE_AUTHENTICATION_LOGINPASSWORD_REQUIRED = "loginpassword-required";
+    private static final String TEMPLATE_PORTLET_MYLUTECE = "skin/plugins/mylutece/portlet/portlet_mylutece.html";
+    private static final String TOKEN_ACTION_LOGIN = "dologin";
+    private static final String MARK_PORTLET_NAME = "portlet_name";
+    private static final String MARK_PORTLET_ID = "portlet_id";
+    private static final String MARK_USER = "user";
+    private static final String MARK_LIST_AUTHENTICATIONS = "list_authentications";
+    private static final String MARK_DO_LOGIN = "url_dologin";
+    private static final String MARK_DO_LOGOUT = "url_dologout";
+    private static final String MARK_URL_ACCOUNT = "url_account";
+    private static final String MARK_URL_NEWACCOUNT = "url_new_account";
+    private static final String MARK_URL_LOSTPASSWORD = "url_lost_password";
 
     /**
      * Constructor
      */
     public MyLutecePortlet( )
     {
+        setPortletTypeId( MyLutecePortletHome.getInstance( ).getPortletTypeId( ) );
     }
 
     /**
-     * Returns the Xml code of the MyLutece portlet without XML heading
+     * Returns the HTML content of the MyLutece portlet
      *
      * @param request
      *            The HTTP Servlet request
-     * @return the Xml code of the MyLutece portlet content
+     * @return the HTML content of the MyLutece portlet
      */
-    public String getXml( HttpServletRequest request )
+    @Override
+    public String getHtmlContent( HttpServletRequest request )
     {
-        StringBuffer sbXml = new StringBuffer( );
-
-        if ( !SecurityService.isAuthenticationEnable( ) )
+        if ( !SecurityService.isAuthenticationEnable( ) || ( request == null ) )
         {
-            XmlUtil.beginElement( sbXml, TAG_MY_LUTECE_PORTLET );
-            XmlUtil.endElement( sbXml, TAG_MY_LUTECE_PORTLET );
-
-            return sbXml.toString( );
+            return StringUtils.EMPTY;
         }
 
-        LuteceUser user = ( request == null ) ? null : SecurityService.getInstance( ).getRegisteredUser( request );
+        Map<String, Object> model = new HashMap<>( );
 
-        XmlUtil.beginElement( sbXml, TAG_MY_LUTECE_PORTLET );
-
-        if ( user != null )
+        if ( this.getDisplayPortletTitle( ) == 0 )
         {
-            XmlUtil.beginElement( sbXml, TAG_LUTECE_USER );
-            XmlUtil.addElementHtml( sbXml, TAG_LUTECE_USER_NAME, user.getName( ) );
-            XmlUtil.addElementHtml( sbXml, TAG_LUTECE_USER_NAME_GIVEN, user.getUserInfo( LuteceUser.NAME_GIVEN ) );
-            XmlUtil.addElementHtml( sbXml, TAG_LUTECE_USER_NAME_FAMILY, user.getUserInfo( LuteceUser.NAME_FAMILY ) );
+            model.put( MARK_PORTLET_NAME, this.getName( ) );
+        }
 
-            if ( user.getLuteceAuthenticationService( ) != null )
-            {
-                Map<String, Object> mapAttributes = new HashMap<String, Object>( );
-                mapAttributes.put( ATTRIBUTE_AUTHENTICATION_EXTERNAL, user.getLuteceAuthenticationService( ).isExternalAuthentication( ) );
-                mapAttributes.put( ATTRIBUTE_AUTHENTICATION_DELEGATED, user.getLuteceAuthenticationService( ).isDelegatedAuthentication( ) );
-                mapAttributes.put( ATTRIBUTE_AUTHENTICATION_LOGINPASSWORD_REQUIRED, user.getLuteceAuthenticationService( ).isExternalAuthentication( )
-                        && user.getLuteceAuthenticationService( ).isDelegatedAuthentication( ) );
-                XmlUtil.beginElement( sbXml, TAG_LUTECE_USER_AUTHENTICATION_SERVICE, mapAttributes );
-                XmlUtil.addElement( sbXml, TAG_AUTHENTICATION_NAME, user.getLuteceAuthenticationService( ).getName( ) );
-                XmlUtil.addElement( sbXml, TAG_AUTHENTICATION_DISPLAY_NAME, user.getLuteceAuthenticationService( ).getAuthServiceName( ) );
-                XmlUtil.addElement( sbXml, TAG_AUTHENTICATION_ICON_URL, ObjectUtils.toString( user.getLuteceAuthenticationService( ).getIconUrl( ) ) );
-                XmlUtil.addElement( sbXml, ATTRIBUTE_AUTHENTICATION_DELEGATED,
-                        Boolean.toString( user.getLuteceAuthenticationService( ).isDelegatedAuthentication( ) ) );
-                XmlUtil.addElement( sbXml, TAG_AUTHENTICATION_URL, user.getLuteceAuthenticationService( ).getDoLoginUrl( ) );
-                XmlUtil.endElement( sbXml, TAG_LUTECE_USER_AUTHENTICATION_SERVICE );
-            }
+        model.put( MARK_PORTLET_ID, this.getId( ) );
 
-            String strLogoutUrl = SecurityService.getInstance( ).getDoLogoutUrl( );
+        LuteceUser user = SecurityService.getInstance( ).getRegisteredUser( request );
+        model.put( MARK_USER, user );
+        model.put( MARK_DO_LOGIN, SecurityService.getInstance( ).getDoLoginUrl( ) );
+        model.put( MARK_DO_LOGOUT, SecurityService.getInstance( ).getDoLogoutUrl( ) );
+        model.put( MARK_URL_ACCOUNT, SecurityService.getInstance( ).getViewAccountPageUrl( ) );
+        model.put( MARK_URL_NEWACCOUNT, SecurityService.getInstance( ).getNewAccountPageUrl( ) );
+        model.put( MARK_URL_LOSTPASSWORD, SecurityService.getInstance( ).getLostPasswordPageUrl( ) );
+        model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, TOKEN_ACTION_LOGIN ) );
 
-            if ( strLogoutUrl != null )
-            {
-                XmlUtil.addElementHtml( sbXml, TAG_LUTECE_USER_LOGOUT_URL, strLogoutUrl );
-            }
+        LuteceAuthentication luteceAuthentication = SecurityService.getInstance( ).getAuthenticationService( );
 
-            String strViewAccountUrl = ( user.getLuteceAuthenticationService( ) != null ) ? user.getLuteceAuthenticationService( ).getViewAccountPageUrl( )
-                    : null;
-
-            if ( strViewAccountUrl != null )
-            {
-                XmlUtil.addElementHtml( sbXml, TAG_LUTECE_USER_VIEW_ACCOUNT_URL, user.getLuteceAuthenticationService( ).getViewAccountPageUrl( ) );
-            }
-
-            XmlUtil.endElement( sbXml, TAG_LUTECE_USER );
+        if ( SecurityService.getInstance( ).isMultiAuthenticationSupported( ) && luteceAuthentication instanceof MultiLuteceAuthentication )
+        {
+            model.put( MARK_LIST_AUTHENTICATIONS, ( (MultiLuteceAuthentication) luteceAuthentication ).getListLuteceAuthentication( ) );
         }
         else
         {
-            XmlUtil.beginElement( sbXml, TAG_USER_NOT_SIGNED );
-
-            if ( SecurityService.getInstance( ).getAuthenticationService( ).isMultiAuthenticationSupported( ) )
-            {
-                LuteceAuthentication multiAuthentication = SecurityService.getInstance( ).getAuthenticationService( );
-
-                if ( multiAuthentication instanceof MultiLuteceAuthentication )
-                {
-                    for ( LuteceAuthentication luteceAuthentication : ( (MultiLuteceAuthentication) multiAuthentication ).getListLuteceAuthentication( ) )
-                    {
-                        Map<String, Object> mapAttributes = new HashMap<String, Object>( );
-                        mapAttributes.put( ATTRIBUTE_AUTHENTICATION_EXTERNAL, luteceAuthentication.isExternalAuthentication( ) );
-                        mapAttributes.put( ATTRIBUTE_AUTHENTICATION_DELEGATED, luteceAuthentication.isDelegatedAuthentication( ) );
-                        mapAttributes.put( ATTRIBUTE_AUTHENTICATION_LOGINPASSWORD_REQUIRED,
-                                !luteceAuthentication.isExternalAuthentication( ) && !luteceAuthentication.isDelegatedAuthentication( ) );
-                        XmlUtil.beginElement( sbXml, TAG_LUTECE_USER_AUTHENTICATION_SERVICE, mapAttributes );
-                        XmlUtil.addElement( sbXml, TAG_AUTHENTICATION_NAME, luteceAuthentication.getName( ) );
-                        XmlUtil.addElement( sbXml, TAG_AUTHENTICATION_DISPLAY_NAME, luteceAuthentication.getAuthServiceName( ) );
-                        XmlUtil.addElement( sbXml, TAG_AUTHENTICATION_ICON_URL, ObjectUtils.toString( luteceAuthentication.getIconUrl( ) ) );
-                        XmlUtil.addElement( sbXml, TAG_AUTHENTICATION_URL, luteceAuthentication.getDoLoginUrl( ) );
-                        XmlUtil.endElement( sbXml, TAG_LUTECE_USER_AUTHENTICATION_SERVICE );
-                    }
-                }
-            }
-
-            String strNewAccountUrl = SecurityService.getInstance( ).getNewAccountPageUrl( );
-
-            if ( strNewAccountUrl != null )
-            {
-                XmlUtil.addElementHtml( sbXml, TAG_LUTECE_USER_NEW_ACCOUNT_URL, strNewAccountUrl );
-            }
-
-            String strLostPasswordUrl = SecurityService.getInstance( ).getLostPasswordPageUrl( );
-
-            if ( strLostPasswordUrl != null )
-            {
-                XmlUtil.addElementHtml( sbXml, TAG_LUTECE_USER_LOST_PASSWORD_URL, strLostPasswordUrl );
-            }
-
-            XmlUtil.endElement( sbXml, TAG_USER_NOT_SIGNED );
+            model.put( MARK_LIST_AUTHENTICATIONS, Collections.singletonList( luteceAuthentication ) );
         }
 
-        XmlUtil.endElement( sbXml, TAG_MY_LUTECE_PORTLET );
+        Locale locale = request.getLocale( );
+        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_PORTLET_MYLUTECE, locale, model );
 
-        return addPortletTags( sbXml );
-    }
-
-    /**
-     * Returns the Xml code of the MyLutece portlet with XML heading
-     *
-     * @param request
-     *            The HTTP servlet request
-     * @return the Xml code of the MyLutece portlet
-     */
-    public String getXmlDocument( HttpServletRequest request )
-    {
-        return XmlUtil.getXmlHeader( ) + getXml( request );
+        return template.getHtml( );
     }
 
     /**
@@ -214,6 +137,7 @@ public class MyLutecePortlet extends Portlet
     /**
      * Remove of this portlet
      */
+    @Override
     public void remove( )
     {
         MyLutecePortletHome.getInstance( ).remove( this );
