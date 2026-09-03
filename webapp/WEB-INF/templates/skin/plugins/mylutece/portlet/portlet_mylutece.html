@@ -1,0 +1,76 @@
+<@cTpl>
+<@cBlock class='portlet mylutece-portlet' id='portlet_${portlet_id!}'>
+    <#if portlet_name?has_content>
+        <@cTitle level=3>${portlet_name}</@cTitle>
+    </#if>
+    <#if user?has_content>
+        <#-- ============ Authenticated user ============ -->
+        <#assign userNameGiven = user.getUserInfo('user.name.given') >
+        <#assign userNameFamily = user.getUserInfo('user.name.family') >
+        <@cText>#i18n{mylutece.user_login_include.labelWelcome} ${userNameGiven!} ${userNameFamily!}</@cText>
+        <@cBlock class='d-flex flex-column gap-2'>
+            <#if url_account?has_content>
+                <@cBtn href='${url_account}' class='primary btn-sm w-100' label='#i18n{mylutece.xpage.viewAccountLabel}' params='title="#i18n{mylutece.xpage.viewAccountLabel}"'>
+                    <@cIcon name='user-circle' />
+                </@cBtn>
+            </#if>
+            <#if url_dologout?has_content>
+                <@cForm method='post' action='${url_dologout}'>
+                    <@cBtn class='primary btn-sm w-100' type='submit' label='#i18n{mylutece.user_login_include.labelLogout}'>
+                        <@cIcon name='logout' />
+                    </@cBtn>
+                </@cForm>
+            </#if>
+        </@cBlock>
+    <#else>
+        <#-- ============ User not signed ============ -->
+        <#assign loginPasswordAuthName = '' />
+        <#if list_authentications?has_content>
+            <#list list_authentications as authentication>
+                <#if authentication.delegatedAuthentication>
+                    <@cText class='text-center'>
+                        <@cLink href='${authentication.doLoginUrl}?auth_provider=${authentication.name}' label='${authentication.authServiceName}' title='${authentication.authServiceName}'>
+                            <#if authentication.iconUrl?has_content>
+                                <@cImg src='${authentication.iconUrl}' alt='${authentication.authServiceName}' params='title="${authentication.authServiceName}"' />
+                            </#if>
+                        </@cLink>
+                    </@cText>
+                <#elseif !authentication.externalAuthentication && loginPasswordAuthName = ''>
+                    <#assign loginPasswordAuthName = authentication.name />
+                </#if>
+            </#list>
+        </#if>
+        <#if loginPasswordAuthName != ''>
+            <@cForm method='post' action='${url_dologin}'>
+                <@cInput type='hidden' name='auth_provider' value='${loginPasswordAuthName}' class='' />
+                <@cInput type='hidden' name='token' value='${token}' class='' />
+                <@cBlock class='mb-3'>
+                    <@cField label='#i18n{mylutece.user_login_include.labelAccessCode}' for='mylutece_portlet_username_${portlet_id!}'>
+                        <@cInput type='text' name='username' id='mylutece_portlet_username_${portlet_id!}' placeholder='#i18n{mylutece.user_login_include.labelAccessCode}' />
+                    </@cField>
+                </@cBlock>
+                <@cBlock class='mb-3'>
+                    <@cField label='#i18n{mylutece.user_login_include.labelPassword}' for='mylutece_portlet_password_${portlet_id!}'>
+                        <@cInput type='password' name='password' id='mylutece_portlet_password_${portlet_id!}' placeholder='#i18n{mylutece.user_login_include.labelPassword}' />
+                    </@cField>
+                </@cBlock>
+                <@cBlock class='mb-3 d-flex gap-2'>
+                    <@cBtn class='primary btn-sm w-100' type='submit' label='#i18n{mylutece.user_login_include.labelButton}'>
+                        <@cIcon name='off' class='me-1' />
+                    </@cBtn>
+                    <#if url_new_account?has_content>
+                        <@cBtn href='${url_new_account}' class='primary btn-sm w-100' label='#i18n{mylutece.user_login_include.labelButtonCreateAccount}' params='title="#i18n{mylutece.user_login_include.labelButtonCreateAccount}"'>
+                            <@cIcon name='plus' class='me-1' />
+                        </@cBtn>
+                    </#if>
+                    <#if url_lost_password?has_content>
+                        <@cBtn href='${url_lost_password}' class='primary btn-sm w-100' label='#i18n{mylutece.xpage.login_form.labelButtonLostPassword}' params='title="#i18n{mylutece.xpage.login_form.labelButtonLostPassword}"'>
+                            <@cIcon name='edit' class='me-1' />
+                        </@cBtn>
+                    </#if>
+                </@cBlock>
+            </@cForm>
+        </#if>
+    </#if>
+</@cBlock>
+</@cTpl>
