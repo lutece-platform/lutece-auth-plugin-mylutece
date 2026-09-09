@@ -1,82 +1,86 @@
 <@cTpl>
-<@cContainer>
-  <#-- ============ LEFT — FORM ============ -->
-  <@cRow>
-      <@cCol>
-        <#assign loginCrumbItems = [{ 'title': 'Connexion', 'url': '' }]>
-        <@cBreadCrumb home='Accueil' type='fluid' items=loginCrumbItems class='login-crumbs' />
+<#-- ============ LEFT — FORM ============ -->
+<@cRow>
+    <@cCol>
+      <#assign loginCrumbItems = [{ 'title': 'Connexion', 'url': '' }]>
+      <@cBreadCrumb home='Accueil' items=loginCrumbItems class='login-crumbs' />
+      <@cContainer>
         <@cTitle level=2 >Connectez-vous à votre espace</@cTitle>
-      </@cCol>
-    </@cRow>
-    <@cRow>
-      <@cCol cols='12 col-md-6 '>
-        <#-- Email/password form -->
-        <@cForm method='post' action='${url_dologin}' class='login-form' params='autocomplete="on"'>
-        <@cInput type='hidden' name='page' value='mylutece' class='' />
-        <@cInput type='hidden' name='action' value='doLogin' class='' />
-        <@cInput type='hidden' name='token' value='${token}' class='' />
-        <#if error_message?? && error_message != ''><@cAlert type='warning' title='${error_message!}'><#if error_details?? && error_details !=''>${error_detail!}</#if></@cAlert></#if>
-        <#-- first display delegated authentications [oauth etc...] -->
-        <#if list_authentications??>
+      </@cContainer>
+    </@cCol>
+</@cRow>
+<@cContainer>
+  <@cRow>
+    <@cCol cols='12 col-md-6 '>
+      <#-- Email/password form -->
+      <@cForm method='post' action='${url_dologin}' class='login-form' params='autocomplete="on"'>
+      <@cInput type='hidden' name='page' value='mylutece' class='' />
+      <@cInput type='hidden' name='action' value='doLogin' class='' />
+      <@cInput type='hidden' name='token' value='${token}' class='' />
+      <#if error_message?? && error_message != ''><@cAlert type='warning' title='${error_message!}'><#if error_details?? && error_details !=''>${error_detail!}</#if></@cAlert></#if>
+      <#-- first display delegated authentications [oauth etc...] -->
+      <#if list_authentications??>
+      <#list list_authentications as authentication>
+        <#if authentication.delegatedAuthentication>
+        <@cBlock class='form-group'>
+          <@cLink href='${url_dologin}?page=mylutece&action=dologin&auth_provider=${authentication.name}' label='' title='${authentication.authServiceName}'>
+            <@cImg src='${authentication.iconUrl}' alt='${authentication.authServiceName}' />
+          </@cLink>
+        </@cBlock>
+        </#if>
+      </#list>
+      <#-- display internal authentications [such as database] -->
+      <#assign bHasInternalAuth = false />
+      <#assign lostLoginUrl='' />
+      <#assign lostPasswordUrl='' />
+      <#if list_authentications?size != 1>
         <#list list_authentications as authentication>
-          <#if authentication.delegatedAuthentication>
-          <@cBlock class='form-group'>
-            <@cLink href='${url_dologin}?page=mylutece&action=dologin&auth_provider=${authentication.name}' label='' title='${authentication.authServiceName}'>
-              <@cImg src='${authentication.iconUrl}' alt='${authentication.authServiceName}' />
-            </@cLink>
-          </@cBlock>
+          <#if !authentication.externalAuthentication && !authentication.delegatedAuthentication>
+            <#if !bHasInternalAuth><#assign bHasInternalAuth = true /></#if>
+            <@cRadio name='auth_provider' label='${authentication.authServiceName}' value='${authentication.name}' checked=(auth_provider?has_content && auth_provider == authentication.name) />
           </#if>
         </#list>
-        <#-- display internal authentications [such as database] -->
-        <#assign bHasInternalAuth = false />
-        <#assign lostLoginUrl='' />
-        <#assign lostPasswordUrl='' />
-        <#if list_authentications?size != 1>
-          <#list list_authentications as authentication>
-            <#if !authentication.externalAuthentication && !authentication.delegatedAuthentication>
-              <#if !bHasInternalAuth><#assign bHasInternalAuth = true /></#if>
-              <@cRadio name='auth_provider' label='${authentication.authServiceName}' value='${authentication.name}' checked=(auth_provider?has_content && auth_provider == authentication.name) />
-            </#if>
-          </#list>
-        <#else>
-          <#list list_authentications as authentication>
-            <#if !authentication.externalAuthentication && !authentication.delegatedAuthentication>
-              <#if !bHasInternalAuth><#assign bHasInternalAuth = true /></#if>
-              <@cInput type='hidden' name='auth_provider' value='${authentication.name}' class='' />
-              <#assign lostPasswordUrl=authentication.getLostPasswordPageUrl() />
-              <#assign lostLoginUrl=authentication.getLostLoginPageUrl() />
-            </#if>
-          </#list>
-        </#if>
-        <#if bHasInternalAuth>
-          <@cField label='#i18n{mylutece.xpage.login_form.labelAccessCode}' for='username' >
-            <@cInputGroup>
-              <@cIcon name='user' />
-                <@cInput name='username' id='username' placeholder='name@example.com' />
-            </@cInputGroup>
-          </@cField>      
-          <@cInputPassword label='#i18n{mylutece.xpage.login_form.labelPassword}' name='password' icon='lock' id='password' placeholder='#i18n{mylutece.xpage.login_form.labelPassword}' helpMsg='#i18n{portal.theme.labelPasswordHelp}' />
-          <#if is_active_captcha>${captcha}</#if>
-          <@cBtn class='primary' type='submit' label='#i18n{mylutece.xpage.login_form.labelButton}' nestedPos='after'>
-            <@cIcon name='arrow-right' class='ms-2' />
-          </@cBtn>
-          <@cBlock class='lost-row'>
-            <#if lostPasswordUrl??><@cLink href='${lostPasswordUrl!}' label='#i18n{mylutece.xpage.login_form.labelButtonLostPassword}' params='title="#i18n{mylutece.xpage.login_form.labelButtonLostPassword}"' /></#if>
-            <#if lostLoginUrl??><@cLink href='${lostLoginUrl!}' label='#i18n{mylutece.xpage.login_form.labelButtonLostLogin}' params='title="#i18n{mylutece.xpage.login_form.labelButtonLostLogin}"' /></#if>
+      <#else>
+        <#list list_authentications as authentication>
+          <#if !authentication.externalAuthentication && !authentication.delegatedAuthentication>
+            <#if !bHasInternalAuth><#assign bHasInternalAuth = true /></#if>
+            <@cInput type='hidden' name='auth_provider' value='${authentication.name}' class='' />
+            <#assign lostPasswordUrl=authentication.getLostPasswordPageUrl() />
+            <#assign lostLoginUrl=authentication.getLostLoginPageUrl() />
+          </#if>
+        </#list>
+      </#if>
+      <#if bHasInternalAuth>
+        <@cField label='#i18n{mylutece.xpage.login_form.labelAccessCode}' for='username' >
+          <@cInputGroup>
+              <@cInputGroupAddon>
+                <@cIcon name='user' />
+              </@cInputGroupAddon>
+              <@cInput name='username' id='username' placeholder='name@example.com' />
+          </@cInputGroup>
+        </@cField> 
+        <@cInputPassword label='#i18n{mylutece.xpage.login_form.labelPassword}' name='password' icon='lock' id='password' placeholder='#i18n{mylutece.xpage.login_form.labelPassword}' helpMsg='#i18n{portal.theme.labelPasswordHelp}' />
+        <#if is_active_captcha>${captcha}</#if>
+        <@cBtn class='primary' type='submit' label='#i18n{mylutece.xpage.login_form.labelButton}' nestedPos='after'>
+          <@cIcon name='arrow-right' class='ms-2' />
+        </@cBtn>
+        <@cBlock class='lost-row'>
+          <#if lostPasswordUrl??><@cLink href='${lostPasswordUrl!}' label='#i18n{mylutece.xpage.login_form.labelButtonLostPassword}' params='title="#i18n{mylutece.xpage.login_form.labelButtonLostPassword}"' /></#if>
+          <#if lostLoginUrl??><@cLink href='${lostLoginUrl!}' label='#i18n{mylutece.xpage.login_form.labelButtonLostLogin}' params='title="#i18n{mylutece.xpage.login_form.labelButtonLostLogin}"' /></#if>
+        </@cBlock>
+      </#if>
+      <#if !bHasInternalAuth || (bHasInternalAuth && lostPasswordUrl??)>
+        <#if url_new_account?has_content>
+          <@cBlock class='signup-row'>
+            <@cText class='mb-0'>
+              <@cInline class='signup-row__txt'>Pas encore de compte ? <@cInline type='strong'>Créez-en un en 2 min.</@cInline></@cInline>
+            </@cText>
+            <@cLink href='${url_new_account}' label='#i18n{mylutece.xpage.login_form.labelButtonCreateAccount}' class='secondary' params='title="#i18n{mylutece.xpage.login_form.labelButtonCreateAccount}"' />
           </@cBlock>
         </#if>
-        <#if !bHasInternalAuth || (bHasInternalAuth && lostPasswordUrl??)>
-          <#if url_new_account?has_content>
-            <@cBlock class='signup-row'>
-              <@cText class='mb-0'>
-                <@cInline class='signup-row__txt'>Pas encore de compte ? <@cInline type='strong'>Créez-en un en 2 min.</@cInline></@cInline>
-              </@cText>
-              <@cLink href='${url_new_account}' label='#i18n{mylutece.xpage.login_form.labelButtonCreateAccount}' class='secondary' params='title="#i18n{mylutece.xpage.login_form.labelButtonCreateAccount}"' />
-            </@cBlock>
-          </#if>
-        </#if>
-        </#if>
-      </@cForm>
+      </#if>
+      </#if>
+    </@cForm>
     </@cCol>
   </@cRow>
 </@cContainer>
