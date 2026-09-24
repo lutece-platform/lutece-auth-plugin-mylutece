@@ -39,14 +39,10 @@ import fr.paris.lutece.portal.service.security.LuteceAuthentication;
 import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.security.SecurityService;
 import fr.paris.lutece.portal.service.security.SecurityTokenService;
-import fr.paris.lutece.portal.service.template.AppTemplateService;
-import fr.paris.lutece.util.html.HtmlTemplate;
 
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -56,10 +52,9 @@ import jakarta.servlet.http.HttpServletRequest;
  */
 public class MyLutecePortlet extends PortletHtmlContent
 {
-    private static final String TEMPLATE_PORTLET_MYLUTECE = "skin/plugins/mylutece/portlet/portlet_mylutece.html";
+    /** Default FreeMarker template, used when the portlet has no template chosen in the core (core_portlet_template) */
+    public static final String TEMPLATE_PORTLET_MYLUTECE_DEFAULT = "skin/plugins/mylutece/portlet/portlet_mylutece.html";
     private static final String TOKEN_ACTION_LOGIN = "dologin";
-    private static final String MARK_PORTLET_NAME = "portlet_name";
-    private static final String MARK_PORTLET_ID = "portlet_id";
     private static final String MARK_USER = "user";
     private static final String MARK_LIST_AUTHENTICATIONS = "list_authentications";
     private static final String MARK_DO_LOGIN = "url_dologin";
@@ -77,7 +72,7 @@ public class MyLutecePortlet extends PortletHtmlContent
     }
 
     /**
-     * Returns the HTML content of the MyLutece portlet
+     * Returns the HTML content of the MyLutece portlet, rendered with the template chosen for the portlet in the core (or the default one)
      *
      * @param request
      *            The HTTP Servlet request
@@ -91,14 +86,7 @@ public class MyLutecePortlet extends PortletHtmlContent
             return StringUtils.EMPTY;
         }
 
-        Map<String, Object> model = new HashMap<>( );
-
-        if ( this.getDisplayPortletTitle( ) == 0 )
-        {
-            model.put( MARK_PORTLET_NAME, this.getName( ) );
-        }
-
-        model.put( MARK_PORTLET_ID, this.getId( ) );
+        Map<String, Object> model = createPortletModel( );
 
         LuteceUser user = SecurityService.getInstance( ).getRegisteredUser( request );
         model.put( MARK_USER, user );
@@ -120,10 +108,7 @@ public class MyLutecePortlet extends PortletHtmlContent
             model.put( MARK_LIST_AUTHENTICATIONS, Collections.singletonList( luteceAuthentication ) );
         }
 
-        Locale locale = request.getLocale( );
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_PORTLET_MYLUTECE, locale, model );
-
-        return template.getHtml( );
+        return renderTemplate( request, TEMPLATE_PORTLET_MYLUTECE_DEFAULT, model );
     }
 
     /**

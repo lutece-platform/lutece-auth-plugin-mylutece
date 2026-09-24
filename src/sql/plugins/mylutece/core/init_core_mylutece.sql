@@ -64,3 +64,12 @@ INSERT INTO core_datastore(entity_key,entity_value) VALUES('mylutece.security.pu
 INSERT INTO core_datastore(entity_key,entity_value) VALUES('mylutece.security.public_url.mylutece.url.lostPassword.page','jsp/site/Portal.jsp?page=mylutece&action=lostPassword');
 INSERT INTO core_datastore(entity_key,entity_value) VALUES('mylutece.security.public_url.mylutece.url.lostLogin.page','jsp/site/Portal.jsp?page=mylutecedatabase&action=lostLogin');
 INSERT INTO core_datastore(entity_key,entity_value) VALUES('mylutece.security.public_url.mylutece.url.doActionsAll','jsp/site/plugins/mylutece/Do*');
+
+--
+-- The FreeMarker template of the MyLutece portlet is registered in the core (core_portlet_template, "Gestion des modèles de rubrique" feature,
+-- CORE_PORTLET_TEMPLATE_MANAGEMENT right). The first template of the portlet type is the default one.
+--
+-- changeset mylutece:init_core_mylutece.sql-rev1.sql
+-- preconditions onFail:MARK_RAN onError:WARN
+-- precondition-sql-check expectedResult:0 SELECT COUNT(*) FROM core_portlet_template WHERE id_portlet_type = 'MYLUTECE_PORTLET'
+INSERT INTO core_portlet_template (id_portlet_type, description, template_path) VALUES ('MYLUTECE_PORTLET', 'Rubrique MyLutece - Défaut', 'skin/plugins/mylutece/portlet/portlet_mylutece.html');
