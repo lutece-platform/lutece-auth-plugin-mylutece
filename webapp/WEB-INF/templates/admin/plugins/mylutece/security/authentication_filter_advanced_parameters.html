@@ -20,12 +20,41 @@
 </@tform>
 </@offcanvas>
 </#macro>
+<#macro myluteceAuthFilterAdvParamsSearch>
+<#if public_list_url?has_content>
+<@tform method='post' type='inline'>
+	<@formGroup labelFor='search_public_url' labelKey='#i18n{portal.system.manage_plugins.buttonFilter}' hideLabel=['all'] formStyle='inline'>
+		<@inputGroup>
+			<@input type='text' name='search_public_url' id='search_public_url' placeHolder='#i18n{portal.system.manage_plugins.buttonFilter}' params='autocomplete="off" addons' />
+			<@button color='primary' title='#i18n{portal.system.manage_plugins.buttonFilter}' buttonIcon='filter' hideTitle=['all'] />
+		</@inputGroup>
+	</@formGroup>
+</@tform>
+</#if>
+</#macro>
+<#macro myluteceAuthFilterAdvParamsSearchScript>
+<#if public_list_url?has_content>
+<script type="module">
+import LuteceSearchList from './themes/shared/modules/luteceSearchList.js';
+const searchInput = document.querySelector("#search_public_url");
+const searchElementList = document.querySelectorAll(".item-labels");
+new LuteceSearchList( searchInput, searchElementList, {
+	searchableChild: [".searchable"],
+	persist: true,
+	persistKey: "mylutece-admin-public-url-search",
+	clearButton: true,
+	clearButtonLabel: "#i18n{portal.util.labelReset}",
+});
+</script>
+</#if>
+</#macro>
 <#macro myluteceAuthFilterAdvParamsMainForm>
 <#if public_list_url?exists>
 <@h level=2>#i18n{mylutece.authentication_filter_advanced_parameters.publicListUrlLabelComment}</@h>
 <#list public_list_url as public_url>
-	<@tform method='post' action='jsp/admin/plugins/mylutece/security/DoModifyPublicUrl.jsp' boxed=true boxClass='mb-2'>
+	<@tform method='post' action='jsp/admin/plugins/mylutece/security/DoModifyPublicUrl.jsp' boxed=true boxClass='mb-2 item-labels'>
 		<@input type='hidden' name='public_url_code' value='${public_url.code}' />
+		<@span class='searchable d-none'>${public_url.code} ${public_url.name}</@span>
 		<@row>
 			<@columns class='col-auto'>
 				<@formGroup labelFor='public_url_codee' labelKey='#i18n{mylutece.authentication_filter_advanced_parameters.labelPublicUrlCode}'>
