@@ -1,6 +1,6 @@
 <@cTpl>
-<@cBlock class='portlet mylutece-portlet' id='portlet_${portlet_id!}'>
-    <#if portlet_name?has_content>
+<@cSection class='portlet portlet-mylutece mylutece-portlet ${device_class!}' id='portlet_${portlet_id?c}'>
+    <#if portlet_name??>
         <@cTitle level=3>${portlet_name}</@cTitle>
     </#if>
     <#if user?has_content>
@@ -45,13 +45,13 @@
                 <@cInput type='hidden' name='auth_provider' value='${loginPasswordAuthName}' class='' />
                 <@cInput type='hidden' name='token' value='${token}' class='' />
                 <@cBlock class='mb-3'>
-                    <@cField label='#i18n{mylutece.user_login_include.labelAccessCode}' for='mylutece_portlet_username_${portlet_id!}'>
-                        <@cInput type='text' name='username' id='mylutece_portlet_username_${portlet_id!}' placeholder='#i18n{mylutece.user_login_include.labelAccessCode}' />
+                    <@cField label='#i18n{mylutece.user_login_include.labelAccessCode}' for='mylutece_portlet_username_${portlet_id?c}'>
+                        <@cInput type='text' name='username' id='mylutece_portlet_username_${portlet_id?c}' placeholder='#i18n{mylutece.user_login_include.labelAccessCode}' />
                     </@cField>
                 </@cBlock>
                 <@cBlock class='mb-3'>
-                    <@cField label='#i18n{mylutece.user_login_include.labelPassword}' for='mylutece_portlet_password_${portlet_id!}'>
-                        <@cInput type='password' name='password' id='mylutece_portlet_password_${portlet_id!}' placeholder='#i18n{mylutece.user_login_include.labelPassword}' />
+                    <@cField label='#i18n{mylutece.user_login_include.labelPassword}' for='mylutece_portlet_password_${portlet_id?c}'>
+                        <@cInput type='password' name='password' id='mylutece_portlet_password_${portlet_id?c}' placeholder='#i18n{mylutece.user_login_include.labelPassword}' />
                     </@cField>
                 </@cBlock>
                 <@cBlock class='mb-3 d-flex gap-2'>
@@ -72,5 +72,5 @@
             </@cForm>
         </#if>
     </#if>
-</@cBlock>
+</@cSection>
 </@cTpl>
