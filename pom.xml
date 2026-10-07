@@ -12,7 +12,7 @@
     <artifactId>plugin-mylutece</artifactId>
     <packaging>lutece-plugin</packaging>
     
-    <version>5.0.1-beta-02</version>
+    <version>5.0.1-SNAPSHOT</version>
     <name>Lutece mylutece plugin</name>
 
     <repositories>
