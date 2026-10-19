@@ -64,3 +64,8 @@ INSERT INTO core_datastore(entity_key,entity_value) VALUES('mylutece.security.pu
 INSERT INTO core_datastore(entity_key,entity_value) VALUES('mylutece.security.public_url.mylutece.url.lostPassword.page','jsp/site/Portal.jsp?page=mylutece&action=lostPassword');
 INSERT INTO core_datastore(entity_key,entity_value) VALUES('mylutece.security.public_url.mylutece.url.lostLogin.page','jsp/site/Portal.jsp?page=mylutecedatabase&action=lostLogin');
 INSERT INTO core_datastore(entity_key,entity_value) VALUES('mylutece.security.public_url.mylutece.url.doActionsAll','jsp/site/plugins/mylutece/Do*');
+
+--
+-- Init default roles
+--
+INSERT INTO core_datastore(entity_key,entity_value) VALUES('mylutece.site_property.default_role_keys','');

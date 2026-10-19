@@ -45,6 +45,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
+
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * This class is used to provide default roles for myluteceusers
@@ -64,16 +67,19 @@ public class MyLuteceDefaultRoleProvider implements IMyLuteceExternalRolesProvid
     public Collection<String> providesRoles( LuteceUser user )
     {
 
-        String strDefaultRoleKeys = DatastoreService.getDataValue( KEY_DATASTORE_DEFAULT_ROLES, null );
+        return getDefaultRoleKeys( );
+    }
 
-        if ( strDefaultRoleKeys != null )
-        {
-            return Arrays.asList( strDefaultRoleKeys.split( "," ) );
-        }
-        else
-        {
-            return new ArrayList<>( );
-        }
+    /**
+     * Get the default role keys from the datastore, ignoring blank entries
+     * 
+     * @return the default role keys
+     */
+    private static List<String> getDefaultRoleKeys( )
+    {
+        String strDefaultRoleKeys = DatastoreService.getDataValue( KEY_DATASTORE_DEFAULT_ROLES, StringUtils.EMPTY );
+
+        return Arrays.stream( strDefaultRoleKeys.split( "," ) ).filter( StringUtils::isNotBlank ).collect( Collectors.toList( ) );
     }
 
 	/**
@@ -81,25 +87,20 @@ public class MyLuteceDefaultRoleProvider implements IMyLuteceExternalRolesProvid
 	 */
 	@Override
 	public List<LuteceUserRoleDescription> getLuteceUserRolesProvided(Locale locale) {
-		String strDefaultRoleKeys = DatastoreService.getDataValue(KEY_DATASTORE_DEFAULT_ROLES, null);
 		List<LuteceUserRoleDescription> lisDescriptions = new ArrayList<LuteceUserRoleDescription>();
-		if (strDefaultRoleKeys != null) {
+		for (String strRole : getDefaultRoleKeys()) {
+			Role role = RoleHome.findByPrimaryKey(strRole);
+			if (role != null) {
+				lisDescriptions.add(
+						new LuteceUserRoleDescription(role, LuteceUserRoleDescription.TYPE_AUTOMATIC_ASSIGNMENT,
+								I18nService.getLocalizedString(PROPERTY_DEFAULT_ROLE_DESCRIPTION, locale)));
 
-			for (String strRole : Arrays.asList(strDefaultRoleKeys.split(","))) {
-				Role role = RoleHome.findByPrimaryKey(strRole);
-				if (role != null) {
-					lisDescriptions.add(
-							new LuteceUserRoleDescription(role, LuteceUserRoleDescription.TYPE_AUTOMATIC_ASSIGNMENT,
-									I18nService.getLocalizedString(PROPERTY_DEFAULT_ROLE_DESCRIPTION, locale)));
-
-				} else {
-					Role roleEmty = new Role();
-					roleEmty.setRole(strRole);
-					lisDescriptions.add(new LuteceUserRoleDescription(roleEmty,
-							LuteceUserRoleDescription.TYPE_AUTOMATIC_ASSIGNMENT,
-							I18nService.getLocalizedString(PROPERTY_DEFAULT_ROLE_NOT_EXIST, locale)));
-
-				}
+			} else {
+				Role roleEmty = new Role();
+				roleEmty.setRole(strRole);
+				lisDescriptions.add(new LuteceUserRoleDescription(roleEmty,
+						LuteceUserRoleDescription.TYPE_AUTOMATIC_ASSIGNMENT,
+						I18nService.getLocalizedString(PROPERTY_DEFAULT_ROLE_NOT_EXIST, locale)));
 
 			}
 
