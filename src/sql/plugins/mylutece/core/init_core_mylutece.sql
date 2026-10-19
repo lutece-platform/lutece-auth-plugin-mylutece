@@ -66,6 +66,11 @@ INSERT INTO core_datastore(entity_key,entity_value) VALUES('mylutece.security.pu
 INSERT INTO core_datastore(entity_key,entity_value) VALUES('mylutece.security.public_url.mylutece.url.doActionsAll','jsp/site/plugins/mylutece/Do*');
 
 --
+-- Init default roles
+--
+INSERT INTO core_datastore(entity_key,entity_value) VALUES('mylutece.site_property.default_role_keys','');
+
+--
 -- The FreeMarker template of the MyLutece portlet is registered in the core (core_portlet_template, "Gestion des modèles de rubrique" feature,
 -- CORE_PORTLET_TEMPLATE_MANAGEMENT right). The first template of the portlet type is the default one.
 --
