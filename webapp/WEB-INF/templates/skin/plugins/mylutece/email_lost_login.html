@@ -4,8 +4,8 @@
 <title>#i18n{mylutece.email_reinit.object}</title>
 </head>
 <body>
-	<#if site_link?has_content>
-		<h2>${site_link}</h2>
+	<#if site_url?has_content>
+		<h2><a title="${site_name!}" href="${safeUrl(site_url)}">${site_name!}</a></h2>
 	</#if>
 	<p>
 		#i18n{mylutece.lost_login.content.text}<br />
