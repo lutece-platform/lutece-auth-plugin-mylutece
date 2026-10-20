@@ -50,7 +50,7 @@
                         </div>
                         <#if url_new_account?has_content>
                             <div class="mb-3">
-                                <@cBtn class='primary btn-sm' href='${url_new_account}' label='#i18n{mylutece.user_login_include.labelButtonCreateAccount}' params='title="#i18n{mylutece.user_login_include.labelButtonCreateAccount}"'>
+                                <@cBtn class='primary btn-sm' href='${url_new_account}' label='#i18n{mylutece.user_login_include.labelButtonCreateAccount}' params={"title": "#i18n{mylutece.user_login_include.labelButtonCreateAccount}"}>
                                     <@cInline class='ti ti-user-plus' />
                                 </@cBtn>
                             </div>

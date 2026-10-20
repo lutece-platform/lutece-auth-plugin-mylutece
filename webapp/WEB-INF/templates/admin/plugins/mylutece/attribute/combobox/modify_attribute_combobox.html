@@ -51,14 +51,14 @@
 								#i18n{mylutece.modify_attribute.columnLabelTitle} : ${attribute_field.title} - #i18n{mylutece.modify_attribute.columnLabelValue} : ${attribute_field.value} - #i18n{mylutece.modify_attribute.columnLabelId} : ${attribute_field.idField}
 							</@manageFeatureItemColumn>
 							<@manageFeatureItemColumn align='end'>
-								<@aButton href='jsp/admin/plugins/mylutece/attribute/ModifyAttributeField.jsp?id_attribute=${attribute.idAttribute}&amp;id_field=${attribute_field.idField}' title='#i18n{mylutece.modify_attribute.buttonLabelModify}' hideTitle=['all'] buttonIcon='edit' size='sm' />
+								<@aButton href='jsp/admin/plugins/mylutece/attribute/ModifyAttributeField.jsp?id_attribute=${attribute.idAttribute}&id_field=${attribute_field.idField}' title='#i18n{mylutece.modify_attribute.buttonLabelModify}' hideTitle=['all'] buttonIcon='edit' size='sm' />
 								<#if cpt != 1>
-									<@aButton href='jsp/admin/plugins/mylutece/attribute/DoMoveUpAttributeField.jsp?id_attribute=${attribute.idAttribute}&amp;id_field=${attribute_field.idField}#list' title='#i18n{mylutece.modify_attribute.buttonLabelMoveUp}' hideTitle=['all'] buttonIcon='arrow-up' size='sm' />
+									<@aButton href='jsp/admin/plugins/mylutece/attribute/DoMoveUpAttributeField.jsp?id_attribute=${attribute.idAttribute}&id_field=${attribute_field.idField}#list' title='#i18n{mylutece.modify_attribute.buttonLabelMoveUp}' hideTitle=['all'] buttonIcon='arrow-up' size='sm' />
 								</#if>
 								<#if attribute_field_has_next>
-									<@aButton href='jsp/admin/plugins/mylutece/attribute/DoMoveDownAttributeField.jsp?id_attribute=${attribute.idAttribute}&amp;id_field=${attribute_field.idField}#list' title='#i18n{mylutece.modify_attribute.buttonLabelMoveDown}' hideTitle=['all'] buttonIcon='arrow-down' size='sm' />
+									<@aButton href='jsp/admin/plugins/mylutece/attribute/DoMoveDownAttributeField.jsp?id_attribute=${attribute.idAttribute}&id_field=${attribute_field.idField}#list' title='#i18n{mylutece.modify_attribute.buttonLabelMoveDown}' hideTitle=['all'] buttonIcon='arrow-down' size='sm' />
 								</#if>
-								<@aButton href='jsp/admin/plugins/mylutece/attribute/RemoveAttributeField.jsp?id_attribute=${attribute.idAttribute}&amp;id_field=${attribute_field.idField}' title='#i18n{mylutece.modify_attribute.buttonLabelDelete}' hideTitle=['all'] buttonIcon='trash' size='sm' color='danger' />
+								<@aButton href='jsp/admin/plugins/mylutece/attribute/RemoveAttributeField.jsp?id_attribute=${attribute.idAttribute}&id_field=${attribute_field.idField}' title='#i18n{mylutece.modify_attribute.buttonLabelDelete}' hideTitle=['all'] buttonIcon='trash' size='sm' color='danger' />
 							</@manageFeatureItemColumn>
 						</@manageFeatureItem>
 					</#if>

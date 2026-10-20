@@ -10,7 +10,7 @@
         <@cText>#i18n{mylutece.user_login_include.labelWelcome} ${userNameGiven!} ${userNameFamily!}</@cText>
         <@cBlock class='d-flex flex-column gap-2'>
             <#if url_account?has_content>
-                <@cBtn href='${url_account}' class='primary btn-sm w-100' label='#i18n{mylutece.xpage.viewAccountLabel}' params='title="#i18n{mylutece.xpage.viewAccountLabel}"'>
+                <@cBtn href='${url_account}' class='primary btn-sm w-100' label='#i18n{mylutece.xpage.viewAccountLabel}' params={"title": "#i18n{mylutece.xpage.viewAccountLabel}"}>
                     <@cIcon name='user-circle' />
                 </@cBtn>
             </#if>
@@ -31,7 +31,7 @@
                     <@cText class='text-center'>
                         <@cLink href='${authentication.doLoginUrl}?auth_provider=${authentication.name}' label='${authentication.authServiceName}' title='${authentication.authServiceName}'>
                             <#if authentication.iconUrl?has_content>
-                                <@cImg src='${authentication.iconUrl}' alt='${authentication.authServiceName}' params='title="${authentication.authServiceName}"' />
+                                <@cImg src='${authentication.iconUrl}' alt='${authentication.authServiceName}' params={"title": authentication.authServiceName} />
                             </#if>
                         </@cLink>
                     </@cText>
@@ -59,12 +59,12 @@
                         <@cIcon name='off' class='me-1' />
                     </@cBtn>
                     <#if url_new_account?has_content>
-                        <@cBtn href='${url_new_account}' class='primary btn-sm w-100' label='#i18n{mylutece.user_login_include.labelButtonCreateAccount}' params='title="#i18n{mylutece.user_login_include.labelButtonCreateAccount}"'>
+                        <@cBtn href='${url_new_account}' class='primary btn-sm w-100' label='#i18n{mylutece.user_login_include.labelButtonCreateAccount}' params={"title": "#i18n{mylutece.user_login_include.labelButtonCreateAccount}"}>
                             <@cIcon name='plus' class='me-1' />
                         </@cBtn>
                     </#if>
                     <#if url_lost_password?has_content>
-                        <@cBtn href='${url_lost_password}' class='primary btn-sm w-100' label='#i18n{mylutece.xpage.login_form.labelButtonLostPassword}' params='title="#i18n{mylutece.xpage.login_form.labelButtonLostPassword}"'>
+                        <@cBtn href='${url_lost_password}' class='primary btn-sm w-100' label='#i18n{mylutece.xpage.login_form.labelButtonLostPassword}' params={"title": "#i18n{mylutece.xpage.login_form.labelButtonLostPassword}"}>
                             <@cIcon name='edit' class='me-1' />
                         </@cBtn>
                     </#if>
