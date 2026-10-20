@@ -35,7 +35,10 @@ package fr.paris.lutece.plugins.mylutece.business.attribute;
 
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
+import fr.paris.lutece.portal.service.template.HtmlMarkup;
 import fr.paris.lutece.util.html.HtmlTemplate;
+
+import freemarker.core.TemplateHTMLOutputModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -227,24 +230,26 @@ public abstract class AbstractAttribute implements IAttribute
     }
 
     /**
-     * Get Html form
+     * Get Html form: the rendered form fields of the attribute, as HTML markup that an auto-escaped template prints as
+     * is ( <code>${attribute.getHtmlFormAttribute( locale )}</code> ), without <code>?no_esc</code>
      * 
      * @param locale
      *            locale
      * @return html form
      */
-    public String getHtmlFormAttribute( Locale locale )
+    public TemplateHTMLOutputModel getHtmlFormAttribute( Locale locale )
     {
         Map<String, Object> model = new HashMap<String, Object>( );
         model.put( MARK_ATTRIBUTE, this );
 
         HtmlTemplate template = AppTemplateService.getTemplate( getTemplateHtmlFormAttribute( ), locale, model );
 
-        return template.getHtml( );
+        return HtmlMarkup.of( template.getHtml( ) );
     }
 
     /**
-     * Get Html form
+     * Get Html form: the rendered form fields of the attribute filled with the default values, as HTML markup that an
+     * auto-escaped template prints as is
      * 
      * @param locale
      *            locale
@@ -252,7 +257,7 @@ public abstract class AbstractAttribute implements IAttribute
      *            Default values
      * @return html form
      */
-    public String getHtmlFormAttribute( Locale locale, List<MyLuteceUserField> listDefaultValues )
+    public TemplateHTMLOutputModel getHtmlFormAttribute( Locale locale, List<MyLuteceUserField> listDefaultValues )
     {
         Map<String, Object> model = new HashMap<String, Object>( );
         model.put( MARK_ATTRIBUTE, this );
@@ -260,11 +265,12 @@ public abstract class AbstractAttribute implements IAttribute
 
         HtmlTemplate template = AppTemplateService.getTemplate( getTemplateHtmlFormAttribute( ), locale, model );
 
-        return template.getHtml( );
+        return HtmlMarkup.of( template.getHtml( ) );
     }
 
     /**
-     * Get Html form
+     * Get Html form: the rendered search fields of the attribute, as HTML markup that an auto-escaped template prints
+     * as is
      * 
      * @param auFieldFilter
      *            Search filter
@@ -272,7 +278,7 @@ public abstract class AbstractAttribute implements IAttribute
      *            locale
      * @return html form
      */
-    public String getHtmlFormSearchAttribute( MyLuteceUserFieldFilter auFieldFilter, Locale locale )
+    public TemplateHTMLOutputModel getHtmlFormSearchAttribute( MyLuteceUserFieldFilter auFieldFilter, Locale locale )
     {
         Map<String, Object> model = new HashMap<String, Object>( );
         List<MyLuteceUserField> listUserFields = auFieldFilter.getListUserFields( );
@@ -296,7 +302,7 @@ public abstract class AbstractAttribute implements IAttribute
 
         HtmlTemplate template = AppTemplateService.getTemplate( getTemplateHtmlFormSearchAttribute( ), locale, model );
 
-        return template.getHtml( );
+        return HtmlMarkup.of( template.getHtml( ) );
     }
 
     /**
