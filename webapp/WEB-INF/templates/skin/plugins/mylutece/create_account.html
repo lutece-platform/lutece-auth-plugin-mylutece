@@ -11,7 +11,7 @@
                 <#if no_authentication><#assign no_authentication = false /></#if>
                 <@chItem class='list-group-item'>
                     <@cLink href='${authentication.newAccountPageUrl}' label='${authentication.authServiceName!}' title='${authentication.authServiceName!}' nestedPos='before'>
-                        <@cImg src='${authentication.iconUrl!}' alt='${authentication.authServiceName!}'  />
+                        <@cImg src='${authentication.iconUrl!}' alt='' />
                     </@cLink>
                 </@chItem>
                 </#if>

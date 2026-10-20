@@ -35,12 +35,12 @@
                         <@cInput type='hidden' name='token' value='${token}' class='' />
                         <div class="mb-3">
                             <@cField label='#i18n{mylutece.user_login_include.labelAccessCode}' for='mylutece_user_login_include_username'>
-                                <@cInput type='text' name='username' id='mylutece_user_login_include_username' placeholder='#i18n{mylutece.user_login_include.labelAccessCode}'/>
+                                <@cInput type='text' name='username' id='mylutece_user_login_include_username' placeholder='#i18n{mylutece.user_login_include.labelAccessCode}' autocomplete='username' />
                             </@cField>
                         </div>
                         <div class="mb-3">
                             <@cField label='#i18n{mylutece.user_login_include.labelPassword}' for='mylutece_user_login_include_password'>
-                                <@cInput type='password' name='password' id='mylutece_user_login_include_password' placeholder='#i18n{mylutece.user_login_include.labelPassword}'/>
+                                <@cInput type='password' name='password' id='mylutece_user_login_include_password' placeholder='#i18n{mylutece.user_login_include.labelPassword}' autocomplete='current-password' />
                             </@cField>
                         </div>
                         <div class="mb-3">
