@@ -43,6 +43,7 @@ import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.security.SecurityService;
 import fr.paris.lutece.portal.service.security.SecurityTokenService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
+import fr.paris.lutece.portal.service.template.HtmlMarkup;
 import fr.paris.lutece.util.html.HtmlTemplate;
 
 import java.util.HashMap;
@@ -145,8 +146,9 @@ public class UserLoginInclude implements PageInclude
             }
         }
 
-        rootModel.put( MARK_USERLOGIN_TITLE, strUserLoginTitle );
-        rootModel.put( MARK_USERLOGIN, strUserLoginForm );
+        // Rendered fragments: markup, printed as is by the auto-escaped page template
+        rootModel.put( MARK_USERLOGIN_TITLE, HtmlMarkup.of( strUserLoginTitle ) );
+        rootModel.put( MARK_USERLOGIN, HtmlMarkup.of( strUserLoginForm ) );
 
     }
 }

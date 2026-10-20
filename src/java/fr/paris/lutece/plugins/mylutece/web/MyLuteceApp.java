@@ -66,6 +66,7 @@ import fr.paris.lutece.portal.service.security.LuteceUser;
 import fr.paris.lutece.portal.service.security.SecurityService;
 import fr.paris.lutece.portal.service.security.SecurityTokenService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
+import fr.paris.lutece.portal.service.template.HtmlMarkup;
 import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.portal.service.util.AppPropertiesService;
 import fr.paris.lutece.portal.service.util.CryptoService;
@@ -257,7 +258,8 @@ public class MyLuteceApp implements XPageApplication
         if ( bEnableCaptcha )
         {
             CaptchaSecurityService captchaService = new CaptchaSecurityService( );
-            model.put( MARK_CAPTCHA, captchaService.getHtmlCode( ) );
+            // HTML built by the captcha provider: markup, printed as is by the auto-escaped template
+            model.put( MARK_CAPTCHA, HtmlMarkup.of( captchaService.getHtmlCode( ) ) );
         }
 
         model.put( SecurityTokenService.MARK_TOKEN, SecurityTokenService.getInstance( ).getToken( request, TOKEN_ACTION_LOGIN ) );
