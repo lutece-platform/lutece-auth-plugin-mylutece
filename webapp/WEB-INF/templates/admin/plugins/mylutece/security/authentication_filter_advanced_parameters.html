@@ -1,5 +1,5 @@
-<#macro myluteceAuthFilterAdvParamsFormActions params=''>
-<@tform method='post' action='jsp/admin/plugins/mylutece/security/ConfirmChangeUseAuthenticationRequired.jsp' params='${params!}'>
+<#macro myluteceAuthFilterAdvParamsFormActions params={}>
+<@tform method='post' action='jsp/admin/plugins/mylutece/security/ConfirmChangeUseAuthenticationRequired.jsp' params=params>
 <#if !portal_authentication_required>
 	<@button type='submit' name='submit' color='success' buttonIcon='check' title='#i18n{mylutece.authentication_filter_advanced_parameters.buttonEnableAuthenticationRequired}' />
 <#else>
@@ -25,7 +25,7 @@
 <@tform method='post' type='inline'>
 	<@formGroup labelFor='search_public_url' labelKey='#i18n{portal.system.manage_plugins.buttonFilter}' hideLabel=['all'] formStyle='inline'>
 		<@inputGroup>
-			<@input type='text' name='search_public_url' id='search_public_url' placeHolder='#i18n{portal.system.manage_plugins.buttonFilter}' params='autocomplete="off" addons' />
+			<@input type='text' name='search_public_url' id='search_public_url' placeHolder='#i18n{portal.system.manage_plugins.buttonFilter}' autoComplete="off" />
 			<@button color='primary' title='#i18n{portal.system.manage_plugins.buttonFilter}' buttonIcon='filter' hideTitle=['all'] />
 		</@inputGroup>
 	</@formGroup>
@@ -43,7 +43,7 @@ new LuteceSearchList( searchInput, searchElementList, {
 	persist: true,
 	persistKey: "mylutece-admin-public-url-search",
 	clearButton: true,
-	clearButtonLabel: "#i18n{portal.util.labelReset}",
+	clearButtonLabel: '${i18n( 'portal.util.labelReset' )?js_string?no_esc}',
 });
 </script>
 </#if>

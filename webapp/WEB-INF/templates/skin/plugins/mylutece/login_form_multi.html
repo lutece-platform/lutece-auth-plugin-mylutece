@@ -13,7 +13,7 @@
   <@cRow>
     <@cCol cols='12 col-md-6 '>
       <#-- Email/password form -->
-      <@cForm method='post' action='${url_dologin}' class='login-form' params='autocomplete="on"'>
+      <@cForm method='post' action='${url_dologin}' class='login-form' params={"autocomplete": "on"}>
       <@cInput type='hidden' name='page' value='mylutece' class='' />
       <@cInput type='hidden' name='action' value='doLogin' class='' />
       <@cInput type='hidden' name='token' value='${token}' class='' />
@@ -65,8 +65,8 @@
           <@cIcon name='arrow-right' class='ms-2' />
         </@cBtn>
         <@cBlock class='lost-row'>
-          <#if lostPasswordUrl??><@cLink href='${lostPasswordUrl!}' label='#i18n{mylutece.xpage.login_form.labelButtonLostPassword}' params='title="#i18n{mylutece.xpage.login_form.labelButtonLostPassword}"' /></#if>
-          <#if lostLoginUrl??><@cLink href='${lostLoginUrl!}' label='#i18n{mylutece.xpage.login_form.labelButtonLostLogin}' params='title="#i18n{mylutece.xpage.login_form.labelButtonLostLogin}"' /></#if>
+          <#if lostPasswordUrl??><@cLink href='${lostPasswordUrl!}' label='#i18n{mylutece.xpage.login_form.labelButtonLostPassword}' title="#i18n{mylutece.xpage.login_form.labelButtonLostPassword}" /></#if>
+          <#if lostLoginUrl??><@cLink href='${lostLoginUrl!}' label='#i18n{mylutece.xpage.login_form.labelButtonLostLogin}' title="#i18n{mylutece.xpage.login_form.labelButtonLostLogin}" /></#if>
         </@cBlock>
       </#if>
       <#if !bHasInternalAuth || (bHasInternalAuth && lostPasswordUrl??)>
@@ -75,7 +75,7 @@
             <@cText class='mb-0'>
               <@cInline class='signup-row__txt'>Pas encore de compte ? <@cInline type='strong'>Créez-en un en 2 min.</@cInline></@cInline>
             </@cText>
-            <@cLink href='${url_new_account}' label='#i18n{mylutece.xpage.login_form.labelButtonCreateAccount}' class='secondary' params='title="#i18n{mylutece.xpage.login_form.labelButtonCreateAccount}"' />
+            <@cLink href='${url_new_account}' label='#i18n{mylutece.xpage.login_form.labelButtonCreateAccount}' class='secondary' title="#i18n{mylutece.xpage.login_form.labelButtonCreateAccount}" />
           </@cBlock>
         </#if>
       </#if>
