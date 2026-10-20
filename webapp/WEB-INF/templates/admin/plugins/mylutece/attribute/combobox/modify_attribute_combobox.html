@@ -18,16 +18,15 @@
 				<@formGroup labelFor='' labelKey='#i18n{mylutece.modify_attribute.labelType}'>
 					<@staticText><@tag color='info'>${attribute.attributeType.name}</@tag></@staticText>
 				</@formGroup>
-				<@formGroup labelKey='#i18n{mylutece.modify_attribute.labelIsShownInSearch}'>
-					<@checkBox orientation='switch' labelFor='is_shown_in_search' name='is_shown_in_search' id='is_shown_in_search' value='1' checked=attribute.shownInSearch />
+				<@formGroup>
+					<@checkBox orientation='switch' labelKey='#i18n{mylutece.modify_attribute.labelIsShownInSearch}' name='is_shown_in_search' id='is_shown_in_search' value='1' checked=attribute.shownInSearch />
 				</@formGroup>
-				<@formGroup labelKey='#i18n{mylutece.modify_attribute.labelMandatory}'>
-					<@checkBox orientation='switch' labelFor='mandatory' name='mandatory' id='mandatory' value='1' checked=attribute.mandatory />
+				<@formGroup>
+					<@checkBox orientation='switch' labelKey='#i18n{mylutece.modify_attribute.labelMandatory}' name='mandatory' id='mandatory' value='1' checked=attribute.mandatory />
 				</@formGroup>
-				<@formGroup labelKey='#i18n{mylutece.create_attribute.labelMultiple}' helpKey='#i18n{mylutece.create_attribute.labelMultipleComment}'>
-				<#list attribute_fields_list as attribute_field>
-					<@checkBox orientation='switch' labelFor='multiple' name='multiple' id='multiple' value='1' checked=attribute_field.multiple />
-				</#list>
+				<@formGroup labelFor='multiple' helpKey='#i18n{mylutece.create_attribute.labelMultipleComment}'>
+					<#-- one switch: AttributeComboBox.setAttributeData stores it on the first field only -->
+					<@checkBox orientation='switch' labelKey='#i18n{mylutece.create_attribute.labelMultiple}' name='multiple' id='multiple' value='1' params={ 'aria-describedby': 'help_multiple' } checked=( attribute_fields_list?has_content && attribute_fields_list[0].multiple ) />
 				</@formGroup>
 				<@formGroup>
 					<@input type='hidden' name='id_attribute' value='${attribute.idAttribute}' />
@@ -39,7 +38,6 @@
 			</@columns>
 			<@columns>
 				<@box title='#i18n{mylutece.modify_attribute.listAssociatedFields}'>
-				<@link name='list' id='list' />
 				<@manageFeature id='list'>
 				<#assign cpt = 0>
 				<#list attribute_fields_list as attribute_field>

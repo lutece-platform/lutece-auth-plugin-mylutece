@@ -31,7 +31,7 @@
                     <@cText class='text-center'>
                         <@cLink href='${authentication.doLoginUrl}?auth_provider=${authentication.name}' label='${authentication.authServiceName}' title='${authentication.authServiceName}'>
                             <#if authentication.iconUrl?has_content>
-                                <@cImg src='${authentication.iconUrl}' alt='${authentication.authServiceName}' params={"title": authentication.authServiceName} />
+                                <@cImg src='${authentication.iconUrl}' alt='' />
                             </#if>
                         </@cLink>
                     </@cText>
@@ -46,12 +46,12 @@
                 <@cInput type='hidden' name='token' value='${token}' class='' />
                 <@cBlock class='mb-3'>
                     <@cField label='#i18n{mylutece.user_login_include.labelAccessCode}' for='mylutece_portlet_username_${portlet_id!}'>
-                        <@cInput type='text' name='username' id='mylutece_portlet_username_${portlet_id!}' placeholder='#i18n{mylutece.user_login_include.labelAccessCode}' />
+                        <@cInput type='text' name='username' id='mylutece_portlet_username_${portlet_id!}' placeholder='#i18n{mylutece.user_login_include.labelAccessCode}' autocomplete='username' />
                     </@cField>
                 </@cBlock>
                 <@cBlock class='mb-3'>
                     <@cField label='#i18n{mylutece.user_login_include.labelPassword}' for='mylutece_portlet_password_${portlet_id!}'>
-                        <@cInput type='password' name='password' id='mylutece_portlet_password_${portlet_id!}' placeholder='#i18n{mylutece.user_login_include.labelPassword}' />
+                        <@cInput type='password' name='password' id='mylutece_portlet_password_${portlet_id!}' placeholder='#i18n{mylutece.user_login_include.labelPassword}' autocomplete='current-password' />
                     </@cField>
                 </@cBlock>
                 <@cBlock class='mb-3 d-flex gap-2'>

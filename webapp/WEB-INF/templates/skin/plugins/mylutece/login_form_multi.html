@@ -2,10 +2,10 @@
 <#-- ============ LEFT — FORM ============ -->
 <@cRow>
     <@cCol>
-      <#assign loginCrumbItems = [{ 'title': 'Connexion', 'url': '' }]>
-      <@cBreadCrumb home='Accueil' items=loginCrumbItems class='login-crumbs' />
+      <#assign loginCrumbItems = [{ 'title': '#i18n{mylutece.xpage.login_form.labelBreadcrumb}', 'url': '' }]>
+      <@cBreadCrumb home='#i18n{mylutece.xpage.login_form.labelHome}' items=loginCrumbItems class='login-crumbs' />
       <@cContainer>
-        <@cTitle level=2 >Connectez-vous à votre espace</@cTitle>
+        <@cTitle level=2 >#i18n{mylutece.xpage.login_form.labelTitleMulti}</@cTitle>
       </@cContainer>
     </@cCol>
 </@cRow>
@@ -17,7 +17,8 @@
       <@cInput type='hidden' name='page' value='mylutece' class='' />
       <@cInput type='hidden' name='action' value='doLogin' class='' />
       <@cInput type='hidden' name='token' value='${token}' class='' />
-      <#if error_message?? && error_message != ''><@cAlert type='warning' title='${error_message!}'><#if error_details?? && error_details !=''>${error_detail!}</#if></@cAlert></#if>
+      <#assign hasLoginError = error_message?? && error_message != '' />
+      <#if hasLoginError><@cAlert type='danger' id='mylutece_login_error' title='${error_message!}' params={'tabindex': '-1', 'autofocus': true}><#if error_detail?? && error_detail != ''>${error_detail}</#if></@cAlert></#if>
       <#-- first display delegated authentications [oauth etc...] -->
       <#if list_authentications??>
       <#list list_authentications as authentication>
@@ -34,12 +35,15 @@
       <#assign lostLoginUrl='' />
       <#assign lostPasswordUrl='' />
       <#if list_authentications?size != 1>
-        <#list list_authentications as authentication>
-          <#if !authentication.externalAuthentication && !authentication.delegatedAuthentication>
-            <#if !bHasInternalAuth><#assign bHasInternalAuth = true /></#if>
+        <#assign internalAuthentications = list_authentications?filter( a -> !a.externalAuthentication && !a.delegatedAuthentication ) />
+        <#if internalAuthentications?has_content>
+          <#assign bHasInternalAuth = true />
+          <@cFieldset legend='#i18n{mylutece.xpage.login_form.labelAuthProvider}'>
+          <#list internalAuthentications as authentication>
             <@cRadio name='auth_provider' label='${authentication.authServiceName}' value='${authentication.name}' checked=(auth_provider?has_content && auth_provider == authentication.name) />
-          </#if>
-        </#list>
+          </#list>
+          </@cFieldset>
+        </#if>
       <#else>
         <#list list_authentications as authentication>
           <#if !authentication.externalAuthentication && !authentication.delegatedAuthentication>
@@ -56,10 +60,10 @@
               <@cInputGroupAddon>
                 <@cIcon name='user' />
               </@cInputGroupAddon>
-              <@cInput name='username' id='username' placeholder='name@example.com' />
+              <@cInput name='username' id='username' placeholder='name@example.com' autocomplete='username' params=hasLoginError?then({'aria-describedby': 'mylutece_login_error', 'aria-invalid': 'true'}, {}) />
           </@cInputGroup>
         </@cField> 
-        <@cInputPassword label='#i18n{mylutece.xpage.login_form.labelPassword}' name='password' icon='lock' id='password' placeholder='#i18n{mylutece.xpage.login_form.labelPassword}' helpMsg='#i18n{portal.theme.labelPasswordHelp}' />
+        <@cInputPassword label='#i18n{mylutece.xpage.login_form.labelPassword}' name='password' icon='lock' id='password' placeholder='#i18n{mylutece.xpage.login_form.labelPassword}' helpMsg='#i18n{portal.theme.labelPasswordHelp}' autocomplete='current-password' params=hasLoginError?then({'aria-describedby': 'mylutece_login_error', 'aria-invalid': 'true'}, {}) />
         <#if is_active_captcha>${captcha}</#if>
         <@cBtn class='primary' type='submit' label='#i18n{mylutece.xpage.login_form.labelButton}' nestedPos='after'>
           <@cIcon name='arrow-right' class='ms-2' />
@@ -73,7 +77,7 @@
         <#if url_new_account?has_content>
           <@cBlock class='signup-row'>
             <@cText class='mb-0'>
-              <@cInline class='signup-row__txt'>Pas encore de compte ? <@cInline type='strong'>Créez-en un en 2 min.</@cInline></@cInline>
+              <@cInline class='signup-row__txt'>#i18n{mylutece.xpage.login_form.labelNewAccount} <@cInline type='strong'>#i18n{mylutece.xpage.login_form.labelNewAccountInvite}</@cInline></@cInline>
             </@cText>
             <@cLink href='${url_new_account}' label='#i18n{mylutece.xpage.login_form.labelButtonCreateAccount}' class='secondary' title="#i18n{mylutece.xpage.login_form.labelButtonCreateAccount}" />
           </@cBlock>

@@ -15,10 +15,8 @@
 					</@inputGroup>
 				</@formGroup>
 			</@tform>
-			<@link name='list' id='list' />
 			<#if attributes_list?has_content && attributes_list?size gt 0>
-			<@manageFeature>
-			<!--   -->
+			<@manageFeature id='list'>
 			<#assign cpt = 0>
 			<#list attributes_list as attribute >
 				<#assign cpt = cpt + 1>

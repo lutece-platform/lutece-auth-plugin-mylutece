@@ -80,7 +80,7 @@ public class MyluteceMarkupRenderTest
     private static final String [ ] MACROS_NESTED = {
             "cTpl", "cRow", "cCol", "cForm", "cCard", "cField", "cBtn", "cIcon", "cLink", "cImg", "cRadio", "cInputGroup",
             "cInputGroupAddon", "cInputPassword", "cText", "cInline", "cContainer", "cTitle", "cBreadCrumb", "chList", "chItem",
-            "cDropdown"
+            "cDropdown", "cFieldset"
     };
     private static final String MACROS = "macros.ftl";
     private static final String MACROS_SOURCE = "<#macro cAlert title='' rest...><div role=\"alert\">${title}<#nested></div></#macro>"

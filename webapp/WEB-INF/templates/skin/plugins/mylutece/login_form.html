@@ -6,19 +6,20 @@
         <@cInput type='hidden' name='token' value='${token}' class='' />
         <@cRow class='mt-xxl'>
             <@cCol cols='12 col-md-6 offset-md-3' class='mt-xxl'>
-                <#if error_message?? && error_message != ''>
+                <#assign hasLoginError = error_message?? && error_message != '' />
+                <#if hasLoginError>
                     <#assign loginErrorMsg = error_message>
                     <#if error_detail?? && error_detail != ''>
                         <#assign loginErrorMsg = loginErrorMsg + ' ' + error_detail>
                     </#if>
-                    <@cAlert type='warning' title=loginErrorMsg />
+                    <@cAlert type='danger' id='mylutece_login_error' title=loginErrorMsg params={'tabindex': '-1', 'autofocus': true} />
                 </#if>
                 <@cCard title='#i18n{mylutece.xpage.login_form.pageTitle}' class='my-l'>
                     <@cField label='#i18n{mylutece.xpage.login_form.labelAccessCode}' for='username'>
-                        <@cInput type='text' name='username' id='username' placeholder='name@example.com' />
+                        <@cInput type='text' name='username' id='username' placeholder='name@example.com' autocomplete='username' params=hasLoginError?then({'aria-describedby': 'mylutece_login_error', 'aria-invalid': 'true'}, {}) />
                     </@cField>
                     <@cField label='#i18n{mylutece.xpage.login_form.labelPassword}' for='password'>
-                        <@cInput type='password' name='password' id='password' placeholder='#i18n{mylutece.xpage.login_form.labelPassword}' />
+                        <@cInput type='password' name='password' id='password' placeholder='#i18n{mylutece.xpage.login_form.labelPassword}' autocomplete='current-password' params=hasLoginError?then({'aria-describedby': 'mylutece_login_error', 'aria-invalid': 'true'}, {}) />
                     </@cField>
                     <#if is_active_captcha>
                         <@cBlock class='my-3'>${captcha}</@cBlock>
