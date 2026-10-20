@@ -51,6 +51,8 @@ import fr.paris.lutece.util.url.UrlItem;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 import jakarta.enterprise.context.RequestScoped;
@@ -332,7 +334,9 @@ public class AuthenticationFilterJspBean extends AdminFeaturesPageJspBean
         }
 
         UrlItem url = new UrlItem( JSP_DO_REMOVE_PUBLIC_URL );
-        url.addParameter( PARAMETER_PUBLIC_URL_CODE, request.getParameter( PARAMETER_PUBLIC_URL_CODE ) );
+        // The code is free text: encoded, so that a & or a # does not cut it
+        url.addParameter( PARAMETER_PUBLIC_URL_CODE,
+                URLEncoder.encode( StringUtils.defaultString( request.getParameter( PARAMETER_PUBLIC_URL_CODE ) ), StandardCharsets.UTF_8 ) );
 
         return AdminMessageService.getMessageUrl( request, MESSAGE_PUBLIC_URL_CONFIRM_REMOVE, url.getUrl( ), AdminMessage.TYPE_CONFIRMATION );
     }
