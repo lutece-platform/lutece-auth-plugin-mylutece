@@ -266,6 +266,20 @@ public interface IAttribute
     String setAttributeData( HttpServletRequest request );
 
     /**
+     * Set the data of the attribute
+     * 
+     * @param request
+     *            HttpServletRequest
+     * @param strReturnUrl
+     *            the URL of the screen of the form, opened by the button of an error message when there is no page to go back to
+     * @return null if there are no errors
+     */
+    default String setAttributeData( HttpServletRequest request, String strReturnUrl )
+    {
+        return setAttributeData( request );
+    }
+
+    /**
      * Get whether the attribute is anonymizable.
      * 
      * @return True if the attribute can be anonymized, false otherwise.
