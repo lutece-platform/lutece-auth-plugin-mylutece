@@ -44,14 +44,18 @@ import fr.paris.lutece.portal.service.message.AdminMessageService;
 import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
+import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.portal.web.admin.AdminFeaturesPageJspBean;
 import fr.paris.lutece.portal.web.constants.Messages;
 import fr.paris.lutece.util.html.HtmlTemplate;
+import fr.paris.lutece.util.url.UrlItem;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang3.math.NumberUtils;
 
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Named;
@@ -93,6 +97,8 @@ public class AttributeFieldJspBean extends AdminFeaturesPageJspBean
     // JSP
     private static final String JSP_MODIFY_ATTRIBUTE = "ModifyAttribute.jsp";
     private static final String JSP_URL_REMOVE_ATTRIBUTE_FIELD = "jsp/admin/plugins/mylutece/attribute/DoRemoveAttributeField.jsp";
+    private static final String JSP_URL_CREATE_ATTRIBUTE_FIELD = "jsp/admin/plugins/mylutece/attribute/CreateAttributeField.jsp";
+    private static final String JSP_URL_MODIFY_ATTRIBUTE_FIELD = "jsp/admin/plugins/mylutece/attribute/ModifyAttributeField.jsp";
 
     /**
      * Create attribute field
@@ -137,14 +143,17 @@ public class AttributeFieldJspBean extends AdminFeaturesPageJspBean
 
         if ( strCancel == null )
         {
+            UrlItem urlCreate = new UrlItem( AppPathService.getBaseUrl( request ) + JSP_URL_CREATE_ATTRIBUTE_FIELD );
+            urlCreate.addParameter( PARAMETER_ID_ATTRIBUTE, nIdAttribute );
+
             if ( ( strTitle == null ) || strTitle.equals( EMPTY_STRING ) )
             {
-                return AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
+                return AdminMessageService.getMessageUrlReturningTo( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP, urlCreate.getUrl( ) );
             }
 
             if ( ( strValue == null ) || strValue.equals( EMPTY_STRING ) )
             {
-                return AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
+                return AdminMessageService.getMessageUrlReturningTo( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP, urlCreate.getUrl( ) );
             }
 
             Plugin plugin = PluginService.getPlugin( MyLutecePlugin.PLUGIN_NAME );
@@ -214,14 +223,18 @@ public class AttributeFieldJspBean extends AdminFeaturesPageJspBean
 
         if ( strCancel == null )
         {
+            UrlItem urlModify = new UrlItem( AppPathService.getBaseUrl( request ) + JSP_URL_MODIFY_ATTRIBUTE_FIELD );
+            urlModify.addParameter( PARAMETER_ID_ATTRIBUTE, NumberUtils.toInt( strIdAttribute ) );
+            urlModify.addParameter( PARAMETER_ID_FIELD, nIdField );
+
             if ( ( strTitle == null ) || strTitle.equals( EMPTY_STRING ) )
             {
-                return AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
+                return AdminMessageService.getMessageUrlReturningTo( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP, urlModify.getUrl( ) );
             }
 
             if ( ( strValue == null ) || strValue.equals( EMPTY_STRING ) )
             {
-                return AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
+                return AdminMessageService.getMessageUrlReturningTo( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP, urlModify.getUrl( ) );
             }
 
             Plugin plugin = PluginService.getPlugin( MyLutecePlugin.PLUGIN_NAME );

@@ -46,8 +46,10 @@ import fr.paris.lutece.portal.service.plugin.Plugin;
 import fr.paris.lutece.portal.service.plugin.PluginService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppLogService;
+import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.portal.web.admin.AdminFeaturesPageJspBean;
 import fr.paris.lutece.util.html.HtmlTemplate;
+import fr.paris.lutece.util.url.UrlItem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,6 +95,8 @@ public class AttributeJspBean extends AdminFeaturesPageJspBean
     private static final String JSP_URL_REMOVE_ATTRIBUTE = "jsp/admin/plugins/mylutece/attribute/DoRemoveAttribute.jsp";
     private static final String JSP_MANAGE_ATTRIBUTES = "ManageAttributes.jsp";
     private static final String JSP_MODIFY_ATTRIBUTE = "ModifyAttribute.jsp";
+    private static final String JSP_URL_CREATE_ATTRIBUTE = "jsp/admin/plugins/mylutece/attribute/CreateAttribute.jsp";
+    private static final String JSP_URL_MODIFY_ATTRIBUTE = "jsp/admin/plugins/mylutece/attribute/ModifyAttribute.jsp";
 
     /**
      * Get list of user attributes
@@ -212,7 +216,10 @@ public class AttributeJspBean extends AdminFeaturesPageJspBean
                 AppLogService.error( e );
             }
 
-            String strError = attribute.setAttributeData( request );
+            UrlItem urlCreate = new UrlItem( AppPathService.getBaseUrl( request ) + JSP_URL_CREATE_ATTRIBUTE );
+            urlCreate.addParameter( PARAMETER_ATTRIBUTE_TYPE_CLASS_NAME, attribute.getClass( ).getName( ) );
+
+            String strError = attribute.setAttributeData( request, urlCreate.getUrl( ) );
 
             if ( strError != null )
             {
@@ -292,7 +299,10 @@ public class AttributeJspBean extends AdminFeaturesPageJspBean
             List<AttributeField> listAttributeFields = AttributeFieldHome.selectAttributeFieldsByIdAttribute( nIdAttribute, plugin );
             attribute.setListAttributeFields( listAttributeFields );
 
-            String strError = attribute.setAttributeData( request );
+            UrlItem urlModify = new UrlItem( AppPathService.getBaseUrl( request ) + JSP_URL_MODIFY_ATTRIBUTE );
+            urlModify.addParameter( PARAMETER_ID_ATTRIBUTE, nIdAttribute );
+
+            String strError = attribute.setAttributeData( request, urlModify.getUrl( ) );
 
             if ( strError != null )
             {

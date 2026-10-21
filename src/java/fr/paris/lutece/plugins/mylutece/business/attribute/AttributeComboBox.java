@@ -156,6 +156,21 @@ public class AttributeComboBox extends AbstractAttribute
      */
     public String setAttributeData( HttpServletRequest request )
     {
+        return setAttributeData( request, null );
+    }
+
+    /**
+     * Set the data of the attribute
+     * 
+     * @param request
+     *            HttpServletRequest
+     * @param strReturnUrl
+     *            the URL of the screen of the form, opened by the button of an error message when there is no page to go back to
+     * @return null if there are no errors
+     */
+    @Override
+    public String setAttributeData( HttpServletRequest request, String strReturnUrl )
+    {
         String strTitle = request.getParameter( PARAMETER_TITLE );
         String strHelpMessage = ( request.getParameter( PARAMETER_HELP_MESSAGE ) != null ) ? request.getParameter( PARAMETER_HELP_MESSAGE ).trim( ) : null;
         String strIsShownInSearch = request.getParameter( PARAMETER_IS_SHOWN_IN_SEARCH );
@@ -164,7 +179,7 @@ public class AttributeComboBox extends AbstractAttribute
 
         if ( ( strTitle == null ) || ( strTitle.equals( EMPTY_STRING ) ) )
         {
-            return AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
+            return AdminMessageService.getMessageUrlReturningTo( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP, strReturnUrl );
         }
 
         setTitle( strTitle );

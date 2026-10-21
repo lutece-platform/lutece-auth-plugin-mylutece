@@ -81,6 +81,22 @@ public class MyLuteceUserFieldService
      */
     public static String checkUserFields( HttpServletRequest request, Locale locale )
     {
+        return checkUserFields( request, locale, null );
+    }
+
+    /**
+     * Check if the user fields are correctly filled
+     * 
+     * @param request
+     *            HttpServletRequest
+     * @param locale
+     *            locale
+     * @param strReturnUrl
+     *            the URL of the screen of the form, opened by the button of an error message when there is no page to go back to
+     * @return null if there are no problem
+     */
+    public static String checkUserFields( HttpServletRequest request, Locale locale, String strReturnUrl )
+    {
         // Specific attributes
         List<IAttribute> listAttributes = AttributeHome.findAll( locale, getMyLutecePlugin( ) );
 
@@ -90,7 +106,7 @@ public class MyLuteceUserFieldService
 
             if ( attribute.isMandatory( ) && ( ( value == null ) || value.equals( CONSTANT_EMPTY_STRING ) ) )
             {
-                return AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
+                return AdminMessageService.getMessageUrlReturningTo( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP, strReturnUrl );
             }
         }
 

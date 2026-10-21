@@ -278,15 +278,18 @@ public class SecurityUtils
      *            Parameter service to get parameters from.
      * @param plugin
      *            The plugin
+     * @param strReturnUrl
+     *            the URL of the screen of the form, opened by the button of an error message when there is no page to go back to
      * @return The URL of the admin message indicating that the entered password is too short.
      */
-    protected static String getMessagePasswordMinimumLength( HttpServletRequest request, IUserParameterService parameterService, Plugin plugin )
+    protected static String getMessagePasswordMinimumLength( HttpServletRequest request, IUserParameterService parameterService, Plugin plugin,
+            String strReturnUrl )
     {
         Object [ ] param = {
                 parameterService.findByKey( MARK_PASSWORD_MINIMUM_LENGTH, plugin ).getName( )
         };
 
-        return AdminMessageService.getMessageUrl( request, MESSAGE_MINIMUM_PASSWORD_LENGTH, param, AdminMessage.TYPE_STOP );
+        return AdminMessageService.getMessageUrlReturningTo( request, MESSAGE_MINIMUM_PASSWORD_LENGTH, param, AdminMessage.TYPE_STOP, strReturnUrl );
     }
 
     /**
@@ -494,15 +497,18 @@ public class SecurityUtils
      *            Parameter service to use
      * @param plugin
      *            The plugin
+     * @param strReturnUrl
+     *            the URL of the screen of the form, opened by the button of an error message when there is no page to go back to
      * @return the url of the admin message saying that the password does not match the required format
      */
-    protected static String getMessageBackPasswordFormat( HttpServletRequest request, IUserParameterService parameterService, Plugin plugin )
+    protected static String getMessageBackPasswordFormat( HttpServletRequest request, IUserParameterService parameterService, Plugin plugin,
+            String strReturnUrl )
     {
         Object [ ] param = {
                 getMessagePasswordFormat( parameterService, request.getLocale( ), plugin )
         };
 
-        return AdminMessageService.getMessageUrl( request, MESSAGE_PASSWORD_FORMAT, param, AdminMessage.TYPE_STOP );
+        return AdminMessageService.getMessageUrlReturningTo( request, MESSAGE_PASSWORD_FORMAT, param, AdminMessage.TYPE_STOP, strReturnUrl );
     }
 
     /**
@@ -804,14 +810,35 @@ public class SecurityUtils
      */
     public static String checkPasswordForBackOffice( IUserParameterService parameterService, Plugin plugin, String strPassword, HttpServletRequest request )
     {
+        return checkPasswordForBackOffice( parameterService, plugin, strPassword, request, null );
+    }
+
+    /**
+     * Test a password validity
+     * 
+     * @param parameterService
+     *            Parameter service to use
+     * @param plugin
+     *            The plugin
+     * @param strPassword
+     *            Password to check
+     * @param request
+     *            The request
+     * @param strReturnUrl
+     *            the URL of the screen of the form, opened by the button of an error message when there is no page to go back to
+     * @return Returns null if the password is correct, or an admin message describing the error
+     */
+    public static String checkPasswordForBackOffice( IUserParameterService parameterService, Plugin plugin, String strPassword, HttpServletRequest request,
+            String strReturnUrl )
+    {
         if ( !SecurityUtils.checkUserPasswordMinimumLength( strPassword, parameterService, plugin ) )
         {
-            return SecurityUtils.getMessagePasswordMinimumLength( request, parameterService, plugin );
+            return SecurityUtils.getMessagePasswordMinimumLength( request, parameterService, plugin, strReturnUrl );
         }
 
         if ( !SecurityUtils.checkPasswordFormat( strPassword, parameterService, plugin ) )
         {
-            return SecurityUtils.getMessageBackPasswordFormat( request, parameterService, plugin );
+            return SecurityUtils.getMessageBackPasswordFormat( request, parameterService, plugin, strReturnUrl );
         }
 
         return null;
