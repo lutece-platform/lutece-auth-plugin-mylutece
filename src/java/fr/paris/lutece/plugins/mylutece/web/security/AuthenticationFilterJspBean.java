@@ -43,6 +43,7 @@ import fr.paris.lutece.portal.service.message.AdminMessageService;
 import fr.paris.lutece.portal.service.rbac.RBACService;
 import fr.paris.lutece.portal.service.security.SecurityService;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
+import fr.paris.lutece.portal.service.util.AppPathService;
 import fr.paris.lutece.portal.web.admin.AdminFeaturesPageJspBean;
 import fr.paris.lutece.portal.web.constants.Messages;
 import fr.paris.lutece.util.ReferenceItem;
@@ -81,6 +82,7 @@ public class AuthenticationFilterJspBean extends AdminFeaturesPageJspBean
 
     // Jsp url
     private static final String JSP_MANAGE_AUTHENTICATION_FILTER = "ManageAuthenticationFilter.jsp";
+    private static final String JSP_URL_MANAGE_AUTHENTICATION_FILTER = "jsp/admin/plugins/mylutece/security/ManageAuthenticationFilter.jsp";
     private static final String JSP_DO_REMOVE_PUBLIC_URL = "jsp/admin/plugins/mylutece/security/DoRemovePublicUrl.jsp";
     private static final String JSP_DO_CHANGE_USER_AUTHENTICATION_REQUIRED = "jsp/admin/plugins/mylutece/security/DoChangeUseAuthenticationRequired.jsp";
 
@@ -149,12 +151,14 @@ public class AuthenticationFilterJspBean extends AdminFeaturesPageJspBean
 
             if ( StringUtils.isBlank( publicUrlData.getCode( ) ) || StringUtils.isBlank( publicUrlData.getName( ) ) )
             {
-                strError = AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
+                strError = AdminMessageService.getMessageUrlReturningTo( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP,
+                        AppPathService.getBaseUrl( request ) + JSP_URL_MANAGE_AUTHENTICATION_FILTER );
             }
             else
                 if ( DatastoreService.getDataValue( publicUrlData.getCode( ), null ) != null )
                 {
-                    strError = AdminMessageService.getMessageUrl( request, MESSAGE_PUBLIC_URL_CODE_ALREADY_EXIST, AdminMessage.TYPE_STOP );
+                    strError = AdminMessageService.getMessageUrlReturningTo( request, MESSAGE_PUBLIC_URL_CODE_ALREADY_EXIST, AdminMessage.TYPE_STOP,
+                            AppPathService.getBaseUrl( request ) + JSP_URL_MANAGE_AUTHENTICATION_FILTER );
                 }
 
             if ( !StringUtils.isBlank( strError ) )
@@ -197,7 +201,8 @@ public class AuthenticationFilterJspBean extends AdminFeaturesPageJspBean
             if ( StringUtils.isBlank( publicUrlData.getCode( ) ) || StringUtils.isBlank( publicUrlData.getName( ) )
                     || ( DatastoreService.getDataValue( publicUrlData.getCode( ), null ) == null ) )
             {
-                strError = AdminMessageService.getMessageUrl( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP );
+                strError = AdminMessageService.getMessageUrlReturningTo( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP,
+                        AppPathService.getBaseUrl( request ) + JSP_URL_MANAGE_AUTHENTICATION_FILTER );
             }
 
             if ( !StringUtils.isBlank( strError ) )
