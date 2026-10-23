@@ -57,6 +57,7 @@ import freemarker.cache.FileTemplateLoader;
 import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.cache.TemplateLoader;
+import freemarker.core.HTMLOutputFormat;
 import freemarker.template.Configuration;
 
 /**
@@ -125,6 +126,8 @@ public class PublicUrlRemoveLinkTest extends LuteceTestCase
         stubs.putTemplate( MACROS, MACROS_SOURCE );
         stubs.putTemplate( PAGE, PAGE_SOURCE );
         Configuration cfg = new Configuration( Configuration.VERSION_2_3_0 );
+        cfg.setOutputFormat( HTMLOutputFormat.INSTANCE );
+        cfg.setAutoEscapingPolicy( Configuration.ENABLE_IF_DEFAULT_AUTO_ESCAPING_POLICY );
         cfg.setURLEscapingCharset( "UTF-8" );
         cfg.setTemplateLoader( new MultiTemplateLoader( new TemplateLoader [ ] {
                 stubs, new FileTemplateLoader( new File( TEMPLATES_ROOT ) )
