@@ -27,7 +27,9 @@
         <#list list_authentications as authentication>
             <#if !authentication.externalAuthentication>
                 <#if authentication.delegatedAuthentication>
-                    <@cBtn href='${authentication.doLoginUrl}?auth_provider=${authentication.name}' class='outline-light' label='' />
+                    <@cBtn href='${authentication.doLoginUrl}?auth_provider=${authentication.name}' class='outline-light' label=''>
+                        <@cIcon name='login' /> #i18n{mylutece.user_login_include.labelButton}
+                    </@cBtn>
                 <#else>
                     <@cBtn href='${authentication.loginPageUrl}&auth_provider=${authentication.name}' class='link nav-link border-0' label=''>
                         <@cIcon name='login' /> #i18n{mylutece.user_login_include.labelButton}
