@@ -75,7 +75,7 @@ public class MyLuteceDefaultRoleProvider implements IMyLuteceExternalRolesProvid
     }
 
     /**
-     * Get the default role keys from the datastore, ignoring blank entries
+     * Get the default role keys from the datastore, trimmed, ignoring blank entries
      * 
      * @return the default role keys
      */
@@ -83,7 +83,7 @@ public class MyLuteceDefaultRoleProvider implements IMyLuteceExternalRolesProvid
     {
         String strDefaultRoleKeys = DatastoreService.getDataValue( KEY_DATASTORE_DEFAULT_ROLES, StringUtils.EMPTY );
 
-        return Arrays.stream( strDefaultRoleKeys.split( "," ) ).filter( StringUtils::isNotBlank ).collect( Collectors.toList( ) );
+        return Arrays.stream( strDefaultRoleKeys.split( "," ) ).map( String::trim ).filter( StringUtils::isNotEmpty ).collect( Collectors.toList( ) );
     }
 
 	/**

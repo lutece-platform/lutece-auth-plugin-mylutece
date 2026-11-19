@@ -73,7 +73,7 @@ public class MyLuteceDefaultRoleProviderTest extends LuteceTestCase
     @Test
     public void testProvidesRolesIgnoresBlankEntries( )
     {
-        DatastoreService.setDataValue( KEY_DATASTORE_DEFAULT_ROLES, "role1,, ,role2" );
+        DatastoreService.setDataValue( KEY_DATASTORE_DEFAULT_ROLES, "role1,, , role2 " );
         assertEquals( Arrays.asList( "role1", "role2" ), _provider.providesRoles( null ) );
         assertEquals( 2, _provider.getLuteceUserRolesProvided( Locale.FRENCH ).size( ) );
     }
