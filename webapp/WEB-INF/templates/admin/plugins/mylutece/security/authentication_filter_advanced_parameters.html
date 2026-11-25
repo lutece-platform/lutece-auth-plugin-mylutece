@@ -29,7 +29,7 @@
 <@tform method='post' type='inline'>
 	<@formGroup labelFor='search_public_url' labelKey='#i18n{portal.system.manage_plugins.buttonFilter}' hideLabel=['all'] formStyle='inline'>
 		<@inputGroup>
-			<@input type='text' name='search_public_url' id='search_public_url' placeHolder='#i18n{portal.system.manage_plugins.buttonFilter}' autoComplete="off" />
+			<@input type='text' name='search_public_url' id='search_public_url' placeHolder='#i18n{portal.system.manage_plugins.buttonFilter}' autoComplete="off" params={ 'data-reset-label': '#i18n{portal.util.labelReset}' } />
 			<@button color='primary' title='#i18n{portal.system.manage_plugins.buttonFilter}' buttonIcon='filter' hideTitle=['all'] />
 		</@inputGroup>
 	</@formGroup>
@@ -47,7 +47,7 @@ new LuteceSearchList( searchInput, searchElementList, {
 	persist: true,
 	persistKey: "mylutece-admin-public-url-search",
 	clearButton: true,
-	clearButtonLabel: '<#noautoesc>${i18n( 'portal.util.labelReset' )?js_string}</#noautoesc>',
+	clearButtonLabel: searchInput.dataset.resetLabel,
 });
 </script>
 </#if>
