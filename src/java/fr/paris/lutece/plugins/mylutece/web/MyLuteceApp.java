@@ -314,7 +314,8 @@ public class MyLuteceApp implements XPageApplication
 
             if ( !captchaService.validate( request ) )
             {
-                strReturn += ( "&" + PARAMETER_ERROR + "=" + PARAMETER_ERROR_CAPTCHA );
+                // wrong captcha: the credentials are not tried, the captcha stays asked
+                return strReturn + ( "&" + PARAMETER_ERROR + "=" + PARAMETER_ERROR_CAPTCHA );
             }
         }
 
