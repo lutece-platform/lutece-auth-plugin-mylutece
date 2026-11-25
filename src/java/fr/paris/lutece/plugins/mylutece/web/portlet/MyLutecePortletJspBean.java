@@ -35,12 +35,18 @@ package fr.paris.lutece.plugins.mylutece.web.portlet;
 
 import fr.paris.lutece.plugins.mylutece.business.portlet.MyLutecePortlet;
 import fr.paris.lutece.plugins.mylutece.business.portlet.MyLutecePortletHome;
+import fr.paris.lutece.portal.business.portlet.Portlet;
 import fr.paris.lutece.portal.business.portlet.PortletHome;
+import fr.paris.lutece.portal.service.i18n.I18nService;
+import fr.paris.lutece.portal.service.message.AdminMessage;
+import fr.paris.lutece.portal.service.message.AdminMessageService;
 import fr.paris.lutece.portal.web.portlet.PortletJspBean;
 import fr.paris.lutece.util.html.HtmlTemplate;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.math.NumberUtils;
 
 /**
  * This class provides the user interface to manage MyLutece Portlet
@@ -57,6 +63,7 @@ public class MyLutecePortletJspBean extends PortletJspBean
     private static final String PARAMETER_PAGE_ID = "page_id";
     private static final String PARAMETER_PORTLET_ID = "portlet_id";
     private static final String PARAMETER_PORTLET_TYPE_ID = "portlet_type_id";
+    private static final String MESSAGE_PORTLET_NOT_FOUND = "mylutece.message.error.portletNotFound";
 
     /**
      * Creates a new MyLutecePortletJspBean object.
@@ -90,9 +97,13 @@ public class MyLutecePortletJspBean extends PortletJspBean
      */
     public String getModify( HttpServletRequest request )
     {
-        String strIdPortlet = request.getParameter( PARAMETER_PORTLET_ID );
-        int nIdPortlet = Integer.parseInt( strIdPortlet );
-        MyLutecePortlet portlet = (MyLutecePortlet) PortletHome.findByPrimaryKey( nIdPortlet );
+        MyLutecePortlet portlet = findPortlet( request );
+
+        if ( portlet == null )
+        {
+            return I18nService.getLocalizedString( MESSAGE_PORTLET_NOT_FOUND, getLocale( ) );
+        }
+
         HtmlTemplate template = getModifyTemplate( portlet );
 
         return template.getHtml( );
@@ -117,7 +128,13 @@ public class MyLutecePortletJspBean extends PortletJspBean
             return strErrorUrl;
         }
 
-        int nIdPage = Integer.parseInt( request.getParameter( PARAMETER_PAGE_ID ) );
+        int nIdPage = getPostedPageId( request );
+
+        if ( nIdPage < 0 )
+        {
+            return getInvalidPageIdMessageUrl( request );
+        }
+
         portlet.setPageId( nIdPage );
 
         // Portlet creation
@@ -136,10 +153,12 @@ public class MyLutecePortletJspBean extends PortletJspBean
      */
     public String doModify( HttpServletRequest request )
     {
-        // recovery of the portlet
-        String strIdPortlet = request.getParameter( PARAMETER_PORTLET_ID );
-        int nIdPortlet = Integer.parseInt( strIdPortlet );
-        MyLutecePortlet portlet = (MyLutecePortlet) PortletHome.findByPrimaryKey( nIdPortlet );
+        MyLutecePortlet portlet = findPortlet( request );
+
+        if ( portlet == null )
+        {
+            return AdminMessageService.getMessageUrl( request, MESSAGE_PORTLET_NOT_FOUND, AdminMessage.TYPE_STOP );
+        }
 
         // get portlet common attributes
         String strErrorUrl = setPortletCommonData( request, portlet );
@@ -154,5 +173,20 @@ public class MyLutecePortletJspBean extends PortletJspBean
 
         // Displays the page with the updated portlet
         return getPageUrl( portlet.getPageId( ) );
+    }
+
+    /**
+     * Find the MyLutece portlet whose id the request gives
+     *
+     * @param request
+     *            The http request
+     * @return the portlet, or null when the id is not the one of a MyLutece portlet
+     */
+    private static MyLutecePortlet findPortlet( HttpServletRequest request )
+    {
+        int nIdPortlet = NumberUtils.toInt( request.getParameter( PARAMETER_PORTLET_ID ), -1 );
+        Portlet portlet = ( nIdPortlet > 0 ) ? PortletHome.findByPrimaryKey( nIdPortlet ) : null;
+
+        return ( portlet instanceof MyLutecePortlet ) ? (MyLutecePortlet) portlet : null;
     }
 }
