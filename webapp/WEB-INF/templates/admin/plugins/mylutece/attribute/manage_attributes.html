@@ -8,7 +8,7 @@
 				<@div class='dropdown-menu dropdown-menu-end'>
 					<@div class='dropdown-header'>#i18n{mylutece.manage_attributes.addNewAttributes}</@div>
 					<#list attribute_types_list![] as attribute_type>
-						<@link href='jsp/admin/plugins/mylutece/attribute/CreateAttribute.jsp?attribute_type_class_name=${attribute_type.className?url("UTF-8")}' class='dropdown-item'>${attribute_type.name}</@link>
+						<@link href='jsp/admin/plugins/mylutece/attribute/ManageAttributes.jsp?view=createAttribute&attribute_type_class_name=${attribute_type.className?url("UTF-8")}' class='dropdown-item'>${attribute_type.name}</@link>
 					</#list>
 				</@div>
 			</@div>
@@ -26,7 +26,7 @@
 						<span class="avatar avatar-sm bg-green-lt" aria-hidden="true"><@icon style='forms' /></span>
 						<@div class='text-truncate'>
 							<#if !provided>
-								<@link href='jsp/admin/plugins/mylutece/attribute/ModifyAttribute.jsp?id_attribute=${attribute.idAttribute}' class='text-reset fw-semibold'>${attribute.title}</@link>
+								<@link href='jsp/admin/plugins/mylutece/attribute/ManageAttributes.jsp?view=modifyAttribute&id_attribute=${attribute.idAttribute}' class='text-reset fw-semibold'>${attribute.title}</@link>
 							<#else>
 								<span class="fw-semibold">${attribute.title}</span>
 							</#if>
@@ -37,17 +37,25 @@
 						<@div class='btn-actions'>
 							<@aButton href='#' id='attribute-actions-${attribute.idAttribute}' style='' color='' dropdownMenu=true buttonIcon='dots' title='#i18n{portal.util.labelActions} ${attribute.title}' hideTitle=['all']>
 								<#if !provided>
-									<@link href='jsp/admin/plugins/mylutece/attribute/ModifyAttribute.jsp?id_attribute=${attribute.idAttribute}' class='dropdown-item'><@icon style='pencil' class='me-2' />#i18n{mylutece.manage_attributes.buttonLabelModify}</@link>
+									<@link href='jsp/admin/plugins/mylutece/attribute/ManageAttributes.jsp?view=modifyAttribute&id_attribute=${attribute.idAttribute}' class='dropdown-item'><@icon style='pencil' class='me-2' />#i18n{mylutece.manage_attributes.buttonLabelModify}</@link>
 								</#if>
 								<#if cpt != 1>
-									<@link href='jsp/admin/plugins/mylutece/attribute/DoMoveUpAttribute.jsp?id_attribute=${attribute.idAttribute}#list' class='dropdown-item'><@icon style='arrow-up' class='me-2' />#i18n{mylutece.modify_attribute.buttonLabelMoveUp}</@link>
+									<@tform method='post' action='jsp/admin/plugins/mylutece/attribute/ManageAttributes.jsp#list' class='m-0'>
+										<@input type='hidden' name='action' value='moveUpAttribute' />
+										<@input type='hidden' name='id_attribute' value='${attribute.idAttribute}' />
+										<button type="submit" class="dropdown-item"><@icon style='arrow-up' class='me-2' />#i18n{mylutece.modify_attribute.buttonLabelMoveUp}</button>
+									</@tform>
 								</#if>
 								<#if attribute_has_next>
-									<@link href='jsp/admin/plugins/mylutece/attribute/DoMoveDownAttribute.jsp?id_attribute=${attribute.idAttribute}#list' class='dropdown-item'><@icon style='arrow-down' class='me-2' />#i18n{mylutece.modify_attribute.buttonLabelMoveDown}</@link>
+									<@tform method='post' action='jsp/admin/plugins/mylutece/attribute/ManageAttributes.jsp#list' class='m-0'>
+										<@input type='hidden' name='action' value='moveDownAttribute' />
+										<@input type='hidden' name='id_attribute' value='${attribute.idAttribute}' />
+										<button type="submit" class="dropdown-item"><@icon style='arrow-down' class='me-2' />#i18n{mylutece.modify_attribute.buttonLabelMoveDown}</button>
+									</@tform>
 								</#if>
 								<#if !provided>
 									<@div class='dropdown-divider' />
-									<@link href='jsp/admin/plugins/mylutece/attribute/RemoveAttribute.jsp?id_attribute=${attribute.idAttribute}' class='dropdown-item text-danger'><@icon style='trash' class='me-2' />#i18n{mylutece.manage_attributes.buttonLabelDelete}</@link>
+									<@link href='jsp/admin/plugins/mylutece/attribute/ManageAttributes.jsp?view=confirmRemoveAttribute&id_attribute=${attribute.idAttribute}' class='dropdown-item text-danger'><@icon style='trash' class='me-2' />#i18n{mylutece.manage_attributes.buttonLabelDelete}</@link>
 								</#if>
 							</@aButton>
 						</@div>

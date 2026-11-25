@@ -3,10 +3,11 @@
 <@pageContainer>
 	<@pageColumn>
 		<@myluteceHeader title='#i18n{mylutece.create_attribute_field.pageTitle} : ${attribute.title}' breadcrumb=bc>
-			<@aButton href='jsp/admin/plugins/mylutece/attribute/ModifyAttribute.jsp?id_attribute=${attribute.idAttribute}' title='#i18n{portal.util.labelBack}' buttonIcon='arrow-left' color='light' hideTitle=['xs','sm','md'] />
+			<@aButton href='jsp/admin/plugins/mylutece/attribute/ManageAttributes.jsp?view=modifyAttribute&id_attribute=${attribute.idAttribute}' title='#i18n{portal.util.labelBack}' buttonIcon='arrow-left' color='light' hideTitle=['xs','sm','md'] />
 		</@myluteceHeader>
 		<@messages infos=infos![] errors=errors![] warnings=warnings![] />
-		<@tform action='jsp/admin/plugins/mylutece/attribute/DoCreateAttributeField.jsp#list' method='post' boxed=true>
+		<@tform action='jsp/admin/plugins/mylutece/attribute/ManageAttributes.jsp' method='post' boxed=true>
+			<@input type='hidden' name='action' value='createAttributeField' />
 			<@formGroup labelFor='title' labelKey='#i18n{mylutece.create_attribute_field.labelTitle}' mandatory=true rows=2>
 				<@input type='text' name='title' id='title' inputSize=80 value='' maxlength=255 mandatory=true />
 			</@formGroup>

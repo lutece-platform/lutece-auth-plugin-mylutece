@@ -33,6 +33,12 @@
  */
 package fr.paris.lutece.plugins.mylutece.web.security;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+
 import fr.paris.lutece.plugins.mylutece.service.MyLuteceResourceIdService;
 import fr.paris.lutece.plugins.mylutece.service.security.AuthenticationFilterService;
 import fr.paris.lutece.portal.business.rbac.RBAC;
@@ -42,49 +48,57 @@ import fr.paris.lutece.portal.service.message.AdminMessage;
 import fr.paris.lutece.portal.service.message.AdminMessageService;
 import fr.paris.lutece.portal.service.rbac.RBACService;
 import fr.paris.lutece.portal.service.security.SecurityService;
-import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.portal.service.util.AppPathService;
-import fr.paris.lutece.portal.web.admin.AdminFeaturesPageJspBean;
+import fr.paris.lutece.portal.util.mvc.admin.MVCAdminJspBean;
+import fr.paris.lutece.portal.util.mvc.admin.annotations.Controller;
+import fr.paris.lutece.portal.util.mvc.commons.annotations.Action;
+import fr.paris.lutece.portal.util.mvc.commons.annotations.View;
+import fr.paris.lutece.portal.web.cdi.mvc.Models;
 import fr.paris.lutece.portal.web.constants.Messages;
 import fr.paris.lutece.util.ReferenceItem;
-import fr.paris.lutece.util.html.HtmlTemplate;
 import fr.paris.lutece.util.url.UrlItem;
-
-import org.apache.commons.lang3.StringUtils;
-
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
-
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Named;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
- *
- * PublicUrlJspBean used for managing Public Url
- *
+ * Management of the authentication filter of the front office: the urls that stay public, and whether the whole site requires an
+ * authentication. Every mutation is an action posted with the security token of the view that shows its form.
  */
 @RequestScoped
 @Named
-public class AuthenticationFilterJspBean extends AdminFeaturesPageJspBean
+@Controller( controllerJsp = AuthenticationFilterJspBean.CONTROLLER_JSP, controllerPath = AuthenticationFilterJspBean.CONTROLLER_PATH, right = AuthenticationFilterJspBean.RIGHT_MANAGE_AUTHENTICATION_FILTER, securityTokenEnabled = true )
+public class AuthenticationFilterJspBean extends MVCAdminJspBean
 {
     /**
-    *
-    */
+     * Right to manage the authentication filter
+     */
     public static final String RIGHT_MANAGE_AUTHENTICATION_FILTER = "MYLUTECE_MANAGE_AUTHENTICATION_FILTER";
+
+    /**
+     * Token of the management page, shared by the creation and the modification of the public urls posted from it. The admin dashboard,
+     * which shows the same forms, issues a token of this name too
+     */
+    public static final String TOKEN_PUBLIC_URLS = "publicUrls";
+    static final String CONTROLLER_JSP = "ManageAuthenticationFilter.jsp";
+    static final String CONTROLLER_PATH = "jsp/admin/plugins/mylutece/security/";
     private static final long serialVersionUID = -669562727518395523L;
+
+    // Views
+    private static final String VIEW_MANAGE_AUTHENTICATION_FILTER = "manageAuthenticationFilter";
+    private static final String VIEW_CONFIRM_REMOVE_PUBLIC_URL = "confirmRemovePublicUrl";
+    private static final String VIEW_CONFIRM_CHANGE_USE_AUTHENTICATION_REQUIRED = "confirmChangeUseAuthenticationRequired";
+
+    // Actions
+    private static final String ACTION_CREATE_PUBLIC_URL = "createPublicUrl";
+    private static final String ACTION_MODIFY_PUBLIC_URL = "modifyPublicUrl";
+    private static final String ACTION_REMOVE_PUBLIC_URL = "removePublicUrl";
+    private static final String ACTION_CHANGE_USE_AUTHENTICATION_REQUIRED = "changeUseAuthenticationRequired";
 
     // Parameters
     private static final String PARAMETER_CANCEL = "cancel";
     private static final String PARAMETER_PUBLIC_URL_CODE = "public_url_code";
     private static final String PARAMETER_PUBLIC_URL_VALUE = "public_url_value";
-
-    // Jsp url
-    private static final String JSP_MANAGE_AUTHENTICATION_FILTER = "ManageAuthenticationFilter.jsp";
-    private static final String JSP_URL_MANAGE_AUTHENTICATION_FILTER = "jsp/admin/plugins/mylutece/security/ManageAuthenticationFilter.jsp";
-    private static final String JSP_DO_REMOVE_PUBLIC_URL = "jsp/admin/plugins/mylutece/security/DoRemovePublicUrl.jsp";
-    private static final String JSP_DO_CHANGE_USER_AUTHENTICATION_REQUIRED = "jsp/admin/plugins/mylutece/security/DoChangeUseAuthenticationRequired.jsp";
 
     // Properties
     private static final String PROPERTY_MANAGE_AUTHENTICATION_FILTER = "mylutece.manage_authentication_filter.pageTitle";
@@ -92,7 +106,7 @@ public class AuthenticationFilterJspBean extends AdminFeaturesPageJspBean
     // Template
     private static final String TEMPLATE_MANAGE_AUTHENTICATION_FILTER = "admin/plugins/mylutece/security/manage_authentication_filter.html";
 
-    // Message
+    // Messages
     private static final String MESSAGE_PUBLIC_URL_CODE_ALREADY_EXIST = "mylutece.messagePublicUrlCodeAlreadyExist";
     private static final String MESSAGE_PUBLIC_URL_CONFIRM_REMOVE = "mylutece.messagePublicUrlConfirmRemove";
     private static final String MESSAGE_CONFIRM_ENABLE_AUTHENTICATION_REQUIRED = "mylutece.messageConfirmEnableAuthenticationRequired";
@@ -100,246 +114,130 @@ public class AuthenticationFilterJspBean extends AdminFeaturesPageJspBean
     private static final String CONSTANTE_PORTAL_AUTHENTICATION_REQUIRED = "mylutece.portal.authentication.required";
 
     /**
-     * Builds the advanced parameters management page
-     * 
+     * Get the management page of the authentication filter
+     *
      * @param request
      *            the HTTP request
-     * @return the built page
+     * @param model
+     *            the model of the page
+     * @return the html of the page
+     * @throws AccessDeniedException
+     *             if the user may not manage the authentication filter
      */
-    public String getManageAdvancedParameters( HttpServletRequest request ) throws AccessDeniedException
+    @View( value = VIEW_MANAGE_AUTHENTICATION_FILTER, defaultView = true, securityTokenAction = TOKEN_PUBLIC_URLS )
+    public String getManageAuthenticationFilter( HttpServletRequest request, Models model ) throws AccessDeniedException
     {
-        if ( !RBACService.isAuthorized( MyLuteceResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
-                MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, getUser( ) ) )
+        checkPermission( );
+
+        for ( Map.Entry<String, Object> entry : AuthenticationFilterService.getInstance( ).getManageAdvancedParameters( getUser( ), request ).entrySet( ) )
         {
-            throw new AccessDeniedException(
-                    "User " + getUser( ) + " is not authorized to permission " + MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER );
+            model.put( entry.getKey( ), entry.getValue( ) );
         }
 
-        setPageTitleProperty( PROPERTY_MANAGE_AUTHENTICATION_FILTER );
-
-        Map<String, Object> model = AuthenticationFilterService.getInstance( ).getManageAdvancedParameters( getUser( ), request );
-
-        HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_MANAGE_AUTHENTICATION_FILTER, getLocale( ), model );
-
-        return getAdminPage( template.getHtml( ) );
+        return getPage( PROPERTY_MANAGE_AUTHENTICATION_FILTER, TEMPLATE_MANAGE_AUTHENTICATION_FILTER );
     }
 
     /**
-     * Create public Url
-     * 
+     * Create a public url
+     *
      * @param request
      *            the HTTP request
-     * @return the jsp URL of the process result
+     * @return the url of the next page
      * @throws AccessDeniedException
-     *             if permission to create Public Url on security service has not been granted to the user
+     *             if the user may not manage the authentication filter
      */
+    @Action( value = ACTION_CREATE_PUBLIC_URL, securityTokenAction = TOKEN_PUBLIC_URLS )
     public String doCreatePublicUrl( HttpServletRequest request ) throws AccessDeniedException
     {
-        if ( !RBACService.isAuthorized( MyLuteceResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
-                MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, getUser( ) ) )
-        {
-            throw new AccessDeniedException(
-                    "User " + getUser( ) + " is not authorized to permission " + MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER );
-        }
+        checkPermission( );
 
         if ( request.getParameter( PARAMETER_CANCEL ) == null )
         {
             ReferenceItem publicUrlData = getPublicUrlData( request );
-            normalizedPublicUrlCode( publicUrlData );
-
-            String strError = StringUtils.EMPTY;
+            String strError = null;
 
             if ( StringUtils.isBlank( publicUrlData.getCode( ) ) || StringUtils.isBlank( publicUrlData.getName( ) ) )
             {
-                strError = AdminMessageService.getMessageUrlReturningTo( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP,
-                        AppPathService.getBaseUrl( request ) + JSP_URL_MANAGE_AUTHENTICATION_FILTER );
+                strError = AdminMessageService.getMessageUrlReturningTo( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP, getManageUrl( request ) );
             }
             else
                 if ( DatastoreService.getDataValue( publicUrlData.getCode( ), null ) != null )
                 {
                     strError = AdminMessageService.getMessageUrlReturningTo( request, MESSAGE_PUBLIC_URL_CODE_ALREADY_EXIST, AdminMessage.TYPE_STOP,
-                            AppPathService.getBaseUrl( request ) + JSP_URL_MANAGE_AUTHENTICATION_FILTER );
+                            getManageUrl( request ) );
                 }
 
-            if ( !StringUtils.isBlank( strError ) )
+            if ( strError != null )
             {
-                return strError;
+                return redirect( request, strError );
             }
 
-            // create public url
             DatastoreService.setDataValue( publicUrlData.getCode( ), publicUrlData.getName( ) );
         }
 
-        return JSP_MANAGE_AUTHENTICATION_FILTER;
+        return redirectView( request, VIEW_MANAGE_AUTHENTICATION_FILTER );
     }
 
     /**
-     * Do Modify Public Url
-     * 
+     * Modify a public url
+     *
      * @param request
      *            the HTTP request
-     * @return the jsp URL of the process result
+     * @return the url of the next page
      * @throws AccessDeniedException
-     *             if permission to Manage Public Url on security service has not been granted to the user
+     *             if the user may not manage the authentication filter
      */
+    @Action( value = ACTION_MODIFY_PUBLIC_URL, securityTokenAction = TOKEN_PUBLIC_URLS )
     public String doModifyPublicUrl( HttpServletRequest request ) throws AccessDeniedException
     {
-        if ( !RBACService.isAuthorized( MyLuteceResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
-                MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, getUser( ) ) )
-        {
-            throw new AccessDeniedException(
-                    "User " + getUser( ) + " is not authorized to permission " + MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER );
-        }
+        checkPermission( );
 
         if ( request.getParameter( PARAMETER_CANCEL ) == null )
         {
             ReferenceItem publicUrlData = getPublicUrlData( request );
-            normalizedPublicUrlCode( publicUrlData );
-
-            String strError = StringUtils.EMPTY;
 
             if ( StringUtils.isBlank( publicUrlData.getCode( ) ) || StringUtils.isBlank( publicUrlData.getName( ) )
                     || ( DatastoreService.getDataValue( publicUrlData.getCode( ), null ) == null ) )
             {
-                strError = AdminMessageService.getMessageUrlReturningTo( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP,
-                        AppPathService.getBaseUrl( request ) + JSP_URL_MANAGE_AUTHENTICATION_FILTER );
+                return redirect( request,
+                        AdminMessageService.getMessageUrlReturningTo( request, Messages.MANDATORY_FIELDS, AdminMessage.TYPE_STOP, getManageUrl( request ) ) );
             }
 
-            if ( !StringUtils.isBlank( strError ) )
-            {
-                return strError;
-            }
-
-            // updateParameter
             DatastoreService.setDataValue( publicUrlData.getCode( ), publicUrlData.getName( ) );
         }
 
-        return JSP_MANAGE_AUTHENTICATION_FILTER;
+        return redirectView( request, VIEW_MANAGE_AUTHENTICATION_FILTER );
     }
 
     /**
-     * Do change use authentication required
-     * 
+     * Ask the confirmation of the removal of a public url
+     *
      * @param request
      *            the HTTP request
-     * @return the jsp URL of the process result
+     * @return the url of the confirmation message
      * @throws AccessDeniedException
-     *             if permission to Manage Public Url on security service has not been granted to the user
+     *             if the user may not manage the authentication filter
      */
-    public String getConfirmChangeUseAuthenticationRequired( HttpServletRequest request ) throws AccessDeniedException
-    {
-        if ( !RBACService.isAuthorized( MyLuteceResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
-                MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, getUser( ) ) )
-        {
-            throw new AccessDeniedException(
-                    "User " + getUser( ) + " is not authorized to permission " + MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER );
-        }
-
-        String strMessage = SecurityService.getInstance( ).isPortalAuthenticationRequired( ) ? MESSAGE_CONFIRM_DISABLE_AUTHENTICATION_REQUIRED
-                : MESSAGE_CONFIRM_ENABLE_AUTHENTICATION_REQUIRED;
-        UrlItem url = new UrlItem( JSP_DO_CHANGE_USER_AUTHENTICATION_REQUIRED );
-        url.addParameter( PARAMETER_PUBLIC_URL_CODE, request.getParameter( PARAMETER_PUBLIC_URL_CODE ) );
-
-        return AdminMessageService.getMessageUrl( request, strMessage, url.getUrl( ), AdminMessage.TYPE_CONFIRMATION );
-    }
-
-    /**
-     * Do change use authentication required
-     * 
-     * @param request
-     *            the HTTP request
-     * @return the jsp URL of the process result
-     * @throws AccessDeniedException
-     *             if permission to Manage Public Url on security service has not been granted to the user
-     */
-    public String doChangeUseAuthenticationRequired( HttpServletRequest request ) throws AccessDeniedException
-    {
-        if ( !RBACService.isAuthorized( MyLuteceResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
-                MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, getUser( ) ) )
-        {
-            throw new AccessDeniedException(
-                    "User " + getUser( ) + " is not authorized to permission " + MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER );
-        }
-
-        if ( request.getParameter( PARAMETER_CANCEL ) == null )
-        {
-            // updateParameter
-            DatastoreService.setDataValue( CONSTANTE_PORTAL_AUTHENTICATION_REQUIRED,
-                    new Boolean( !SecurityService.getInstance( ).isPortalAuthenticationRequired( ) ).toString( ) );
-        }
-
-        return JSP_MANAGE_AUTHENTICATION_FILTER;
-    }
-
-    /**
-     * Remove Public Url
-     * 
-     * @param request
-     *            the HTTP request
-     * @return the jsp URL of the process result
-     * @throws AccessDeniedException
-     *             if permission manage Public Url on security service has not been granted to the user
-     */
-    public String doRemovePublicUrl( HttpServletRequest request ) throws AccessDeniedException
-    {
-        if ( !RBACService.isAuthorized( MyLuteceResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
-                MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, getUser( ) ) )
-        {
-            throw new AccessDeniedException(
-                    "User " + getUser( ) + " is not authorized to permission " + MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER );
-        }
-
-        ReferenceItem publicUrlData = getPublicUrlData( request );
-
-        if ( publicUrlData != null )
-        {
-            normalizedPublicUrlCode( publicUrlData );
-            DatastoreService.removeData( publicUrlData.getCode( ) );
-        }
-
-        return JSP_MANAGE_AUTHENTICATION_FILTER;
-    }
-
-    /**
-     * Get the Public Url Data
-     * 
-     * @param request
-     *            The HTTP request
-     * @return ReferenceItem
-     */
-    private ReferenceItem getPublicUrlData( HttpServletRequest request )
-    {
-        ReferenceItem publicUrlData = new ReferenceItem( );
-        String strPublicUrlCode = ( request.getParameter( PARAMETER_PUBLIC_URL_CODE ) != null ) ? request.getParameter( PARAMETER_PUBLIC_URL_CODE ).trim( )
-                : null;
-        String strPublicUrlValue = ( request.getParameter( PARAMETER_PUBLIC_URL_VALUE ) != null ) ? request.getParameter( PARAMETER_PUBLIC_URL_VALUE ).trim( )
-                : null;
-        publicUrlData.setCode( strPublicUrlCode );
-        publicUrlData.setName( strPublicUrlValue );
-
-        return publicUrlData;
-    }
-
-    /**
-     * Gets the confirmation page of delete Public Url
-     * 
-     * @param request
-     *            The HTTP request
-     * @throws AccessDeniedException
-     *             the {@link AccessDeniedException}
-     * @return the confirmation page of Remove Public Url
-     */
+    @View( value = VIEW_CONFIRM_REMOVE_PUBLIC_URL, securityTokenAction = ACTION_REMOVE_PUBLIC_URL )
     public String getConfirmRemovePublicUrl( HttpServletRequest request ) throws AccessDeniedException
     {
-        if ( !RBACService.isAuthorized( MyLuteceResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
-                MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, getUser( ) ) )
-        {
-            throw new AccessDeniedException(
-                    "User " + getUser( ) + " is not authorized to permission " + MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER );
-        }
+        return redirect( request, getConfirmRemovePublicUrlMessage( request ) );
+    }
 
-        UrlItem url = new UrlItem( JSP_DO_REMOVE_PUBLIC_URL );
-        // The code is free text: encoded, so that a & or a # does not cut it
+    /**
+     * Get the confirmation message of the removal of a public url
+     *
+     * @param request
+     *            the HTTP request
+     * @return the url of the confirmation message, whose button posts the removal of the url of the exact code given
+     * @throws AccessDeniedException
+     *             if the user may not manage the authentication filter
+     */
+    String getConfirmRemovePublicUrlMessage( HttpServletRequest request ) throws AccessDeniedException
+    {
+        checkPermission( );
+
+        UrlItem url = new UrlItem( getActionUrl( ACTION_REMOVE_PUBLIC_URL ) );
         url.addParameter( PARAMETER_PUBLIC_URL_CODE,
                 URLEncoder.encode( StringUtils.defaultString( request.getParameter( PARAMETER_PUBLIC_URL_CODE ) ), StandardCharsets.UTF_8 ) );
 
@@ -347,18 +245,115 @@ public class AuthenticationFilterJspBean extends AdminFeaturesPageJspBean
     }
 
     /**
-     * normalized public url code
-     * 
-     * @param publicUrl
-     *            publicUrlCode
+     * Remove a public url
+     *
+     * @param request
+     *            the HTTP request
+     * @return the url of the management page
+     * @throws AccessDeniedException
+     *             if the user may not manage the authentication filter
      */
-    private void normalizedPublicUrlCode( ReferenceItem publicUrl )
+    @Action( ACTION_REMOVE_PUBLIC_URL )
+    public String doRemovePublicUrl( HttpServletRequest request ) throws AccessDeniedException
     {
-        if ( !StringUtils.isBlank( publicUrl.getCode( ) ) )
+        checkPermission( );
+
+        ReferenceItem publicUrlData = getPublicUrlData( request );
+
+        if ( StringUtils.isNotBlank( publicUrlData.getCode( ) ) )
         {
-            String strCode = publicUrl.getCode( );
-            strCode = strCode.replaceAll( " ", "_" );
-            publicUrl.setCode( AuthenticationFilterService.PUBLIC_URL_PREFIX + strCode );
+            DatastoreService.removeData( publicUrlData.getCode( ) );
         }
+
+        return redirectView( request, VIEW_MANAGE_AUTHENTICATION_FILTER );
+    }
+
+    /**
+     * Ask the confirmation of switching the authentication required on the whole site, on or off
+     *
+     * @param request
+     *            the HTTP request
+     * @return the url of the confirmation message
+     * @throws AccessDeniedException
+     *             if the user may not manage the authentication filter
+     */
+    @View( value = VIEW_CONFIRM_CHANGE_USE_AUTHENTICATION_REQUIRED, securityTokenAction = ACTION_CHANGE_USE_AUTHENTICATION_REQUIRED )
+    public String getConfirmChangeUseAuthenticationRequired( HttpServletRequest request ) throws AccessDeniedException
+    {
+        checkPermission( );
+
+        String strMessage = SecurityService.getInstance( ).isPortalAuthenticationRequired( ) ? MESSAGE_CONFIRM_DISABLE_AUTHENTICATION_REQUIRED
+                : MESSAGE_CONFIRM_ENABLE_AUTHENTICATION_REQUIRED;
+
+        return redirect( request,
+                AdminMessageService.getMessageUrl( request, strMessage, getActionUrl( ACTION_CHANGE_USE_AUTHENTICATION_REQUIRED ), AdminMessage.TYPE_CONFIRMATION ) );
+    }
+
+    /**
+     * Switch the authentication required on the whole site, on or off
+     *
+     * @param request
+     *            the HTTP request
+     * @return the url of the management page
+     * @throws AccessDeniedException
+     *             if the user may not manage the authentication filter
+     */
+    @Action( ACTION_CHANGE_USE_AUTHENTICATION_REQUIRED )
+    public String doChangeUseAuthenticationRequired( HttpServletRequest request ) throws AccessDeniedException
+    {
+        checkPermission( );
+
+        if ( request.getParameter( PARAMETER_CANCEL ) == null )
+        {
+            DatastoreService.setDataValue( CONSTANTE_PORTAL_AUTHENTICATION_REQUIRED,
+                    Boolean.toString( !SecurityService.getInstance( ).isPortalAuthenticationRequired( ) ) );
+        }
+
+        return redirectView( request, VIEW_MANAGE_AUTHENTICATION_FILTER );
+    }
+
+    /**
+     * Check that the user may manage the authentication filter
+     *
+     * @throws AccessDeniedException
+     *             if permission to manage the authentication filter has not been granted to the user
+     */
+    private void checkPermission( ) throws AccessDeniedException
+    {
+        if ( !RBACService.isAuthorized( MyLuteceResourceIdService.RESOURCE_TYPE, RBAC.WILDCARD_RESOURCES_ID,
+                MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER, getUser( ) ) )
+        {
+            throw new AccessDeniedException(
+                    "User " + getUser( ) + " is not authorized to permission " + MyLuteceResourceIdService.PERMISSION_MANAGE_AUTHENTICATION_FILTER );
+        }
+    }
+
+    /**
+     * Get the absolute url of the management page
+     *
+     * @param request
+     *            the HTTP request
+     * @return the url
+     */
+    private String getManageUrl( HttpServletRequest request )
+    {
+        return AppPathService.getBaseUrl( request ) + getViewFullUrl( VIEW_MANAGE_AUTHENTICATION_FILTER );
+    }
+
+    /**
+     * Get the public url described by the request, its code normalized and prefixed as it is stored
+     *
+     * @param request
+     *            the HTTP request
+     * @return the code (stored key) and the name (url) of the public url
+     */
+    private ReferenceItem getPublicUrlData( HttpServletRequest request )
+    {
+        ReferenceItem publicUrlData = new ReferenceItem( );
+        String strCode = StringUtils.trimToNull( request.getParameter( PARAMETER_PUBLIC_URL_CODE ) );
+        publicUrlData.setCode( ( strCode != null ) ? AuthenticationFilterService.PUBLIC_URL_PREFIX + strCode.replace( " ", "_" ) : null );
+        publicUrlData.setName( StringUtils.trimToNull( request.getParameter( PARAMETER_PUBLIC_URL_VALUE ) ) );
+
+        return publicUrlData;
     }
 }

@@ -1,16 +1,15 @@
 <#macro myluteceAuthFilterAdvParamsFormActions params={}>
-<@tform method='post' action='jsp/admin/plugins/mylutece/security/ConfirmChangeUseAuthenticationRequired.jsp' params=params>
 <#if !portal_authentication_required>
-	<@button type='submit' name='submit' color='success' buttonIcon='check' title='#i18n{mylutece.authentication_filter_advanced_parameters.buttonEnableAuthenticationRequired}' />
+	<@aButton href='jsp/admin/plugins/mylutece/security/ManageAuthenticationFilter.jsp?view=confirmChangeUseAuthenticationRequired' id='change-authentication-required' color='success' buttonIcon='check' title='#i18n{mylutece.authentication_filter_advanced_parameters.buttonEnableAuthenticationRequired}' params=params />
 <#else>
-	<@button type='submit' color='danger' name='submit' buttonIcon='check' title='#i18n{mylutece.authentication_filter_advanced_parameters.buttonDisableAuthenticationRequired}' />
+	<@aButton href='jsp/admin/plugins/mylutece/security/ManageAuthenticationFilter.jsp?view=confirmChangeUseAuthenticationRequired' id='change-authentication-required' color='danger' buttonIcon='check' title='#i18n{mylutece.authentication_filter_advanced_parameters.buttonDisableAuthenticationRequired}' params=params />
 </#if>
-</@tform>
 <@button type='button' buttonIcon='link-plus' title='#i18n{mylutece.authentication_filter_advanced_parameters.buttonAddUrl}' hideTitle=['xs','sm'] params={ 'data-bs-toggle': 'modal', 'data-bs-target': '#add-public-url' } />
 <@modal id='add-public-url' size='lg'>
 <@modalHeader modalTitle='#i18n{mylutece.authentication_filter_advanced_parameters.buttonAddUrl}' />
 <@modalBody>
-<@tform method='post' action='jsp/admin/plugins/mylutece/security/DoCreatePublicUrl.jsp'>
+<@tform method='post' action='jsp/admin/plugins/mylutece/security/ManageAuthenticationFilter.jsp'>
+	<@input type='hidden' name='action' value='createPublicUrl' />
 	<@formGroup labelFor='public_url_code' labelKey='#i18n{mylutece.authentication_filter_advanced_parameters.labelPublicUrlCode}'>
 		<@input type='text' name='public_url_code' value='' />
 	</@formGroup>
@@ -56,7 +55,8 @@ new LuteceSearchList( searchInput, searchElementList, {
 <#if public_list_url?has_content>
 <@h level=2>#i18n{mylutece.authentication_filter_advanced_parameters.publicListUrlLabelComment}</@h>
 <#list public_list_url as public_url>
-	<@tform method='post' action='jsp/admin/plugins/mylutece/security/DoModifyPublicUrl.jsp' boxed=true boxClass='mb-2 item-labels'>
+	<@tform method='post' action='jsp/admin/plugins/mylutece/security/ManageAuthenticationFilter.jsp' boxed=true boxClass='mb-2 item-labels'>
+		<@input type='hidden' name='action' value='modifyPublicUrl' />
 		<@input type='hidden' name='public_url_code' value='${public_url.code}' />
 		<@span class='searchable d-none'>${public_url.code} ${public_url.name}</@span>
 		<@row>
@@ -74,7 +74,7 @@ new LuteceSearchList( searchInput, searchElementList, {
 			</@formGroup>
 			</@columns>
 			<@columns class='col-auto d-flex align-items-end pb-3'>
-				<@aButton href='jsp/admin/plugins/mylutece/security/ConfirmRemovePublicUrl.jsp?public_url_code=${public_url.code?url("UTF-8")}' title='#i18n{portal.util.labelDelete}' buttonIcon='trash' color='ghost-danger' params={ 'aria-label': '#i18n{portal.util.labelDelete} ' + public_url.code } />
+				<@aButton href='jsp/admin/plugins/mylutece/security/ManageAuthenticationFilter.jsp?view=confirmRemovePublicUrl&public_url_code=${public_url.code?url("UTF-8")}' title='#i18n{portal.util.labelDelete}' buttonIcon='trash' color='ghost-danger' params={ 'aria-label': '#i18n{portal.util.labelDelete} ' + public_url.code } />
 			</@columns>
 		</@row>
 	</@tform>

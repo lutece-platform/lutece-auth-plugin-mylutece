@@ -1,9 +1,9 @@
 <%@ page errorPage="../../../ErrorPage.jsp" %>
+
+${ pageContext.setAttribute( 'strContent', myluteceAttributeJspBean.processController( pageContext.request , pageContext.response ) ) }
+
 <jsp:include page="../../../AdminHeader.jsp" />
 
-<%@page import="fr.paris.lutece.plugins.mylutece.web.attribute.AttributeJspBean"%>
-
-${ myluteceAttributeJspBean.init( pageContext.request, AttributeJspBean.RIGHT_MANAGE_MYLUTECE ) }
-${ myluteceAttributeJspBean.getManageAttributes( pageContext.request ) }
+${ pageContext.getAttribute( 'strContent' ) }
 
 <%@ include file="../../../AdminFooter.jsp" %>

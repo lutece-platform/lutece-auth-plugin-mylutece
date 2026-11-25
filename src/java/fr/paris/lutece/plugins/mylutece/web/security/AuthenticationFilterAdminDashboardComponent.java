@@ -39,16 +39,20 @@ import fr.paris.lutece.portal.business.rbac.RBAC;
 import fr.paris.lutece.portal.business.user.AdminUser;
 import fr.paris.lutece.portal.service.dashboard.admin.AdminDashboardComponent;
 import fr.paris.lutece.portal.service.rbac.RBACService;
+import fr.paris.lutece.portal.service.security.ISecurityTokenService;
+import fr.paris.lutece.portal.service.security.SecurityTokenHandler;
 import fr.paris.lutece.portal.service.template.AppTemplateService;
 import fr.paris.lutece.util.html.HtmlTemplate;
 
 import java.util.Map;
 
+import jakarta.enterprise.inject.spi.CDI;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
  *
- * DashBoard used for managing Public Url
+ * DashBoard used for managing Public Url. It shows the forms of the management page outside of its controller, so it issues their
+ * security token itself.
  *
  */
 public class AuthenticationFilterAdminDashboardComponent extends AdminDashboardComponent
@@ -69,6 +73,8 @@ public class AuthenticationFilterAdminDashboardComponent extends AdminDashboardC
         }
 
         Map<String, Object> model = AuthenticationFilterService.getInstance( ).getManageAdvancedParameters( user, request );
+        model.put( SecurityTokenHandler.MARK_CSRF_TOKEN,
+                CDI.current( ).select( ISecurityTokenService.class ).get( ).getToken( request, AuthenticationFilterJspBean.TOKEN_PUBLIC_URLS ) );
         HtmlTemplate template = AppTemplateService.getTemplate( TEMPLATE_ADMIN_DASHBOARD, user.getLocale( ), model );
 
         return template.getHtml( );

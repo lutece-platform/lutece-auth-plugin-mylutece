@@ -6,7 +6,8 @@
 			<@aButton href='jsp/admin/plugins/mylutece/attribute/ManageAttributes.jsp' title='#i18n{portal.util.labelBack}' buttonIcon='arrow-left' color='light' hideTitle=['xs','sm','md'] class='me-1' />
 		</@myluteceHeader>
 		<@messages infos=infos![] errors=errors![] warnings=warnings![] />
-		<@tform method='post' action='jsp/admin/plugins/mylutece/attribute/DoModifyAttribute.jsp' boxed=true>
+		<@tform method='post' action='jsp/admin/plugins/mylutece/attribute/ManageAttributes.jsp' boxed=true>
+			<@input type='hidden' name='action' value='modifyAttribute' />
 			<@formGroup labelFor='title' labelKey='#i18n{mylutece.modify_attribute.labelTitle}' helpKey='#i18n{mylutece.modify_attribute.labelTitleComment}' mandatory=true rows=2>
 				<@input type='text' name='title' id='title' inputSize=80 value='${attribute.title}' maxlength=255 mandatory=true />
 			</@formGroup>

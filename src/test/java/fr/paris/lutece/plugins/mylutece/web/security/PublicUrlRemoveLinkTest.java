@@ -78,6 +78,10 @@ public class PublicUrlRemoveLinkTest extends LuteceTestCase
             + "<#macro button rest...></#macro><#macro empty rest...></#macro>"
             + "<#macro aButton href='' rest...><a href=\"${href}\"></a></#macro>";
     private static final String PARAMETER_PUBLIC_URL_CODE = "public_url_code";
+    private static final String PARAMETER_VIEW = "view";
+    private static final String PARAMETER_ACTION = "action";
+    private static final String VIEW_CONFIRM_REMOVE_PUBLIC_URL = "confirmRemovePublicUrl";
+    private static final String ACTION_REMOVE_PUBLIC_URL = "removePublicUrl";
     private static final String [ ] CODES = {
             "news&events", "faq#top", "a+b=c%20", "page"
     };
@@ -138,7 +142,7 @@ public class PublicUrlRemoveLinkTest extends LuteceTestCase
         StringWriter writer = new StringWriter( );
         cfg.getTemplate( PAGE ).process( model, writer );
 
-        Matcher matcher = Pattern.compile( "href=\"([^\"]*ConfirmRemovePublicUrl[^\"]*)\"" ).matcher( writer.toString( ) );
+        Matcher matcher = Pattern.compile( "href=\"([^\"]*view=confirmRemovePublicUrl[^\"]*)\"" ).matcher( writer.toString( ) );
         List<String> listLinks = new ArrayList<>( );
         while ( matcher.find( ) )
         {
@@ -147,7 +151,8 @@ public class PublicUrlRemoveLinkTest extends LuteceTestCase
         assertEquals( CODES.length, listLinks.size( ), writer.toString( ) );
         for ( int i = 0; i < CODES.length; i++ )
         {
-            assertEquals( Map.of( PARAMETER_PUBLIC_URL_CODE, List.of( CODES [i] ) ), parameters( listLinks.get( i ) ), listLinks.get( i ) );
+            assertEquals( Map.of( PARAMETER_VIEW, List.of( VIEW_CONFIRM_REMOVE_PUBLIC_URL ), PARAMETER_PUBLIC_URL_CODE, List.of( CODES [i] ) ), parameters( listLinks.get( i ) ),
+                    listLinks.get( i ) );
         }
     }
 
@@ -170,10 +175,10 @@ public class PublicUrlRemoveLinkTest extends LuteceTestCase
             AuthenticationFilterJspBean jspBean = new AuthenticationFilterJspBean( );
             jspBean.init( request, AuthenticationFilterJspBean.RIGHT_MANAGE_AUTHENTICATION_FILTER );
 
-            jspBean.getConfirmRemovePublicUrl( request );
+            jspBean.getConfirmRemovePublicUrlMessage( request );
 
             String strUrl = AdminMessageService.getMessage( request ).getUrl( );
-            assertEquals( Map.of( PARAMETER_PUBLIC_URL_CODE, List.of( strCode ) ), parameters( strUrl ), strUrl );
+            assertEquals( Map.of( PARAMETER_ACTION, List.of( ACTION_REMOVE_PUBLIC_URL ), PARAMETER_PUBLIC_URL_CODE, List.of( strCode ) ), parameters( strUrl ), strUrl );
         }
     }
 }

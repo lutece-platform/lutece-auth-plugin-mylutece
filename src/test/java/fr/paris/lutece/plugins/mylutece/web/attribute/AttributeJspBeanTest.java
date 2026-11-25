@@ -49,8 +49,6 @@ public class AttributeJspBeanTest extends LuteceTestCase
 {
     @Inject
     private AttributeJspBean _attributeJspBean;
-    @Inject
-    private AttributeFieldJspBean _attributeFieldJspBean;
 
     /**
      * An attribute created without title returns to the form creating an attribute of the same type.
@@ -62,11 +60,11 @@ public class AttributeJspBeanTest extends LuteceTestCase
         request.addParameter( "attribute_type_class_name", AttributeText.class.getName( ) );
         request.addParameter( "width", "10" );
 
-        String strUrl = _attributeJspBean.doCreateAttribute( request );
+        String strUrl = _attributeJspBean.createAttribute( request );
 
         assertTrue( strUrl.endsWith( AdminMessageService.getMessageRelativeUrl( ) ), strUrl );
         String strBackUrl = AdminMessageService.getMessage( request ).getBackUrl( );
-        assertTrue( strBackUrl.endsWith( "jsp/admin/plugins/mylutece/attribute/CreateAttribute.jsp?attribute_type_class_name=" + AttributeText.class.getName( ) ),
+        assertTrue( strBackUrl.endsWith( "jsp/admin/plugins/mylutece/attribute/ManageAttributes.jsp?view=createAttribute&attribute_type_class_name=" + AttributeText.class.getName( ) ),
                 strBackUrl );
     }
 
@@ -80,11 +78,11 @@ public class AttributeJspBeanTest extends LuteceTestCase
         request.addParameter( "id_attribute", "5" );
         request.addParameter( "title", "title" );
 
-        String strUrl = _attributeFieldJspBean.doCreateAttributeField( request );
+        String strUrl = _attributeJspBean.createAttributeField( request );
 
         assertTrue( strUrl.endsWith( AdminMessageService.getMessageRelativeUrl( ) ), strUrl );
         String strBackUrl = AdminMessageService.getMessage( request ).getBackUrl( );
-        assertTrue( strBackUrl.endsWith( "jsp/admin/plugins/mylutece/attribute/CreateAttributeField.jsp?id_attribute=5" ), strBackUrl );
+        assertTrue( strBackUrl.endsWith( "jsp/admin/plugins/mylutece/attribute/ManageAttributes.jsp?view=createAttributeField&id_attribute=5" ), strBackUrl );
     }
 
     /**
@@ -98,10 +96,10 @@ public class AttributeJspBeanTest extends LuteceTestCase
         request.addParameter( "id_field", "7" );
         request.addParameter( "value", "value" );
 
-        String strUrl = _attributeFieldJspBean.doModifyAttributeField( request );
+        String strUrl = _attributeJspBean.modifyAttributeField( request );
 
         assertTrue( strUrl.endsWith( AdminMessageService.getMessageRelativeUrl( ) ), strUrl );
         String strBackUrl = AdminMessageService.getMessage( request ).getBackUrl( );
-        assertTrue( strBackUrl.endsWith( "jsp/admin/plugins/mylutece/attribute/ModifyAttributeField.jsp?id_attribute=5&id_field=7" ), strBackUrl );
+        assertTrue( strBackUrl.endsWith( "jsp/admin/plugins/mylutece/attribute/ManageAttributes.jsp?view=modifyAttributeField&id_attribute=5&id_field=7" ), strBackUrl );
     }
 }

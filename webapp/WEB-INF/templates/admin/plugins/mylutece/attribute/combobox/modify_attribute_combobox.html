@@ -11,7 +11,8 @@
 				<@box>
 					<@boxHeader title='#i18n{mylutece.modify_attribute.pageTitleAttributeComboBox}' />
 					<@boxBody>
-						<@tform method='post' action='jsp/admin/plugins/mylutece/attribute/DoModifyAttribute.jsp'>
+						<@tform method='post' action='jsp/admin/plugins/mylutece/attribute/ManageAttributes.jsp'>
+							<@input type='hidden' name='action' value='modifyAttribute' />
 							<@formGroup labelFor='title' labelKey='#i18n{mylutece.modify_attribute.labelTitle}' helpKey='#i18n{mylutece.modify_attribute.labelTitleComment}' mandatory=true rows=2>
 								<@input type='text' name='title' id='title' value='${attribute.title}' maxlength=255 mandatory=true />
 							</@formGroup>
@@ -44,7 +45,7 @@
 			<@columns lg=7>
 				<@box>
 					<@boxHeader title='#i18n{mylutece.modify_attribute.listAssociatedFields}' boxTools=true>
-						<@aButton href='jsp/admin/plugins/mylutece/attribute/CreateAttributeField.jsp?id_attribute=${attribute.idAttribute}' color='primary' buttonIcon='plus' title='#i18n{mylutece.modify_attribute.buttonCreateField}' />
+						<@aButton href='jsp/admin/plugins/mylutece/attribute/ManageAttributes.jsp?view=createAttributeField&id_attribute=${attribute.idAttribute}' color='primary' buttonIcon='plus' title='#i18n{mylutece.modify_attribute.buttonCreateField}' />
 					</@boxHeader>
 					<#if attribute_fields_list?has_content>
 					<@listGroup class='list-group-flush' id='list'>
@@ -56,19 +57,19 @@
 									<@div class='row g-2 align-items-center'>
 										<@div class='col text-truncate'>
 											<#if attribute_field.defaultValue><@icon style='check' class='text-success me-1' title='#i18n{mylutece.modify_attribute.columnLabelDefaultValue}' /></#if>
-											<@link href='jsp/admin/plugins/mylutece/attribute/ModifyAttributeField.jsp?id_attribute=${attribute.idAttribute}&id_field=${attribute_field.idField}' class='text-reset fw-semibold'>${attribute_field.title}</@link>
+											<@link href='jsp/admin/plugins/mylutece/attribute/ManageAttributes.jsp?view=modifyAttributeField&id_attribute=${attribute.idAttribute}&id_field=${attribute_field.idField}' class='text-reset fw-semibold'>${attribute_field.title}</@link>
 											<@div class='text-secondary small text-truncate'>#i18n{mylutece.modify_attribute.columnLabelValue} : ${attribute_field.value} &middot; #i18n{mylutece.modify_attribute.columnLabelId} : ${attribute_field.idField}</@div>
 										</@div>
 										<@div class='col-auto'>
 											<@div class='btn-actions'>
-												<@aButton href='jsp/admin/plugins/mylutece/attribute/ModifyAttributeField.jsp?id_attribute=${attribute.idAttribute}&id_field=${attribute_field.idField}' style='btn-action' color='' buttonIcon='pencil' title='#i18n{mylutece.modify_attribute.buttonLabelModify} ${attribute_field.title}' hideTitle=['all'] />
+												<@aButton href='jsp/admin/plugins/mylutece/attribute/ManageAttributes.jsp?view=modifyAttributeField&id_attribute=${attribute.idAttribute}&id_field=${attribute_field.idField}' style='btn-action' color='' buttonIcon='pencil' title='#i18n{mylutece.modify_attribute.buttonLabelModify} ${attribute_field.title}' hideTitle=['all'] />
 												<#if cpt != 1>
-													<@aButton href='jsp/admin/plugins/mylutece/attribute/DoMoveUpAttributeField.jsp?id_attribute=${attribute.idAttribute}&id_field=${attribute_field.idField}#list' style='btn-action' color='' buttonIcon='arrow-up' title='#i18n{mylutece.modify_attribute.buttonLabelMoveUp} ${attribute_field.title}' hideTitle=['all'] />
+													<@tform method='post' action='jsp/admin/plugins/mylutece/attribute/ManageAttributes.jsp#list' class='d-inline'><@input type='hidden' name='action' value='moveUpAttributeField' /><@input type='hidden' name='id_attribute' value='${attribute.idAttribute}' /><@input type='hidden' name='id_field' value='${attribute_field.idField}' /><button type="submit" class="btn-action border-0 bg-transparent" title="#i18n{mylutece.modify_attribute.buttonLabelMoveUp} ${attribute_field.title}"><@icon style='arrow-up' /><span class="visually-hidden">#i18n{mylutece.modify_attribute.buttonLabelMoveUp} ${attribute_field.title}</span></button></@tform>
 												</#if>
 												<#if attribute_field_has_next>
-													<@aButton href='jsp/admin/plugins/mylutece/attribute/DoMoveDownAttributeField.jsp?id_attribute=${attribute.idAttribute}&id_field=${attribute_field.idField}#list' style='btn-action' color='' buttonIcon='arrow-down' title='#i18n{mylutece.modify_attribute.buttonLabelMoveDown} ${attribute_field.title}' hideTitle=['all'] />
+													<@tform method='post' action='jsp/admin/plugins/mylutece/attribute/ManageAttributes.jsp#list' class='d-inline'><@input type='hidden' name='action' value='moveDownAttributeField' /><@input type='hidden' name='id_attribute' value='${attribute.idAttribute}' /><@input type='hidden' name='id_field' value='${attribute_field.idField}' /><button type="submit" class="btn-action border-0 bg-transparent" title="#i18n{mylutece.modify_attribute.buttonLabelMoveDown} ${attribute_field.title}"><@icon style='arrow-down' /><span class="visually-hidden">#i18n{mylutece.modify_attribute.buttonLabelMoveDown} ${attribute_field.title}</span></button></@tform>
 												</#if>
-												<@aButton href='jsp/admin/plugins/mylutece/attribute/RemoveAttributeField.jsp?id_attribute=${attribute.idAttribute}&id_field=${attribute_field.idField}' style='btn-action text-danger' color='' buttonIcon='trash' title='#i18n{mylutece.modify_attribute.buttonLabelDelete} ${attribute_field.title}' hideTitle=['all'] />
+												<@aButton href='jsp/admin/plugins/mylutece/attribute/ManageAttributes.jsp?view=confirmRemoveAttributeField&id_attribute=${attribute.idAttribute}&id_field=${attribute_field.idField}' style='btn-action text-danger' color='' buttonIcon='trash' title='#i18n{mylutece.modify_attribute.buttonLabelDelete} ${attribute_field.title}' hideTitle=['all'] />
 											</@div>
 										</@div>
 									</@div>
@@ -77,7 +78,7 @@
 						</#list>
 					</@listGroup>
 					<#else>
-						<@empty title='#i18n{portal.util.labelNoItem}' iconName='list-details' subtitle=' ' actionTitle='#i18n{mylutece.modify_attribute.buttonCreateField}' actionUrl='jsp/admin/plugins/mylutece/attribute/CreateAttributeField.jsp?id_attribute=${attribute.idAttribute}' />
+						<@empty title='#i18n{portal.util.labelNoItem}' iconName='list-details' subtitle=' ' actionTitle='#i18n{mylutece.modify_attribute.buttonCreateField}' actionUrl='jsp/admin/plugins/mylutece/attribute/ManageAttributes.jsp?view=createAttributeField&id_attribute=${attribute.idAttribute}' />
 					</#if>
 				</@box>
 			</@columns>
